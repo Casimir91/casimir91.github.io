@@ -13,3 +13,5 @@ __pycache__/
 # macOS / editor
 .DS_Store
 .vscode/
+
+**/*.quarto_ipynb
