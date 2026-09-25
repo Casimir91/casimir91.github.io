@@ -28,5 +28,5 @@ website:
 
 format:
   html:
-    theme: cosmo
+    theme: sandstone
     toc: true
