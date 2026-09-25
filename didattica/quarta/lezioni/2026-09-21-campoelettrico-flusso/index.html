@@ -6,10 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2026-07-19">
-<meta name="description" content="Esempio: una formula e un grafico generato da Python.">
+<meta name="dcterms.date" content="2026-09-21">
 
-<title>Oscillatore armonico smorzato – Prof.&nbsp;Rosi</title>
+<title>Linee di forza e flusso del campo elettrico – Prof.&nbsp;Rosi</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -25,61 +24,26 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
-<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../../">
-<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../../site_libs/quarto-html/popper.min.js"></script>
-<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../../">
+<script src="../../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../../site_libs/bootstrap/bootstrap-de60624a5cb141114e0ea2b9bc293073.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -108,35 +72,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 </head>
 
@@ -147,7 +82,7 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../../index.html">
+    <a class="navbar-brand" href="../../../../index.html">
     <span class="navbar-title">Prof.&nbsp;Rosi</span>
     </a>
   </div>
@@ -158,7 +93,7 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../index.html"> 
+    <a class="nav-link" href="../../../../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item dropdown ">
@@ -167,39 +102,47 @@ window.Quarto = {
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-didattica">    
         <li>
-    <a class="dropdown-item" href="../../didattica/prima/index.html">
+    <a class="dropdown-item" href="../../../../didattica/prima/index.html">
  <span class="dropdown-text">Prima</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../../didattica/seconda/index.html">
+    <a class="dropdown-item" href="../../../../didattica/seconda/index.html">
  <span class="dropdown-text">Seconda</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../../didattica/terza/index.html">
+    <a class="dropdown-item" href="../../../../didattica/terza/index.html">
  <span class="dropdown-text">Terza</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../../didattica/quarta/index.html">
+    <a class="dropdown-item" href="../../../../didattica/quarta/index.html">
  <span class="dropdown-text">Quarta</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../../didattica/quinta/index.html">
- <span class="dropdown-text">Quinta</span></a>
+    <a class="dropdown-item" href="../../../../didattica/tolc/index.html">
+ <span class="dropdown-text">Corso TOLC</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../../didattica/igcse/index.html">
+ <span class="dropdown-text">IGCSE</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../../didattica/archivio/index.html">
+ <span class="dropdown-text">Archivio</span></a>
   </li>  
     </ul>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="../../ricerca/index.html"> 
+    <a class="nav-link" href="../../../../ricerca/index.html"> 
 <span class="menu-text">Ricerca</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../blog/index.html"> 
-<span class="menu-text">Blog</span></a>
+    <a class="nav-link" href="../../../../edtech/index.html"> 
+<span class="menu-text">EdTech</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../chi-sono.qmd"> 
+    <a class="nav-link" href="../../../../chi-sono.html"> 
 <span class="menu-text">Chi sono</span></a>
   </li>  
   <li class="nav-item compact">
@@ -218,22 +161,28 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#slide-della-lezione" id="toc-slide-della-lezione" class="nav-link active" data-scroll-target="#slide-della-lezione">Slide della lezione</a></li>
+  <li><a href="#materiali-e-indicazioni-per-lo-studio" id="toc-materiali-e-indicazioni-per-lo-studio" class="nav-link" data-scroll-target="#materiali-e-indicazioni-per-lo-studio">Materiali e indicazioni per lo studio</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Oscillatore armonico smorzato</h1>
-</div>
-
-<div>
-  <div class="description">
-    Esempio: una formula e un grafico generato da Python.
+<h1 class="title">Linee di forza e flusso del campo elettrico</h1>
+<p class="subtitle lead">Dal disegno al numero: contare le linee</p>
+  <div class="quarto-categories">
+    <div class="quarto-category">Fisica</div>
   </div>
-</div>
+  </div>
+
 
 
 <div class="quarto-title-meta">
@@ -242,7 +191,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 19, 2026</p>
+      <p class="date">September 21, 2026</p>
     </div>
   </div>
   
@@ -254,34 +203,20 @@ window.Quarto = {
 </header>
 
 
-<p>L’ampiezza di un oscillatore smorzato decade nel tempo secondo:</p>
-<p><span class="math display">\[
-x(t) = e^{-\gamma t}\cos(\omega t)
-\]</span></p>
-<div id="cell-fig-oscillatore" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">500</span>)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.exp(<span class="op">-</span><span class="fl">0.4</span><span class="op">*</span>t)<span class="op">*</span>np.cos(<span class="fl">3.0</span><span class="op">*</span>t)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>ax.plot(t, x)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"tempo (s)"</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">"posizione"</span>)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display">
-<div id="fig-oscillatore" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-oscillatore-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="moto-smorzato_files/figure-html/fig-oscillatore-output-1.png" width="608" height="429" class="figure-img">
+<section id="slide-della-lezione" class="level2">
+<h2 class="anchored" data-anchor-id="slide-della-lezione">Slide della lezione</h2>
+<div style="position: relative; padding-top: 56.25%;">
+<iframe src="slides.html" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allowfullscreen="">
+</iframe>
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-oscillatore-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Oscillatore armonico smorzato.
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
+<p><a href="slides.html" class="btn btn-primary" target="_blank">Apri le slide a schermo intero ↗</a></p>
+</section>
+<section id="materiali-e-indicazioni-per-lo-studio" class="level2">
+<h2 class="anchored" data-anchor-id="materiali-e-indicazioni-per-lo-studio">Materiali e indicazioni per lo studio</h2>
+<p><em>(da compilare)</em></p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -357,7 +292,7 @@ Figure&nbsp;1: Oscillatore armonico smorzato.
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
+        var filterRegex = new RegExp("https:\/\/Casimir91\.github\.io\/casimir91\.github\.io\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }

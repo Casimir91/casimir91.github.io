@@ -8,6 +8,28 @@
     "items": []
   },
   {
+    "listing": "/didattica/quarta/fisica/index.html",
+    "items": []
+  },
+  {
+    "listing": "/didattica/seconda/index.html",
+    "items": [
+      "/didattica/seconda/lezioni/2026-09-21-energy-work/index.html"
+    ]
+  },
+  {
+    "listing": "/didattica/prima/fisica/index.html",
+    "items": [
+      "/didattica/prima/fisica/moto-smorzato.html"
+    ]
+  },
+  {
+    "listing": "/didattica/igcse/index.html",
+    "items": [
+      "/didattica/igcse/sets.html"
+    ]
+  },
+  {
     "listing": "/edtech/index.html",
     "items": [
       "/edtech/numero-12.html",
@@ -24,15 +46,9 @@
     ]
   },
   {
-    "listing": "/didattica/igcse/index.html",
+    "listing": "/didattica/prima/index.html",
     "items": [
-      "/didattica/igcse/sets.html"
-    ]
-  },
-  {
-    "listing": "/didattica/prima/fisica/index.html",
-    "items": [
-      "/didattica/prima/fisica/moto-smorzato.html"
+      "/didattica/prima/lezioni/2026-09-23-measure-errors/index.html"
     ]
   },
   {
@@ -40,12 +56,21 @@
     "items": []
   },
   {
-    "listing": "/didattica/quarta/fisica/index.html",
-    "items": []
+    "listing": "/didattica/quarta/index.html",
+    "items": [
+      "/didattica/quarta/lezioni/2026-09-21-campoelettrico-flusso/index.html"
+    ]
   },
   {
     "listing": "/didattica/archivio/index.html",
     "items": []
+  },
+  {
+    "listing": "/didattica/terza/index.html",
+    "items": [
+      "/didattica/terza/lezioni/2026-09-18-thermal-expansion/index.html",
+      "/didattica/terza/lezioni/2026-09-22-thermal-lab1/index.html"
+    ]
   },
   {
     "listing": "/blog/index.html",
