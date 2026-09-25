@@ -1,6 +1,24 @@
 ---
 title: "Classe Seconda"
+listing:
+  contents: lezioni
+  type: table
+  fields: [date, title, subtitle]
+  field-display-names:
+    subtitle: "Argomento"
+  sort: "date asc"
+  sort-ui: false
+  filter-ui: false
 ---
 Materie attive quest'anno:
 
 - [Fisica](fisica/index.qmd)
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".quarto-listing a").forEach(a => {
+    a.target = "_blank";
+    a.rel = "noopener";
+  });
+});
+</script>
