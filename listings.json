@@ -1,0 +1,56 @@
+[
+  {
+    "listing": "/didattica/tolc/index.html",
+    "items": []
+  },
+  {
+    "listing": "/didattica/terza/fisica/index.html",
+    "items": []
+  },
+  {
+    "listing": "/edtech/index.html",
+    "items": [
+      "/edtech/numero-12.html",
+      "/edtech/numero-11.html",
+      "/edtech/numero-10.html",
+      "/edtech/numero-09.html",
+      "/edtech/numero-08.html",
+      "/edtech/numero-06.html",
+      "/edtech/numero-05.html",
+      "/edtech/numero-04.html",
+      "/edtech/numero-03.html",
+      "/edtech/numero-02.html",
+      "/edtech/numero-01.html"
+    ]
+  },
+  {
+    "listing": "/didattica/igcse/index.html",
+    "items": [
+      "/didattica/igcse/sets.html"
+    ]
+  },
+  {
+    "listing": "/didattica/prima/fisica/index.html",
+    "items": [
+      "/didattica/prima/fisica/moto-smorzato.html"
+    ]
+  },
+  {
+    "listing": "/didattica/seconda/fisica/index.html",
+    "items": []
+  },
+  {
+    "listing": "/didattica/quarta/fisica/index.html",
+    "items": []
+  },
+  {
+    "listing": "/didattica/archivio/index.html",
+    "items": []
+  },
+  {
+    "listing": "/blog/index.html",
+    "items": [
+      "/blog/posts/primo-post.html"
+    ]
+  }
+]
