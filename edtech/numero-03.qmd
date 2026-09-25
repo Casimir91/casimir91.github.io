@@ -1,0 +1,41 @@
+---
+title: "Tactiq"
+description: "Trascrive in automatico le riunioni Google Meet in tempo reale: recuperi decisioni e accordi senza prendere un solo appunto a mano."
+date: "2025-10-06"
+categories: [Google Meet, AI]
+# image: "img/tactiq.png"
+---
+
+## Il problema
+
+Ti è mai capitato di perderti pezzi importanti di una riunione Meet per colpa
+della connessione, dell'audio disturbato, o semplicemente perché eri concentrato
+a prendere appunti?
+
+## La soluzione
+
+**Tactiq** è un'estensione Chrome gratuita che trascrive automaticamente le tue
+riunioni Google Meet in tempo reale.
+
+## Cosa fa
+
+- Trascrive automaticamente l'audio in testo durante la riunione.
+
+Perfetto per:
+
+- riunioni di dipartimento e coordinamenti;
+- incontri di progetto;
+- recuperare decisioni e accordi presi durante la riunione.
+
+## Come si usa
+
+1. Installa l'estensione → [Link diretto Chrome Web Store](https://chromewebstore.google.com/detail/fggkaccpbmombhnjkjokndojfgagejfb?utm_source=item-share-cb)
+2. Entra in una riunione Meet come sempre;
+3. Tactiq si attiva automaticamente, oppure la apri dal menù estensioni di Chrome;
+4. Al termine trovi la trascrizione completa salvata.
+
+::: {.callout-tip}
+## Tip extra
+Con il piano gratuito hai **10 trascrizioni al mese**: di norma bastano per
+coprire le riunioni istituzionali mensili senza prendere un appunto a mano.
+:::

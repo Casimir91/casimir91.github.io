@@ -1,0 +1,90 @@
+---
+title: "Gemini in Google Classroom"
+description: "Oltre 30 strumenti AI dentro Classroom per progettare lezioni, griglie, quiz e materiali differenziati in minuti invece che ore."
+date: "2025-10-10"
+categories: [AI, Google Classroom]
+# image: "img/gemini-classroom.png"
+---
+
+## Il problema
+
+Passi ore a creare piani di lezione, inventare attività coinvolgenti e
+differenziare i contenuti per studenti con bisogni diversi? Ti ritrovi a
+riscrivere sempre le stesse griglie di valutazione o a cercare esempi pratici
+per spiegare concetti complessi?
+
+## La soluzione
+
+**Gemini in Google Classroom** è una suite di oltre 30 strumenti AI integrati
+direttamente in Classroom: ti aiuta a progettare lezioni, creare materiali e
+personalizzare contenuti in pochi minuti invece che in ore.
+
+## Cosa fa
+
+- Genera bozze di piani di lezione, griglie di valutazione, quiz, attività di
+  apertura, liste di vocaboli e altro ancora usando l'intelligenza artificiale.
+
+Perfetto per:
+
+- creare rapidamente una lezione completa partendo dagli obiettivi di
+  apprendimento;
+- generare una griglia di valutazione personalizzata e importarla direttamente
+  in un compito di Classroom;
+- inventare "hook" creativi per catturare l'attenzione a inizio lezione;
+- differenziare contenuti e creare testi o storie adattati al livello degli
+  studenti;
+- creare domande di comprensione su testi specifici con diversi livelli di
+  difficoltà;
+- fare brainstorming su esempi del mondo reale per rendere concreti argomenti
+  astratti;
+- generare "choice board" con attività diverse, così gli studenti scelgono come
+  dimostrare la comprensione.
+
+## Come si usa
+
+::: {.callout-important}
+## Disponibile solo in inglese
+Al momento Gemini in Classroom funziona **solo in lingua inglese**. Per usarlo
+devi cambiare temporaneamente la lingua dell'account Google in inglese.
+:::
+
+**Cambia la lingua dell'account Google in inglese:**
+
+1. Dalla home di Classroom, nella colonna di sinistra scorri in basso e clicca
+   **Impostazioni**;
+2. Clicca **Gestisci** nelle impostazioni dell'account;
+3. Nella colonna di sinistra clicca **Informazioni personali**;
+4. Scorri fino a **Lingua** e seleziona *Inglese (Stati Uniti)* o *Inglese
+   (Regno Unito)*.
+
+**Accedi alla tab Gemini in Classroom:**
+
+- Torna alla home di Google Classroom;
+- vedrai comparire una nuova tab **"Gemini"** nella barra di navigazione a
+  sinistra;
+- cliccala per accedere a tutti gli strumenti AI disponibili.
+
+**Inizia a creare contenuti:**
+
+- Scegli uno degli oltre 30 strumenti (es. *Outline a lesson plan*, *Create a
+  rubric*, *Generate a quiz*);
+- inserisci le informazioni richieste (livello scolastico, argomento, obiettivi
+  di apprendimento);
+- Gemini genererà una bozza che potrai modificare, perfezionare e assegnare alla
+  classe col pulsante **Add to class**.
+
+::: {.callout-warning}
+## Rivedi sempre i contenuti generati
+L'AI può fare errori: verifica sempre che i contenuti siano accurati e adatti al
+tuo contesto didattico prima di condividerli con gli studenti.
+:::
+
+::: {.callout-tip}
+## Tip extra
+Dopo aver generato un contenuto, usa **Start a chat with Gemini** per affinarlo
+in modalità conversazionale: ad esempio *"Rendi questa attività più adatta a
+studenti con DSA"* oppure *"Aggiungi 3 esempi legati alla vita quotidiana degli
+adolescenti"*. Puoi anche creare **Gems** personalizzati — versioni
+specializzate di Gemini per compiti ricorrenti (generare sempre quiz nello
+stesso formato, creare rubriche secondo i tuoi standard).
+:::

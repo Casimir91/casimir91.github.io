@@ -1,0 +1,41 @@
+---
+title: "La mia prima pagina Quarto"
+---
+
+## Formule che si scrivono da sole
+
+Questa è una formula *inline*, dentro al testo: $E = mc^2$. Non ho fatto niente di speciale, l'ho solo scritta tra due dollari.
+
+E questa è un'equazione a blocco — quella di Schrödinger dipendente dal tempo:
+
+$$
+i\hbar \frac{\partial}{\partial t} \Psi(\mathbf{r}, t) = \hat{H}\,\Psi(\mathbf{r}, t)
+$$ {#eq-schrodinger}
+
+Posso perfino richiamarla nel testo con il suo numero: vedi @eq-schrodinger.
+
+## Un grafico generato dal codice
+
+Il grafico @fig-oscillatore non è un'immagine incollata: nasce eseguendo il codice Python al momento della compilazione.
+
+```{python}
+#| label: fig-oscillatore
+#| fig-cap: "Oscillatore armonico smorzato: l'ampiezza decade nel tempo."
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+t = np.linspace(0, 10, 500)
+gamma = 0.4      # smorzamento
+omega = 3.0      # pulsazione
+x = np.exp(-gamma * t) * np.cos(omega * t)
+
+fig, ax = plt.subplots()
+ax.plot(t, x, label="posizione")
+ax.plot(t,  np.exp(-gamma * t), linestyle="--", color="gray")
+ax.plot(t, -np.exp(-gamma * t), linestyle="--", color="gray")
+ax.set_xlabel("tempo (s)")
+ax.set_ylabel("posizione")
+ax.legend()
+plt.show()
+```

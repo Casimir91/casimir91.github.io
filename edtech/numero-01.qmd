@@ -1,0 +1,56 @@
+---
+title: "Tab Group di Chrome"
+description: "Raggruppa le schede del browser in cluster con nome e colore: uno scaffale ordinato per ogni progetto."
+date: "2025-09-04"
+categories: [Google Chrome]
+# image: "img/tab-group.png"   ← la aggiungi in un secondo momento
+---
+
+## Il problema
+
+Ti ritrovi con venti schede aperte e per trovare quella che ti serve ci metti
+più tempo che a ricercarla da capo. Ogni volta che chiudi il browser gli dici
+di non chiudere le schede, e nella sessione dopo ne aggiungi altre per paura di
+perdere ricerche preziose. Ma così non le consulti mai — e lo sai.
+
+## La soluzione
+
+I **Tab Group** sono una funzionalità nativa di Chrome (nessuna installazione)
+che raggruppa le schede in cluster con nome e colore: ogni progetto ha il suo
+scaffale ordinato.
+
+## Cosa fa
+
+- Crea gruppi di schede colorati e nominati, che collassi ed espandi con un clic
+  per liberare la barra. Con **Salva gruppo** i gruppi sopravvivono ai riavvii e
+  si sincronizzano su Chrome negli altri dispositivi: in genere li ritrovi anche
+  su smartphone e tablet, ovunque accedi con il tuo account.
+- I gruppi non finiscono nella giungla dei preferiti: restano in una sezione
+  dedicata e a colori, sempre a vista.
+
+## Perfetto per
+
+- **Ricerca a tema:** tenere insieme fonti, articoli e approfondimenti di un
+  argomento senza perderli nella marea;
+- **Lavoro multi-progetto:** un gruppo "Bandi", uno "Strumenti AI", uno
+  "Viaggio", con colori diversi;
+- **Sessioni ricorrenti:** salvare un gruppo di siti che riapri ogni settimana
+  (portale, mail, gestionale);
+- **Shopping o confronti:** raccogliere in un gruppo tutte le schede di prodotti
+  da comparare.
+
+## Come si usa
+
+1. Clic destro su una scheda → **Aggiungi scheda a nuovo gruppo**;
+2. Assegna nome e colore al gruppo, poi clicca l'etichetta per
+   collassarlo/espanderlo;
+3. Clic destro sull'etichetta → **Salva gruppo** perché sopravviva a chiusura e
+   riavvio: comparirà come "pillola" nella barra dei preferiti.
+
+::: {.callout-tip}
+## Tip extra
+Due cose da ricordare. Primo: se non vedi la pillola dei gruppi salvati, attiva
+l'impostazione **"Mostra i gruppi di schede salvati"** nella barra dei
+preferiti. Secondo: se non li ritrovi sugli altri dispositivi, controlla che
+**Chrome Sync** sia attivo nelle impostazioni.
+:::

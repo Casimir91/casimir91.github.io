@@ -1,0 +1,76 @@
+---
+title: "NotebookLM per Flipped & more"
+description: "L'AI di Google che risponde solo sui materiali che carichi: guide di studio, quiz, mappe e audio overview per la flipped classroom, senza allucinazioni."
+date: "2025-10-22"
+categories: [AI]
+# image: "img/notebooklm.png"
+---
+
+## Il problema
+
+Cerchi uno strumento didattico AI affidabile, che non inventi informazioni e sia
+usabile sia dagli insegnanti sia dagli studenti?
+
+## La soluzione
+
+**NotebookLM** è uno strumento di Google pensato per l'ambito educativo: a
+differenza delle AI generiche, lavora **esclusivamente sui materiali caricati**,
+garantendo risposte accurate e trasformando qualsiasi fonte in un ambiente di
+apprendimento interattivo.
+
+## Cosa fa
+
+- Analizza i materiali caricati (PDF, documenti, presentazioni, video) e
+  risponde solo in base a quelli.
+
+Perfetto per:
+
+- creare guide di studio interattive dai materiali del corso per la flipped
+  classroom;
+- generare **Audio Overview** in stile podcast per l'apprendimento multicanale;
+- produrre quiz, flashcard e mappe mentali direttamente dai materiali;
+- integrarlo in Google Classroom (in inglese) con assegnazioni dirette agli
+  studenti.
+
+## Come si usa
+
+1. Vai su [notebooklm.google.com](https://notebooklm.google.com/) e accedi con
+   l'account Google Workspace for Education;
+2. crea un nuovo notebook e carica i materiali (fino a 50 fonti per notebook);
+3. scrivi prompt specifici come *"Crea un riassunto dei punti chiave per la
+   lezione di domani"*;
+4. assegna il notebook direttamente in Google Classroom (dalla sezione
+   Classwork).
+
+::: {.callout-tip}
+## Tip extra
+Carica le trascrizioni delle tue video-lezioni con l'estensione Chrome
+[YouTube Subtitle Download Helper](https://chromewebstore.google.com/detail/youtube-subtitle-download/dpmmcccjdcgdjnlnicicdbnlmohhpagf?hl=it)
+per trasformarle in risorse audio interattive — perfetto per il ripasso.
+:::
+
+## Ciò che si dice sul web
+
+NotebookLM riduce drasticamente le "allucinazioni" tipiche di altri modelli,
+perché risponde solo in base ai documenti caricati.
+[Guida su Aranzulla](https://www.aranzulla.it/come-funziona-notebooklm-1796079.html)
+
+Da settembre 2025 gli insegnanti possono creare e assegnare notebook
+direttamente in Google Classroom, trasformando i materiali in guide di studio,
+mappe mentali e audio overview.
+[6 modi di usare NotebookLM](https://blog.google/technology/google-labs/notebooklm-student-features)
+
+NotebookLM è disponibile gratuitamente per gli utenti Google Workspace for
+Education come servizio Core (come Gmail e Docs), con protezione dati di livello
+enterprise.
+
+::: {.callout-note collapse="true"}
+## Prova rapida da fare subito
+1. Apri NotebookLM e crea un nuovo notebook;
+2. carica delle slide o un PDF del tuo corso (**Aggiungi fonte** → scegli il
+   tipo di documento);
+3. prova questo prompt: *"Crea una guida allo studio interattiva basata su questi
+   contenuti, con domande chiave, glossario e punti principali"*;
+4. per generare un podcast, clicca l'icona **Audio Overview** e ascolta una
+   discussione sui contenuti.
+:::

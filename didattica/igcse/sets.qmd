@@ -1,0 +1,96 @@
+---
+title: "Sets"
+description: "Insiemi: teoria, vocabolario e test IGCSE."
+---
+
+## Teoria
+
+::: {.callout-note collapse="true"}
+## Defining Sets
+Video di riferimento: [Algebra 1 – Defining Sets](https://www.youtube.com/watch?v=GYlhVuGBl5E)
+:::
+
+::: {.callout-note collapse="true"}
+## Set Equality and Subsets
+[Algebra 2 – Set Equality and Subsets](https://www.youtube.com/watch?v=OYGYqRj9-ok)
+
+### Inclusione $A \subseteq B$
+Ammette anche il caso $A = B$. Funziona come il $\leq$ tra numeri:
+$$3 \leq 5 \quad \text{ma anche} \quad 3 \leq 3$$
+Allo stesso modo, $A \subseteq A$ è **sempre vero** (ogni insieme è sottoinsieme di sé stesso).
+
+### Inclusione propria $A \subsetneq B$
+Esclude il caso $A = B$. Funziona come il $<$ tra numeri:
+$$3 < 5 \quad \text{ma} \quad 3 \not< 3$$
+
+### Esempio concreto
+Siano $A = \{1, 2\}$ e $B = \{1, 2, 3\}$:
+
+- $A \subseteq B$ ✓ — ogni elemento di $A$ sta in $B$
+- $A \subsetneq B$ ✓ — vale l'inclusione **e** $A \neq B$ (manca il 3)
+
+Ora sia invece $A = B = \{1, 2\}$:
+
+- $A \subseteq B$ — vale ancora
+- $A \subsetneq B$ — **non** vale, perché $A$ e $B$ sono uguali
+
+In sintesi: $\subseteq$ sta a $\subsetneq$ come $\leq$ sta a $<$.
+:::
+
+::: {.callout-note collapse="true"}
+## Venn Diagrams, Unions, and Intersections
+[Algebra 3 – Venn Diagrams, Unions, and Intersections](https://www.youtube.com/watch?v=uR70knMr2Hg)
+:::
+
+::: {.callout-note collapse="true"}
+## Complement and Relative Complement
+[Algebra 4 – Complement and Relative Complement](https://www.youtube.com/watch?v=EopnMNEXV64)
+:::
+
+::: {.callout-note collapse="true"}
+## Key Vocabulary
+| Termine inglese | Termine italiano | Simbolo/Nota |
+|---|---|---|
+| Set | Insieme | |
+| Element / Member | Elemento | ∈ |
+| Empty set | Insieme vuoto | ∅ |
+| Set membership | Appartenenza | ∈ / ∉ |
+| Listing notation | Notazione per elencazione | $\{1, 2, 3\}$ |
+| Set-builder notation | Notazione per proprietà (intensionale) | $\{x \mid P(x)\}$ |
+| Ellipsis | Puntini di sospensione | … |
+| Natural numbers | Numeri naturali | $\mathbb{N}$ |
+| Integers | Numeri interi | $\mathbb{Z}$ |
+| Rational numbers | Numeri razionali | $\mathbb{Q}$ |
+| Real numbers | Numeri reali | $\mathbb{R}$ |
+| Complex numbers | Numeri complessi | $\mathbb{C}$ |
+| Equality (of sets) | Uguaglianza (di insiemi) | $A = B$ |
+| Subset | Sottoinsieme | ⊆ |
+| Proper subset | Sottoinsieme proprio | ⊊ |
+| Superset | Sovrainsieme | ⊇ |
+| Proper superset | Sovrainsieme proprio | ⊋ |
+| Venn Diagram | Diagramma di Venn | |
+| Disjoint sets | Insiemi disgiunti | $A \cap B = \emptyset$ |
+| Intersection | Intersezione | ∩ |
+| Union | Unione | ∪ |
+| Universal set / Universe | Insieme universale / Universo | $U$ |
+| Complement (absolute) | Complementare (assoluto) | $A'$ |
+| Relative complement | Complementare relativo / Differenza | $B \setminus A$ |
+:::
+
+## Esercizi
+
+::: {.callout-tip collapse="true"}
+## Nota: cardinalità dell'intersezione
+$n(A)$ indica la **cardinalità** di un insieme, cioè il numero di elementi che contiene. Quindi $n(A \cap B)$ significa "quanti elementi appartengono contemporaneamente ad $A$ e a $B$".
+
+Esempio:
+$$A = \{1, 2, 3, 4\}, \quad B = \{3, 4, 5, 6\}$$
+$$A \cap B = \{3, 4\} \quad\Rightarrow\quad n(A \cap B) = 2$$
+:::
+
+**Test IGCSE:** [Scarica il test (Google Drive)](INCOLLA-QUI-IL-LINK-DRIVE-TEST)
+
+::: {.callout-warning collapse="true"}
+## Soluzioni (Marks Scheme)
+[Scarica lo schema di correzione (Google Drive)](INCOLLA-QUI-IL-LINK-DRIVE-SOLUZIONI)
+:::

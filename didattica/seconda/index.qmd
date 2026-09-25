@@ -1,0 +1,6 @@
+---
+title: "Classe Seconda"
+---
+Materie attive quest'anno:
+
+- [Fisica](fisica/index.qmd)

@@ -1,0 +1,15 @@
+# Output e cache di Quarto
+/_site/
+/.quarto/
+*.quarto_ipynb
+*.quarto_ipynb_*
+*_files/
+
+# Ambiente Python
+.venv/
+__pycache__/
+.ipynb_checkpoints/
+
+# macOS / editor
+.DS_Store
+.vscode/

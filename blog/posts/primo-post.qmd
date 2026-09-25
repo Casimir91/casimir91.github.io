@@ -1,0 +1,8 @@
+---
+title: "Il mio primo articolo"
+description: "Un post di prova per inaugurare il blog."
+date: 2026-07-19
+author: "[Nome]"
+---
+
+Questo è il primo articolo. Aggiungendo altri file in questa cartella, compariranno da soli nella pagina Blog.

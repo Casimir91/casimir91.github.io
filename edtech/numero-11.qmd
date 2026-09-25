@@ -1,0 +1,46 @@
+---
+title: "Notion"
+description: "Lo spazio di lavoro tutto-in-uno che raccoglie note, link, liste e tabelle in un solo posto: il tuo second brain, gratuito e sincronizzato ovunque."
+date: "2026-05-21"
+categories: [Produttività]
+# image: "img/notion.png"
+---
+
+## Il problema
+
+Non so te, ma questo è il periodo dell'anno in cui ho mille schede di Chrome
+aperte, post-it ovunque, una to-do list infinita, appunti sul telefono che non
+ritrovo più, e la sensazione costante di dimenticare cose importanti nel caos
+generale che governa le giornate.
+
+È in momenti come questo che una voce nella testa urla: *"Apri un Notion!"*
+
+## Cos'è Notion
+
+**Notion** è uno spazio di lavoro digitale tutto-in-uno — un po' agenda, un po'
+blocco note, un po' archivio — pensato per chi vuole smettere di tenere tutto in
+testa e iniziare a scaricarlo in un unico posto organizzato. Nel mondo della
+produttività lo chiamano **second brain**: un sistema esterno che ricorda,
+raccoglie e ordina al posto tuo.
+
+È gratuito, funziona da browser e da app, e una volta impostato ti segue
+ovunque.
+
+## Cosa fa
+
+- Raccoglie note, link, liste e tabelle in un'unica pagina personalizzabile;
+- permette di vedere gli stessi dati in più formati (Calendario, Lista,
+  Kanban…);
+- e tanto altro, ma andiamo per gradi.
+
+Oggi puoi sbirciare un'introduzione visitando una pagina che ho preparato: se
+vorrai, potrai renderla tua duplicandola nel tuo workspace.
+
+[Apri il Notion di esempio](https://lunar-charger-64d.notion.site/Starter-org-367b57ca96a780a0b7a0fd4c65cfbe6d?source=copy_link)
+
+::: {.callout-tip}
+## Tip extra
+Un Notion è completamente personalizzabile. Quando l'avrai duplicato nel tuo
+workspace, porta il cursore un pelo sopra il titolo della pagina e dai un tocco
+di stile al tuo nuovo second brain!
+:::

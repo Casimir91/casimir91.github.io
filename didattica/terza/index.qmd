@@ -1,0 +1,6 @@
+---
+title: "Classe Terza"
+---
+Materie attive quest'anno:
+
+- [Fisica](fisica/index.qmd)

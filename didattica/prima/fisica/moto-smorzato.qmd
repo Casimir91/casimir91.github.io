@@ -1,0 +1,24 @@
+---
+title: "Oscillatore armonico smorzato"
+description: "Esempio: una formula e un grafico generato da Python."
+date: 2026-07-19
+---
+
+L'ampiezza di un oscillatore smorzato decade nel tempo secondo:
+
+$$
+x(t) = e^{-\gamma t}\cos(\omega t)
+$$
+
+```{python}
+#| label: fig-oscillatore
+#| fig-cap: "Oscillatore armonico smorzato."
+import numpy as np
+import matplotlib.pyplot as plt
+t = np.linspace(0, 10, 500)
+x = np.exp(-0.4*t)*np.cos(3.0*t)
+fig, ax = plt.subplots()
+ax.plot(t, x)
+ax.set_xlabel("tempo (s)"); ax.set_ylabel("posizione")
+plt.show()
+```

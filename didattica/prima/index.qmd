@@ -1,0 +1,6 @@
+---
+title: "Classe Prima"
+---
+Materie attive quest'anno:
+
+- [Fisica](fisica/index.qmd)

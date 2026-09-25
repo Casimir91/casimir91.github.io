@@ -1,0 +1,32 @@
+project:
+  type: website
+
+website:
+  title: "Prof. Rosi"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - text: Didattica
+        menu:
+          - { text: "Prima",      href: didattica/prima/index.qmd }
+          - { text: "Seconda",    href: didattica/seconda/index.qmd }
+          - { text: "Terza",      href: didattica/terza/index.qmd }
+          - { text: "Quarta",     href: didattica/quarta/index.qmd }
+          - { text: "Corso TOLC", href: didattica/tolc/index.qmd }
+          - { text: "IGCSE",      href: didattica/igcse/index.qmd }
+          - { text: "Archivio",   href: didattica/archivio/index.qmd }
+
+      - href: ricerca/index.qmd
+        text: Ricerca
+      - href: edtech/index.qmd
+        text: EdTech
+    right:
+      - href: chi-sono.qmd
+        text: Chi sono
+      - { icon: linkedin, href: "https://www.linkedin.com/in/ermes-f-rosi/" }
+
+format:
+  html:
+    theme: cosmo
+    toc: true

@@ -1,0 +1,49 @@
+---
+title: "Scanner nascosto in Google Drive"
+description: "L'app Drive ha uno scanner integrato che salva PDF già ritagliati e filtrati direttamente nelle cartelle giuste: niente più file sparsi o fotocopiatrici da decifrare."
+date: "2026-01-15"
+categories: [Google Drive]
+# image: "img/scanner-drive.png"
+---
+
+## Il problema
+
+Procrastini le scansioni perché la fotocopiatrice è un mistero? Perdi i PDF tra
+desktop e mail? Le mappe degli studenti sono illeggibili tra ombre e dita?
+
+## La soluzione
+
+L'app **Google Drive** ha uno scanner integrato che salva PDF direttamente in
+cartelle online. Niente più file sparsi o fotocopiatrici da decifrare.
+
+## Cosa fa
+
+- Scansiona documenti e li converte automaticamente in PDF;
+- riconosce e ritaglia i bordi del documento;
+- editing rapido: rotazione, ritaglio, filtri (bianco/nero ad alto contrasto);
+- salva tutto su Drive, organizzato per cartelle.
+
+Perfetto per:
+
+- digitalizzare appunti scritti a mano per la Classroom;
+- raccogliere mappe concettuali degli studenti con BES;
+- archiviare documenti scolastici sempre disponibili;
+- scansionare test per accessi agli atti.
+
+## Come si usa
+
+1. **Crea la cartella** → apri Google Drive, premi il **"+"** in basso a destra
+   e seleziona **Cartella** (es. "Mappe 4A");
+2. **Avvia la scansione** → entra nella cartella, premi di nuovo il **"+"** e
+   seleziona **Scansiona** (o tocca l'icona fotocamera/documento sopra il "+");
+3. **Scatta** → inquadra il documento: il bordo blu mostra l'area acquisita.
+   Scatta manualmente o aspetta lo scatto automatico;
+4. **Modifica** → ruota, ritaglia o applica filtri (il bianco/nero è ottimo per
+   i documenti scritti a mano);
+5. **Salva** → conferma per finalizzare.
+
+::: {.callout-tip}
+## Tip extra
+Condividi questa procedura con gli studenti: riceverai scansioni pulite e
+leggibili!
+:::

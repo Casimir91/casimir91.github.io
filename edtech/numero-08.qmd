@@ -1,0 +1,46 @@
+---
+title: "Gestisci le iscrizioni in Gmail"
+description: "Una schermata unica con tutte le newsletter a cui sei iscritto e la disiscrizione in un clic: fai riemergere le email importanti dal rumore di fondo."
+date: "2026-02-19"
+categories: [Gmail]
+# image: "img/gmail-iscrizioni.png"
+---
+
+## Il problema
+
+Newsletter di piattaforme provate una volta, offerte formative scadute, webinar
+del 2021… non le apri mai, ma continuano ad arrivare. Risultato? Le email
+importanti — circolari, comunicazioni dei genitori, messaggi del DS — finiscono
+sepolte sotto una marea di posta spazzatura.
+
+## La soluzione
+
+**Gestisci iscrizioni** è una funzionalità nativa di Gmail (dal 2025) che
+mostra in un'unica schermata tutte le mailing list a cui sei iscritto e ti
+permette di cancellarti con un solo clic.
+
+## Come si usa
+
+Link diretto (devi essere già loggato) — copia e incolla nella barra del
+browser:
+
+[mail.google.com/mail/#sub](https://mail.google.com/mail/#sub)
+
+1. Scorri l'elenco e clicca sui mittenti per vedere le email ricevute;
+2. clicca **Annulla iscrizione**.
+
+Perfetto per:
+
+- pulizia di inizio/fine anno scolastico;
+- far riemergere le email importanti dal rumore di fondo;
+- riprendere il controllo della casella di posta;
+- fare ordine dopo corsi di formazione e webinar.
+
+::: {.callout-warning}
+## Il vero costo delle newsletter fantasma
+Si stimano almeno ~20 email inutili a settimana, mescolate a scadenze, documenti
+e convocazioni importanti. In un anno fanno **oltre 1.000 email spazzatura**.
+Quella circolare urgente che non hai visto? Forse era sepolta sotto l'ennesima
+promo di un servizio provato una volta nel 2022. Il costo non è in megabyte: è
+in **attenzione, tempo e focus**.
+:::

@@ -1,0 +1,66 @@
+---
+title: "Claude.ai + Apify"
+description: "Un setup gratuito in due step che trasforma una richiesta in italiano in dati strutturati pronti per Google Fogli: niente codice, niente copia-incolla."
+date: "2026-07-06"
+categories: [AI, Dati]
+# image: "img/claude-apify.png"
+---
+
+## Il problema
+
+Ti serve un dataset strutturato per un'attività didattica, ma passare ore su Our
+World in Data o ISTAT a copiare tabelle a mano è fuori discussione. Oppure vuoi
+catalogare i prezzi di strumenti da laboratorio su Amazon, monitorare offerte di
+lavoro su LinkedIn o estrarre dati da Google Maps — e ogni volta finisci a fare
+copia-incolla come nel 2005.
+
+## La soluzione
+
+**Claude.ai + Apify** è un setup gratuito in due step che trasforma una
+richiesta in linguaggio naturale in dati strutturati pronti per Google Fogli,
+senza codice e senza aprire il browser.
+
+## Cosa fa
+
+- Dalla chat normale di Claude descrivi in italiano cosa vuoi estrarre: Claude
+  trova lo strumento giusto, lo lancia e ti restituisce i dati nella
+  conversazione;
+- a differenza di una normale ricerca con Claude, ChatGPT o Gemini, qui ottieni
+  dati **strutturati**: righe, colonne, valori puliti, esportabili in CSV o
+  Google Fogli in un clic;
+- accede a oltre 5.000 bot pronti nello store di Apify, ognuno specializzato su
+  un sito o un tipo di dato: Amazon, LinkedIn, Google Maps, siti di notizie,
+  portali istituzionali e altro.
+
+Perfetto per:
+
+- estrarre serie storiche da ISTAT, Eurostat o Our World in Data per attività di
+  analisi dati e statistica in classe;
+- catalogare prodotti Amazon con prezzi e specifiche: inventari di laboratorio,
+  libri di testo, materiali didattici;
+- raccogliere offerte di lavoro su LinkedIn filtrate per ruolo e città, utili per
+  orientamento o ricerca personale;
+- estrarre attività commerciali e recensioni da Google Maps per analisi
+  geografiche o territoriali.
+
+## Come si usa
+
+1. Crea un account gratuito su **apify.com** → login con Google, nessuna carta di
+   credito;
+2. vai su **claude.ai → Impostazioni → Connettori**, cerca **Apify** e connetti;
+3. apri una nuova chat Claude e descrivi in italiano cosa vuoi estrarre;
+
+::: {.callout-tip}
+## Tip extra
+Il setup funziona anche "al contrario": non serve sapere quale Actor usare.
+Scrivi *"voglio i dati sulle offerte di lavoro per ingegneri a Milano da
+LinkedIn"* e Claude sceglie, configura e lancia l'Actor giusto da solo. Tu
+aspetti i dati.
+:::
+
+::: {.callout-note}
+## Disponibilità
+Completamente gratuito. Apify include 5$ di crediti mensili rinnovabili
+automaticamente, senza carta di credito. Il piano free di Claude.ai basta per un
+uso esplorativo.
+:::

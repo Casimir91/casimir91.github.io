@@ -1,0 +1,40 @@
+---
+title: "Tab Resize"
+description: "Sistema le finestre in layout predefiniti con un clic: mezzo schermo, quarti, terzi, per lavorare e confrontare senza trascinare a mano."
+date: "2025-09-24"
+categories: [Google Chrome]
+# image: "img/tab-resize.png"
+---
+
+## Il problema
+
+Hai mai perso tempo a ridimensionare a mano le finestre per confrontare
+documenti, seguire tutorial o lavorare su più progetti insieme?
+
+## La soluzione
+
+**Tab Resize** è un'estensione Chrome gratuita che sistema automaticamente le
+finestre con un clic.
+
+## Cosa fa
+
+- Divide lo schermo in layout predefiniti (metà schermo, quarti, terzi).
+
+Perfetto per:
+
+- confrontare documenti;
+- seguire tutorial video mentre lavori;
+- tenere aperte Gmail + Drive + Classroom;
+- correggere compiti con le griglie di valutazione affianco.
+
+## Come si usa
+
+1. Installa l'estensione → [Link diretto](https://chromewebstore.google.com/detail/tab-resize-split-screen-l/bkpenclhmiealbebdopglffmfdiilejc?hl=it)
+2. Clicca l'icona nella barra degli strumenti;
+3. Scegli il layout che preferisci;
+4. Le finestre si posizionano automaticamente.
+
+::: {.callout-tip}
+## Tip extra
+Usa **Ctrl+Shift+A** per attivare rapidamente il layout a metà schermo.
+:::

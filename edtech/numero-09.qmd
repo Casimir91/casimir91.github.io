@@ -1,0 +1,59 @@
+---
+title: "SnapClass"
+description: "Un foglio Google pronto all'uso che trasforma i voti in istogramma e curva a campana interattiva: capisci com'è andata la verifica in 10 secondi, senza formule."
+date: "2026-03-12"
+categories: [Google Fogli]
+# image: "img/snapclass.png"
+---
+
+## Il problema
+
+Hai appena finito un giro di interrogazioni o corretto un compito. Hai i voti
+segnati, ma per capire davvero com'è andata — dove si concentra la classe,
+quanti sono sotto la sufficienza, se c'è una coda di eccellenze — dovresti
+metterti a contare, raggruppare, fare calcoli. Chi ha tempo?
+
+## La soluzione
+
+**SnapClass** è un foglio Google pronto all'uso che trasforma i tuoi voti in un
+istogramma chiaro e in una curva a campana interattiva, senza formule da
+scrivere e senza nulla da configurare.
+
+## Cosa fa
+
+Inserisci i voti nella colonna A e il foglio genera automaticamente due grafici:
+un **istogramma** che mostra la distribuzione per fasce di voto e una **curva a
+campana interattiva** — passando il cursore sulla curva vedi il voto esatto con
+la relativa densità, per una lettura ancora più precisa.
+
+Perfetto per:
+
+- **dopo un compito in classe:** capire in 10 secondi se la verifica era tarata
+  bene;
+- **confronto tra sezioni:** usare due copie del foglio per confrontare la stessa
+  prova in due classi diverse;
+- **autoriflessione didattica:** tenere traccia visiva dell'andamento nel tempo,
+  verifica dopo verifica.
+
+## Come si usa
+
+1. Apri il foglio → **[SnapClass su Google Fogli](https://docs.google.com/spreadsheets/d/18_ruR89n_y7jVDChwHTrHb1lXtVlu9ck-O_BPmoliWA/edit?usp=sharing)**
+2. Clicca **File → Crea una copia** (il foglio si salva nel tuo Drive);
+3. cancella i dati di esempio nella colonna A e inserisci i tuoi;
+4. guarda i grafici aggiornarsi in tempo reale sul fianco.
+
+::: {.callout-tip}
+## Tip extra: non solo voti
+SnapClass funziona con qualsiasi serie di numeri, anche fuori dalla scuola:
+
+- **Bollette:** segni gli importi mese per mese e vedi su quale fascia si
+  concentrano — e quanto spesso arriva la mazzata anomala;
+- **Spese quotidiane:** caffè, pranzo, spesa… butta dentro i numeri di un mese e
+  scopri la tua fascia di spesa "tipica" e quanto spesso sgarri;
+- **Km al giorno:** auto, piedi, bici? Segna i chilometri per qualche settimana e
+  scopri il tuo schema reale di mobilità;
+- **Ore di sonno:** segnale per un mese e vedi se la tua "normalità" è davvero
+  quella che pensi.
+
+Insomma, ovunque ci sia un numero e una curiosità, SnapClass ti darà il trend.
+:::

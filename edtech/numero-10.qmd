@@ -1,0 +1,40 @@
+---
+title: "Icone personalizzate per le cartelle"
+description: "Assegna a ogni cartella un'icona diversa e riconoscila a colpo d'occhio, senza leggere il nome: due minuti su Mac e su Windows."
+date: "2026-04-08"
+categories: [Produttività]
+# image: "img/icone-cartelle.png"
+---
+
+## Il problema
+
+Hai decine di cartelle tutte uguali, o con icone confuse e disturbanti? Perdi
+tempo e pazienza ogni volta per trovare quella giusta?
+
+## La soluzione
+
+Personalizzare l'icona di ogni cartella con un simbolo diverso ti permette di
+riconoscerle a colpo d'occhio — senza leggere nemmeno il nome.
+
+## Come si usa
+
+**Su Mac:**
+
+1. Apri un'immagine qualsiasi (online o scaricata);
+2. tasto destro → **Copia immagine**;
+3. vai sulla cartella da personalizzare → tasto destro → **Ottieni
+   informazioni**;
+4. nel pannello che si apre, clicca l'icona in alto a sinistra (si evidenzia) →
+   incolla con **⌘V** → fatto.
+
+**Su Windows:**
+
+1. Tasto destro sulla cartella → **Proprietà**;
+2. **Personalizza → Icona cartella → Cambia icona**.
+
+::: {.callout-tip}
+## Tip extra
+Su [svgrepo.com](https://www.svgrepo.com/) puoi filtrare per stile
+**monocromatico** o **outline** e trovare icone pulite e segnaletiche: oltre
+500.000 icone scaricabili gratis, senza registrazione.
+:::

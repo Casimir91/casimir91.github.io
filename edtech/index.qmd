@@ -1,0 +1,10 @@
+---
+title: "EdTech"
+subtitle: "Strumenti e riflessioni per la scuola digitale"
+listing:
+  contents: "numero-*.qmd"
+  type: default
+  sort: "date desc"
+  categories: true
+  fields: [image, date, title, description, categories]
+---

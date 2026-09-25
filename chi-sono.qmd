@@ -1,0 +1,8 @@
+---
+title: "Chi sono"
+---
+Sono [Nome Cognome], docente di Fisica alla scuola superiore.
+
+## Contatti
+- Email: tua@email.it
+- LinkedIn: [profilo](https://www.linkedin.com/in/IL-TUO-PROFILO)
