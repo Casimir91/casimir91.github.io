@@ -14,8 +14,6 @@ website:
           - { text: "Terza",      href: didattica/terza/index.qmd }
           - { text: "Quarta",     href: didattica/quarta/index.qmd }
           - { text: "Corso TOLC", href: didattica/tolc/index.qmd }
-          - { text: "IGCSE",      href: didattica/igcse/index.qmd }
-          - { text: "Archivio",   href: didattica/archivio/index.qmd }
 
       - href: ricerca/index.qmd
         text: Ricerca
