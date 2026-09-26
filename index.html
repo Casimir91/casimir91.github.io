@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>La mia prima pagina Quarto – Prof.&nbsp;Rosi</title>
+<title>In orbita: perché la Luna non cade sulla Terra – Prof.&nbsp;Rosi</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -22,41 +22,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -106,35 +71,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 </head>
 
@@ -221,8 +157,9 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#formule-che-si-scrivono-da-sole" id="toc-formule-che-si-scrivono-da-sole" class="nav-link active" data-scroll-target="#formule-che-si-scrivono-da-sole">Formule che si scrivono da sole</a></li>
-  <li><a href="#un-grafico-generato-dal-codice" id="toc-un-grafico-generato-dal-codice" class="nav-link" data-scroll-target="#un-grafico-generato-dal-codice">Un grafico generato dal codice</a></li>
+  <li><a href="#perché-gli-astronauti-fluttuano" id="toc-perché-gli-astronauti-fluttuano" class="nav-link active" data-scroll-target="#perché-gli-astronauti-fluttuano">Perché gli astronauti fluttuano</a></li>
+  <li><a href="#cosè-unorbita" id="toc-cosè-unorbita" class="nav-link" data-scroll-target="#cosè-unorbita">Cos’è un’orbita</a></li>
+  <li><a href="#perché-la-luna-non-cade-sulla-terra-e-la-terra-non-cade-sul-sole" id="toc-perché-la-luna-non-cade-sulla-terra-e-la-terra-non-cade-sul-sole" class="nav-link" data-scroll-target="#perché-la-luna-non-cade-sulla-terra-e-la-terra-non-cade-sul-sole">Perché la Luna non cade sulla Terra, e la Terra non cade sul Sole</a></li>
   </ul>
 </nav>
     </div>
@@ -231,7 +168,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">La mia prima pagina Quarto</h1>
+<h1 class="title">In orbita: perché la Luna non cade sulla Terra</h1>
 </div>
 
 
@@ -248,48 +185,110 @@ window.Quarto = {
 </header>
 
 
-<section id="formule-che-si-scrivono-da-sole" class="level2">
-<h2 class="anchored" data-anchor-id="formule-che-si-scrivono-da-sole">Formule che si scrivono da sole</h2>
-<p>Questa è una formula <em>inline</em>, dentro al testo: <span class="math inline">\(E = mc^2\)</span>. Non ho fatto niente di speciale, l’ho solo scritta tra due dollari.</p>
-<p>E questa è un’equazione a blocco — quella di Schrödinger dipendente dal tempo:</p>
-<p><span id="eq-schrodinger"><span class="math display">\[
-i\hbar \frac{\partial}{\partial t} \Psi(\mathbf{r}, t) = \hat{H}\,\Psi(\mathbf{r}, t)
-\tag{1}\]</span></span></p>
-<p>Posso perfino richiamarla nel testo con il suo numero: vedi <a href="#eq-schrodinger" class="quarto-xref">Equation&nbsp;1</a>.</p>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;1,400;1,600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+  .caption-lead{
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    text-align: center;
+    color: #9aa1ac;
+    margin: 0 0 0.6rem;
+  }
+</style>
+<p class="caption-lead">Un esperimento mentale di Newton, 1687</p>
+<iframe src="interattivi/cannone-di-newton.html" title="Simulazione: il cannone di Newton" style="width:100%; max-width:760px; height:780px; border:none; display:block; margin:0 auto; background:transparent;" loading="lazy"></iframe>
+<style>
+  .gancio{
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-style: italic;
+    font-size: 1.25rem;
+    line-height: 1.55;
+    text-align: center;
+    max-width: 620px;
+    margin: 2.2rem auto 0;
+    padding-top: 0.7rem;
+    padding-bottom: 1rem;
+    border-top: 1px solid #dde1e6;
+    color: #33363d;
+  }
+  .gancio strong{ font-style: normal; }
+
+  .divisore{
+    max-width: 620px;
+    height: 1px;
+    margin: 0 auto 5.2rem;
+    background: #b9c0cb;
+    opacity: 1;
+  }
+
+  h2{
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-style: italic;
+    font-weight: 600;
+    font-size: 1.9rem;
+    line-height: 1.32;
+    color: #2a2f3a;
+    border-bottom: none;
+    margin-top: 3.2rem;
+    margin-bottom: 0.35rem;
+  }
+
+  h2 + p, h2 + p em{
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+    font-style: normal;
+    font-size: 0.78rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: #9aa1ac;
+    margin-top: 0;
+    margin-bottom: 1.4rem;
+  }
+</style>
+<p class="gancio">Newton immaginò questo esperimento proprio per rispondere a una domanda precisa: <strong>perché la Luna non cade sulla Terra? Perché la Terra non cade sul Sole?</strong><br>Da qui parte la risposta.</p>
+<div class="divisore"></div>
+<section id="perché-gli-astronauti-fluttuano" class="level2">
+<h2 class="anchored" data-anchor-id="perché-gli-astronauti-fluttuano">Perché gli astronauti fluttuano</h2>
+<p><em>Assenza di peso, non di gravità</em></p>
+<p>Gli astronauti a bordo della Stazione Spaziale Internazionale orbitano a circa 400 km di quota. Lì la gravità terrestre non è affatto sparita: vale ancora circa il 90% di quella che si avverte a terra. Se la gravità c’è ancora, perché fluttuano?</p>
+<p>Perché la stazione — e tutto ciò che contiene, astronauti compresi — sta cadendo. Continuamente. Come un ascensore il cui cavo si sia appena spezzato: chi ci sta dentro non sente più il pavimento spingere contro i piedi, perché cabina e passeggero cadono alla stessa identica velocità. Non manca la forza peso; manca la forza normale che di solito la bilancia.</p>
+<p>La differenza tra la ISS e l’ascensore è che la stazione non tocca mai terra. Cade, ma si muove anche abbastanza velocemente di lato da restare sempre alla stessa distanza dal suolo, mentre la superficie terrestre le si incurva sotto. Fluttuare in orbita non è assenza di gravità: è una caduta libera che non finisce mai.</p>
 </section>
-<section id="un-grafico-generato-dal-codice" class="level2">
-<h2 class="anchored" data-anchor-id="un-grafico-generato-dal-codice">Un grafico generato dal codice</h2>
-<p>Il grafico <a href="#fig-oscillatore" class="quarto-xref">Figure&nbsp;1</a> non è un’immagine incollata: nasce eseguendo il codice Python al momento della compilazione.</p>
-<div id="cell-fig-oscillatore" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">500</span>)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>gamma <span class="op">=</span> <span class="fl">0.4</span>      <span class="co"># smorzamento</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>omega <span class="op">=</span> <span class="fl">3.0</span>      <span class="co"># pulsazione</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.exp(<span class="op">-</span>gamma <span class="op">*</span> t) <span class="op">*</span> np.cos(omega <span class="op">*</span> t)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>ax.plot(t, x, label<span class="op">=</span><span class="st">"posizione"</span>)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>ax.plot(t,  np.exp(<span class="op">-</span>gamma <span class="op">*</span> t), linestyle<span class="op">=</span><span class="st">"--"</span>, color<span class="op">=</span><span class="st">"gray"</span>)</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>ax.plot(t, <span class="op">-</span>np.exp(<span class="op">-</span>gamma <span class="op">*</span> t), linestyle<span class="op">=</span><span class="st">"--"</span>, color<span class="op">=</span><span class="st">"gray"</span>)</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"tempo (s)"</span>)</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"posizione"</span>)</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display">
-<div id="fig-oscillatore" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-oscillatore-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="index_files/figure-html/fig-oscillatore-output-1.png" width="608" height="429" class="figure-img">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-oscillatore-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Oscillatore armonico smorzato: l’ampiezza decade nel tempo.
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
+<section id="cosè-unorbita" class="level2">
+<h2 class="anchored" data-anchor-id="cosè-unorbita">Cos’è un’orbita</h2>
+<p><em>Cadere, e continuare a mancare il bersaglio</em></p>
+<p>Un’orbita è esattamente questo: una traiettoria in caduta libera che non interseca mai il corpo verso cui si sta cadendo. Non serve nessun motore acceso, nessuna spinta che si opponga alla gravità — basta una velocità tangenziale (perpendicolare alla direzione della caduta) sufficientemente grande.</p>
+<p>Non c’è una “forza centrifuga” reale che bilancia la gravità, come si dice a volte impropriamente: è la gravità stessa a fare da forza centripeta, curvando la traiettoria. L’orbita non è un equilibrio di forze opposte, ma il risultato di una sola forza che agisce su un corpo già in moto.</p>
+</section>
+<section id="perché-la-luna-non-cade-sulla-terra-e-la-terra-non-cade-sul-sole" class="level2">
+<h2 class="anchored" data-anchor-id="perché-la-luna-non-cade-sulla-terra-e-la-terra-non-cade-sul-sole">Perché la Luna non cade sulla Terra, e la Terra non cade sul Sole</h2>
+<p><em>La stessa caduta, a scale diverse</em></p>
+<p>Lo stesso meccanismo vale a qualunque scala. La Luna sta cadendo verso la Terra in questo momento — come in ogni istante degli ultimi quattro miliardi di anni — perché la gravità non si spegne mai; a farle mancare il bersaglio è la stessa componente di velocità laterale di cui parla il cannone qui sopra.</p>
+<p>La Terra, a sua volta, sta cadendo verso il Sole esattamente allo stesso modo: la sua velocità orbitale di circa 30 km/s è la componente tangenziale che le permette di restare in un’orbita quasi circolare invece di essere risucchiata verso il centro del Sistema Solare. Quella velocità non è una scelta, ma un’eredità: risale alla nube di gas e polvere che, contraendosi sotto la propria gravità circa 4,6 miliardi di anni fa, ha dato origine al Sole e al disco protoplanetario da cui si sono formati i pianeti. Per conservazione del momento angolare — lo stesso principio per cui un pattinatore gira più veloce quando raccoglie le braccia al petto — la nube in collasso ha accelerato la propria rotazione, appiattendosi nel disco su cui, ancora oggi, orbitano quasi tutti i pianeti. La Terra ha semplicemente ereditato la velocità tangenziale di quel disco nel punto in cui si è formata: né troppo lenta da cadere nel Sole, né troppo veloce da sfuggirgli.</p>
+<p>Quello che cambia da un caso all’altro non è il principio, ma un solo parametro: quanto velocemente il corpo si muove rispetto alla velocità dell’orbita circolare a quella distanza. Torna al simulatore in cima alla pagina e prova a muovere il cursore: ora sai cosa stai guardando.</p>
+<style>
+  .curiosita{
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: #59637c;
+    max-width: 620px;
+    margin: 3rem auto 0;
+    padding: 1.2rem 1.4rem;
+    border-left: 2px solid #b9c0cb;
+  }
+  .curiosita .label{
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    font-weight: 500;
+    color: #33363d;
+    margin-right: 0.4em;
+  }
+</style>
+<p class="curiosita"><span class="label">Curiosità</span>Nel simulatore in cima alla pagina tutti i numeri sono reali: la velocità di fuga dalla Terra, il raggio terrestre, persino la quota — impossibile — della montagna di Newton. Non sono valori di comodo scelti per far tornare i conti: sono le cifre vere del nostro pianeta.</p>
 
 
 </section>

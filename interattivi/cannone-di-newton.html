@@ -1,0 +1,519 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Il Cannone di Newton</title>
+<meta name="description" content="L'esperimento mentale di Newton: più forte spari, più a lungo il proiettile cade senza mai toccare terra.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    color-scheme: light;
+    --paper: #f3f4f1;
+    --card: #ffffff;
+    --ink: #1e2430;
+    --ink-soft: #59637c;
+    --ink-faint: #a9b0bf;
+    --line: #dde1e6;
+    --accent: #2a5aa8;
+    background: transparent;
+  }
+
+  *{ box-sizing: border-box; }
+
+  body{
+    background: transparent;
+    color: var(--ink);
+    font-family: 'Work Sans', ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .mono{ font-family: 'IBM Plex Mono', ui-monospace, monospace; }
+
+  .page{
+    max-width: 760px;
+    margin: 0 auto;
+    padding: clamp(28px, 6vw, 64px) 20px 72px;
+  }
+
+  header{ margin-bottom: 28px; }
+
+  .eyebrow{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 12px;
+  }
+
+  h1{
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(26px, 4.2vw, 34px);
+    line-height: 1.15;
+    margin: 0 0 12px;
+    text-wrap: balance;
+  }
+
+  .lede{
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 18px;
+    line-height: 1.5;
+    max-width: 56ch;
+    margin: 0;
+  }
+
+  .diagram{
+    margin-top: 8px;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 20px 20px 24px;
+  }
+
+  .viz-frame{
+    position: relative;
+    aspect-ratio: 16 / 11;
+  }
+
+  .orbit-svg{ display: block; width: 100%; height: 100%; }
+
+  .readout{
+    margin-top: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+  }
+
+  .readout .type{
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  .controls{ margin-top: 18px; }
+
+  .slider-label{
+    display: flex;
+    justify-content: space-between;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 8px;
+  }
+
+  .slider-label .val{
+    color: var(--accent);
+    letter-spacing: normal;
+    text-transform: none;
+    font-weight: 500;
+  }
+
+  input[type="range"]{
+    -webkit-appearance: none;
+    width: 100%;
+    height: 1px;
+    background: var(--ink-faint);
+    outline: none;
+  }
+  input[type="range"]::-webkit-slider-thumb{
+    -webkit-appearance: none;
+    width: 13px; height: 13px;
+    border-radius: 50%;
+    background: var(--card);
+    border: 2px solid var(--accent);
+    cursor: pointer;
+    margin-top: -6px;
+  }
+  input[type="range"]::-moz-range-thumb{
+    width: 13px; height: 13px;
+    border-radius: 50%;
+    background: var(--card);
+    border: 2px solid var(--accent);
+    cursor: pointer;
+  }
+  input[type="range"]::-moz-range-track{
+    height: 1px;
+    background: var(--ink-faint);
+  }
+
+  .ref-ticks{
+    display: flex;
+    justify-content: space-between;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--ink-faint);
+    margin-top: 6px;
+  }
+
+  .presets{
+    display: flex;
+    gap: 18px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+  .preset-btn{
+    font-family: 'Work Sans', sans-serif;
+    font-size: 13px;
+    color: var(--ink-soft);
+    background: none;
+    border: none;
+    border-bottom: 1px solid transparent;
+    padding: 2px 0;
+    cursor: pointer;
+  }
+  .preset-btn:hover{ color: var(--ink); border-bottom-color: var(--accent); }
+  .preset-btn:focus-visible{ outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  .prose{
+    margin-top: 40px;
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.75;
+    color: var(--ink);
+  }
+  .prose p{ max-width: 58ch; margin: 0 0 20px; }
+  .prose p:last-child{ margin-bottom: 0; }
+
+  footer.note{
+    margin-top: 36px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    color: var(--ink-faint);
+  }
+</style>
+
+<div class="page">
+
+  <div class="diagram">
+    <div class="viz-frame">
+      <svg class="orbit-svg" id="orbitSvg" viewBox="-100 -75 200 150" preserveAspectRatio="xMidYMid meet"></svg>
+    </div>
+
+    <div class="readout">
+      <span>Traiettoria: <span class="type mono" id="t-type">—</span></span>
+      <span id="t-detail">—</span>
+    </div>
+
+    <div class="controls">
+      <div class="slider-label">
+        <span>Forza del colpo</span>
+        <span class="val"><span id="vReadout">—</span> km/s</span>
+      </div>
+      <input type="range" id="vSlider" min="0" max="1000" step="1" value="500">
+      <div class="ref-ticks">
+        <span id="refCirc">orbita</span>
+        <span id="refEsc">fuga</span>
+      </div>
+      <div class="presets">
+        <button class="preset-btn" data-preset="short">Colpo debole</button>
+        <button class="preset-btn" data-preset="circ">In orbita</button>
+        <button class="preset-btn" data-preset="ell">Orbita larga</button>
+        <button class="preset-btn" data-preset="para">Fuga esatta (parabolica)</button>
+        <button class="preset-btn" data-preset="hyp">Se ne va per sempre</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  // ---------- Physics ----------
+  var GM = 398600.4418;          // km^3/s^2
+  var R_EARTH = 6371;            // km, ground level
+  var R_L = R_EARTH * 1.35;      // km, launch altitude (Newton's impossibly tall mountain)
+
+  var V_CIRC_L = Math.sqrt(GM / R_L);
+  var V_ESC_L = V_CIRC_L * Math.SQRT2;
+  var V_MIN = V_CIRC_L * 0.22;
+  var V_MAX = V_CIRC_L * 1.85;
+  var CAP = 12 * R_L;
+  var STEPS = 1000;
+
+  function sliderToV(s){ return V_MIN + (s / STEPS) * (V_MAX - V_MIN); }
+  function vToSlider(v){ return Math.round((v - V_MIN) / (V_MAX - V_MIN) * STEPS); }
+  function clamp(x, lo, hi){ return Math.max(lo, Math.min(hi, x)); }
+
+  // General two-body solution for a purely tangential launch at r = R_L.
+  // theta = 0 is always the launch point itself (not periapsis), which keeps
+  // the cannon fixed on screen regardless of which apsis the launch turns out to be.
+  function computeOrbit(v){
+    var p = (R_L * R_L * v * v) / GM;                 // semi-latus rectum, h^2/GM
+    var eps = v * v / 2 - GM / R_L;                    // specific orbital energy
+    var e = Math.sqrt(Math.max(0, 1 + 2 * eps * p / GM));
+    if (e < 1e-4) e = 0;
+
+    var periBranch = v >= V_CIRC_L;                     // launch point is periapsis?
+    var r_peri = p / (1 + e);                           // true periapsis distance, always valid
+
+    var type;
+    if (!periBranch) {
+      type = (r_peri < R_EARTH - 1) ? "balistica" : (e < 1e-4 ? "circolare" : "ellittica");
+    } else if (e < 1e-4) type = "circolare";
+    else if (e < 1) type = "ellittica";
+    else if (Math.abs(e - 1) < 2e-3) type = "parabolica";
+    else type = "iperbolica";
+
+    var a = e < 1 ? p / (1 - e * e) : null;
+    var r_apo = e < 1 ? p * (1 + e) / (1 - e * e) : null; // = a(1+e)
+    var T = e < 1 ? 2 * Math.PI * Math.sqrt(Math.pow(a, 3) / GM) : null;
+
+    var thetaHit = null;
+    if (type === "balistica") {
+      var c = clamp((1 - p / R_EARTH) / e, -1, 1);
+      thetaHit = Math.acos(c);
+    }
+
+    return { v: v, p: p, e: e, periBranch: periBranch, type: type, r_peri: r_peri, r_apo: r_apo, T: T, thetaHit: thetaHit };
+  }
+
+  // r(theta) with theta = 0 at the launch point, for either branch.
+  function radiusAt(orbit, theta){
+    return orbit.periBranch
+      ? orbit.p / (1 + orbit.e * Math.cos(theta))
+      : orbit.p / (1 - orbit.e * Math.cos(theta));
+  }
+
+  function samplePoints(orbit){
+    var pts = [];
+    if (orbit.type === "balistica") {
+      var N = 200;
+      for (var i = 0; i <= N; i++) {
+        var th = (i / N) * orbit.thetaHit;
+        var r = radiusAt(orbit, th);
+        pts.push([r * Math.cos(th), r * Math.sin(th)]);
+      }
+      return pts;
+    }
+    if (!orbit.periBranch) {
+      // safe sub-circular ellipse that never reaches the ground: full loop
+      var N2 = 300;
+      for (var j = 0; j <= N2; j++) {
+        var t2 = -Math.PI + (j / N2) * 2 * Math.PI;
+        pts.push([radiusAt(orbit, t2) * Math.cos(t2), radiusAt(orbit, t2) * Math.sin(t2)]);
+      }
+      return pts;
+    }
+    if (orbit.type === "circolare" || orbit.type === "ellittica") {
+      var N3 = 300;
+      for (var k = 0; k <= N3; k++) {
+        var t3 = -Math.PI + (k / N3) * 2 * Math.PI;
+        var r3 = radiusAt(orbit, t3);
+        if (r3 > CAP) { pts.push(null); continue; }
+        pts.push([r3 * Math.cos(t3), r3 * Math.sin(t3)]);
+      }
+      return pts;
+    }
+    // open orbit: parabola / hyperbola
+    var thetaLimit = orbit.type === "parabolica" ? Math.PI * 0.985 : Math.acos(-1 / orbit.e) * 0.985;
+    var M = 260;
+    for (var m = -M; m <= M; m++) {
+      var t4 = (m / M) * thetaLimit;
+      var denom = 1 + orbit.e * Math.cos(t4);
+      if (denom <= 1e-4) { pts.push(null); continue; }
+      var r4 = orbit.p / denom;
+      if (r4 > CAP) { pts.push(null); continue; }
+      pts.push([r4 * Math.cos(t4), r4 * Math.sin(t4)]);
+    }
+    return pts;
+  }
+
+  function pointsToPath(pts){
+    var d = "", drawing = false;
+    for (var i = 0; i < pts.length; i++) {
+      var pt = pts[i];
+      if (!pt) { drawing = false; continue; }
+      if (!drawing) { d += "M " + pt[0].toFixed(1) + " " + (-pt[1]).toFixed(1) + " "; drawing = true; }
+      else { d += "L " + pt[0].toFixed(1) + " " + (-pt[1]).toFixed(1) + " "; }
+    }
+    return d;
+  }
+
+  function boundingBox(pts){
+    var minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+    for (var i = 0; i < pts.length; i++) {
+      var pt = pts[i]; if (!pt) continue;
+      if (pt[0] < minX) minX = pt[0]; if (pt[0] > maxX) maxX = pt[0];
+      if (pt[1] < minY) minY = pt[1]; if (pt[1] > maxY) maxY = pt[1];
+    }
+    minX = Math.min(minX, -R_EARTH); maxX = Math.max(maxX, R_L * 1.05);
+    minY = Math.min(minY, -R_EARTH); maxY = Math.max(maxY, R_EARTH);
+    return { minX: minX, maxX: maxX, minY: minY, maxY: maxY };
+  }
+
+  function fmt(n, d){ return n.toLocaleString("it-IT", { minimumFractionDigits: d, maximumFractionDigits: d }); }
+  function fmtKm(n){ return fmt(n, 0) + " km"; }
+  function fmtTime(sec){
+    var h = Math.floor(sec / 3600), m = Math.round((sec % 3600) / 60);
+    return h > 0 ? (h + " h " + m + " min") : (m + " min");
+  }
+
+  // ---------- DOM ----------
+  var svg = document.getElementById("orbitSvg");
+  var slider = document.getElementById("vSlider");
+  var vReadout = document.getElementById("vReadout");
+  var tType = document.getElementById("t-type");
+  var tDetail = document.getElementById("t-detail");
+  var refCirc = document.getElementById("refCirc");
+  var refEsc = document.getElementById("refEsc");
+
+  var NS = "http://www.w3.org/2000/svg";
+  function el(tag, attrs){ var e = document.createElementNS(NS, tag); for (var k in attrs) e.setAttribute(k, attrs[k]); return e; }
+
+  var gGround = el("g", {});
+  var gOrbit = el("g", {});
+  var gMark = el("g", {});
+  svg.appendChild(gGround);
+  svg.appendChild(gOrbit);
+  svg.appendChild(gMark);
+
+  // Scale a path written in unit-circle coordinates (-1..1) up to real Earth-radius units.
+  function scalePath(d, s){
+    return d.replace(/-?\d*\.?\d+/g, function(m){ return (parseFloat(m) * s).toFixed(1); });
+  }
+
+  var defs = el("defs", {});
+  var earthClip = el("clipPath", { id: "earthClip" });
+  earthClip.appendChild(el("circle", { cx: 0, cy: 0, r: R_EARTH }));
+  defs.appendChild(earthClip);
+  svg.appendChild(defs);
+
+  var earthBody = el("circle", { cx: 0, cy: 0, r: R_EARTH, fill: "#eaf3fa", stroke: "#1e2430", "stroke-width": R_EARTH * 0.012 });
+  gGround.appendChild(earthBody);
+
+  // Real coastlines (simplified), orthographic projection centred roughly on the
+  // Mediterranean: Europe framed centre-top, Africa below, a slice of western Asia
+  // to the right, the Atlantic edge of the Americas just entering on the left.
+  var gLand = el("g", { "clip-path": "url(#earthClip)" });
+  var landPathD = "M -0.3350,-0.9082 L -0.3511,-0.8976 L -0.3261,-0.9076 L -0.3350,-0.9082 Z M -0.3799,-0.8453 L -0.3786,-0.8400 L -0.3679,-0.8467 L -0.3799,-0.8453 Z M -0.4367,-0.8372 L -0.4475,-0.8262 L -0.4100,-0.8557 L -0.4523,-0.8369 L -0.4367,-0.8372 Z M -0.3267,-0.8915 L -0.3743,-0.8356 L -0.4113,-0.8216 L -0.4286,-0.8277 L -0.4527,-0.7700 L -0.3906,-0.8123 L -0.4018,-0.7912 L -0.3689,-0.8019 L -0.3533,-0.8329 L -0.3298,-0.8409 L -0.2958,-0.8774 L -0.3079,-0.8796 L -0.2798,-0.8907 L -0.2995,-0.8918 L -0.2783,-0.8974 L -0.3267,-0.8915 Z M -0.4555,-0.8251 L -0.4622,-0.8281 L -0.4669,-0.8231 L -0.4555,-0.8251 Z M -0.4665,-0.8115 L -0.4690,-0.8138 L -0.4747,-0.8086 L -0.4665,-0.8115 Z M -0.8629,-0.5021 L -0.8660,-0.4939 L -0.8565,-0.5084 L -0.9055,-0.3852 L -0.8531,-0.4799 L -0.8087,-0.5058 L -0.7824,-0.5482 L -0.7717,-0.5568 L -0.7919,-0.5293 L -0.7501,-0.5655 L -0.7309,-0.5577 L -0.7077,-0.5846 L -0.6818,-0.5894 L -0.6707,-0.5794 L -0.6945,-0.5610 L -0.6441,-0.5676 L -0.6345,-0.5846 L -0.6521,-0.5744 L -0.6606,-0.5796 L -0.6595,-0.5916 L -0.6246,-0.6309 L -0.6719,-0.6277 L -0.6162,-0.6482 L -0.5931,-0.6232 L -0.5500,-0.6302 L -0.5364,-0.6440 L -0.5202,-0.7000 L -0.4722,-0.7502 L -0.5103,-0.7392 L -0.4726,-0.7725 L -0.4595,-0.8090 L -0.6261,-0.7141 L -0.5714,-0.7619 L -0.5346,-0.8148 L -0.4753,-0.8488 L -0.3557,-0.8649 L -0.3433,-0.8785 L -0.3858,-0.8683 L -0.3021,-0.9080 L -0.3743,-0.8906 L -0.3517,-0.9001 L -0.3603,-0.9010 L -0.6081,-0.7920 L -0.8629,-0.5021 Z M -0.6166,-0.6180 L -0.6109,-0.6278 L -0.6147,-0.6364 L -0.6166,-0.6180 Z M -0.6544,-0.5805 L -0.6482,-0.5997 L -0.6565,-0.5921 L -0.6544,-0.5805 Z M -0.5556,-0.6223 L -0.6219,-0.5871 L -0.6070,-0.5754 L -0.6111,-0.5622 L -0.5950,-0.5690 L -0.6007,-0.5499 L -0.5735,-0.5856 L -0.5839,-0.6054 L -0.5556,-0.6223 Z M -0.8061,-0.4024 L -0.8078,-0.4023 L -0.8080,-0.4012 L -0.8064,-0.4017 L -0.8061,-0.4024 Z M -0.8899,-0.3944 L -0.8943,-0.3945 L -0.8919,-0.3904 L -0.8899,-0.3944 Z M -0.8883,-0.3970 L -0.8917,-0.3869 L -0.8965,-0.3763 L -0.8908,-0.3858 L -0.8883,-0.3970 Z M -0.9125,-0.3469 L -0.9027,-0.3700 L -0.9028,-0.3724 L -0.9125,-0.3469 Z M -0.9204,-0.3697 L -0.9380,-0.2888 L -0.9309,-0.2707 L -0.9204,-0.3697 Z M -0.9847,-0.1674 L -0.9589,-0.2808 L -0.9808,-0.1920 L -0.9888,-0.1460 L -0.9994,0.0000 L -0.9749,0.2088 L -0.9359,0.3488 L -0.8722,0.4883 L -0.7299,0.6709 L -0.7489,0.5819 L -0.7052,0.5836 L -0.6995,0.5746 L -0.7087,0.4599 L -0.6752,0.4150 L -0.6730,0.3914 L -0.6819,0.3600 L -0.7420,0.2969 L -0.7933,0.2709 L -0.7974,0.2510 L -0.8273,0.2198 L -0.8345,0.2263 L -0.8544,0.1910 L -0.8577,0.1227 L -0.9025,0.0601 L -0.9278,-0.0363 L -0.9226,-0.0458 L -0.9410,-0.0537 L -0.9547,-0.0820 L -0.9560,-0.1188 L -0.9716,-0.0800 L -0.9610,-0.1346 L -0.9738,-0.1328 L -0.9846,-0.1059 L -0.9847,-0.1674 Z M -0.9468,-0.2487 L -0.9451,-0.2611 L -0.9465,-0.2701 L -0.9468,-0.2487 Z M -0.9410,-0.2451 L -0.9369,-0.2146 L -0.9302,-0.2233 L -0.9244,-0.2077 L -0.9291,-0.2619 L -0.9339,-0.2372 L -0.9410,-0.2451 Z M -0.9111,-0.1895 L -0.9197,-0.1946 L -0.9136,-0.1870 L -0.9111,-0.1895 Z M -0.9174,-0.0440 L -0.9241,-0.0334 L -0.9187,-0.0302 L -0.9174,-0.0440 Z M -0.3999,0.1499 L -0.3462,0.2310 L -0.2744,0.2887 L -0.2181,0.2805 L -0.1725,0.2916 L -0.0637,0.2703 L -0.0366,0.3044 L 0.0087,0.2962 L 0.0313,0.3242 L 0.0139,0.3925 L 0.0680,0.4537 L 0.0902,0.5069 L 0.0960,0.5580 L 0.0608,0.6242 L 0.1010,0.6940 L 0.1117,0.7531 L 0.1510,0.8005 L 0.1491,0.8253 L 0.2533,0.8137 L 0.3594,0.7455 L 0.3747,0.7094 L 0.4243,0.6767 L 0.4241,0.6285 L 0.5177,0.5510 L 0.5275,0.4836 L 0.5084,0.4157 L 0.5333,0.3581 L 0.6376,0.2191 L 0.6708,0.0979 L 0.6684,0.0743 L 0.5865,0.1277 L 0.5576,0.1129 L 0.5607,0.0952 L 0.4991,0.0536 L 0.4664,0.0131 L 0.4476,-0.0432 L 0.4251,-0.0582 L 0.3575,-0.1639 L 0.3872,-0.1318 L 0.3912,-0.1709 L 0.3956,-0.1406 L 0.4647,-0.0769 L 0.4818,-0.0379 L 0.5444,0.0275 L 0.5664,0.0948 L 0.6325,0.0513 L 0.6972,-0.0250 L 0.7213,-0.0718 L 0.7271,-0.1377 L 0.6865,-0.1559 L 0.6694,-0.1893 L 0.6566,-0.1415 L 0.6321,-0.1304 L 0.6207,-0.1593 L 0.6171,-0.1387 L 0.5695,-0.1926 L 0.5565,-0.2146 L 0.5657,-0.2238 L 0.5799,-0.2254 L 0.6088,-0.1932 L 0.6365,-0.1839 L 0.6516,-0.1835 L 0.6664,-0.2021 L 0.6839,-0.1831 L 0.7281,-0.1912 L 0.7690,-0.2207 L 0.8286,-0.1686 L 0.8415,-0.1882 L 0.9279,0.0012 L 0.9348,-0.0520 L 0.9163,-0.1446 L 0.9160,-0.3192 L 0.9590,-0.2322 L 0.9566,-0.2648 L 0.9608,-0.2546 L 0.9907,-0.1279 L 0.9718,-0.2306 L 0.9364,-0.3494 L 0.9106,-0.4114 L 0.7156,-0.6343 L 0.7343,-0.6212 L 0.7423,-0.6495 L 0.7229,-0.6805 L 0.6375,-0.7696 L 0.5342,-0.8446 L 0.2515,-0.9378 L 0.2763,-0.9170 L 0.2349,-0.9245 L 0.2118,-0.9147 L 0.2714,-0.8709 L 0.2685,-0.8580 L 0.3003,-0.8472 L 0.2854,-0.8433 L 0.3003,-0.8328 L 0.2710,-0.8421 L 0.3485,-0.8029 L 0.3644,-0.7828 L 0.2574,-0.8355 L 0.3248,-0.7914 L 0.2735,-0.7920 L 0.2914,-0.7759 L 0.2792,-0.7796 L 0.2716,-0.7645 L 0.2582,-0.7704 L 0.2457,-0.7350 L 0.2294,-0.7522 L 0.2119,-0.7516 L 0.2381,-0.7245 L 0.2237,-0.7263 L 0.2254,-0.6997 L 0.2049,-0.7038 L 0.2138,-0.6879 L 0.1688,-0.7167 L 0.2134,-0.7209 L 0.2007,-0.7403 L 0.1370,-0.7485 L 0.1112,-0.7642 L 0.0669,-0.7435 L 0.0190,-0.6756 L -0.0247,-0.6426 L -0.0212,-0.5962 L 0.0035,-0.5922 L 0.0209,-0.6085 L 0.0490,-0.5507 L 0.0765,-0.5627 L 0.0934,-0.6201 L 0.0760,-0.6362 L 0.0783,-0.6553 L 0.1114,-0.7006 L 0.1258,-0.6906 L 0.1056,-0.6632 L 0.1127,-0.6304 L 0.1289,-0.6198 L 0.1800,-0.6286 L 0.1355,-0.6113 L 0.1511,-0.5820 L 0.1265,-0.5851 L 0.1310,-0.5531 L 0.1176,-0.5407 L 0.0962,-0.5455 L 0.0630,-0.5276 L 0.0196,-0.5388 L 0.0240,-0.5842 L 0.0009,-0.5670 L 0.0013,-0.5229 L -0.0345,-0.5168 L -0.0744,-0.4731 L -0.1018,-0.4624 L -0.1114,-0.4696 L -0.1104,-0.4519 L -0.1439,-0.4550 L -0.1110,-0.4103 L -0.1172,-0.3786 L -0.1249,-0.3693 L -0.1989,-0.3810 L -0.2185,-0.3713 L -0.2325,-0.2695 L -0.2004,-0.2674 L -0.1873,-0.2492 L -0.1718,-0.2604 L -0.1413,-0.2580 L -0.1071,-0.2908 L -0.0944,-0.3280 L -0.0644,-0.3413 L -0.0624,-0.3606 L -0.0187,-0.3606 L 0.0111,-0.3806 L 0.0988,-0.3122 L 0.1111,-0.2783 L 0.1224,-0.2944 L 0.1173,-0.3198 L 0.1390,-0.3166 L 0.0575,-0.3769 L 0.0530,-0.3976 L 0.0625,-0.4036 L 0.1493,-0.3431 L 0.1509,-0.3188 L 0.1891,-0.2647 L 0.2104,-0.2596 L 0.2029,-0.2738 L 0.2169,-0.2908 L 0.1927,-0.3225 L 0.2100,-0.3194 L 0.2054,-0.3310 L 0.2199,-0.3370 L 0.2407,-0.3261 L 0.2679,-0.3449 L 0.2479,-0.3676 L 0.2658,-0.4360 L 0.2964,-0.4329 L 0.2910,-0.4196 L 0.3121,-0.4073 L 0.3349,-0.4242 L 0.3134,-0.4392 L 0.3507,-0.4634 L 0.3379,-0.4270 L 0.4055,-0.3982 L 0.4137,-0.3811 L 0.3816,-0.3635 L 0.3200,-0.3695 L 0.2963,-0.3497 L 0.2725,-0.3483 L 0.2408,-0.3145 L 0.2696,-0.2705 L 0.3352,-0.2710 L 0.3786,-0.2885 L 0.3784,-0.1933 L 0.3483,-0.1830 L 0.3326,-0.1913 L 0.3064,-0.1754 L 0.1967,-0.1969 L 0.1778,-0.1848 L 0.1790,-0.1633 L 0.1661,-0.1498 L 0.0339,-0.2045 L 0.0421,-0.2608 L -0.0913,-0.2541 L -0.1443,-0.2326 L -0.1954,-0.2468 L -0.2131,-0.2202 L -0.2506,-0.1976 L -0.2615,-0.1532 L -0.3423,-0.0996 L -0.3918,-0.0305 L -0.3888,0.0367 L -0.4183,0.0909 L -0.3999,0.1499 Z M 0.5145,-0.3880 L 0.4449,-0.4429 L 0.4464,-0.4613 L 0.4664,-0.4925 L 0.4839,-0.4955 L 0.4981,-0.4723 L 0.4792,-0.4539 L 0.5308,-0.4098 L 0.5310,-0.4279 L 0.5500,-0.4138 L 0.5339,-0.4062 L 0.5385,-0.3925 L 0.5731,-0.3490 L 0.5440,-0.3366 L 0.5220,-0.3421 L 0.5097,-0.3604 L 0.5145,-0.3880 Z M -0.7194,0.6931 L -0.7167,0.6941 L -0.7419,0.6630 L -0.7194,0.6931 Z M -0.2372,-0.9477 L -0.1983,-0.9616 L -0.2500,-0.9530 L -0.2392,-0.9524 L -0.2372,-0.9477 Z M -0.1890,-0.9530 L -0.1770,-0.9508 L -0.1725,-0.9541 L -0.1815,-0.9589 L -0.1890,-0.9530 Z M -0.1878,-0.9436 L -0.1811,-0.9476 L -0.1887,-0.9458 L -0.1878,-0.9436 Z M -0.1750,-0.9433 L -0.1731,-0.9465 L -0.1760,-0.9446 L -0.1750,-0.9433 Z M -0.1970,-0.9508 L -0.2288,-0.9460 L -0.2358,-0.9355 L -0.2061,-0.9408 L -0.2234,-0.9403 L -0.1970,-0.9508 Z M -0.1852,-0.9379 L -0.1996,-0.9304 L -0.1703,-0.9388 L -0.1852,-0.9379 Z M -0.2581,-0.9338 L -0.2720,-0.9296 L -0.2636,-0.9295 L -0.2581,-0.9338 Z M -0.2403,-0.9470 L -0.3126,-0.9341 L -0.3396,-0.9115 L -0.2403,-0.9470 Z M -0.2030,-0.9272 L -0.1952,-0.9259 L -0.1849,-0.9304 L -0.2030,-0.9272 Z M -0.2481,-0.9250 L -0.2371,-0.9236 L -0.2197,-0.9288 L -0.2335,-0.9306 L -0.2481,-0.9250 Z M -0.2089,-0.9252 L -0.2060,-0.9233 L -0.2041,-0.9260 L -0.2089,-0.9252 Z M -0.1495,-0.9267 L -0.1984,-0.9223 L -0.2015,-0.9172 L -0.1495,-0.9267 Z M -0.2539,-0.9150 L -0.2417,-0.9189 L -0.2597,-0.9148 L -0.2539,-0.9150 Z M -0.3081,-0.9120 L -0.2747,-0.9167 L -0.2641,-0.9234 L -0.2815,-0.9237 L -0.3081,-0.9120 Z M -0.1195,-0.9184 L -0.2319,-0.9129 L -0.2388,-0.8981 L -0.1173,-0.9055 L -0.1195,-0.9184 Z M -0.2996,-0.9089 L -0.2750,-0.9060 L -0.2669,-0.9140 L -0.2766,-0.9146 L -0.2996,-0.9089 Z M -0.2572,-0.9126 L -0.2682,-0.8931 L -0.2149,-0.9252 L -0.2212,-0.9249 L -0.2572,-0.9126 Z M -0.2954,-0.8814 L -0.2808,-0.8825 L -0.2796,-0.8872 L -0.2954,-0.8814 Z M -0.1234,-0.8972 L -0.1981,-0.8968 L -0.2300,-0.8823 L -0.2295,-0.8605 L -0.3833,-0.7466 L -0.4050,-0.7085 L -0.3978,-0.6901 L -0.3078,-0.7389 L -0.1717,-0.7621 L -0.1909,-0.7679 L -0.1760,-0.7795 L -0.1643,-0.7672 L -0.1644,-0.7879 L -0.1245,-0.8025 L -0.0802,-0.8572 L -0.0511,-0.8671 L -0.0796,-0.8669 L -0.0707,-0.8742 L -0.0871,-0.8796 L -0.0611,-0.8782 L -0.0756,-0.8912 L -0.1151,-0.8843 L -0.1234,-0.8972 Z M -0.2097,-0.7080 L -0.2246,-0.7047 L -0.2146,-0.6957 L -0.2245,-0.6918 L -0.2002,-0.6803 L -0.1549,-0.6947 L -0.1529,-0.7118 L -0.2208,-0.7137 L -0.2097,-0.7080 Z M -0.1562,-0.5115 L -0.1370,-0.5442 L -0.1452,-0.5542 L -0.1791,-0.5386 L -0.1908,-0.5086 L -0.1562,-0.5115 Z M -0.1247,-0.5573 L -0.1282,-0.5470 L -0.1116,-0.5337 L -0.1413,-0.5060 L -0.1234,-0.4959 L -0.1526,-0.4788 L -0.0820,-0.4832 L -0.0666,-0.5125 L -0.1079,-0.5627 L -0.0925,-0.5863 L -0.1122,-0.5859 L -0.0994,-0.6003 L -0.1269,-0.5910 L -0.1337,-0.5552 L -0.1247,-0.5573 Z M 0.0382,-0.9979 L 0.0312,-0.9978 L 0.0457,-0.9976 L 0.0382,-0.9979 Z M 0.0520,-0.9973 L 0.0441,-0.9970 L 0.0522,-0.9970 L 0.0520,-0.9973 Z M 0.0980,-0.8657 L 0.1105,-0.8630 L 0.1123,-0.8697 L 0.0980,-0.8657 Z M 0.0379,-0.8455 L 0.0574,-0.8522 L 0.0274,-0.8518 L 0.0379,-0.8455 Z M 0.0077,-0.8449 L 0.0362,-0.8183 L 0.0449,-0.8402 L 0.0077,-0.8449 Z M 0.0544,-0.8262 L 0.0514,-0.8360 L 0.0451,-0.8334 L 0.0544,-0.8262 Z M 0.0997,-0.6712 L 0.0977,-0.6679 L 0.0988,-0.6678 L 0.0997,-0.6712 Z M 0.0941,-0.5845 L 0.0958,-0.5752 L 0.1045,-0.5916 L 0.0941,-0.5845 Z M 0.0864,-0.5808 L 0.0802,-0.5694 L 0.0816,-0.5640 L 0.0864,-0.5808 Z M 0.0285,-0.5563 L 0.0411,-0.5423 L 0.0425,-0.5614 L 0.0285,-0.5563 Z M 0.0177,-0.3586 L 0.0101,-0.3352 L 0.0161,-0.3319 L 0.0177,-0.3586 Z M 0.0226,-0.2955 L 0.0159,-0.3291 L 0.0021,-0.3247 L 0.0110,-0.2908 L 0.0226,-0.2955 Z M 0.0992,-0.2547 L 0.1028,-0.2820 L 0.0627,-0.2787 L 0.0612,-0.2700 L 0.0992,-0.2547 Z M 0.0881,-0.2439 L 0.0882,-0.2450 L 0.0870,-0.2447 L 0.0881,-0.2439 Z M 0.0909,-0.2408 L 0.0909,-0.2431 L 0.0895,-0.2434 L 0.0909,-0.2408 Z M 0.1619,-0.9699 L 0.1708,-0.9677 L 0.1559,-0.9727 L 0.1619,-0.9699 Z M 0.2021,-0.9650 L 0.1998,-0.9631 L 0.2131,-0.9599 L 0.2021,-0.9650 Z M 0.1698,-0.9663 L 0.1873,-0.9573 L 0.2004,-0.9591 L 0.1809,-0.9657 L 0.1698,-0.9663 Z M 0.2011,-0.9173 L 0.1865,-0.9148 L 0.2092,-0.9086 L 0.2011,-0.9173 Z M 0.1666,-0.9066 L 0.1950,-0.9091 L 0.1520,-0.9143 L 0.1666,-0.9066 Z M 0.2032,-0.8593 L 0.1902,-0.8309 L 0.2124,-0.7979 L 0.2501,-0.7931 L 0.2230,-0.8069 L 0.2032,-0.8593 Z M 0.3439,-0.2600 L 0.3477,-0.2465 L 0.3634,-0.2685 L 0.3439,-0.2600 Z M 0.2554,-0.2403 L 0.2197,-0.2483 L 0.2184,-0.2409 L 0.2554,-0.2403 Z M 0.9478,0.0166 L 0.9520,-0.0177 L 0.9379,-0.0450 L 0.9478,0.0166 Z M 0.6441,0.4691 L 0.5604,0.5667 L 0.5333,0.6662 L 0.5479,0.6690 L 0.5827,0.6382 L 0.6516,0.5101 L 0.6441,0.4691 Z";
+  gLand.appendChild(el("path", { d: scalePath(landPathD, R_EARTH), fill: "#9dbf9a", stroke: "none", "fill-rule": "evenodd" }));
+  gGround.appendChild(gLand);
+
+  var mountainLine = el("line", { x1: R_EARTH, y1: 0, x2: R_L, y2: 0, stroke: "#1e2430", "stroke-width": R_EARTH * 0.01, "stroke-dasharray": (R_EARTH * 0.02) + " " + (R_EARTH * 0.02) });
+  var launchTick = el("line", { x1: R_L, y1: -R_EARTH * 0.08, x2: R_L, y2: R_EARTH * 0.08, stroke: "#1e2430", "stroke-width": R_EARTH * 0.012 });
+  gGround.appendChild(mountainLine);
+  gGround.appendChild(launchTick);
+
+  var orbitPath = el("path", { d: "", fill: "none", stroke: "#1e2430", "stroke-width": R_EARTH * 0.02, "stroke-linecap": "round" });
+  gOrbit.appendChild(orbitPath);
+
+  var markDot = el("circle", { cx: R_L, cy: 0, r: R_EARTH * 0.08, fill: "#2a5aa8" });
+  gMark.appendChild(markDot);
+
+  var labelByType = {
+    balistica: "balistica",
+    circolare: "circolare",
+    ellittica: "ellittica",
+    parabolica: "di fuga (parabolica)",
+    iperbolica: "di fuga (iperbolica)"
+  };
+
+  var current = null, theta = 0, thetaDir = 1, lastTs = null;
+
+  function render(v){
+    var orbit = computeOrbit(v);
+    var pts = samplePoints(orbit);
+    var bbox = boundingBox(pts);
+
+    var w = bbox.maxX - bbox.minX, h = bbox.maxY - bbox.minY;
+    var padX = w * 0.1 + R_EARTH * 0.35, padY = h * 0.1 + R_EARTH * 0.35;
+    var vbX = bbox.minX - padX, vbY = -(bbox.maxY + padY);
+    var vbW = w + 2 * padX, vbH = h + 2 * padY;
+    var targetRatio = 16 / 11, curRatio = vbW / vbH;
+    if (curRatio < targetRatio) { var newW = vbH * targetRatio; vbX -= (newW - vbW) / 2; vbW = newW; }
+    else { var newH = vbW / targetRatio; vbY -= (newH - vbH) / 2; vbH = newH; }
+    svg.setAttribute("viewBox", vbX.toFixed(0) + " " + vbY.toFixed(0) + " " + vbW.toFixed(0) + " " + vbH.toFixed(0));
+
+    orbitPath.setAttribute("d", pointsToPath(pts));
+    orbitPath.setAttribute("stroke-width", Math.max(vbW * 0.0028, R_EARTH * 0.01));
+    markDot.setAttribute("r", Math.max(vbW * 0.007, R_EARTH * 0.05));
+
+    tType.textContent = labelByType[orbit.type];
+    var detail = "";
+    if (orbit.type === "balistica") detail = "ricade a terra";
+    else if (orbit.type === "circolare") detail = "periodo " + fmtTime(orbit.T);
+    else if (orbit.type === "ellittica") detail = "arriva fino a " + fmtKm(orbit.r_apo - R_EARTH) + " di quota";
+    else detail = "non torna più indietro";
+    tDetail.textContent = detail;
+
+    vReadout.textContent = fmt(v, 2);
+
+    current = orbit; theta = 0; thetaDir = 1;
+  }
+
+  function animate(ts){
+    if (lastTs == null) lastTs = ts;
+    var dt = Math.min((ts - lastTs) / 1000, 0.05);
+    lastTs = ts;
+
+    if (current) {
+      var h = Math.sqrt(GM * current.p);
+      var K = 900;
+      var r1 = radiusAt(current, theta);
+      var dtheta = K * h / (r1 * r1) * dt;
+
+      if (current.type === "balistica") {
+        if (theta < current.thetaHit) {
+          theta += dtheta;
+          if (theta > current.thetaHit) theta = current.thetaHit;
+        }
+        // else: landed — stays put, no bounce back to the cannon.
+      } else if (current.type === "circolare" || current.type === "ellittica") {
+        theta += dtheta;
+        if (theta > Math.PI) theta -= 2 * Math.PI;
+      } else {
+        var limit = current.type === "parabolica" ? Math.PI * 0.97 : Math.acos(-1 / current.e) * 0.97;
+        theta += thetaDir * dtheta;
+        if (theta > limit) { theta = limit; thetaDir = -1; }
+        if (theta < -limit) { theta = -limit; thetaDir = 1; }
+      }
+
+      var rr = radiusAt(current, theta);
+      markDot.setAttribute("cx", (rr * Math.cos(theta)).toFixed(1));
+      markDot.setAttribute("cy", (-rr * Math.sin(theta)).toFixed(1));
+    }
+    requestAnimationFrame(animate);
+  }
+  requestAnimationFrame(animate);
+
+  slider.min = 0; slider.max = STEPS;
+  var defaultV = V_CIRC_L;
+  slider.value = vToSlider(defaultV);
+
+  refCirc.textContent = "orbita " + fmt(V_CIRC_L, 1) + " km/s";
+  refEsc.textContent = "fuga " + fmt(V_ESC_L, 1) + " km/s";
+
+  slider.addEventListener("input", function(){ render(sliderToV(parseFloat(slider.value))); });
+
+  var presets = {
+    short: V_CIRC_L * 0.4,
+    circ: V_CIRC_L,
+    ell: V_CIRC_L * 1.25,
+    para: V_ESC_L,
+    hyp: V_CIRC_L * 1.55
+  };
+  Array.prototype.forEach.call(document.querySelectorAll(".preset-btn"), function(btn){
+    btn.addEventListener("click", function(){
+      var v = presets[btn.getAttribute("data-preset")];
+      slider.value = vToSlider(v);
+      render(v);
+    });
+  });
+
+  render(defaultV);
+})();
+</script>
+
+</body></html>

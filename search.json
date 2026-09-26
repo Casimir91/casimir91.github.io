@@ -632,23 +632,30 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "La mia prima pagina Quarto",
+    "title": "In orbita: perché la Luna non cade sulla Terra",
     "section": "",
-    "text": "Questa è una formula inline, dentro al testo: \\(E = mc^2\\). Non ho fatto niente di speciale, l’ho solo scritta tra due dollari.\nE questa è un’equazione a blocco — quella di Schrödinger dipendente dal tempo:\n\\[\ni\\hbar \\frac{\\partial}{\\partial t} \\Psi(\\mathbf{r}, t) = \\hat{H}\\,\\Psi(\\mathbf{r}, t)\n\\tag{1}\\]\nPosso perfino richiamarla nel testo con il suo numero: vedi Equation 1."
+    "text": "Un esperimento mentale di Newton, 1687\nNewton immaginò questo esperimento proprio per rispondere a una domanda precisa: perché la Luna non cade sulla Terra? Perché la Terra non cade sul Sole?Da qui parte la risposta."
   },
   {
-    "objectID": "index.html#formule-che-si-scrivono-da-sole",
-    "href": "index.html#formule-che-si-scrivono-da-sole",
-    "title": "La mia prima pagina Quarto",
-    "section": "",
-    "text": "Questa è una formula inline, dentro al testo: \\(E = mc^2\\). Non ho fatto niente di speciale, l’ho solo scritta tra due dollari.\nE questa è un’equazione a blocco — quella di Schrödinger dipendente dal tempo:\n\\[\ni\\hbar \\frac{\\partial}{\\partial t} \\Psi(\\mathbf{r}, t) = \\hat{H}\\,\\Psi(\\mathbf{r}, t)\n\\tag{1}\\]\nPosso perfino richiamarla nel testo con il suo numero: vedi Equation 1."
+    "objectID": "index.html#perché-gli-astronauti-fluttuano",
+    "href": "index.html#perché-gli-astronauti-fluttuano",
+    "title": "In orbita: perché la Luna non cade sulla Terra",
+    "section": "Perché gli astronauti fluttuano",
+    "text": "Perché gli astronauti fluttuano\nAssenza di peso, non di gravità\nGli astronauti a bordo della Stazione Spaziale Internazionale orbitano a circa 400 km di quota. Lì la gravità terrestre non è affatto sparita: vale ancora circa il 90% di quella che si avverte a terra. Se la gravità c’è ancora, perché fluttuano?\nPerché la stazione — e tutto ciò che contiene, astronauti compresi — sta cadendo. Continuamente. Come un ascensore il cui cavo si sia appena spezzato: chi ci sta dentro non sente più il pavimento spingere contro i piedi, perché cabina e passeggero cadono alla stessa identica velocità. Non manca la forza peso; manca la forza normale che di solito la bilancia.\nLa differenza tra la ISS e l’ascensore è che la stazione non tocca mai terra. Cade, ma si muove anche abbastanza velocemente di lato da restare sempre alla stessa distanza dal suolo, mentre la superficie terrestre le si incurva sotto. Fluttuare in orbita non è assenza di gravità: è una caduta libera che non finisce mai."
   },
   {
-    "objectID": "index.html#un-grafico-generato-dal-codice",
-    "href": "index.html#un-grafico-generato-dal-codice",
-    "title": "La mia prima pagina Quarto",
-    "section": "Un grafico generato dal codice",
-    "text": "Un grafico generato dal codice\nIl grafico Figure 1 non è un’immagine incollata: nasce eseguendo il codice Python al momento della compilazione.\n\nimport numpy as np\nimport matplotlib.pyplot as plt\n\nt = np.linspace(0, 10, 500)\ngamma = 0.4      # smorzamento\nomega = 3.0      # pulsazione\nx = np.exp(-gamma * t) * np.cos(omega * t)\n\nfig, ax = plt.subplots()\nax.plot(t, x, label=\"posizione\")\nax.plot(t,  np.exp(-gamma * t), linestyle=\"--\", color=\"gray\")\nax.plot(t, -np.exp(-gamma * t), linestyle=\"--\", color=\"gray\")\nax.set_xlabel(\"tempo (s)\")\nax.set_ylabel(\"posizione\")\nax.legend()\nplt.show()\n\n\n\n\n\n\n\nFigure 1: Oscillatore armonico smorzato: l’ampiezza decade nel tempo."
+    "objectID": "index.html#cosè-unorbita",
+    "href": "index.html#cosè-unorbita",
+    "title": "In orbita: perché la Luna non cade sulla Terra",
+    "section": "Cos’è un’orbita",
+    "text": "Cos’è un’orbita\nCadere, e continuare a mancare il bersaglio\nUn’orbita è esattamente questo: una traiettoria in caduta libera che non interseca mai il corpo verso cui si sta cadendo. Non serve nessun motore acceso, nessuna spinta che si opponga alla gravità — basta una velocità tangenziale (perpendicolare alla direzione della caduta) sufficientemente grande.\nNon c’è una “forza centrifuga” reale che bilancia la gravità, come si dice a volte impropriamente: è la gravità stessa a fare da forza centripeta, curvando la traiettoria. L’orbita non è un equilibrio di forze opposte, ma il risultato di una sola forza che agisce su un corpo già in moto."
+  },
+  {
+    "objectID": "index.html#perché-la-luna-non-cade-sulla-terra-e-la-terra-non-cade-sul-sole",
+    "href": "index.html#perché-la-luna-non-cade-sulla-terra-e-la-terra-non-cade-sul-sole",
+    "title": "In orbita: perché la Luna non cade sulla Terra",
+    "section": "Perché la Luna non cade sulla Terra, e la Terra non cade sul Sole",
+    "text": "Perché la Luna non cade sulla Terra, e la Terra non cade sul Sole\nLa stessa caduta, a scale diverse\nLo stesso meccanismo vale a qualunque scala. La Luna sta cadendo verso la Terra in questo momento — come in ogni istante degli ultimi quattro miliardi di anni — perché la gravità non si spegne mai; a farle mancare il bersaglio è la stessa componente di velocità laterale di cui parla il cannone qui sopra.\nLa Terra, a sua volta, sta cadendo verso il Sole esattamente allo stesso modo: la sua velocità orbitale di circa 30 km/s è la componente tangenziale che le permette di restare in un’orbita quasi circolare invece di essere risucchiata verso il centro del Sistema Solare. Quella velocità non è una scelta, ma un’eredità: risale alla nube di gas e polvere che, contraendosi sotto la propria gravità circa 4,6 miliardi di anni fa, ha dato origine al Sole e al disco protoplanetario da cui si sono formati i pianeti. Per conservazione del momento angolare — lo stesso principio per cui un pattinatore gira più veloce quando raccoglie le braccia al petto — la nube in collasso ha accelerato la propria rotazione, appiattendosi nel disco su cui, ancora oggi, orbitano quasi tutti i pianeti. La Terra ha semplicemente ereditato la velocità tangenziale di quel disco nel punto in cui si è formata: né troppo lenta da cadere nel Sole, né troppo veloce da sfuggirgli.\nQuello che cambia da un caso all’altro non è il principio, ma un solo parametro: quanto velocemente il corpo si muove rispetto alla velocità dell’orbita circolare a quella distanza. Torna al simulatore in cima alla pagina e prova a muovere il cursore: ora sai cosa stai guardando.\n\nCuriositàNel simulatore in cima alla pagina tutti i numeri sono reali: la velocità di fuga dalla Terra, il raggio terrestre, persino la quota — impossibile — della montagna di Newton. Non sono valori di comodo scelti per far tornare i conti: sono le cifre vere del nostro pianeta."
   },
   {
     "objectID": "blog/index.html",
