@@ -74,6 +74,12 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
+<meta property="og:title" content="Gestisci le iscrizioni in Gmail – Prof.&nbsp;Rosi">
+<meta property="og:description" content="Una schermata unica con tutte le newsletter a cui sei iscritto e la disiscrizione in un clic: fai riemergere le email importanti dal rumore di fondo.">
+<meta property="og:site_name" content="Prof.&nbsp;Rosi">
+<meta name="twitter:title" content="Gestisci le iscrizioni in Gmail – Prof.&nbsp;Rosi">
+<meta name="twitter:description" content="Una schermata unica con tutte le newsletter a cui sei iscritto e la disiscrizione in un clic: fai riemergere le email importanti dal rumore di fondo.">
+<meta name="twitter:card" content="summary">
 </head>
 
 <body class="nav-fixed quarto-light">
@@ -315,7 +321,7 @@ ul.task-list li input[type="checkbox"] {
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/Casimir91\.github\.io\/casimir91\.github\.io\/");
+        var filterRegex = new RegExp("https:\/\/casimir91\.github\.io");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }

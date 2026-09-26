@@ -132,6 +132,10 @@ window.Quarto = {
 };
 </script>
 
+<meta property="og:title" content="Blog – Prof.&nbsp;Rosi">
+<meta property="og:site_name" content="Prof.&nbsp;Rosi">
+<meta name="twitter:title" content="Blog – Prof.&nbsp;Rosi">
+<meta name="twitter:card" content="summary">
 </head>
 
 <body class="nav-fixed quarto-light">
@@ -344,7 +348,7 @@ Jul 19, 2026
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/Casimir91\.github\.io\/casimir91\.github\.io\/");
+        var filterRegex = new RegExp("https:\/\/casimir91\.github\.io");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
