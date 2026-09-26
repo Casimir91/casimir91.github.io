@@ -6,10 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-10-06">
-<meta name="description" content="Trascrive in automatico le riunioni Google Meet in tempo reale: recuperi decisioni e accordi senza prendere un solo appunto a mano.">
 
-<title>Tactiq – Prof.&nbsp;Rosi</title>
+<title>Stories – Prof.&nbsp;Rosi</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -35,6 +33,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-listing/list.min.js"></script>
+<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -72,13 +72,71 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script>
 
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-listing .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
 
-<meta property="og:title" content="Tactiq – Prof.&nbsp;Rosi">
-<meta property="og:description" content="Trascrive in automatico le riunioni Google Meet in tempo reale: recuperi decisioni e accordi senza prendere un solo appunto a mano.">
+    const options = {
+      valueNames: ['listing-image','listing-date','listing-title','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      
+      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="Stories – Prof.&nbsp;Rosi">
+<meta property="og:description" content="Riflessioni sul mondo e sulla natura">
 <meta property="og:site_name" content="Prof.&nbsp;Rosi">
-<meta name="twitter:title" content="Tactiq – Prof.&nbsp;Rosi">
-<meta name="twitter:description" content="Trascrive in automatico le riunioni Google Meet in tempo reale: recuperi decisioni e accordi senza prendere un solo appunto a mano.">
+<meta name="twitter:title" content="Stories – Prof.&nbsp;Rosi">
+<meta name="twitter:description" content="Riflessioni sul mondo e sulla natura">
 <meta name="twitter:card" content="summary">
 </head>
 
@@ -131,7 +189,7 @@ ul.task-list li input[type="checkbox"] {
     </ul>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="../stories/index.html"> 
+    <a class="nav-link active" href="../stories/index.html" aria-current="page"> 
 <span class="menu-text">Stories</span></a>
   </li>  
   <li class="nav-item">
@@ -161,45 +219,22 @@ ul.task-list li input[type="checkbox"] {
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#il-problema" id="toc-il-problema" class="nav-link active" data-scroll-target="#il-problema">Il problema</a></li>
-  <li><a href="#la-soluzione" id="toc-la-soluzione" class="nav-link" data-scroll-target="#la-soluzione">La soluzione</a></li>
-  <li><a href="#cosa-fa" id="toc-cosa-fa" class="nav-link" data-scroll-target="#cosa-fa">Cosa fa</a></li>
-  <li><a href="#come-si-usa" id="toc-come-si-usa" class="nav-link" data-scroll-target="#come-si-usa">Come si usa</a></li>
-  </ul>
-</nav>
-    </div>
+        
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(1)</span></div><div class="category" data-category="SW50ZWxsaWdlbnphJTIwQXJ0aWZpY2lhbGU=">Intelligenza Artificiale <span class="quarto-category-count">(1)</span></div><div class="category" data-category="U2lzdGVtaSUyMENvbXBsZXNzaQ==">Sistemi Complessi <span class="quarto-category-count">(1)</span></div></div></div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Tactiq</h1>
-  <div class="quarto-categories">
-    <div class="quarto-category">Google Meet</div>
-    <div class="quarto-category">AI</div>
-  </div>
-  </div>
-
-<div>
-  <div class="description">
-    Trascrive in automatico le riunioni Google Meet in tempo reale: recuperi decisioni e accordi senza prendere un solo appunto a mano.
-  </div>
+<h1 class="title">Stories</h1>
+<p class="subtitle lead">Riflessioni sul mondo e sulla natura</p>
 </div>
+
 
 
 <div class="quarto-title-meta">
 
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">October 6, 2025</p>
-    </div>
-  </div>
   
     
   </div>
@@ -209,52 +244,44 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="il-problema" class="level2">
-<h2 class="anchored" data-anchor-id="il-problema">Il problema</h2>
-<p>Ti è mai capitato di perderti pezzi importanti di una riunione Meet per colpa della connessione, dell’audio disturbato, o semplicemente perché eri concentrato a prendere appunti?</p>
-</section>
-<section id="la-soluzione" class="level2">
-<h2 class="anchored" data-anchor-id="la-soluzione">La soluzione</h2>
-<p><strong>Tactiq</strong> è un’estensione Chrome gratuita che trascrive automaticamente le tue riunioni Google Meet in tempo reale.</p>
-</section>
-<section id="cosa-fa" class="level2">
-<h2 class="anchored" data-anchor-id="cosa-fa">Cosa fa</h2>
-<ul>
-<li>Trascrive automaticamente l’audio in testo durante la riunione.</li>
-</ul>
-<p>Perfetto per:</p>
-<ul>
-<li>riunioni di dipartimento e coordinamenti;</li>
-<li>incontri di progetto;</li>
-<li>recuperare decisioni e accordi presi durante la riunione.</li>
-</ul>
-</section>
-<section id="come-si-usa" class="level2">
-<h2 class="anchored" data-anchor-id="come-si-usa">Come si usa</h2>
-<ol type="1">
-<li>Installa l’estensione → <a href="https://chromewebstore.google.com/detail/fggkaccpbmombhnjkjokndojfgagejfb?utm_source=item-share-cb">Link diretto Chrome Web Store</a></li>
-<li>Entra in una riunione Meet come sempre;</li>
-<li>Tactiq si attiva automaticamente, oppure la apri dal menù estensioni di Chrome;</li>
-<li>Al termine trovi la trascrizione completa salvata.</li>
-</ol>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Tip extra
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Con il piano gratuito hai <strong>10 trascrizioni al mese</strong>: di norma bastano per coprire le riunioni istituzionali mensili senza prendere un appunto a mano.</p>
-</div>
-</div>
 
 
-</section>
 
-</main> <!-- /main -->
+
+<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<div class="list quarto-listing-default">
+<div class="quarto-post image-right" data-index="0" data-categories="SW50ZWxsaWdlbnphJTIwQXJ0aWZpY2lhbGUlMkNTaXN0ZW1pJTIwQ29tcGxlc3Np" data-listing-date-sort="1790373600000" data-listing-file-modified-sort="1790438536733" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="767">
+<div class="thumbnail"><a href="../stories/pelucchi-stormi-agenti-ai.html" class="no-external">
+
+<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+
+</a></div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../stories/pelucchi-stormi-agenti-ai.html" class="no-external">Pelucchi, stormi e agenti AI</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('SW50ZWxsaWdlbnphJTIwQXJ0aWZpY2lhbGU='); return false;">Intelligenza Artificiale</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('U2lzdGVtaSUyMENvbXBsZXNzaQ=='); return false;">Sistemi Complessi</div>
+
+</div>
+<div class="delink listing-description"><a href="../stories/pelucchi-stormi-agenti-ai.html" class="no-external">
+<p>Da un pelucchio sui vestiti a Giorgio Parisi e agli stormi: cosa hanno in comune — e cosa no — gli agenti dei sistemi complessi e gli agenti AI.</p>
+</a></div>
+</div>
+<div class="metadata">
+<a href="../stories/pelucchi-stormi-agenti-ai.html" class="no-external">
+<div class="listing-date">
+Sep 26, 2026
+</div>
+</a>
+</div>
+</div>
+</div>
+<div class="listing-no-matching d-none">No matching items</div>
+</div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

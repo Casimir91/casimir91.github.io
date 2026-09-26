@@ -1,5 +1,11 @@
 [
   {
+    "listing": "/stories/index.html",
+    "items": [
+      "/stories/pelucchi-stormi-agenti-ai.html"
+    ]
+  },
+  {
     "listing": "/didattica/tolc/index.html",
     "items": []
   },
@@ -43,12 +49,6 @@
       "/edtech/numero-03.html",
       "/edtech/numero-02.html",
       "/edtech/numero-01.html"
-    ]
-  },
-  {
-    "listing": "/ricerca/index.html",
-    "items": [
-      "/ricerca/pelucchi-stormi-agenti-ai.html"
     ]
   },
   {
