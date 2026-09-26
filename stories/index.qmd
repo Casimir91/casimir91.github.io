@@ -1,6 +1,6 @@
 ---
-title: "Ricerca"
-subtitle: "Il mio lavoro su intelligenza artificiale e metodi EdTech: progetti, esperimenti e pubblicazioni."
+title: "Stories"
+subtitle: "Riflessioni sul mondo e sulla natura"
 listing:
   contents: "*.qmd"
   type: default

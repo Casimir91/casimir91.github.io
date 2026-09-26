@@ -18,8 +18,8 @@ website:
           - { text: "Quarta",     href: didattica/quarta/index.qmd }
           - { text: "Corso TOLC", href: didattica/tolc/index.qmd }
 
-      - href: ricerca/index.qmd
-        text: Ricerca
+      - href: stories/index.qmd
+        text: Stories
       - href: edtech/index.qmd
         text: EdTech
     right:
