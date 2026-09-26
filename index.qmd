@@ -1,5 +1,8 @@
 ---
 title: "In orbita: perché la Luna non cade sulla Terra"
+pagetitle: "Prof. Rosi"
+description: "Home page di Prof. Rosi, docente di matematica e fisica: didattica, ricerca ed EdTech."
+image: "images/og-cover.png"
 ---
 
 ```{=html}

@@ -3,6 +3,9 @@ project:
 
 website:
   title: "Prof. Rosi"
+  site-url: "https://casimir91.github.io"
+  open-graph: true
+  twitter-card: true
   navbar:
     left:
       - href: index.qmd
