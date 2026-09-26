@@ -158,8 +158,14 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#pelucchi-stormi-e-agenti-ai" id="toc-pelucchi-stormi-e-agenti-ai" class="nav-link active" data-scroll-target="#pelucchi-stormi-e-agenti-ai">Pelucchi, stormi e agenti AI</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -183,9 +189,37 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Il mio lavoro su intelligenza artificiale e metodi EdTech: progetti, esperimenti e pubblicazioni.</p>
+<section id="pelucchi-stormi-e-agenti-ai" class="level2">
+<h2 class="anchored" data-anchor-id="pelucchi-stormi-e-agenti-ai">Pelucchi, stormi e agenti AI</h2>
+<p>Credo ci sia un momento in cui tutti noi ci chiediamo: perché le cose inanimate si aggrovigliano come se fossero animate? Ad esempio, perché le vecchie cuffiette a filo una volta messe in tasca si aggrovigliavano su loro stesse in n-modi diversi ma egualmente complicati da districare? Perché si aggrovigliavano sempre e mai si districavano da sole?</p>
+<p>Insomma, sarà perché ho una formazione scientifica rigorosa o perché sto sempre a farmi domande su ciò che mi circonda, ieri sera mi sono chiesto: come nascono i pelucchi dai vestiti? E soprattutto, da dove nascono, dalle magliette o dalle mutande?</p>
+<p>Apro la chat di Claude e chiedo:</p>
+<blockquote class="blockquote">
+<p>Allora, Claude, parlo di una cosa che dovrei sapere, ma probabilmente non so. Giorgio Parisi, il fisico, ha fatto degli studi sul volo degli uccelli, e immagino che da questo volo degli uccelli lui abbia capito un modello fisico, un modello della natura che possiamo applicare a altre storie della vita, per esempio, non so, il mercato finanziario o cose del genere. Adesso mi chiedo, c’è qualcuno che ha studiato il modo in cui dei pelucchi di mutanda diventano delle palline che vagano autonomi e se qualcuno l’ha studiato, cosa possiamo dire di questo modello? E se qualcuno non l’ha studiato si può studiare questo modello e dove sarebbe applicabile?</p>
+</blockquote>
+<p>A questo punto, dalla risposta di Claude emerge che:</p>
+<ul>
+<li>qualcuno ha studiato il comportamento dei pelucchi: il pilling, cioè il processo che forma quelle palline</li>
+<li>il pilling appartiene alla scienza tessile ed è normato con il suo standard ISO</li>
+<li>uno studio del 1959 di Gintis e Mead sul <em>Textile Research Journal</em> ne isola i tre processi principali (formazione della lanugine, aggrovigliamento, distacco) e nel 1974 arriva il modello cinetico che inserisce i tre processi in un’equazione</li>
+<li>un Ig Nobel del 2002 con uno studio su quasi cinquemila persone da cui si osserva che i pelucchi non scendono dalla maglietta ma risalgono dalla biancheria intima trascinati dall’attrito del pelo addominale (lo sapevo!)</li>
+</ul>
+<p>Inoltre, ho avuto modo di ripassare il lavoro di Parisi (progetto STARFLAG 2008) capendo che:</p>
+<ul>
+<li>l’interazione tra gli uccelli di uno stormo è topologica e non metrica, quindi ogni uccello segue i suoi 6-7 vicini più prossimi indipendentemente dalla distanza</li>
+<li>lo stormo è materia attiva in cui ogni agente spende energia e trasmette informazione (agente: termine tecnico presente nella scienza dei sistemi complessi), mentre la pallina di pelucchi è aggregazione passiva e dissipativa descritta da un modello fisico che poggia sull’equazione di coagulazione di Smoluchowski, adesione da van der Waals e carica triboelettrica e jamming per aggrovigliamento (?!?)</li>
+</ul>
+<p>E qui, sarà per la ripida complicazione arrivata con la matematica degli ultimi modelli citati che mi hanno riportato con la mente – e con lo stomaco – ai banchi universitari, o sarà perché oggigiorno il termine “agente” è largamente usato in materia di AI e LLM di cui sono appassionato, la mia attenzione scivola verso questa apparente omonimia tra l’agent based modeling dei sistemi complessi e gli agenti AI.</p>
+<p>Con mia grande sorpresa scopro che sono molto più simili di quel che immaginassi.</p>
+<p>I due filoni nascono negli stessi anni e condividono la stessa definizione (Russell e Norvig): “un agente è tutto ciò che percepisce l’ambiente tramite sensori e agisce su di esso tramite attuatori”. I due concetti chiave che condividono sono <strong>autonomia</strong> (nessun controllore centrale detta la mossa) e <strong>situatezza</strong> (l’agente ha informazione <em>locale</em>, non la vista dall’alto). Il ciclo percezione-azione è identico.</p>
+<p>Poi divergono, e la differenza è quantitativa prima che qualitativa. L’agente della complessità è <strong>deliberatamente stupido</strong>: poche regole, perché la tesi forte è che la complessità stia nell’interazione e non nell’individuo. Interessa il comportamento aggregato di diecimila copie.</p>
+<p>L’agente AI è cognitivamente ricchissimo e ciò che interessa è solo la sua prestazione sul compito.</p>
+<p>Nonostante questa divergenza, ultimamente, avendo a che fare con orchestrazioni, ovvero con l’interazione di molti agenti AI, ecco che ritornano gli stessi comportamenti degli stormi studiati dal gruppo STARFLAG: emergenza, cascate e comportamento gregario.</p>
+<p>I pelucchi invece li abbiamo definitivamente abbandonati in quanto non sono agenti e non lo saranno mai: nella pallina nessuno decide niente, ci sono solo attrito meccanico, adesione e vincoli geometrici. Eppure, è dai pelucchi che sono partito ed è grazie al loro comportamento bizzarro che sono arrivato fin qui.</p>
+<p>Dunque, non tutto ciò che si organizza da solo sta trasmettendo un’informazione: le cuffiette e i pelucchi stanno nello stesso insieme (è lo stesso <em>jamming</em>, fibre flessibili sotto agitazione), mentre gli uccelli di uno stormo e gli agenti AI stanno nell’altro. Seppur i due insiemi possano sembrare simili, sono intrinsecamente e dinamicamente diversi. Come docente di matematica e fisica credo che insegnare a distinguere i due casi sia parte del mio mestiere.</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
