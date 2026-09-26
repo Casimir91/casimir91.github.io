@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2026-09-26">
+<meta name="description" content="Da un pelucchio sui vestiti a Giorgio Parisi e agli stormi: cosa hanno in comune — e cosa no — gli agenti dei sistemi complessi e gli agenti AI.">
 
-<title>Ricerca – Prof.&nbsp;Rosi</title>
+<title>Pelucchi, stormi e agenti AI – Prof.&nbsp;Rosi</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -33,8 +35,6 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-listing/list.min.js"></script>
-<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -72,71 +72,13 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
 
-    const options = {
-      valueNames: ['listing-image','listing-date','listing-title','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<meta property="og:title" content="Ricerca – Prof.&nbsp;Rosi">
-<meta property="og:description" content="Il mio lavoro su intelligenza artificiale e metodi EdTech: progetti, esperimenti e pubblicazioni.">
+<meta property="og:title" content="Pelucchi, stormi e agenti AI – Prof.&nbsp;Rosi">
+<meta property="og:description" content="Da un pelucchio sui vestiti a Giorgio Parisi e agli stormi: cosa hanno in comune — e cosa no — gli agenti dei sistemi complessi e gli agenti AI.">
 <meta property="og:site_name" content="Prof.&nbsp;Rosi">
-<meta name="twitter:title" content="Ricerca – Prof.&nbsp;Rosi">
-<meta name="twitter:description" content="Il mio lavoro su intelligenza artificiale e metodi EdTech: progetti, esperimenti e pubblicazioni.">
+<meta name="twitter:title" content="Pelucchi, stormi e agenti AI – Prof.&nbsp;Rosi">
+<meta name="twitter:description" content="Da un pelucchio sui vestiti a Giorgio Parisi e agli stormi: cosa hanno in comune — e cosa no — gli agenti dei sistemi complessi e gli agenti AI.">
 <meta name="twitter:card" content="summary">
 </head>
 
@@ -189,7 +131,7 @@ window.Quarto = {
     </ul>
   </li>
   <li class="nav-item">
-    <a class="nav-link active" href="../ricerca/index.html" aria-current="page"> 
+    <a class="nav-link" href="../ricerca/index.html"> 
 <span class="menu-text">Ricerca</span></a>
   </li>  
   <li class="nav-item">
@@ -218,23 +160,37 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
         
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(1)</span></div><div class="category" data-category="SW50ZWxsaWdlbnphJTIwQXJ0aWZpY2lhbGU=">Intelligenza Artificiale <span class="quarto-category-count">(1)</span></div><div class="category" data-category="U2lzdGVtaSUyMENvbXBsZXNzaQ==">Sistemi Complessi <span class="quarto-category-count">(1)</span></div></div></div>
+    </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Ricerca</h1>
-<p class="subtitle lead">Il mio lavoro su intelligenza artificiale e metodi EdTech: progetti, esperimenti e pubblicazioni.</p>
-</div>
+<h1 class="title">Pelucchi, stormi e agenti AI</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Intelligenza Artificiale</div>
+    <div class="quarto-category">Sistemi Complessi</div>
+  </div>
+  </div>
 
+<div>
+  <div class="description">
+    Da un pelucchio sui vestiti a Giorgio Parisi e agli stormi: cosa hanno in comune — e cosa no — gli agenti dei sistemi complessi e gli agenti AI.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 26, 2026</p>
+    </div>
+  </div>
   
     
   </div>
@@ -244,44 +200,36 @@ window.Quarto = {
 </header>
 
 
+<p>Credo ci sia un momento in cui tutti noi ci chiediamo: perché le cose inanimate si aggrovigliano come se fossero animate? Ad esempio, perché le vecchie cuffiette a filo una volta messe in tasca si aggrovigliavano su loro stesse in n-modi diversi ma egualmente complicati da districare? Perché si aggrovigliavano sempre e mai si districavano da sole?</p>
+<p>Insomma, sarà perché ho una formazione scientifica rigorosa o perché sto sempre a farmi domande su ciò che mi circonda, ieri sera mi sono chiesto: come nascono i pelucchi dai vestiti? E soprattutto, da dove nascono, dalle magliette o dalle mutande?</p>
+<p>Apro la chat di Claude e chiedo:</p>
+<blockquote class="blockquote">
+<p>Allora, Claude, parlo di una cosa che dovrei sapere, ma probabilmente non so. Giorgio Parisi, il fisico, ha fatto degli studi sul volo degli uccelli, e immagino che da questo volo degli uccelli lui abbia capito un modello fisico, un modello della natura che possiamo applicare a altre storie della vita, per esempio, non so, il mercato finanziario o cose del genere. Adesso mi chiedo, c’è qualcuno che ha studiato il modo in cui dei pelucchi di mutanda diventano delle palline che vagano autonomi e se qualcuno l’ha studiato, cosa possiamo dire di questo modello? E se qualcuno non l’ha studiato si può studiare questo modello e dove sarebbe applicabile?</p>
+</blockquote>
+<p>A questo punto, dalla risposta di Claude emerge che:</p>
+<ul>
+<li>qualcuno ha studiato il comportamento dei pelucchi: il pilling, cioè il processo che forma quelle palline</li>
+<li>il pilling appartiene alla scienza tessile ed è normato con il suo standard ISO</li>
+<li>uno studio del 1959 di Gintis e Mead sul <em>Textile Research Journal</em> ne isola i tre processi principali (formazione della lanugine, aggrovigliamento, distacco) e nel 1974 arriva il modello cinetico che inserisce i tre processi in un’equazione</li>
+<li>un Ig Nobel del 2002 con uno studio su quasi cinquemila persone da cui si osserva che i pelucchi non scendono dalla maglietta ma risalgono dalla biancheria intima trascinati dall’attrito del pelo addominale (lo sapevo!)</li>
+</ul>
+<p>Inoltre, ho avuto modo di ripassare il lavoro di Parisi (progetto STARFLAG 2008) capendo che:</p>
+<ul>
+<li>l’interazione tra gli uccelli di uno stormo è topologica e non metrica, quindi ogni uccello segue i suoi 6-7 vicini più prossimi indipendentemente dalla distanza</li>
+<li>lo stormo è materia attiva in cui ogni agente spende energia e trasmette informazione (agente: termine tecnico presente nella scienza dei sistemi complessi), mentre la pallina di pelucchi è aggregazione passiva e dissipativa descritta da un modello fisico che poggia sull’equazione di coagulazione di Smoluchowski, adesione da van der Waals e carica triboelettrica e jamming per aggrovigliamento (?!?)</li>
+</ul>
+<p>E qui, sarà per la ripida complicazione arrivata con la matematica degli ultimi modelli citati che mi hanno riportato con la mente – e con lo stomaco – ai banchi universitari, o sarà perché oggigiorno il termine “agente” è largamente usato in materia di AI e LLM di cui sono appassionato, la mia attenzione scivola verso questa apparente omonimia tra l’agent based modeling dei sistemi complessi e gli agenti AI.</p>
+<p>Con mia grande sorpresa scopro che sono molto più simili di quel che immaginassi.</p>
+<p>I due filoni nascono negli stessi anni e condividono la stessa definizione (Russell e Norvig): “un agente è tutto ciò che percepisce l’ambiente tramite sensori e agisce su di esso tramite attuatori”. I due concetti chiave che condividono sono <strong>autonomia</strong> (nessun controllore centrale detta la mossa) e <strong>situatezza</strong> (l’agente ha informazione <em>locale</em>, non la vista dall’alto). Il ciclo percezione-azione è identico.</p>
+<p>Poi divergono, e la differenza è quantitativa prima che qualitativa. L’agente della complessità è <strong>deliberatamente stupido</strong>: poche regole, perché la tesi forte è che la complessità stia nell’interazione e non nell’individuo. Interessa il comportamento aggregato di diecimila copie.</p>
+<p>L’agente AI è cognitivamente ricchissimo e ciò che interessa è solo la sua prestazione sul compito.</p>
+<p>Nonostante questa divergenza, ultimamente, avendo a che fare con orchestrazioni, ovvero con l’interazione di molti agenti AI, ecco che ritornano gli stessi comportamenti degli stormi studiati dal gruppo STARFLAG: emergenza, cascate e comportamento gregario.</p>
+<p>I pelucchi invece li abbiamo definitivamente abbandonati in quanto non sono agenti e non lo saranno mai: nella pallina nessuno decide niente, ci sono solo attrito meccanico, adesione e vincoli geometrici. Eppure, è dai pelucchi che sono partito ed è grazie al loro comportamento bizzarro che sono arrivato fin qui.</p>
+<p>Dunque, non tutto ciò che si organizza da solo sta trasmettendo un’informazione: le cuffiette e i pelucchi stanno nello stesso insieme (è lo stesso <em>jamming</em>, fibre flessibili sotto agitazione), mentre gli uccelli di uno stormo e gli agenti AI stanno nell’altro. Seppur i due insiemi possano sembrare simili, sono intrinsecamente e dinamicamente diversi. Come docente di matematica e fisica credo che insegnare a distinguere i due casi sia parte del mio mestiere.</p>
 
 
 
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="SW50ZWxsaWdlbnphJTIwQXJ0aWZpY2lhbGUlMkNTaXN0ZW1pJTIwQ29tcGxlc3Np" data-listing-date-sort="1790373600000" data-listing-file-modified-sort="1790438536733" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="767">
-<div class="thumbnail"><a href="../ricerca/pelucchi-stormi-agenti-ai.html" class="no-external">
-
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../ricerca/pelucchi-stormi-agenti-ai.html" class="no-external">Pelucchi, stormi e agenti AI</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('SW50ZWxsaWdlbnphJTIwQXJ0aWZpY2lhbGU='); return false;">Intelligenza Artificiale</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('U2lzdGVtaSUyMENvbXBsZXNzaQ=='); return false;">Sistemi Complessi</div>
-
-</div>
-<div class="delink listing-description"><a href="../ricerca/pelucchi-stormi-agenti-ai.html" class="no-external">
-<p>Da un pelucchio sui vestiti a Giorgio Parisi e agli stormi: cosa hanno in comune — e cosa no — gli agenti dei sistemi complessi e gli agenti AI.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../ricerca/pelucchi-stormi-agenti-ai.html" class="no-external">
-<div class="listing-date">
-Sep 26, 2026
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
