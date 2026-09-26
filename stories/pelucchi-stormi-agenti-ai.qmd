@@ -1,7 +1,7 @@
 ---
 title: "Pelucchi, stormi e agenti AI"
 description: "Da un pelucchio sui vestiti a Giorgio Parisi e agli stormi: cosa hanno in comune — e cosa no — gli agenti dei sistemi complessi e gli agenti AI."
-date: "2026-09-26"
+date: "2026-08-22"
 categories: [Intelligenza Artificiale, Sistemi Complessi]
 # image: "img/pelucchi-stormi.png"   ← la aggiungi in un secondo momento
 ---
