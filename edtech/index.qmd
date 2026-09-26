@@ -1,6 +1,6 @@
 ---
 title: "EdTech"
-subtitle: "Strumenti e riflessioni per la scuola digitale"
+subtitle: "Strumenti per i professionisti della scuola digitale"
 listing:
   contents: "numero-*.qmd"
   type: default
