@@ -9,6 +9,12 @@ Cinque esercizi sul flusso del campo elettrico e sulle linee di forza. Per ogni 
 
 Costanti utili: $k = 8{,}99\times10^{9}\ \text{N}\,\text{m}^2/\text{C}^2$.
 
+```{ojs}
+//| echo: false
+//| output: false
+PALETTE = ({navy: "#16283F", teal: "#1F7A6D", bord: "#7B1E28", forest: "#0F3D33", ecru: "#F2E9DC", grid: "#c9c2b3"})
+```
+
 ## Esercizio 1 — Le linee di $+2Q$ e $-Q$
 
 ::: {.panel-tabset}
@@ -35,10 +41,10 @@ e1_svg = {
   const defs = svg.append("defs");
   defs.append("marker").attr("id", "e1arrowB").attr("viewBox", "0 0 10 10").attr("refX", 8).attr("refY", 5)
     .attr("markerWidth", 6).attr("markerHeight", 6).attr("orient", "auto-start-reverse")
-    .append("path").attr("d", "M0,0 L10,5 L0,10 z").attr("fill", "#2b6cb0");
+    .append("path").attr("d", "M0,0 L10,5 L0,10 z").attr("fill", PALETTE.navy);
   defs.append("marker").attr("id", "e1arrowO").attr("viewBox", "0 0 10 10").attr("refX", 8).attr("refY", 5)
     .attr("markerWidth", 6).attr("markerHeight", 6).attr("orient", "auto-start-reverse")
-    .append("path").attr("d", "M0,0 L10,5 L0,10 z").attr("fill", "#c05621");
+    .append("path").attr("d", "M0,0 L10,5 L0,10 z").attr("fill", PALETTE.teal);
 
   const plusX = 140, minusX = 340, cy = 120;
   const nToMinus = e1_toMinus;
@@ -52,7 +58,7 @@ e1_svg = {
     const bend = -50 + 100 * t;
     svg.append("path")
       .attr("d", `M ${plusX + 12},${y0} Q ${(plusX + minusX) / 2},${cy + bend} ${minusX - 12},${y1}`)
-      .attr("stroke", "#2b6cb0").attr("fill", "none").attr("stroke-width", 1.4)
+      .attr("stroke", PALETTE.navy).attr("fill", "none").attr("stroke-width", 1.4)
       .attr("marker-end", "url(#e1arrowB)");
   }
 
@@ -61,24 +67,19 @@ e1_svg = {
     const x2 = plusX + 150 * Math.cos(angle);
     const y2 = cy + 150 * Math.sin(angle);
     svg.append("line").attr("x1", plusX).attr("y1", cy).attr("x2", x2).attr("y2", y2)
-      .attr("stroke", "#c05621").attr("stroke-width", 1.2).attr("marker-end", "url(#e1arrowO)");
+      .attr("stroke", PALETTE.teal).attr("stroke-width", 1.2).attr("marker-end", "url(#e1arrowO)");
   }
 
-  svg.append("circle").attr("cx", plusX).attr("cy", cy).attr("r", 17).attr("fill", "#e53e3e");
+  svg.append("circle").attr("cx", plusX).attr("cy", cy).attr("r", 17).attr("fill", PALETTE.bord);
   svg.append("text").attr("x", plusX).attr("y", cy + 5).attr("text-anchor", "middle").attr("fill", "white").attr("font-weight", "bold").text(`+${e1_ratio}Q`);
-  svg.append("circle").attr("cx", minusX).attr("cy", cy).attr("r", 17).attr("fill", "#2c5282");
+  svg.append("circle").attr("cx", minusX).attr("cy", cy).attr("r", 17).attr("fill", PALETTE.navy);
   svg.append("text").attr("x", minusX).attr("y", cy + 5).attr("text-anchor", "middle").attr("fill", "white").attr("font-weight", "bold").text("−Q");
 
-  svg.append("text").attr("x", width / 2).attr("y", 25).attr("text-anchor", "middle").attr("font-size", 13)
+  svg.append("text").attr("x", width / 2).attr("y", 25).attr("text-anchor", "middle").attr("font-size", 13).attr("fill", PALETTE.forest)
     .text(`da +${e1_ratio}Q: ${e1_fromPlus} linee   ·   su −Q: ${nToMinus}   ·   all'infinito: ${nInf}`);
 
   return svg.node();
 }
-```
-
-```{ojs}
-//| echo: false
-e1_svg
 ```
 
 ## Soluzione
@@ -114,41 +115,34 @@ e2_svg = {
   const width = 480, height = 260;
   const svg = d3.create("svg").attr("viewBox", `0 0 ${width} ${height}`).attr("width", "100%").style("font-family", "sans-serif");
   const cx = 240, cy = 190, R = 85;
-  const rad = e2_angle * Math.PI / 180;
 
-  // campo uniforme, sempre verticale
-  for (const x of [cx - 120, cx - 60, cx, cx + 60, cx + 120]) {
-    svg.append("line").attr("x1", x).attr("y1", 30).attr("x2", x).attr("y2", 100)
-      .attr("stroke", "#a0aec0").attr("stroke-width", 1.3)
-      .attr("marker-end", "url(#e2arrow)");
-  }
   const defs = svg.append("defs");
   defs.append("marker").attr("id", "e2arrow").attr("viewBox", "0 0 10 10").attr("refX", 8).attr("refY", 5)
     .attr("markerWidth", 6).attr("markerHeight", 6).attr("orient", "auto-start-reverse")
-    .append("path").attr("d", "M0,0 L10,5 L0,10 z").attr("fill", "#a0aec0");
-  svg.append("text").attr("x", cx + 135).attr("y", 65).attr("font-size", 13).text("E uniforme");
+    .append("path").attr("d", "M0,0 L10,5 L0,10 z").attr("fill", PALETTE.teal);
 
-  // calotta ruotata: disegno un arco (semicerchio) e lo ruoto attorno al centro
+  for (const x of [cx - 120, cx - 60, cx, cx + 60, cx + 120]) {
+    svg.append("line").attr("x1", x).attr("y1", 30).attr("x2", x).attr("y2", 100)
+      .attr("stroke", PALETTE.teal).attr("stroke-width", 1.3)
+      .attr("marker-end", "url(#e2arrow)");
+  }
+  svg.append("text").attr("x", cx + 135).attr("y", 65).attr("font-size", 13).attr("fill", PALETTE.teal).text("E uniforme");
+
   const g = svg.append("g").attr("transform", `translate(${cx},${cy}) rotate(${e2_angle})`);
   g.append("path")
     .attr("d", `M ${-R},0 A ${R},${R} 0 0 1 ${R},0`)
-    .attr("fill", "none").attr("stroke", "black").attr("stroke-width", 2);
+    .attr("fill", "none").attr("stroke", PALETTE.navy).attr("stroke-width", 2);
   g.append("line").attr("x1", -R).attr("y1", 0).attr("x2", R).attr("y2", 0)
-    .attr("stroke", "black").attr("stroke-width", 1.4).attr("stroke-dasharray", "4,3");
+    .attr("stroke", PALETTE.navy).attr("stroke-width", 1.4).attr("stroke-dasharray", "4,3");
   g.append("line").attr("x1", 0).attr("y1", 0).attr("x2", 0).attr("y2", -R - 30)
-    .attr("stroke", "#2b6cb0").attr("stroke-width", 1.6);
-  g.append("text").attr("x", 8).attr("y", -R - 25).attr("fill", "#2b6cb0").attr("font-size", 13).text("asse");
+    .attr("stroke", PALETTE.bord).attr("stroke-width", 1.6);
+  g.append("text").attr("x", 8).attr("y", -R - 25).attr("fill", PALETTE.bord).attr("font-size", 13).text("asse");
 
-  svg.append("text").attr("x", width / 2).attr("y", 240).attr("text-anchor", "middle").attr("font-size", 13)
+  svg.append("text").attr("x", width / 2).attr("y", 240).attr("text-anchor", "middle").attr("font-size", 13).attr("fill", PALETTE.forest)
     .text(`Φ(calotta) ≈ ${e2_flux.toFixed(0)} N·m²/C   (asse–campo: ${e2_angle}°)`);
 
   return svg.node();
 }
-```
-
-```{ojs}
-//| echo: false
-e2_svg
 ```
 
 ## Soluzione
@@ -202,14 +196,14 @@ e3_svg = {
   const Rpx = e3_R * scale;
 
   svg.append("circle").attr("cx", cx).attr("cy", cy).attr("r", R0px)
-    .attr("fill", "none").attr("stroke", "#a0aec0").attr("stroke-width", 1.4).attr("stroke-dasharray", "5,4");
+    .attr("fill", "none").attr("stroke", PALETTE.grid).attr("stroke-width", 1.4).attr("stroke-dasharray", "5,4");
   svg.append("circle").attr("cx", cx).attr("cy", cy).attr("r", Rpx)
-    .attr("fill", "none").attr("stroke", "black").attr("stroke-width", 2);
+    .attr("fill", "none").attr("stroke", PALETTE.navy).attr("stroke-width", 2);
 
   const defs = svg.append("defs");
   defs.append("marker").attr("id", "e3arrow").attr("viewBox", "0 0 10 10").attr("refX", 8).attr("refY", 5)
     .attr("markerWidth", 6).attr("markerHeight", 6).attr("orient", "auto-start-reverse")
-    .append("path").attr("d", "M0,0 L10,5 L0,10 z").attr("fill", "#2b6cb0");
+    .append("path").attr("d", "M0,0 L10,5 L0,10 z").attr("fill", PALETTE.teal);
 
   const n = 8;
   const maxR = Math.max(Rpx, R0px) + 20;
@@ -217,21 +211,16 @@ e3_svg = {
     const a = (2 * Math.PI * i) / n;
     svg.append("line").attr("x1", cx).attr("y1", cy)
       .attr("x2", cx + maxR * Math.cos(a)).attr("y2", cy + maxR * Math.sin(a))
-      .attr("stroke", "#2b6cb0").attr("stroke-width", 1.2).attr("marker-end", "url(#e3arrow)");
+      .attr("stroke", PALETTE.teal).attr("stroke-width", 1.2).attr("marker-end", "url(#e3arrow)");
   }
-  svg.append("circle").attr("cx", cx).attr("cy", cy).attr("r", 5).attr("fill", "black");
-  svg.append("text").attr("x", cx + 8).attr("y", cy - 8).attr("font-size", 13).text("Q");
+  svg.append("circle").attr("cx", cx).attr("cy", cy).attr("r", 6).attr("fill", PALETTE.bord);
+  svg.append("text").attr("x", cx + 10).attr("y", cy - 8).attr("font-size", 13).attr("fill", PALETTE.bord).text("Q");
 
-  svg.append("text").attr("x", width / 2).attr("y", 235).attr("text-anchor", "middle").attr("font-size", 13)
+  svg.append("text").attr("x", width / 2).attr("y", 235).attr("text-anchor", "middle").attr("font-size", 13).attr("fill", PALETTE.forest)
     .text(`R = ${e3_R} cm (R₀ = 10 cm tratteggiato)  ·  E(R)/E(R₀) = ${e3_Efactor.toFixed(2)}  ·  Φ invariato`);
 
   return svg.node();
 }
-```
-
-```{ojs}
-//| echo: false
-e3_svg
 ```
 
 ## Soluzione
@@ -252,7 +241,7 @@ Una carica positiva sta vicinissima a una sfera, ma fuori. Il flusso netto attra
 
 ```{ojs}
 //| echo: false
-viewof e4_dist = Inputs.range([5, 60], {value: 30, step: 5, label: "distanza della carica esterna dalla superficie della sfera (px in scena)"})
+viewof e4_dist = Inputs.range([5, 60], {value: 30, step: 5, label: "distanza della carica esterna dalla superficie della sfera"})
 ```
 
 ```{ojs}
@@ -264,12 +253,12 @@ e4_svg = {
   const qx = cx + R + e4_dist;
 
   svg.append("circle").attr("cx", cx).attr("cy", cy).attr("r", R)
-    .attr("fill", "none").attr("stroke", "black").attr("stroke-width", 2);
+    .attr("fill", "none").attr("stroke", PALETTE.navy).attr("stroke-width", 2);
 
   const defs = svg.append("defs");
   defs.append("marker").attr("id", "e4arrow").attr("viewBox", "0 0 10 10").attr("refX", 8).attr("refY", 5)
     .attr("markerWidth", 6).attr("markerHeight", 6).attr("orient", "auto-start-reverse")
-    .append("path").attr("d", "M0,0 L10,5 L0,10 z").attr("fill", "#c05621");
+    .append("path").attr("d", "M0,0 L10,5 L0,10 z").attr("fill", PALETTE.teal);
 
   const n = 10;
   for (let i = 0; i < n; i++) {
@@ -277,22 +266,17 @@ e4_svg = {
     const x2 = qx + 260 * Math.cos(a);
     const y2 = cy + 260 * Math.sin(a);
     svg.append("line").attr("x1", qx).attr("y1", cy).attr("x2", x2).attr("y2", y2)
-      .attr("stroke", "#c05621").attr("stroke-width", 1.1).attr("marker-end", "url(#e4arrow)");
+      .attr("stroke", PALETTE.teal).attr("stroke-width", 1.1).attr("marker-end", "url(#e4arrow)");
   }
 
-  svg.append("circle").attr("cx", qx).attr("cy", cy).attr("r", 12).attr("fill", "#e53e3e");
+  svg.append("circle").attr("cx", qx).attr("cy", cy).attr("r", 12).attr("fill", PALETTE.bord);
   svg.append("text").attr("x", qx).attr("y", cy + 4).attr("text-anchor", "middle").attr("fill", "white").attr("font-size", 11).attr("font-weight", "bold").text("+q");
 
-  svg.append("text").attr("x", width / 2).attr("y", 240).attr("text-anchor", "middle").attr("font-size", 13)
+  svg.append("text").attr("x", width / 2).attr("y", 240).attr("text-anchor", "middle").attr("font-size", 13).attr("fill", PALETTE.forest)
     .text("ogni linea che entra nella sfera da un lato esce dall'altro: flusso netto = 0");
 
   return svg.node();
 }
-```
-
-```{ojs}
-//| echo: false
-e4_svg
 ```
 
 ## Soluzione
@@ -327,38 +311,33 @@ e6_svg = {
   const leftX = cx - scale, rightX = cx + scale;
 
   svg.append("line").attr("x1", leftX - 30).attr("y1", cy).attr("x2", rightX + 30).attr("y2", cy)
-    .attr("stroke", "#e2e8f0").attr("stroke-width", 1);
+    .attr("stroke", PALETTE.grid).attr("stroke-width", 1);
 
-  svg.append("circle").attr("cx", leftX).attr("cy", cy).attr("r", 15).attr("fill", "#e53e3e");
+  svg.append("circle").attr("cx", leftX).attr("cy", cy).attr("r", 15).attr("fill", PALETTE.bord);
   svg.append("text").attr("x", leftX).attr("y", cy + 4).attr("text-anchor", "middle").attr("fill", "white").attr("font-size", 12).attr("font-weight", "bold").text("+Q");
-  svg.append("circle").attr("cx", rightX).attr("cy", cy).attr("r", 15).attr("fill", "#e53e3e");
+  svg.append("circle").attr("cx", rightX).attr("cy", cy).attr("r", 15).attr("fill", PALETTE.bord);
   svg.append("text").attr("x", rightX).attr("y", cy + 4).attr("text-anchor", "middle").attr("fill", "white").attr("font-size", 12).attr("font-weight", "bold").text("+Q");
 
   const px = cx + e6_x * scale;
-  svg.append("circle").attr("cx", px).attr("cy", cy).attr("r", 4).attr("fill", "black");
+  svg.append("circle").attr("cx", px).attr("cy", cy).attr("r", 4).attr("fill", PALETTE.forest);
 
   const defs = svg.append("defs");
   defs.append("marker").attr("id", "e6arrow").attr("viewBox", "0 0 10 10").attr("refX", 8).attr("refY", 5)
     .attr("markerWidth", 6).attr("markerHeight", 6).attr("orient", "auto-start-reverse")
-    .append("path").attr("d", "M0,0 L10,5 L0,10 z").attr("fill", "#2b6cb0");
+    .append("path").attr("d", "M0,0 L10,5 L0,10 z").attr("fill", PALETTE.navy);
 
   const mag = Math.min(Math.abs(e6_field) * 20, 90);
   const dir = Math.sign(e6_field);
   if (Math.abs(e6_field) > 0.01) {
     svg.append("line").attr("x1", px).attr("y1", cy - 40).attr("x2", px + dir * mag).attr("y2", cy - 40)
-      .attr("stroke", "#2b6cb0").attr("stroke-width", 2.2).attr("marker-end", "url(#e6arrow)");
+      .attr("stroke", PALETTE.navy).attr("stroke-width", 2.2).attr("marker-end", "url(#e6arrow)");
   }
 
-  svg.append("text").attr("x", width / 2).attr("y", 190).attr("text-anchor", "middle").attr("font-size", 13)
+  svg.append("text").attr("x", width / 2).attr("y", 190).attr("text-anchor", "middle").attr("font-size", 13).attr("fill", PALETTE.forest)
     .text(Math.abs(e6_x) < 0.02 ? "nel punto medio: E = 0, nessuna direzione definita" : `E punta verso la carica più lontana (|E| ∝ ${Math.abs(e6_field).toFixed(2)})`);
 
   return svg.node();
 }
-```
-
-```{ojs}
-//| echo: false
-e6_svg
 ```
 
 ## Soluzione
