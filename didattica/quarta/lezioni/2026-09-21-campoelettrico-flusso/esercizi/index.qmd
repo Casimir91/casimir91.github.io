@@ -1,0 +1,368 @@
+---
+title: "Esercizi: linee di forza e flusso del campo elettrico"
+subtitle: "Assegnati per il 28/09 — 4A"
+date: 2026-09-27
+categories: [Fisica]
+---
+
+Cinque esercizi sul flusso del campo elettrico e sulle linee di forza. Per ogni esercizio, prima leggi il testo e prova a ragionare con l'aiuto dello schema interattivo — muovi lo slider per esplorare cosa cambia — poi apri la scheda **Soluzione** per confrontare il tuo ragionamento.
+
+Costanti utili: $k = 8{,}99\times10^{9}\ \text{N}\,\text{m}^2/\text{C}^2$.
+
+## Esercizio 1 — Le linee di $+2Q$ e $-Q$
+
+::: {.panel-tabset}
+
+## Esercizio
+
+Disegnate le linee di forza di due cariche, $+2Q$ e $-Q$, usando 8 linee per ogni unità di carica $Q$. Quante linee partono da $+2Q$? Quante arrivano su $-Q$? Quante vanno all'infinito?
+
+```{ojs}
+//| echo: false
+viewof e1_ratio = Inputs.range([1, 4], {value: 2, step: 1, label: "rapporto di carica: (+n·Q) rispetto a (−Q)"})
+```
+
+```{ojs}
+//| echo: false
+e1_linesPerUnit = 8
+e1_fromPlus = e1_linesPerUnit * e1_ratio
+e1_toMinus = e1_linesPerUnit
+e1_toInfinity = e1_fromPlus - e1_toMinus
+
+e1_svg = {
+  const width = 480, height = 240;
+  const svg = d3.create("svg").attr("viewBox", `0 0 ${width} ${height}`).attr("width", "100%").style("font-family", "sans-serif");
+  const defs = svg.append("defs");
+  defs.append("marker").attr("id", "e1arrowB").attr("viewBox", "0 0 10 10").attr("refX", 8).attr("refY", 5)
+    .attr("markerWidth", 6).attr("markerHeight", 6).attr("orient", "auto-start-reverse")
+    .append("path").attr("d", "M0,0 L10,5 L0,10 z").attr("fill", "#2b6cb0");
+  defs.append("marker").attr("id", "e1arrowO").attr("viewBox", "0 0 10 10").attr("refX", 8).attr("refY", 5)
+    .attr("markerWidth", 6).attr("markerHeight", 6).attr("orient", "auto-start-reverse")
+    .append("path").attr("d", "M0,0 L10,5 L0,10 z").attr("fill", "#c05621");
+
+  const plusX = 140, minusX = 340, cy = 120;
+  const nToMinus = e1_toMinus;
+  const nInf = e1_toInfinity;
+
+  for (let i = 0; i < nToMinus; i++) {
+    const t = (i + 1) / (nToMinus + 1);
+    const spread = 80;
+    const y0 = cy - spread / 2 + spread * t;
+    const y1 = cy - spread / 2 + spread * t;
+    const bend = -50 + 100 * t;
+    svg.append("path")
+      .attr("d", `M ${plusX + 12},${y0} Q ${(plusX + minusX) / 2},${cy + bend} ${minusX - 12},${y1}`)
+      .attr("stroke", "#2b6cb0").attr("fill", "none").attr("stroke-width", 1.4)
+      .attr("marker-end", "url(#e1arrowB)");
+  }
+
+  for (let i = 0; i < nInf; i++) {
+    const angle = Math.PI * 0.62 + (Math.PI * 0.76) * (nInf > 1 ? i / (nInf - 1) : 0.5);
+    const x2 = plusX + 150 * Math.cos(angle);
+    const y2 = cy + 150 * Math.sin(angle);
+    svg.append("line").attr("x1", plusX).attr("y1", cy).attr("x2", x2).attr("y2", y2)
+      .attr("stroke", "#c05621").attr("stroke-width", 1.2).attr("marker-end", "url(#e1arrowO)");
+  }
+
+  svg.append("circle").attr("cx", plusX).attr("cy", cy).attr("r", 17).attr("fill", "#e53e3e");
+  svg.append("text").attr("x", plusX).attr("y", cy + 5).attr("text-anchor", "middle").attr("fill", "white").attr("font-weight", "bold").text(`+${e1_ratio}Q`);
+  svg.append("circle").attr("cx", minusX).attr("cy", cy).attr("r", 17).attr("fill", "#2c5282");
+  svg.append("text").attr("x", minusX).attr("y", cy + 5).attr("text-anchor", "middle").attr("fill", "white").attr("font-weight", "bold").text("−Q");
+
+  svg.append("text").attr("x", width / 2).attr("y", 25).attr("text-anchor", "middle").attr("font-size", 13)
+    .text(`da +${e1_ratio}Q: ${e1_fromPlus} linee   ·   su −Q: ${nToMinus}   ·   all'infinito: ${nInf}`);
+
+  return svg.node();
+}
+```
+
+```{ojs}
+//| echo: false
+e1_svg
+```
+
+## Soluzione
+
+$+2Q$ ha il doppio della carica dell'unità di riferimento, quindi genera $2\times8=16$ linee uscenti. $-Q$, in modulo pari a un'unità, ne assorbe 8. Delle 16 linee uscenti da $+2Q$, 8 terminano su $-Q$ (bilanciando esattamente la sua carica) e le restanti 8 vanno all'infinito.
+
+**Risposte:** 16 linee partono da $+2Q$ · 8 arrivano su $-Q$ · 8 vanno all'infinito.
+
+Il criterio guida: il numero di linee è proporzionale alla carica, e ogni linea che nasce su una carica positiva deve terminare su una negativa o andare all'infinito.
+
+:::
+
+## Esercizio 2 — Una calotta semisferica in un campo uniforme
+
+::: {.panel-tabset}
+
+## Esercizio
+
+Una calotta semisferica di raggio $10\ \text{cm}$ è in un campo uniforme di $2{,}0\times10^3\ \text{N/C}$ parallelo al suo asse. Calcolate il flusso attraverso la calotta (normale uscente). Che cosa cambia se la ruotate di $90°$?
+
+```{ojs}
+//| echo: false
+viewof e2_angle = Inputs.range([0, 90], {value: 0, step: 5, label: "angolo tra l'asse della calotta e il campo E (°)"})
+```
+
+```{ojs}
+//| echo: false
+e2_E = 2.0e3
+e2_r = 0.10
+e2_flux = e2_E * Math.PI * e2_r * e2_r * Math.cos(e2_angle * Math.PI / 180)
+
+e2_svg = {
+  const width = 480, height = 260;
+  const svg = d3.create("svg").attr("viewBox", `0 0 ${width} ${height}`).attr("width", "100%").style("font-family", "sans-serif");
+  const cx = 240, cy = 190, R = 85;
+  const rad = e2_angle * Math.PI / 180;
+
+  // campo uniforme, sempre verticale
+  for (const x of [cx - 120, cx - 60, cx, cx + 60, cx + 120]) {
+    svg.append("line").attr("x1", x).attr("y1", 30).attr("x2", x).attr("y2", 100)
+      .attr("stroke", "#a0aec0").attr("stroke-width", 1.3)
+      .attr("marker-end", "url(#e2arrow)");
+  }
+  const defs = svg.append("defs");
+  defs.append("marker").attr("id", "e2arrow").attr("viewBox", "0 0 10 10").attr("refX", 8).attr("refY", 5)
+    .attr("markerWidth", 6).attr("markerHeight", 6).attr("orient", "auto-start-reverse")
+    .append("path").attr("d", "M0,0 L10,5 L0,10 z").attr("fill", "#a0aec0");
+  svg.append("text").attr("x", cx + 135).attr("y", 65).attr("font-size", 13).text("E uniforme");
+
+  // calotta ruotata: disegno un arco (semicerchio) e lo ruoto attorno al centro
+  const g = svg.append("g").attr("transform", `translate(${cx},${cy}) rotate(${e2_angle})`);
+  g.append("path")
+    .attr("d", `M ${-R},0 A ${R},${R} 0 0 1 ${R},0`)
+    .attr("fill", "none").attr("stroke", "black").attr("stroke-width", 2);
+  g.append("line").attr("x1", -R).attr("y1", 0).attr("x2", R).attr("y2", 0)
+    .attr("stroke", "black").attr("stroke-width", 1.4).attr("stroke-dasharray", "4,3");
+  g.append("line").attr("x1", 0).attr("y1", 0).attr("x2", 0).attr("y2", -R - 30)
+    .attr("stroke", "#2b6cb0").attr("stroke-width", 1.6);
+  g.append("text").attr("x", 8).attr("y", -R - 25).attr("fill", "#2b6cb0").attr("font-size", 13).text("asse");
+
+  svg.append("text").attr("x", width / 2).attr("y", 240).attr("text-anchor", "middle").attr("font-size", 13)
+    .text(`Φ(calotta) ≈ ${e2_flux.toFixed(0)} N·m²/C   (asse–campo: ${e2_angle}°)`);
+
+  return svg.node();
+}
+```
+
+```{ojs}
+//| echo: false
+e2_svg
+```
+
+## Soluzione
+
+**Il punto chiave: non calcoliamo il flusso della calotta direttamente, ma lo ricaviamo da una superficie chiusa.** Chiudiamo la calotta con il disco piatto che ne è il bordo (il cerchio equatoriale di raggio $10\ \text{cm}$): calotta + disco formano insieme una superficie *chiusa* (una mezza-palla sigillata). Dentro questa superficie chiusa non c'è nessuna carica, quindi il suo flusso totale è nullo:
+
+$$
+\Phi_{\text{tot}} = \Phi_{\text{calotta}} + \Phi_{\text{disco}} = 0
+\quad\Longrightarrow\quad
+\Phi_{\text{calotta}} = -\Phi_{\text{disco}}
+$$
+
+Il flusso attraverso il disco, perpendicolare al campo (l'asse della calotta è parallelo al campo), si calcola subito:
+
+$$
+\Phi_{\text{disco}} = E\cdot\pi r^2 = (2{,}0\times10^3)(\pi)(0{,}10)^2 \approx 63\ \text{N}\,\text{m}^2/\text{C}
+$$
+
+con normale uscente dalla mezza-palla (verso il basso, opposta al campo): $\Phi_{\text{disco}}<0$ con questa orientazione. Quindi $\Phi_{\text{calotta}} \approx +63\ \text{N}\,\text{m}^2/\text{C}$ con normale uscente verso l'alto.
+
+Perché torna anche intuitivamente: il campo è uniforme e verticale, e non ci sono cariche dentro la mezza-palla che creino o assorbano linee di campo. Ogni linea che entra dal disco in basso deve quindi uscire da qualche parte sulla calotta sopra di essa — nessuna linea può nascere o sparire nel vuoto.
+
+**Ruotando di $90°$:** l'asse della calotta diventa perpendicolare al campo, quindi il piano del disco-bordo diventa *parallelo* al campo. La normale al disco è allora perpendicolare al campo, $\Phi_{\text{disco}}=0$, e per lo stesso argomento anche $\Phi_{\text{calotta}} = 0$.
+
+:::
+
+## Esercizio 3 — Sfera più grande
+
+::: {.panel-tabset}
+
+## Esercizio
+
+Una carica $Q$ è al centro di una sfera. Se raddoppio il raggio della sfera, cosa succede al flusso? E al campo sulla superficie?
+
+```{ojs}
+//| echo: false
+viewof e3_R = Inputs.range([5, 20], {value: 10, step: 1, label: "raggio R della superficie sferica (cm)"})
+```
+
+```{ojs}
+//| echo: false
+e3_R0 = 10
+e3_Efactor = Math.pow(e3_R0 / e3_R, 2)
+
+e3_svg = {
+  const width = 480, height = 260;
+  const svg = d3.create("svg").attr("viewBox", `0 0 ${width} ${height}`).attr("width", "100%").style("font-family", "sans-serif");
+  const cx = 240, cy = 130;
+  const scale = 8;
+  const R0px = e3_R0 * scale;
+  const Rpx = e3_R * scale;
+
+  svg.append("circle").attr("cx", cx).attr("cy", cy).attr("r", R0px)
+    .attr("fill", "none").attr("stroke", "#a0aec0").attr("stroke-width", 1.4).attr("stroke-dasharray", "5,4");
+  svg.append("circle").attr("cx", cx).attr("cy", cy).attr("r", Rpx)
+    .attr("fill", "none").attr("stroke", "black").attr("stroke-width", 2);
+
+  const defs = svg.append("defs");
+  defs.append("marker").attr("id", "e3arrow").attr("viewBox", "0 0 10 10").attr("refX", 8).attr("refY", 5)
+    .attr("markerWidth", 6).attr("markerHeight", 6).attr("orient", "auto-start-reverse")
+    .append("path").attr("d", "M0,0 L10,5 L0,10 z").attr("fill", "#2b6cb0");
+
+  const n = 8;
+  const maxR = Math.max(Rpx, R0px) + 20;
+  for (let i = 0; i < n; i++) {
+    const a = (2 * Math.PI * i) / n;
+    svg.append("line").attr("x1", cx).attr("y1", cy)
+      .attr("x2", cx + maxR * Math.cos(a)).attr("y2", cy + maxR * Math.sin(a))
+      .attr("stroke", "#2b6cb0").attr("stroke-width", 1.2).attr("marker-end", "url(#e3arrow)");
+  }
+  svg.append("circle").attr("cx", cx).attr("cy", cy).attr("r", 5).attr("fill", "black");
+  svg.append("text").attr("x", cx + 8).attr("y", cy - 8).attr("font-size", 13).text("Q");
+
+  svg.append("text").attr("x", width / 2).attr("y", 235).attr("text-anchor", "middle").attr("font-size", 13)
+    .text(`R = ${e3_R} cm (R₀ = 10 cm tratteggiato)  ·  E(R)/E(R₀) = ${e3_Efactor.toFixed(2)}  ·  Φ invariato`);
+
+  return svg.node();
+}
+```
+
+```{ojs}
+//| echo: false
+e3_svg
+```
+
+## Soluzione
+
+Il flusso attraverso la sfera dipende solo dalla carica racchiusa, non dal raggio: raddoppiando $R$ il flusso resta **invariato**. Il campo sulla superficie, invece, scala come $1/R^2$ (legge di Coulomb): raddoppiando $R$ il campo diventa $1/4$ del valore precedente.
+
+È l'esercizio-chiave che separa i due concetti da tenere distinti: il flusso (proprietà globale, legata solo alla carica interna) e il campo (proprietà locale, punto per punto, che dipende dalla distanza). Il prodotto $E\cdot A$ resta costante al variare di $R$ perché $E$ cala come $1/R^2$ mentre $A$ cresce come $R^2$.
+
+:::
+
+## Esercizio 4 — Carica fuori
+
+::: {.panel-tabset}
+
+## Esercizio
+
+Una carica positiva sta vicinissima a una sfera, ma fuori. Il flusso netto attraverso la sfera è positivo, negativo o nullo?
+
+```{ojs}
+//| echo: false
+viewof e4_dist = Inputs.range([5, 60], {value: 30, step: 5, label: "distanza della carica esterna dalla superficie della sfera (px in scena)"})
+```
+
+```{ojs}
+//| echo: false
+e4_svg = {
+  const width = 480, height = 260;
+  const svg = d3.create("svg").attr("viewBox", `0 0 ${width} ${height}`).attr("width", "100%").style("font-family", "sans-serif");
+  const cx = 190, cy = 140, R = 70;
+  const qx = cx + R + e4_dist;
+
+  svg.append("circle").attr("cx", cx).attr("cy", cy).attr("r", R)
+    .attr("fill", "none").attr("stroke", "black").attr("stroke-width", 2);
+
+  const defs = svg.append("defs");
+  defs.append("marker").attr("id", "e4arrow").attr("viewBox", "0 0 10 10").attr("refX", 8).attr("refY", 5)
+    .attr("markerWidth", 6).attr("markerHeight", 6).attr("orient", "auto-start-reverse")
+    .append("path").attr("d", "M0,0 L10,5 L0,10 z").attr("fill", "#c05621");
+
+  const n = 10;
+  for (let i = 0; i < n; i++) {
+    const a = Math.PI * 0.55 + (Math.PI * 0.9) * (i / (n - 1));
+    const x2 = qx + 260 * Math.cos(a);
+    const y2 = cy + 260 * Math.sin(a);
+    svg.append("line").attr("x1", qx).attr("y1", cy).attr("x2", x2).attr("y2", y2)
+      .attr("stroke", "#c05621").attr("stroke-width", 1.1).attr("marker-end", "url(#e4arrow)");
+  }
+
+  svg.append("circle").attr("cx", qx).attr("cy", cy).attr("r", 12).attr("fill", "#e53e3e");
+  svg.append("text").attr("x", qx).attr("y", cy + 4).attr("text-anchor", "middle").attr("fill", "white").attr("font-size", 11).attr("font-weight", "bold").text("+q");
+
+  svg.append("text").attr("x", width / 2).attr("y", 240).attr("text-anchor", "middle").attr("font-size", 13)
+    .text("ogni linea che entra nella sfera da un lato esce dall'altro: flusso netto = 0");
+
+  return svg.node();
+}
+```
+
+```{ojs}
+//| echo: false
+e4_svg
+```
+
+## Soluzione
+
+**Nullo.** Il teorema di Gauss conta solo le cariche racchiuse dalla superficie: una carica esterna, per quanto vicina, contribuisce con flusso netto zero attraverso qualunque superficie chiusa. Localmente il campo della carica esterna non è nullo sulla sfera (attraversa la superficie con linee che entrano da un lato), ma ogni linea che entra da una parte della sfera esce dall'altra: il computo netto si annulla.
+
+"Vicinissima" è la parola-trappola: la vicinanza rende grande il campo locale in quella zona della sfera, ma non introduce carica racchiusa, quindi non altera il flusso netto.
+
+:::
+
+## Esercizio 6 — Punto medio
+
+::: {.panel-tabset}
+
+## Esercizio
+
+Due cariche uguali e positive sono a distanza $d$. Nel loro punto medio $E=0$. Passa una linea di forza per quel punto?
+
+```{ojs}
+//| echo: false
+viewof e6_x = Inputs.range([-0.85, 0.85], {value: 0, step: 0.05, label: "posizione lungo l'asse (0 = punto medio, ±1 ≈ posizione delle cariche)"})
+```
+
+```{ojs}
+//| echo: false
+e6_field = 1 / Math.pow(1 + e6_x, 2) - 1 / Math.pow(1 - e6_x, 2)
+
+e6_svg = {
+  const width = 480, height = 220;
+  const svg = d3.create("svg").attr("viewBox", `0 0 ${width} ${height}`).attr("width", "100%").style("font-family", "sans-serif");
+  const cx = 240, cy = 120, scale = 160;
+  const leftX = cx - scale, rightX = cx + scale;
+
+  svg.append("line").attr("x1", leftX - 30).attr("y1", cy).attr("x2", rightX + 30).attr("y2", cy)
+    .attr("stroke", "#e2e8f0").attr("stroke-width", 1);
+
+  svg.append("circle").attr("cx", leftX).attr("cy", cy).attr("r", 15).attr("fill", "#e53e3e");
+  svg.append("text").attr("x", leftX).attr("y", cy + 4).attr("text-anchor", "middle").attr("fill", "white").attr("font-size", 12).attr("font-weight", "bold").text("+Q");
+  svg.append("circle").attr("cx", rightX).attr("cy", cy).attr("r", 15).attr("fill", "#e53e3e");
+  svg.append("text").attr("x", rightX).attr("y", cy + 4).attr("text-anchor", "middle").attr("fill", "white").attr("font-size", 12).attr("font-weight", "bold").text("+Q");
+
+  const px = cx + e6_x * scale;
+  svg.append("circle").attr("cx", px).attr("cy", cy).attr("r", 4).attr("fill", "black");
+
+  const defs = svg.append("defs");
+  defs.append("marker").attr("id", "e6arrow").attr("viewBox", "0 0 10 10").attr("refX", 8).attr("refY", 5)
+    .attr("markerWidth", 6).attr("markerHeight", 6).attr("orient", "auto-start-reverse")
+    .append("path").attr("d", "M0,0 L10,5 L0,10 z").attr("fill", "#2b6cb0");
+
+  const mag = Math.min(Math.abs(e6_field) * 20, 90);
+  const dir = Math.sign(e6_field);
+  if (Math.abs(e6_field) > 0.01) {
+    svg.append("line").attr("x1", px).attr("y1", cy - 40).attr("x2", px + dir * mag).attr("y2", cy - 40)
+      .attr("stroke", "#2b6cb0").attr("stroke-width", 2.2).attr("marker-end", "url(#e6arrow)");
+  }
+
+  svg.append("text").attr("x", width / 2).attr("y", 190).attr("text-anchor", "middle").attr("font-size", 13)
+    .text(Math.abs(e6_x) < 0.02 ? "nel punto medio: E = 0, nessuna direzione definita" : `E punta verso la carica più lontana (|E| ∝ ${Math.abs(e6_field).toFixed(2)})`);
+
+  return svg.node();
+}
+```
+
+```{ojs}
+//| echo: false
+e6_svg
+```
+
+## Soluzione
+
+**No.** Una linea di forza, per definizione, è tracciata seguendo in ogni punto la direzione del campo. In un punto dove $E=0$ il campo non ha una direzione definita, quindi nessuna linea di forza può passare esattamente per quel punto: è un punto di equilibrio (le linee provenienti dalle due cariche si avvicinano e si "annullano" a vicenda in quella zona, senza mai toccare il punto stesso).
+
+:::

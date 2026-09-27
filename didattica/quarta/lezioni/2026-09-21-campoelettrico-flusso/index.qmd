@@ -15,4 +15,4 @@ categories: [Fisica]
 
 ## Materiali e indicazioni per lo studio
 
-*(da compilare)*
+[Esercizi assegnati per il 28/09 ↗](esercizi/index.qmd){target="_blank" .btn .btn-outline-primary}
