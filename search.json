@@ -56,291 +56,256 @@
     "text": "Materiali di Fisica per la classe terza.\n\n\n\n\n\n\n\n\nNo matching items"
   },
   {
-    "objectID": "didattica/quarta/lezioni/2026-09-21-campoelettrico-flusso/esercizi/index.html",
-    "href": "didattica/quarta/lezioni/2026-09-21-campoelettrico-flusso/esercizi/index.html",
-    "title": "Esercizi: linee di forza e flusso del campo elettrico",
-    "section": "",
-    "text": "Cinque esercizi sul flusso del campo elettrico e sulle linee di forza. Per ogni esercizio, prima leggi il testo e prova a ragionare con l’aiuto dello schema interattivo — muovi lo slider per esplorare cosa cambia — poi apri la scheda Soluzione per confrontare il tuo ragionamento.\nCostanti utili: \\(k = 8{,}99\\times10^{9}\\ \\text{N}\\,\\text{m}^2/\\text{C}^2\\).\nPALETTE = ({navy: \"#16283F\", teal: \"#1F7A6D\", bord: \"#7B1E28\", forest: \"#0F3D33\", ecru: \"#F2E9DC\", grid: \"#c9c2b3\"})"
-  },
-  {
-    "objectID": "didattica/quarta/lezioni/2026-09-21-campoelettrico-flusso/esercizi/index.html#esercizio-1-le-linee-di-2q-e--q",
-    "href": "didattica/quarta/lezioni/2026-09-21-campoelettrico-flusso/esercizi/index.html#esercizio-1-le-linee-di-2q-e--q",
-    "title": "Esercizi: linee di forza e flusso del campo elettrico",
-    "section": "Esercizio 1 — Le linee di \\(+2Q\\) e \\(-Q\\)",
-    "text": "Esercizio 1 — Le linee di \\(+2Q\\) e \\(-Q\\)\n\nEsercizioSoluzione\n\n\nDisegnate le linee di forza di due cariche, \\(+2Q\\) e \\(-Q\\), usando 8 linee per ogni unità di carica \\(Q\\). Quante linee partono da \\(+2Q\\)? Quante arrivano su \\(-Q\\)? Quante vanno all’infinito?\n\nviewof e1_ratio = Inputs.range([1, 4], {value: 2, step: 1, label: \"rapporto di carica: (+n·Q) rispetto a (−Q)\"})\n\n\n\n\n\n\n\ne1_linesPerUnit = 8\ne1_fromPlus = e1_linesPerUnit * e1_ratio\ne1_toMinus = e1_linesPerUnit\ne1_toInfinity = e1_fromPlus - e1_toMinus\n\ne1_svg = {\n  const width = 480, height = 240;\n  const svg = d3.create(\"svg\").attr(\"viewBox\", `0 0 ${width} ${height}`).attr(\"width\", \"100%\").style(\"font-family\", \"sans-serif\");\n  const defs = svg.append(\"defs\");\n  defs.append(\"marker\").attr(\"id\", \"e1arrowB\").attr(\"viewBox\", \"0 0 10 10\").attr(\"refX\", 8).attr(\"refY\", 5)\n    .attr(\"markerWidth\", 6).attr(\"markerHeight\", 6).attr(\"orient\", \"auto-start-reverse\")\n    .append(\"path\").attr(\"d\", \"M0,0 L10,5 L0,10 z\").attr(\"fill\", PALETTE.navy);\n  defs.append(\"marker\").attr(\"id\", \"e1arrowO\").attr(\"viewBox\", \"0 0 10 10\").attr(\"refX\", 8).attr(\"refY\", 5)\n    .attr(\"markerWidth\", 6).attr(\"markerHeight\", 6).attr(\"orient\", \"auto-start-reverse\")\n    .append(\"path\").attr(\"d\", \"M0,0 L10,5 L0,10 z\").attr(\"fill\", PALETTE.teal);\n\n  const plusX = 140, minusX = 340, cy = 120;\n  const nToMinus = e1_toMinus;\n  const nInf = e1_toInfinity;\n\n  for (let i = 0; i &lt; nToMinus; i++) {\n    const t = (i + 1) / (nToMinus + 1);\n    const spread = 80;\n    const y0 = cy - spread / 2 + spread * t;\n    const y1 = cy - spread / 2 + spread * t;\n    const bend = -50 + 100 * t;\n    svg.append(\"path\")\n      .attr(\"d\", `M ${plusX + 12},${y0} Q ${(plusX + minusX) / 2},${cy + bend} ${minusX - 12},${y1}`)\n      .attr(\"stroke\", PALETTE.navy).attr(\"fill\", \"none\").attr(\"stroke-width\", 1.4)\n      .attr(\"marker-end\", \"url(#e1arrowB)\");\n  }\n\n  for (let i = 0; i &lt; nInf; i++) {\n    const angle = Math.PI * 0.62 + (Math.PI * 0.76) * (nInf &gt; 1 ? i / (nInf - 1) : 0.5);\n    const x2 = plusX + 150 * Math.cos(angle);\n    const y2 = cy + 150 * Math.sin(angle);\n    svg.append(\"line\").attr(\"x1\", plusX).attr(\"y1\", cy).attr(\"x2\", x2).attr(\"y2\", y2)\n      .attr(\"stroke\", PALETTE.teal).attr(\"stroke-width\", 1.2).attr(\"marker-end\", \"url(#e1arrowO)\");\n  }\n\n  svg.append(\"circle\").attr(\"cx\", plusX).attr(\"cy\", cy).attr(\"r\", 17).attr(\"fill\", PALETTE.bord);\n  svg.append(\"text\").attr(\"x\", plusX).attr(\"y\", cy + 5).attr(\"text-anchor\", \"middle\").attr(\"fill\", \"white\").attr(\"font-weight\", \"bold\").text(`+${e1_ratio}Q`);\n  svg.append(\"circle\").attr(\"cx\", minusX).attr(\"cy\", cy).attr(\"r\", 17).attr(\"fill\", PALETTE.navy);\n  svg.append(\"text\").attr(\"x\", minusX).attr(\"y\", cy + 5).attr(\"text-anchor\", \"middle\").attr(\"fill\", \"white\").attr(\"font-weight\", \"bold\").text(\"−Q\");\n\n  svg.append(\"text\").attr(\"x\", width / 2).attr(\"y\", 25).attr(\"text-anchor\", \"middle\").attr(\"font-size\", 13).attr(\"fill\", PALETTE.forest)\n    .text(`da +${e1_ratio}Q: ${e1_fromPlus} linee   ·   su −Q: ${nToMinus}   ·   all'infinito: ${nInf}`);\n\n  return svg.node();\n}\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\\(+2Q\\) ha il doppio della carica dell’unità di riferimento, quindi genera \\(2\\times8=16\\) linee uscenti. \\(-Q\\), in modulo pari a un’unità, ne assorbe 8. Delle 16 linee uscenti da \\(+2Q\\), 8 terminano su \\(-Q\\) (bilanciando esattamente la sua carica) e le restanti 8 vanno all’infinito.\nRisposte: 16 linee partono da \\(+2Q\\) · 8 arrivano su \\(-Q\\) · 8 vanno all’infinito.\nIl criterio guida: il numero di linee è proporzionale alla carica, e ogni linea che nasce su una carica positiva deve terminare su una negativa o andare all’infinito."
-  },
-  {
-    "objectID": "didattica/quarta/lezioni/2026-09-21-campoelettrico-flusso/esercizi/index.html#esercizio-2-una-calotta-semisferica-in-un-campo-uniforme",
-    "href": "didattica/quarta/lezioni/2026-09-21-campoelettrico-flusso/esercizi/index.html#esercizio-2-una-calotta-semisferica-in-un-campo-uniforme",
-    "title": "Esercizi: linee di forza e flusso del campo elettrico",
-    "section": "Esercizio 2 — Una calotta semisferica in un campo uniforme",
-    "text": "Esercizio 2 — Una calotta semisferica in un campo uniforme\n\nEsercizioSoluzione\n\n\nUna calotta semisferica di raggio \\(10\\ \\text{cm}\\) è in un campo uniforme di \\(2{,}0\\times10^3\\ \\text{N/C}\\) parallelo al suo asse. Calcolate il flusso attraverso la calotta (normale uscente). Che cosa cambia se la ruotate di \\(90°\\)?\n\nviewof e2_angle = Inputs.range([0, 90], {value: 0, step: 5, label: \"angolo tra l'asse della calotta e il campo E (°)\"})\n\n\n\n\n\n\n\ne2_E = 2.0e3\ne2_r = 0.10\ne2_flux = e2_E * Math.PI * e2_r * e2_r * Math.cos(e2_angle * Math.PI / 180)\n\ne2_svg = {\n  const width = 480, height = 260;\n  const svg = d3.create(\"svg\").attr(\"viewBox\", `0 0 ${width} ${height}`).attr(\"width\", \"100%\").style(\"font-family\", \"sans-serif\");\n  const cx = 240, cy = 190, R = 85;\n\n  const defs = svg.append(\"defs\");\n  defs.append(\"marker\").attr(\"id\", \"e2arrow\").attr(\"viewBox\", \"0 0 10 10\").attr(\"refX\", 8).attr(\"refY\", 5)\n    .attr(\"markerWidth\", 6).attr(\"markerHeight\", 6).attr(\"orient\", \"auto-start-reverse\")\n    .append(\"path\").attr(\"d\", \"M0,0 L10,5 L0,10 z\").attr(\"fill\", PALETTE.teal);\n\n  for (const x of [cx - 120, cx - 60, cx, cx + 60, cx + 120]) {\n    svg.append(\"line\").attr(\"x1\", x).attr(\"y1\", 30).attr(\"x2\", x).attr(\"y2\", 100)\n      .attr(\"stroke\", PALETTE.teal).attr(\"stroke-width\", 1.3)\n      .attr(\"marker-end\", \"url(#e2arrow)\");\n  }\n  svg.append(\"text\").attr(\"x\", cx + 135).attr(\"y\", 65).attr(\"font-size\", 13).attr(\"fill\", PALETTE.teal).text(\"E uniforme\");\n\n  const g = svg.append(\"g\").attr(\"transform\", `translate(${cx},${cy}) rotate(${e2_angle})`);\n  g.append(\"path\")\n    .attr(\"d\", `M ${-R},0 A ${R},${R} 0 0 1 ${R},0`)\n    .attr(\"fill\", \"none\").attr(\"stroke\", PALETTE.navy).attr(\"stroke-width\", 2);\n  g.append(\"line\").attr(\"x1\", -R).attr(\"y1\", 0).attr(\"x2\", R).attr(\"y2\", 0)\n    .attr(\"stroke\", PALETTE.navy).attr(\"stroke-width\", 1.4).attr(\"stroke-dasharray\", \"4,3\");\n  g.append(\"line\").attr(\"x1\", 0).attr(\"y1\", 0).attr(\"x2\", 0).attr(\"y2\", -R - 30)\n    .attr(\"stroke\", PALETTE.bord).attr(\"stroke-width\", 1.6);\n  g.append(\"text\").attr(\"x\", 8).attr(\"y\", -R - 25).attr(\"fill\", PALETTE.bord).attr(\"font-size\", 13).text(\"asse\");\n\n  svg.append(\"text\").attr(\"x\", width / 2).attr(\"y\", 240).attr(\"text-anchor\", \"middle\").attr(\"font-size\", 13).attr(\"fill\", PALETTE.forest)\n    .text(`Φ(calotta) ≈ ${e2_flux.toFixed(0)} N·m²/C   (asse–campo: ${e2_angle}°)`);\n\n  return svg.node();\n}\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nIl punto chiave: non calcoliamo il flusso della calotta direttamente, ma lo ricaviamo da una superficie chiusa. Chiudiamo la calotta con il disco piatto che ne è il bordo (il cerchio equatoriale di raggio \\(10\\ \\text{cm}\\)): calotta + disco formano insieme una superficie chiusa (una mezza-palla sigillata). Dentro questa superficie chiusa non c’è nessuna carica, quindi il suo flusso totale è nullo:\n\\[\n\\Phi_{\\text{tot}} = \\Phi_{\\text{calotta}} + \\Phi_{\\text{disco}} = 0\n\\quad\\Longrightarrow\\quad\n\\Phi_{\\text{calotta}} = -\\Phi_{\\text{disco}}\n\\]\nIl flusso attraverso il disco, perpendicolare al campo (l’asse della calotta è parallelo al campo), si calcola subito:\n\\[\n\\Phi_{\\text{disco}} = E\\cdot\\pi r^2 = (2{,}0\\times10^3)(\\pi)(0{,}10)^2 \\approx 63\\ \\text{N}\\,\\text{m}^2/\\text{C}\n\\]\ncon normale uscente dalla mezza-palla (verso il basso, opposta al campo): \\(\\Phi_{\\text{disco}}&lt;0\\) con questa orientazione. Quindi \\(\\Phi_{\\text{calotta}} \\approx +63\\ \\text{N}\\,\\text{m}^2/\\text{C}\\) con normale uscente verso l’alto.\nPerché torna anche intuitivamente: il campo è uniforme e verticale, e non ci sono cariche dentro la mezza-palla che creino o assorbano linee di campo. Ogni linea che entra dal disco in basso deve quindi uscire da qualche parte sulla calotta sopra di essa — nessuna linea può nascere o sparire nel vuoto.\nRuotando di \\(90°\\): l’asse della calotta diventa perpendicolare al campo, quindi il piano del disco-bordo diventa parallelo al campo. La normale al disco è allora perpendicolare al campo, \\(\\Phi_{\\text{disco}}=0\\), e per lo stesso argomento anche \\(\\Phi_{\\text{calotta}} = 0\\)."
-  },
-  {
-    "objectID": "didattica/quarta/lezioni/2026-09-21-campoelettrico-flusso/esercizi/index.html#esercizio-3-sfera-più-grande",
-    "href": "didattica/quarta/lezioni/2026-09-21-campoelettrico-flusso/esercizi/index.html#esercizio-3-sfera-più-grande",
-    "title": "Esercizi: linee di forza e flusso del campo elettrico",
-    "section": "Esercizio 3 — Sfera più grande",
-    "text": "Esercizio 3 — Sfera più grande\n\nEsercizioSoluzione\n\n\nUna carica \\(Q\\) è al centro di una sfera. Se raddoppio il raggio della sfera, cosa succede al flusso? E al campo sulla superficie?\n\nviewof e3_R = Inputs.range([5, 20], {value: 10, step: 1, label: \"raggio R della superficie sferica (cm)\"})\n\n\n\n\n\n\n\ne3_R0 = 10\ne3_Efactor = Math.pow(e3_R0 / e3_R, 2)\n\ne3_svg = {\n  const width = 480, height = 260;\n  const svg = d3.create(\"svg\").attr(\"viewBox\", `0 0 ${width} ${height}`).attr(\"width\", \"100%\").style(\"font-family\", \"sans-serif\");\n  const cx = 240, cy = 130;\n  const scale = 8;\n  const R0px = e3_R0 * scale;\n  const Rpx = e3_R * scale;\n\n  svg.append(\"circle\").attr(\"cx\", cx).attr(\"cy\", cy).attr(\"r\", R0px)\n    .attr(\"fill\", \"none\").attr(\"stroke\", PALETTE.grid).attr(\"stroke-width\", 1.4).attr(\"stroke-dasharray\", \"5,4\");\n  svg.append(\"circle\").attr(\"cx\", cx).attr(\"cy\", cy).attr(\"r\", Rpx)\n    .attr(\"fill\", \"none\").attr(\"stroke\", PALETTE.navy).attr(\"stroke-width\", 2);\n\n  const defs = svg.append(\"defs\");\n  defs.append(\"marker\").attr(\"id\", \"e3arrow\").attr(\"viewBox\", \"0 0 10 10\").attr(\"refX\", 8).attr(\"refY\", 5)\n    .attr(\"markerWidth\", 6).attr(\"markerHeight\", 6).attr(\"orient\", \"auto-start-reverse\")\n    .append(\"path\").attr(\"d\", \"M0,0 L10,5 L0,10 z\").attr(\"fill\", PALETTE.teal);\n\n  const n = 8;\n  const maxR = Math.max(Rpx, R0px) + 20;\n  for (let i = 0; i &lt; n; i++) {\n    const a = (2 * Math.PI * i) / n;\n    svg.append(\"line\").attr(\"x1\", cx).attr(\"y1\", cy)\n      .attr(\"x2\", cx + maxR * Math.cos(a)).attr(\"y2\", cy + maxR * Math.sin(a))\n      .attr(\"stroke\", PALETTE.teal).attr(\"stroke-width\", 1.2).attr(\"marker-end\", \"url(#e3arrow)\");\n  }\n  svg.append(\"circle\").attr(\"cx\", cx).attr(\"cy\", cy).attr(\"r\", 6).attr(\"fill\", PALETTE.bord);\n  svg.append(\"text\").attr(\"x\", cx + 10).attr(\"y\", cy - 8).attr(\"font-size\", 13).attr(\"fill\", PALETTE.bord).text(\"Q\");\n\n  svg.append(\"text\").attr(\"x\", width / 2).attr(\"y\", 235).attr(\"text-anchor\", \"middle\").attr(\"font-size\", 13).attr(\"fill\", PALETTE.forest)\n    .text(`R = ${e3_R} cm (R₀ = 10 cm tratteggiato)  ·  E(R)/E(R₀) = ${e3_Efactor.toFixed(2)}  ·  Φ invariato`);\n\n  return svg.node();\n}\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nIl flusso attraverso la sfera dipende solo dalla carica racchiusa, non dal raggio: raddoppiando \\(R\\) il flusso resta invariato. Il campo sulla superficie, invece, scala come \\(1/R^2\\) (legge di Coulomb): raddoppiando \\(R\\) il campo diventa \\(1/4\\) del valore precedente.\nÈ l’esercizio-chiave che separa i due concetti da tenere distinti: il flusso (proprietà globale, legata solo alla carica interna) e il campo (proprietà locale, punto per punto, che dipende dalla distanza). Il prodotto \\(E\\cdot A\\) resta costante al variare di \\(R\\) perché \\(E\\) cala come \\(1/R^2\\) mentre \\(A\\) cresce come \\(R^2\\)."
-  },
-  {
-    "objectID": "didattica/quarta/lezioni/2026-09-21-campoelettrico-flusso/esercizi/index.html#esercizio-4-carica-fuori",
-    "href": "didattica/quarta/lezioni/2026-09-21-campoelettrico-flusso/esercizi/index.html#esercizio-4-carica-fuori",
-    "title": "Esercizi: linee di forza e flusso del campo elettrico",
-    "section": "Esercizio 4 — Carica fuori",
-    "text": "Esercizio 4 — Carica fuori\n\nEsercizioSoluzione\n\n\nUna carica positiva sta vicinissima a una sfera, ma fuori. Il flusso netto attraverso la sfera è positivo, negativo o nullo?\n\nviewof e4_dist = Inputs.range([5, 60], {value: 30, step: 5, label: \"distanza della carica esterna dalla superficie della sfera\"})\n\n\n\n\n\n\n\ne4_svg = {\n  const width = 480, height = 260;\n  const svg = d3.create(\"svg\").attr(\"viewBox\", `0 0 ${width} ${height}`).attr(\"width\", \"100%\").style(\"font-family\", \"sans-serif\");\n  const cx = 190, cy = 140, R = 70;\n  const qx = cx + R + e4_dist;\n\n  svg.append(\"circle\").attr(\"cx\", cx).attr(\"cy\", cy).attr(\"r\", R)\n    .attr(\"fill\", \"none\").attr(\"stroke\", PALETTE.navy).attr(\"stroke-width\", 2);\n\n  const defs = svg.append(\"defs\");\n  defs.append(\"marker\").attr(\"id\", \"e4arrow\").attr(\"viewBox\", \"0 0 10 10\").attr(\"refX\", 8).attr(\"refY\", 5)\n    .attr(\"markerWidth\", 6).attr(\"markerHeight\", 6).attr(\"orient\", \"auto-start-reverse\")\n    .append(\"path\").attr(\"d\", \"M0,0 L10,5 L0,10 z\").attr(\"fill\", PALETTE.teal);\n\n  const n = 10;\n  for (let i = 0; i &lt; n; i++) {\n    const a = Math.PI * 0.55 + (Math.PI * 0.9) * (i / (n - 1));\n    const x2 = qx + 260 * Math.cos(a);\n    const y2 = cy + 260 * Math.sin(a);\n    svg.append(\"line\").attr(\"x1\", qx).attr(\"y1\", cy).attr(\"x2\", x2).attr(\"y2\", y2)\n      .attr(\"stroke\", PALETTE.teal).attr(\"stroke-width\", 1.1).attr(\"marker-end\", \"url(#e4arrow)\");\n  }\n\n  svg.append(\"circle\").attr(\"cx\", qx).attr(\"cy\", cy).attr(\"r\", 12).attr(\"fill\", PALETTE.bord);\n  svg.append(\"text\").attr(\"x\", qx).attr(\"y\", cy + 4).attr(\"text-anchor\", \"middle\").attr(\"fill\", \"white\").attr(\"font-size\", 11).attr(\"font-weight\", \"bold\").text(\"+q\");\n\n  svg.append(\"text\").attr(\"x\", width / 2).attr(\"y\", 240).attr(\"text-anchor\", \"middle\").attr(\"font-size\", 13).attr(\"fill\", PALETTE.forest)\n    .text(\"ogni linea che entra nella sfera da un lato esce dall'altro: flusso netto = 0\");\n\n  return svg.node();\n}\n\n\n\n\n\n\n\n\nNullo. Il teorema di Gauss conta solo le cariche racchiuse dalla superficie: una carica esterna, per quanto vicina, contribuisce con flusso netto zero attraverso qualunque superficie chiusa. Localmente il campo della carica esterna non è nullo sulla sfera (attraversa la superficie con linee che entrano da un lato), ma ogni linea che entra da una parte della sfera esce dall’altra: il computo netto si annulla.\n“Vicinissima” è la parola-trappola: la vicinanza rende grande il campo locale in quella zona della sfera, ma non introduce carica racchiusa, quindi non altera il flusso netto."
-  },
-  {
-    "objectID": "didattica/quarta/lezioni/2026-09-21-campoelettrico-flusso/esercizi/index.html#esercizio-6-punto-medio",
-    "href": "didattica/quarta/lezioni/2026-09-21-campoelettrico-flusso/esercizi/index.html#esercizio-6-punto-medio",
-    "title": "Esercizi: linee di forza e flusso del campo elettrico",
-    "section": "Esercizio 6 — Punto medio",
-    "text": "Esercizio 6 — Punto medio\n\nEsercizioSoluzione\n\n\nDue cariche uguali e positive sono a distanza \\(d\\). Nel loro punto medio \\(E=0\\). Passa una linea di forza per quel punto?\n\nviewof e6_x = Inputs.range([-0.85, 0.85], {value: 0, step: 0.05, label: \"posizione lungo l'asse (0 = punto medio, ±1 ≈ posizione delle cariche)\"})\n\n\n\n\n\n\n\ne6_field = 1 / Math.pow(1 + e6_x, 2) - 1 / Math.pow(1 - e6_x, 2)\n\ne6_svg = {\n  const width = 480, height = 220;\n  const svg = d3.create(\"svg\").attr(\"viewBox\", `0 0 ${width} ${height}`).attr(\"width\", \"100%\").style(\"font-family\", \"sans-serif\");\n  const cx = 240, cy = 120, scale = 160;\n  const leftX = cx - scale, rightX = cx + scale;\n\n  svg.append(\"line\").attr(\"x1\", leftX - 30).attr(\"y1\", cy).attr(\"x2\", rightX + 30).attr(\"y2\", cy)\n    .attr(\"stroke\", PALETTE.grid).attr(\"stroke-width\", 1);\n\n  svg.append(\"circle\").attr(\"cx\", leftX).attr(\"cy\", cy).attr(\"r\", 15).attr(\"fill\", PALETTE.bord);\n  svg.append(\"text\").attr(\"x\", leftX).attr(\"y\", cy + 4).attr(\"text-anchor\", \"middle\").attr(\"fill\", \"white\").attr(\"font-size\", 12).attr(\"font-weight\", \"bold\").text(\"+Q\");\n  svg.append(\"circle\").attr(\"cx\", rightX).attr(\"cy\", cy).attr(\"r\", 15).attr(\"fill\", PALETTE.bord);\n  svg.append(\"text\").attr(\"x\", rightX).attr(\"y\", cy + 4).attr(\"text-anchor\", \"middle\").attr(\"fill\", \"white\").attr(\"font-size\", 12).attr(\"font-weight\", \"bold\").text(\"+Q\");\n\n  const px = cx + e6_x * scale;\n  svg.append(\"circle\").attr(\"cx\", px).attr(\"cy\", cy).attr(\"r\", 4).attr(\"fill\", PALETTE.forest);\n\n  const defs = svg.append(\"defs\");\n  defs.append(\"marker\").attr(\"id\", \"e6arrow\").attr(\"viewBox\", \"0 0 10 10\").attr(\"refX\", 8).attr(\"refY\", 5)\n    .attr(\"markerWidth\", 6).attr(\"markerHeight\", 6).attr(\"orient\", \"auto-start-reverse\")\n    .append(\"path\").attr(\"d\", \"M0,0 L10,5 L0,10 z\").attr(\"fill\", PALETTE.navy);\n\n  const mag = Math.min(Math.abs(e6_field) * 20, 90);\n  const dir = Math.sign(e6_field);\n  if (Math.abs(e6_field) &gt; 0.01) {\n    svg.append(\"line\").attr(\"x1\", px).attr(\"y1\", cy - 40).attr(\"x2\", px + dir * mag).attr(\"y2\", cy - 40)\n      .attr(\"stroke\", PALETTE.navy).attr(\"stroke-width\", 2.2).attr(\"marker-end\", \"url(#e6arrow)\");\n  }\n\n  svg.append(\"text\").attr(\"x\", width / 2).attr(\"y\", 190).attr(\"text-anchor\", \"middle\").attr(\"font-size\", 13).attr(\"fill\", PALETTE.forest)\n    .text(Math.abs(e6_x) &lt; 0.02 ? \"nel punto medio: E = 0, nessuna direzione definita\" : `E punta verso la carica più lontana (|E| ∝ ${Math.abs(e6_field).toFixed(2)})`);\n\n  return svg.node();\n}\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNo. Una linea di forza, per definizione, è tracciata seguendo in ogni punto la direzione del campo. In un punto dove \\(E=0\\) il campo non ha una direzione definita, quindi nessuna linea di forza può passare esattamente per quel punto: è un punto di equilibrio (le linee provenienti dalle due cariche si avvicinano e si “annullano” a vicenda in quella zona, senza mai toccare il punto stesso)."
-  },
-  {
-    "objectID": "didattica/quarta/index.html",
-    "href": "didattica/quarta/index.html",
-    "title": "Classe Quarta",
-    "section": "",
-    "text": "Materie attive quest’anno:\n\nFisica\n\n\n\n\n\n\n\n\n\n\n\n\nDate\n\n\n\nTitle\n\n\n\nArgomento\n\n\n\n\n\n\n\n\nSep 21, 2026\n\n\nLinee di forza e flusso del campo elettrico\n\n\nDal disegno al numero: contare le linee\n\n\n\n\n\n\nSep 27, 2026\n\n\nEsercizi: linee di forza e flusso del campo elettrico\n\n\nAssegnati per il 28/09 — 4A\n\n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "didattica/seconda/lezioni/2026-09-21-energy-work/index.html",
-    "href": "didattica/seconda/lezioni/2026-09-21-energy-work/index.html",
-    "title": "Energy: stores, transfers and work",
+    "objectID": "didattica/quarta/lezioni/2026-09-21-campoelettrico-flusso/index.html",
+    "href": "didattica/quarta/lezioni/2026-09-21-campoelettrico-flusso/index.html",
+    "title": "Linee di forza e flusso del campo elettrico",
     "section": "",
     "text": "Apri le slide a schermo intero ↗"
   },
   {
-    "objectID": "didattica/seconda/lezioni/2026-09-21-energy-work/index.html#slide-della-lezione",
-    "href": "didattica/seconda/lezioni/2026-09-21-energy-work/index.html#slide-della-lezione",
-    "title": "Energy: stores, transfers and work",
+    "objectID": "didattica/quarta/lezioni/2026-09-21-campoelettrico-flusso/index.html#slide-della-lezione",
+    "href": "didattica/quarta/lezioni/2026-09-21-campoelettrico-flusso/index.html#slide-della-lezione",
+    "title": "Linee di forza e flusso del campo elettrico",
     "section": "",
     "text": "Apri le slide a schermo intero ↗"
   },
   {
-    "objectID": "didattica/seconda/lezioni/2026-09-21-energy-work/index.html#materiali-e-indicazioni-per-lo-studio",
-    "href": "didattica/seconda/lezioni/2026-09-21-energy-work/index.html#materiali-e-indicazioni-per-lo-studio",
-    "title": "Energy: stores, transfers and work",
+    "objectID": "didattica/quarta/lezioni/2026-09-21-campoelettrico-flusso/index.html#materiali-e-indicazioni-per-lo-studio",
+    "href": "didattica/quarta/lezioni/2026-09-21-campoelettrico-flusso/index.html#materiali-e-indicazioni-per-lo-studio",
+    "title": "Linee di forza e flusso del campo elettrico",
+    "section": "Materiali e indicazioni per lo studio",
+    "text": "Materiali e indicazioni per lo studio\nEsercizi assegnati per il 28/09 (PDF) ↗"
+  },
+  {
+    "objectID": "didattica/quarta/fisica/index.html",
+    "href": "didattica/quarta/fisica/index.html",
+    "title": "Fisica — Classe Quarta",
+    "section": "",
+    "text": "Materiali di Fisica per la classe quarta.\n\n\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "didattica/seconda/index.html",
+    "href": "didattica/seconda/index.html",
+    "title": "Classe Seconda",
+    "section": "",
+    "text": "Materie attive quest’anno:\n\nFisica\n\n\n\n\n\n\n\n\n\n\n\n\nDate\n\n\n\nTitle\n\n\n\nArgomento\n\n\n\n\n\n\n\n\nSep 21, 2026\n\n\nEnergy: stores, transfers and work\n\n\nFrom a braking car to a law of nature\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "didattica/prima/lezioni/2026-09-23-measure-errors/index.html",
+    "href": "didattica/prima/lezioni/2026-09-23-measure-errors/index.html",
+    "title": "Random & Systematic Error",
+    "section": "",
+    "text": "Apri le slide a schermo intero ↗"
+  },
+  {
+    "objectID": "didattica/prima/lezioni/2026-09-23-measure-errors/index.html#slide-della-lezione",
+    "href": "didattica/prima/lezioni/2026-09-23-measure-errors/index.html#slide-della-lezione",
+    "title": "Random & Systematic Error",
+    "section": "",
+    "text": "Apri le slide a schermo intero ↗"
+  },
+  {
+    "objectID": "didattica/prima/lezioni/2026-09-23-measure-errors/index.html#materiali-e-indicazioni-per-lo-studio",
+    "href": "didattica/prima/lezioni/2026-09-23-measure-errors/index.html#materiali-e-indicazioni-per-lo-studio",
+    "title": "Random & Systematic Error",
     "section": "Materiali e indicazioni per lo studio",
     "text": "Materiali e indicazioni per lo studio\n(da compilare)"
   },
   {
-    "objectID": "didattica/seconda/fisica/index.html",
-    "href": "didattica/seconda/fisica/index.html",
-    "title": "Fisica — Classe Seconda",
+    "objectID": "didattica/prima/fisica/index.html",
+    "href": "didattica/prima/fisica/index.html",
+    "title": "Fisica — Classe Prima",
     "section": "",
-    "text": "Materiali di Fisica per la classe seconda.\n\n\n\n\n\n\n\n\nNo matching items"
+    "text": "Materiali di Fisica per la classe prima.\n\n\n\n\n\n\n\n\n\nOscillatore armonico smorzato\n\n\nEsempio: una formula e un grafico generato da Python.\n\n\n\n\n\nJul 19, 2026\n\n\n\n\n\nNo matching items"
   },
   {
-    "objectID": "didattica/prima/index.html",
-    "href": "didattica/prima/index.html",
-    "title": "Classe Prima",
+    "objectID": "didattica/igcse/index.html",
+    "href": "didattica/igcse/index.html",
+    "title": "IGCSE — Materiali",
     "section": "",
-    "text": "Materie attive quest’anno:\n\nFisica\n\n\n\n\n\n\n\n\n\n\n\n\nDate\n\n\n\nTitle\n\n\n\nArgomento\n\n\n\n\n\n\n\n\nSep 23, 2026\n\n\nRandom & Systematic Error\n\n\nMaking sense of scatter in repeated measurements\n\n\n\n\n\n\nNo matching items"
+    "text": "Materiali del corso Cambridge IGCSE (Maths).\n\n\n\n\n\n\n\n\n\nSets\n\n\nInsiemi: teoria, vocabolario e test IGCSE.\n\n\n\n\n\n\n\n\nNo matching items"
   },
   {
-    "objectID": "didattica/prima/fisica/moto-smorzato.html",
-    "href": "didattica/prima/fisica/moto-smorzato.html",
-    "title": "Oscillatore armonico smorzato",
+    "objectID": "edtech/numero-08.html",
+    "href": "edtech/numero-08.html",
+    "title": "Gestisci le iscrizioni in Gmail",
     "section": "",
-    "text": "L’ampiezza di un oscillatore smorzato decade nel tempo secondo:\n\\[\nx(t) = e^{-\\gamma t}\\cos(\\omega t)\n\\]\n\nimport numpy as np\nimport matplotlib.pyplot as plt\nt = np.linspace(0, 10, 500)\nx = np.exp(-0.4*t)*np.cos(3.0*t)\nfig, ax = plt.subplots()\nax.plot(t, x)\nax.set_xlabel(\"tempo (s)\"); ax.set_ylabel(\"posizione\")\nplt.show()\n\n\n\n\n\n\n\nFigure 1: Oscillatore armonico smorzato."
+    "text": "Newsletter di piattaforme provate una volta, offerte formative scadute, webinar del 2021… non le apri mai, ma continuano ad arrivare. Risultato? Le email importanti — circolari, comunicazioni dei genitori, messaggi del DS — finiscono sepolte sotto una marea di posta spazzatura."
   },
   {
-    "objectID": "didattica/igcse/sets.html",
-    "href": "didattica/igcse/sets.html",
-    "title": "Sets",
+    "objectID": "edtech/numero-08.html#il-problema",
+    "href": "edtech/numero-08.html#il-problema",
+    "title": "Gestisci le iscrizioni in Gmail",
     "section": "",
-    "text": "NoteDefining Sets\n\n\n\n\n\nVideo di riferimento: Algebra 1 – Defining Sets\n\n\n\n\n\n\n\n\n\nNoteSet Equality and Subsets\n\n\n\n\n\nAlgebra 2 – Set Equality and Subsets\n\n\nAmmette anche il caso \\(A = B\\). Funziona come il \\(\\leq\\) tra numeri: \\[3 \\leq 5 \\quad \\text{ma anche} \\quad 3 \\leq 3\\] Allo stesso modo, \\(A \\subseteq A\\) è sempre vero (ogni insieme è sottoinsieme di sé stesso).\n\n\n\nEsclude il caso \\(A = B\\). Funziona come il \\(&lt;\\) tra numeri: \\[3 &lt; 5 \\quad \\text{ma} \\quad 3 \\not&lt; 3\\]\n\n\n\nSiano \\(A = \\{1, 2\\}\\) e \\(B = \\{1, 2, 3\\}\\):\n\n\\(A \\subseteq B\\) ✓ — ogni elemento di \\(A\\) sta in \\(B\\)\n\\(A \\subsetneq B\\) ✓ — vale l’inclusione e \\(A \\neq B\\) (manca il 3)\n\nOra sia invece \\(A = B = \\{1, 2\\}\\):\n\n\\(A \\subseteq B\\) — vale ancora\n\\(A \\subsetneq B\\) — non vale, perché \\(A\\) e \\(B\\) sono uguali\n\nIn sintesi: \\(\\subseteq\\) sta a \\(\\subsetneq\\) come \\(\\leq\\) sta a \\(&lt;\\).\n\n\n\n\n\n\n\n\n\n\nNoteVenn Diagrams, Unions, and Intersections\n\n\n\n\n\nAlgebra 3 – Venn Diagrams, Unions, and Intersections\n\n\n\n\n\n\n\n\n\nNoteComplement and Relative Complement\n\n\n\n\n\nAlgebra 4 – Complement and Relative Complement\n\n\n\n\n\n\n\n\n\nNoteKey Vocabulary\n\n\n\n\n\n\n\n\n\n\n\n\n\nTermine inglese\nTermine italiano\nSimbolo/Nota\n\n\n\n\nSet\nInsieme\n\n\n\nElement / Member\nElemento\n∈\n\n\nEmpty set\nInsieme vuoto\n∅\n\n\nSet membership\nAppartenenza\n∈ / ∉\n\n\nListing notation\nNotazione per elencazione\n\\(\\{1, 2, 3\\}\\)\n\n\nSet-builder notation\nNotazione per proprietà (intensionale)\n\\(\\{x \\mid P(x)\\}\\)\n\n\nEllipsis\nPuntini di sospensione\n…\n\n\nNatural numbers\nNumeri naturali\n\\(\\mathbb{N}\\)\n\n\nIntegers\nNumeri interi\n\\(\\mathbb{Z}\\)\n\n\nRational numbers\nNumeri razionali\n\\(\\mathbb{Q}\\)\n\n\nReal numbers\nNumeri reali\n\\(\\mathbb{R}\\)\n\n\nComplex numbers\nNumeri complessi\n\\(\\mathbb{C}\\)\n\n\nEquality (of sets)\nUguaglianza (di insiemi)\n\\(A = B\\)\n\n\nSubset\nSottoinsieme\n⊆\n\n\nProper subset\nSottoinsieme proprio\n⊊\n\n\nSuperset\nSovrainsieme\n⊇\n\n\nProper superset\nSovrainsieme proprio\n⊋\n\n\nVenn Diagram\nDiagramma di Venn\n\n\n\nDisjoint sets\nInsiemi disgiunti\n\\(A \\cap B = \\emptyset\\)\n\n\nIntersection\nIntersezione\n∩\n\n\nUnion\nUnione\n∪\n\n\nUniversal set / Universe\nInsieme universale / Universo\n\\(U\\)\n\n\nComplement (absolute)\nComplementare (assoluto)\n\\(A'\\)\n\n\nRelative complement\nComplementare relativo / Differenza\n\\(B \\setminus A\\)"
+    "text": "Newsletter di piattaforme provate una volta, offerte formative scadute, webinar del 2021… non le apri mai, ma continuano ad arrivare. Risultato? Le email importanti — circolari, comunicazioni dei genitori, messaggi del DS — finiscono sepolte sotto una marea di posta spazzatura."
   },
   {
-    "objectID": "didattica/igcse/sets.html#teoria",
-    "href": "didattica/igcse/sets.html#teoria",
-    "title": "Sets",
-    "section": "",
-    "text": "NoteDefining Sets\n\n\n\n\n\nVideo di riferimento: Algebra 1 – Defining Sets\n\n\n\n\n\n\n\n\n\nNoteSet Equality and Subsets\n\n\n\n\n\nAlgebra 2 – Set Equality and Subsets\n\n\nAmmette anche il caso \\(A = B\\). Funziona come il \\(\\leq\\) tra numeri: \\[3 \\leq 5 \\quad \\text{ma anche} \\quad 3 \\leq 3\\] Allo stesso modo, \\(A \\subseteq A\\) è sempre vero (ogni insieme è sottoinsieme di sé stesso).\n\n\n\nEsclude il caso \\(A = B\\). Funziona come il \\(&lt;\\) tra numeri: \\[3 &lt; 5 \\quad \\text{ma} \\quad 3 \\not&lt; 3\\]\n\n\n\nSiano \\(A = \\{1, 2\\}\\) e \\(B = \\{1, 2, 3\\}\\):\n\n\\(A \\subseteq B\\) ✓ — ogni elemento di \\(A\\) sta in \\(B\\)\n\\(A \\subsetneq B\\) ✓ — vale l’inclusione e \\(A \\neq B\\) (manca il 3)\n\nOra sia invece \\(A = B = \\{1, 2\\}\\):\n\n\\(A \\subseteq B\\) — vale ancora\n\\(A \\subsetneq B\\) — non vale, perché \\(A\\) e \\(B\\) sono uguali\n\nIn sintesi: \\(\\subseteq\\) sta a \\(\\subsetneq\\) come \\(\\leq\\) sta a \\(&lt;\\).\n\n\n\n\n\n\n\n\n\n\nNoteVenn Diagrams, Unions, and Intersections\n\n\n\n\n\nAlgebra 3 – Venn Diagrams, Unions, and Intersections\n\n\n\n\n\n\n\n\n\nNoteComplement and Relative Complement\n\n\n\n\n\nAlgebra 4 – Complement and Relative Complement\n\n\n\n\n\n\n\n\n\nNoteKey Vocabulary\n\n\n\n\n\n\n\n\n\n\n\n\n\nTermine inglese\nTermine italiano\nSimbolo/Nota\n\n\n\n\nSet\nInsieme\n\n\n\nElement / Member\nElemento\n∈\n\n\nEmpty set\nInsieme vuoto\n∅\n\n\nSet membership\nAppartenenza\n∈ / ∉\n\n\nListing notation\nNotazione per elencazione\n\\(\\{1, 2, 3\\}\\)\n\n\nSet-builder notation\nNotazione per proprietà (intensionale)\n\\(\\{x \\mid P(x)\\}\\)\n\n\nEllipsis\nPuntini di sospensione\n…\n\n\nNatural numbers\nNumeri naturali\n\\(\\mathbb{N}\\)\n\n\nIntegers\nNumeri interi\n\\(\\mathbb{Z}\\)\n\n\nRational numbers\nNumeri razionali\n\\(\\mathbb{Q}\\)\n\n\nReal numbers\nNumeri reali\n\\(\\mathbb{R}\\)\n\n\nComplex numbers\nNumeri complessi\n\\(\\mathbb{C}\\)\n\n\nEquality (of sets)\nUguaglianza (di insiemi)\n\\(A = B\\)\n\n\nSubset\nSottoinsieme\n⊆\n\n\nProper subset\nSottoinsieme proprio\n⊊\n\n\nSuperset\nSovrainsieme\n⊇\n\n\nProper superset\nSovrainsieme proprio\n⊋\n\n\nVenn Diagram\nDiagramma di Venn\n\n\n\nDisjoint sets\nInsiemi disgiunti\n\\(A \\cap B = \\emptyset\\)\n\n\nIntersection\nIntersezione\n∩\n\n\nUnion\nUnione\n∪\n\n\nUniversal set / Universe\nInsieme universale / Universo\n\\(U\\)\n\n\nComplement (absolute)\nComplementare (assoluto)\n\\(A'\\)\n\n\nRelative complement\nComplementare relativo / Differenza\n\\(B \\setminus A\\)"
-  },
-  {
-    "objectID": "didattica/igcse/sets.html#esercizi",
-    "href": "didattica/igcse/sets.html#esercizi",
-    "title": "Sets",
-    "section": "Esercizi",
-    "text": "Esercizi\n\n\n\n\n\n\nTipNota: cardinalità dell’intersezione\n\n\n\n\n\n\\(n(A)\\) indica la cardinalità di un insieme, cioè il numero di elementi che contiene. Quindi \\(n(A \\cap B)\\) significa “quanti elementi appartengono contemporaneamente ad \\(A\\) e a \\(B\\)”.\nEsempio: \\[A = \\{1, 2, 3, 4\\}, \\quad B = \\{3, 4, 5, 6\\}\\] \\[A \\cap B = \\{3, 4\\} \\quad\\Rightarrow\\quad n(A \\cap B) = 2\\]\n\n\n\nTest IGCSE: Scarica il test (Google Drive)\n\n\n\n\n\n\nWarningSoluzioni (Marks Scheme)\n\n\n\n\n\nScarica lo schema di correzione (Google Drive)"
-  },
-  {
-    "objectID": "edtech/numero-09.html",
-    "href": "edtech/numero-09.html",
-    "title": "SnapClass",
-    "section": "",
-    "text": "Hai appena finito un giro di interrogazioni o corretto un compito. Hai i voti segnati, ma per capire davvero com’è andata — dove si concentra la classe, quanti sono sotto la sufficienza, se c’è una coda di eccellenze — dovresti metterti a contare, raggruppare, fare calcoli. Chi ha tempo?"
-  },
-  {
-    "objectID": "edtech/numero-09.html#il-problema",
-    "href": "edtech/numero-09.html#il-problema",
-    "title": "SnapClass",
-    "section": "",
-    "text": "Hai appena finito un giro di interrogazioni o corretto un compito. Hai i voti segnati, ma per capire davvero com’è andata — dove si concentra la classe, quanti sono sotto la sufficienza, se c’è una coda di eccellenze — dovresti metterti a contare, raggruppare, fare calcoli. Chi ha tempo?"
-  },
-  {
-    "objectID": "edtech/numero-09.html#la-soluzione",
-    "href": "edtech/numero-09.html#la-soluzione",
-    "title": "SnapClass",
+    "objectID": "edtech/numero-08.html#la-soluzione",
+    "href": "edtech/numero-08.html#la-soluzione",
+    "title": "Gestisci le iscrizioni in Gmail",
     "section": "La soluzione",
-    "text": "La soluzione\nSnapClass è un foglio Google pronto all’uso che trasforma i tuoi voti in un istogramma chiaro e in una curva a campana interattiva, senza formule da scrivere e senza nulla da configurare."
+    "text": "La soluzione\nGestisci iscrizioni è una funzionalità nativa di Gmail (dal 2025) che mostra in un’unica schermata tutte le mailing list a cui sei iscritto e ti permette di cancellarti con un solo clic."
   },
   {
-    "objectID": "edtech/numero-09.html#cosa-fa",
-    "href": "edtech/numero-09.html#cosa-fa",
-    "title": "SnapClass",
+    "objectID": "edtech/numero-08.html#come-si-usa",
+    "href": "edtech/numero-08.html#come-si-usa",
+    "title": "Gestisci le iscrizioni in Gmail",
+    "section": "Come si usa",
+    "text": "Come si usa\nLink diretto (devi essere già loggato) — copia e incolla nella barra del browser:\nmail.google.com/mail/#sub\n\nScorri l’elenco e clicca sui mittenti per vedere le email ricevute;\nclicca Annulla iscrizione.\n\nPerfetto per:\n\npulizia di inizio/fine anno scolastico;\nfar riemergere le email importanti dal rumore di fondo;\nriprendere il controllo della casella di posta;\nfare ordine dopo corsi di formazione e webinar.\n\n\n\n\n\n\n\nWarningIl vero costo delle newsletter fantasma\n\n\n\nSi stimano almeno ~20 email inutili a settimana, mescolate a scadenze, documenti e convocazioni importanti. In un anno fanno oltre 1.000 email spazzatura. Quella circolare urgente che non hai visto? Forse era sepolta sotto l’ennesima promo di un servizio provato una volta nel 2022. Il costo non è in megabyte: è in attenzione, tempo e focus."
+  },
+  {
+    "objectID": "edtech/index.html",
+    "href": "edtech/index.html",
+    "title": "EdTech",
+    "section": "",
+    "text": "Claude.ai + Apify\n\n\n\nAI\n\nDati\n\n\n\nUn setup gratuito in due step che trasforma una richiesta in italiano in dati strutturati pronti per Google Fogli: niente codice, niente copia-incolla.\n\n\n\n\n\nJul 6, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nNotion\n\n\n\nProduttività\n\n\n\nLo spazio di lavoro tutto-in-uno che raccoglie note, link, liste e tabelle in un solo posto: il tuo second brain, gratuito e sincronizzato ovunque.\n\n\n\n\n\nMay 21, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nIcone personalizzate per le cartelle\n\n\n\nProduttività\n\n\n\nAssegna a ogni cartella un’icona diversa e riconoscila a colpo d’occhio, senza leggere il nome: due minuti su Mac e su Windows.\n\n\n\n\n\nApr 8, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nSnapClass\n\n\n\nGoogle Fogli\n\n\n\nUn foglio Google pronto all’uso che trasforma i voti in istogramma e curva a campana interattiva: capisci com’è andata la verifica in 10 secondi, senza formule.\n\n\n\n\n\nMar 12, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nGestisci le iscrizioni in Gmail\n\n\n\nGmail\n\n\n\nUna schermata unica con tutte le newsletter a cui sei iscritto e la disiscrizione in un clic: fai riemergere le email importanti dal rumore di fondo.\n\n\n\n\n\nFeb 19, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nScanner nascosto in Google Drive\n\n\n\nGoogle Drive\n\n\n\nL’app Drive ha uno scanner integrato che salva PDF già ritagliati e filtrati direttamente nelle cartelle giuste: niente più file sparsi o fotocopiatrici da decifrare.\n\n\n\n\n\nJan 15, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nNotebookLM per Flipped & more\n\n\n\nAI\n\n\n\nL’AI di Google che risponde solo sui materiali che carichi: guide di studio, quiz, mappe e audio overview per la flipped classroom, senza allucinazioni.\n\n\n\n\n\nOct 22, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nGemini in Google Classroom\n\n\n\nAI\n\nGoogle Classroom\n\n\n\nOltre 30 strumenti AI dentro Classroom per progettare lezioni, griglie, quiz e materiali differenziati in minuti invece che ore.\n\n\n\n\n\nOct 10, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nTactiq\n\n\n\nGoogle Meet\n\nAI\n\n\n\nTrascrive in automatico le riunioni Google Meet in tempo reale: recuperi decisioni e accordi senza prendere un solo appunto a mano.\n\n\n\n\n\nOct 6, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nTab Resize\n\n\n\nGoogle Chrome\n\n\n\nSistema le finestre in layout predefiniti con un clic: mezzo schermo, quarti, terzi, per lavorare e confrontare senza trascinare a mano.\n\n\n\n\n\nSep 24, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nTab Group di Chrome\n\n\n\nGoogle Chrome\n\n\n\nRaggruppa le schede del browser in cluster con nome e colore: uno scaffale ordinato per ogni progetto.\n\n\n\n\n\nSep 4, 2025\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "edtech/numero-02.html",
+    "href": "edtech/numero-02.html",
+    "title": "Tab Resize",
+    "section": "",
+    "text": "Hai mai perso tempo a ridimensionare a mano le finestre per confrontare documenti, seguire tutorial o lavorare su più progetti insieme?"
+  },
+  {
+    "objectID": "edtech/numero-02.html#il-problema",
+    "href": "edtech/numero-02.html#il-problema",
+    "title": "Tab Resize",
+    "section": "",
+    "text": "Hai mai perso tempo a ridimensionare a mano le finestre per confrontare documenti, seguire tutorial o lavorare su più progetti insieme?"
+  },
+  {
+    "objectID": "edtech/numero-02.html#la-soluzione",
+    "href": "edtech/numero-02.html#la-soluzione",
+    "title": "Tab Resize",
+    "section": "La soluzione",
+    "text": "La soluzione\nTab Resize è un’estensione Chrome gratuita che sistema automaticamente le finestre con un clic."
+  },
+  {
+    "objectID": "edtech/numero-02.html#cosa-fa",
+    "href": "edtech/numero-02.html#cosa-fa",
+    "title": "Tab Resize",
     "section": "Cosa fa",
-    "text": "Cosa fa\nInserisci i voti nella colonna A e il foglio genera automaticamente due grafici: un istogramma che mostra la distribuzione per fasce di voto e una curva a campana interattiva — passando il cursore sulla curva vedi il voto esatto con la relativa densità, per una lettura ancora più precisa.\nPerfetto per:\n\ndopo un compito in classe: capire in 10 secondi se la verifica era tarata bene;\nconfronto tra sezioni: usare due copie del foglio per confrontare la stessa prova in due classi diverse;\nautoriflessione didattica: tenere traccia visiva dell’andamento nel tempo, verifica dopo verifica."
+    "text": "Cosa fa\n\nDivide lo schermo in layout predefiniti (metà schermo, quarti, terzi).\n\nPerfetto per:\n\nconfrontare documenti;\nseguire tutorial video mentre lavori;\ntenere aperte Gmail + Drive + Classroom;\ncorreggere compiti con le griglie di valutazione affianco."
   },
   {
-    "objectID": "edtech/numero-09.html#come-si-usa",
-    "href": "edtech/numero-09.html#come-si-usa",
-    "title": "SnapClass",
+    "objectID": "edtech/numero-02.html#come-si-usa",
+    "href": "edtech/numero-02.html#come-si-usa",
+    "title": "Tab Resize",
     "section": "Come si usa",
-    "text": "Come si usa\n\nApri il foglio → SnapClass su Google Fogli\nClicca File → Crea una copia (il foglio si salva nel tuo Drive);\ncancella i dati di esempio nella colonna A e inserisci i tuoi;\nguarda i grafici aggiornarsi in tempo reale sul fianco.\n\n\n\n\n\n\n\nTipTip extra: non solo voti\n\n\n\nSnapClass funziona con qualsiasi serie di numeri, anche fuori dalla scuola:\n\nBollette: segni gli importi mese per mese e vedi su quale fascia si concentrano — e quanto spesso arriva la mazzata anomala;\nSpese quotidiane: caffè, pranzo, spesa… butta dentro i numeri di un mese e scopri la tua fascia di spesa “tipica” e quanto spesso sgarri;\nKm al giorno: auto, piedi, bici? Segna i chilometri per qualche settimana e scopri il tuo schema reale di mobilità;\nOre di sonno: segnale per un mese e vedi se la tua “normalità” è davvero quella che pensi.\n\nInsomma, ovunque ci sia un numero e una curiosità, SnapClass ti darà il trend."
+    "text": "Come si usa\n\nInstalla l’estensione → Link diretto\nClicca l’icona nella barra degli strumenti;\nScegli il layout che preferisci;\nLe finestre si posizionano automaticamente.\n\n\n\n\n\n\n\nTipTip extra\n\n\n\nUsa Ctrl+Shift+A per attivare rapidamente il layout a metà schermo."
   },
   {
-    "objectID": "edtech/numero-01.html",
-    "href": "edtech/numero-01.html",
-    "title": "Tab Group di Chrome",
+    "objectID": "edtech/numero-06.html",
+    "href": "edtech/numero-06.html",
+    "title": "Scanner nascosto in Google Drive",
     "section": "",
-    "text": "Ti ritrovi con venti schede aperte e per trovare quella che ti serve ci metti più tempo che a ricercarla da capo. Ogni volta che chiudi il browser gli dici di non chiudere le schede, e nella sessione dopo ne aggiungi altre per paura di perdere ricerche preziose. Ma così non le consulti mai — e lo sai."
+    "text": "Procrastini le scansioni perché la fotocopiatrice è un mistero? Perdi i PDF tra desktop e mail? Le mappe degli studenti sono illeggibili tra ombre e dita?"
   },
   {
-    "objectID": "edtech/numero-01.html#il-problema",
-    "href": "edtech/numero-01.html#il-problema",
-    "title": "Tab Group di Chrome",
+    "objectID": "edtech/numero-06.html#il-problema",
+    "href": "edtech/numero-06.html#il-problema",
+    "title": "Scanner nascosto in Google Drive",
     "section": "",
-    "text": "Ti ritrovi con venti schede aperte e per trovare quella che ti serve ci metti più tempo che a ricercarla da capo. Ogni volta che chiudi il browser gli dici di non chiudere le schede, e nella sessione dopo ne aggiungi altre per paura di perdere ricerche preziose. Ma così non le consulti mai — e lo sai."
+    "text": "Procrastini le scansioni perché la fotocopiatrice è un mistero? Perdi i PDF tra desktop e mail? Le mappe degli studenti sono illeggibili tra ombre e dita?"
   },
   {
-    "objectID": "edtech/numero-01.html#la-soluzione",
-    "href": "edtech/numero-01.html#la-soluzione",
-    "title": "Tab Group di Chrome",
+    "objectID": "edtech/numero-06.html#la-soluzione",
+    "href": "edtech/numero-06.html#la-soluzione",
+    "title": "Scanner nascosto in Google Drive",
     "section": "La soluzione",
-    "text": "La soluzione\nI Tab Group sono una funzionalità nativa di Chrome (nessuna installazione) che raggruppa le schede in cluster con nome e colore: ogni progetto ha il suo scaffale ordinato."
+    "text": "La soluzione\nL’app Google Drive ha uno scanner integrato che salva PDF direttamente in cartelle online. Niente più file sparsi o fotocopiatrici da decifrare."
   },
   {
-    "objectID": "edtech/numero-01.html#cosa-fa",
-    "href": "edtech/numero-01.html#cosa-fa",
-    "title": "Tab Group di Chrome",
+    "objectID": "edtech/numero-06.html#cosa-fa",
+    "href": "edtech/numero-06.html#cosa-fa",
+    "title": "Scanner nascosto in Google Drive",
     "section": "Cosa fa",
-    "text": "Cosa fa\n\nCrea gruppi di schede colorati e nominati, che collassi ed espandi con un clic per liberare la barra. Con Salva gruppo i gruppi sopravvivono ai riavvii e si sincronizzano su Chrome negli altri dispositivi: in genere li ritrovi anche su smartphone e tablet, ovunque accedi con il tuo account.\nI gruppi non finiscono nella giungla dei preferiti: restano in una sezione dedicata e a colori, sempre a vista."
+    "text": "Cosa fa\n\nScansiona documenti e li converte automaticamente in PDF;\nriconosce e ritaglia i bordi del documento;\nediting rapido: rotazione, ritaglio, filtri (bianco/nero ad alto contrasto);\nsalva tutto su Drive, organizzato per cartelle.\n\nPerfetto per:\n\ndigitalizzare appunti scritti a mano per la Classroom;\nraccogliere mappe concettuali degli studenti con BES;\narchiviare documenti scolastici sempre disponibili;\nscansionare test per accessi agli atti."
   },
   {
-    "objectID": "edtech/numero-01.html#perfetto-per",
-    "href": "edtech/numero-01.html#perfetto-per",
-    "title": "Tab Group di Chrome",
-    "section": "Perfetto per",
-    "text": "Perfetto per\n\nRicerca a tema: tenere insieme fonti, articoli e approfondimenti di un argomento senza perderli nella marea;\nLavoro multi-progetto: un gruppo “Bandi”, uno “Strumenti AI”, uno “Viaggio”, con colori diversi;\nSessioni ricorrenti: salvare un gruppo di siti che riapri ogni settimana (portale, mail, gestionale);\nShopping o confronti: raccogliere in un gruppo tutte le schede di prodotti da comparare."
-  },
-  {
-    "objectID": "edtech/numero-01.html#come-si-usa",
-    "href": "edtech/numero-01.html#come-si-usa",
-    "title": "Tab Group di Chrome",
+    "objectID": "edtech/numero-06.html#come-si-usa",
+    "href": "edtech/numero-06.html#come-si-usa",
+    "title": "Scanner nascosto in Google Drive",
     "section": "Come si usa",
-    "text": "Come si usa\n\nClic destro su una scheda → Aggiungi scheda a nuovo gruppo;\nAssegna nome e colore al gruppo, poi clicca l’etichetta per collassarlo/espanderlo;\nClic destro sull’etichetta → Salva gruppo perché sopravviva a chiusura e riavvio: comparirà come “pillola” nella barra dei preferiti.\n\n\n\n\n\n\n\nTipTip extra\n\n\n\nDue cose da ricordare. Primo: se non vedi la pillola dei gruppi salvati, attiva l’impostazione “Mostra i gruppi di schede salvati” nella barra dei preferiti. Secondo: se non li ritrovi sugli altri dispositivi, controlla che Chrome Sync sia attivo nelle impostazioni."
+    "text": "Come si usa\n\nCrea la cartella → apri Google Drive, premi il “+” in basso a destra e seleziona Cartella (es. “Mappe 4A”);\nAvvia la scansione → entra nella cartella, premi di nuovo il “+” e seleziona Scansiona (o tocca l’icona fotocamera/documento sopra il “+”);\nScatta → inquadra il documento: il bordo blu mostra l’area acquisita. Scatta manualmente o aspetta lo scatto automatico;\nModifica → ruota, ritaglia o applica filtri (il bianco/nero è ottimo per i documenti scritti a mano);\nSalva → conferma per finalizzare.\n\n\n\n\n\n\n\nTipTip extra\n\n\n\nCondividi questa procedura con gli studenti: riceverai scansioni pulite e leggibili!"
   },
   {
-    "objectID": "edtech/numero-03.html",
-    "href": "edtech/numero-03.html",
-    "title": "Tactiq",
+    "objectID": "edtech/numero-04.html",
+    "href": "edtech/numero-04.html",
+    "title": "Gemini in Google Classroom",
     "section": "",
-    "text": "Ti è mai capitato di perderti pezzi importanti di una riunione Meet per colpa della connessione, dell’audio disturbato, o semplicemente perché eri concentrato a prendere appunti?"
+    "text": "Passi ore a creare piani di lezione, inventare attività coinvolgenti e differenziare i contenuti per studenti con bisogni diversi? Ti ritrovi a riscrivere sempre le stesse griglie di valutazione o a cercare esempi pratici per spiegare concetti complessi?"
   },
   {
-    "objectID": "edtech/numero-03.html#il-problema",
-    "href": "edtech/numero-03.html#il-problema",
-    "title": "Tactiq",
+    "objectID": "edtech/numero-04.html#il-problema",
+    "href": "edtech/numero-04.html#il-problema",
+    "title": "Gemini in Google Classroom",
     "section": "",
-    "text": "Ti è mai capitato di perderti pezzi importanti di una riunione Meet per colpa della connessione, dell’audio disturbato, o semplicemente perché eri concentrato a prendere appunti?"
+    "text": "Passi ore a creare piani di lezione, inventare attività coinvolgenti e differenziare i contenuti per studenti con bisogni diversi? Ti ritrovi a riscrivere sempre le stesse griglie di valutazione o a cercare esempi pratici per spiegare concetti complessi?"
   },
   {
-    "objectID": "edtech/numero-03.html#la-soluzione",
-    "href": "edtech/numero-03.html#la-soluzione",
-    "title": "Tactiq",
+    "objectID": "edtech/numero-04.html#la-soluzione",
+    "href": "edtech/numero-04.html#la-soluzione",
+    "title": "Gemini in Google Classroom",
     "section": "La soluzione",
-    "text": "La soluzione\nTactiq è un’estensione Chrome gratuita che trascrive automaticamente le tue riunioni Google Meet in tempo reale."
+    "text": "La soluzione\nGemini in Google Classroom è una suite di oltre 30 strumenti AI integrati direttamente in Classroom: ti aiuta a progettare lezioni, creare materiali e personalizzare contenuti in pochi minuti invece che in ore."
   },
   {
-    "objectID": "edtech/numero-03.html#cosa-fa",
-    "href": "edtech/numero-03.html#cosa-fa",
-    "title": "Tactiq",
+    "objectID": "edtech/numero-04.html#cosa-fa",
+    "href": "edtech/numero-04.html#cosa-fa",
+    "title": "Gemini in Google Classroom",
     "section": "Cosa fa",
-    "text": "Cosa fa\n\nTrascrive automaticamente l’audio in testo durante la riunione.\n\nPerfetto per:\n\nriunioni di dipartimento e coordinamenti;\nincontri di progetto;\nrecuperare decisioni e accordi presi durante la riunione."
+    "text": "Cosa fa\n\nGenera bozze di piani di lezione, griglie di valutazione, quiz, attività di apertura, liste di vocaboli e altro ancora usando l’intelligenza artificiale.\n\nPerfetto per:\n\ncreare rapidamente una lezione completa partendo dagli obiettivi di apprendimento;\ngenerare una griglia di valutazione personalizzata e importarla direttamente in un compito di Classroom;\ninventare “hook” creativi per catturare l’attenzione a inizio lezione;\ndifferenziare contenuti e creare testi o storie adattati al livello degli studenti;\ncreare domande di comprensione su testi specifici con diversi livelli di difficoltà;\nfare brainstorming su esempi del mondo reale per rendere concreti argomenti astratti;\ngenerare “choice board” con attività diverse, così gli studenti scelgono come dimostrare la comprensione."
   },
   {
-    "objectID": "edtech/numero-03.html#come-si-usa",
-    "href": "edtech/numero-03.html#come-si-usa",
-    "title": "Tactiq",
+    "objectID": "edtech/numero-04.html#come-si-usa",
+    "href": "edtech/numero-04.html#come-si-usa",
+    "title": "Gemini in Google Classroom",
     "section": "Come si usa",
-    "text": "Come si usa\n\nInstalla l’estensione → Link diretto Chrome Web Store\nEntra in una riunione Meet come sempre;\nTactiq si attiva automaticamente, oppure la apri dal menù estensioni di Chrome;\nAl termine trovi la trascrizione completa salvata.\n\n\n\n\n\n\n\nTipTip extra\n\n\n\nCon il piano gratuito hai 10 trascrizioni al mese: di norma bastano per coprire le riunioni istituzionali mensili senza prendere un appunto a mano."
+    "text": "Come si usa\n\n\n\n\n\n\nImportantDisponibile solo in inglese\n\n\n\nAl momento Gemini in Classroom funziona solo in lingua inglese. Per usarlo devi cambiare temporaneamente la lingua dell’account Google in inglese.\n\n\nCambia la lingua dell’account Google in inglese:\n\nDalla home di Classroom, nella colonna di sinistra scorri in basso e clicca Impostazioni;\nClicca Gestisci nelle impostazioni dell’account;\nNella colonna di sinistra clicca Informazioni personali;\nScorri fino a Lingua e seleziona Inglese (Stati Uniti) o Inglese (Regno Unito).\n\nAccedi alla tab Gemini in Classroom:\n\nTorna alla home di Google Classroom;\nvedrai comparire una nuova tab “Gemini” nella barra di navigazione a sinistra;\ncliccala per accedere a tutti gli strumenti AI disponibili.\n\nInizia a creare contenuti:\n\nScegli uno degli oltre 30 strumenti (es. Outline a lesson plan, Create a rubric, Generate a quiz);\ninserisci le informazioni richieste (livello scolastico, argomento, obiettivi di apprendimento);\nGemini genererà una bozza che potrai modificare, perfezionare e assegnare alla classe col pulsante Add to class.\n\n\n\n\n\n\n\nWarningRivedi sempre i contenuti generati\n\n\n\nL’AI può fare errori: verifica sempre che i contenuti siano accurati e adatti al tuo contesto didattico prima di condividerli con gli studenti.\n\n\n\n\n\n\n\n\nTipTip extra\n\n\n\nDopo aver generato un contenuto, usa Start a chat with Gemini per affinarlo in modalità conversazionale: ad esempio “Rendi questa attività più adatta a studenti con DSA” oppure “Aggiungi 3 esempi legati alla vita quotidiana degli adolescenti”. Puoi anche creare Gems personalizzati — versioni specializzate di Gemini per compiti ricorrenti (generare sempre quiz nello stesso formato, creare rubriche secondo i tuoi standard)."
   },
   {
-    "objectID": "edtech/numero-12.html",
-    "href": "edtech/numero-12.html",
-    "title": "Claude.ai + Apify",
+    "objectID": "edtech/numero-11.html",
+    "href": "edtech/numero-11.html",
+    "title": "Notion",
     "section": "",
-    "text": "Ti serve un dataset strutturato per un’attività didattica, ma passare ore su Our World in Data o ISTAT a copiare tabelle a mano è fuori discussione. Oppure vuoi catalogare i prezzi di strumenti da laboratorio su Amazon, monitorare offerte di lavoro su LinkedIn o estrarre dati da Google Maps — e ogni volta finisci a fare copia-incolla come nel 2005."
+    "text": "Non so te, ma questo è il periodo dell’anno in cui ho mille schede di Chrome aperte, post-it ovunque, una to-do list infinita, appunti sul telefono che non ritrovo più, e la sensazione costante di dimenticare cose importanti nel caos generale che governa le giornate.\nÈ in momenti come questo che una voce nella testa urla: “Apri un Notion!”"
   },
   {
-    "objectID": "edtech/numero-12.html#il-problema",
-    "href": "edtech/numero-12.html#il-problema",
-    "title": "Claude.ai + Apify",
+    "objectID": "edtech/numero-11.html#il-problema",
+    "href": "edtech/numero-11.html#il-problema",
+    "title": "Notion",
     "section": "",
-    "text": "Ti serve un dataset strutturato per un’attività didattica, ma passare ore su Our World in Data o ISTAT a copiare tabelle a mano è fuori discussione. Oppure vuoi catalogare i prezzi di strumenti da laboratorio su Amazon, monitorare offerte di lavoro su LinkedIn o estrarre dati da Google Maps — e ogni volta finisci a fare copia-incolla come nel 2005."
+    "text": "Non so te, ma questo è il periodo dell’anno in cui ho mille schede di Chrome aperte, post-it ovunque, una to-do list infinita, appunti sul telefono che non ritrovo più, e la sensazione costante di dimenticare cose importanti nel caos generale che governa le giornate.\nÈ in momenti come questo che una voce nella testa urla: “Apri un Notion!”"
   },
   {
-    "objectID": "edtech/numero-12.html#la-soluzione",
-    "href": "edtech/numero-12.html#la-soluzione",
-    "title": "Claude.ai + Apify",
-    "section": "La soluzione",
-    "text": "La soluzione\nClaude.ai + Apify è un setup gratuito in due step che trasforma una richiesta in linguaggio naturale in dati strutturati pronti per Google Fogli, senza codice e senza aprire il browser."
+    "objectID": "edtech/numero-11.html#cosè-notion",
+    "href": "edtech/numero-11.html#cosè-notion",
+    "title": "Notion",
+    "section": "Cos’è Notion",
+    "text": "Cos’è Notion\nNotion è uno spazio di lavoro digitale tutto-in-uno — un po’ agenda, un po’ blocco note, un po’ archivio — pensato per chi vuole smettere di tenere tutto in testa e iniziare a scaricarlo in un unico posto organizzato. Nel mondo della produttività lo chiamano second brain: un sistema esterno che ricorda, raccoglie e ordina al posto tuo.\nÈ gratuito, funziona da browser e da app, e una volta impostato ti segue ovunque."
   },
   {
-    "objectID": "edtech/numero-12.html#cosa-fa",
-    "href": "edtech/numero-12.html#cosa-fa",
-    "title": "Claude.ai + Apify",
+    "objectID": "edtech/numero-11.html#cosa-fa",
+    "href": "edtech/numero-11.html#cosa-fa",
+    "title": "Notion",
     "section": "Cosa fa",
-    "text": "Cosa fa\n\nDalla chat normale di Claude descrivi in italiano cosa vuoi estrarre: Claude trova lo strumento giusto, lo lancia e ti restituisce i dati nella conversazione;\na differenza di una normale ricerca con Claude, ChatGPT o Gemini, qui ottieni dati strutturati: righe, colonne, valori puliti, esportabili in CSV o Google Fogli in un clic;\naccede a oltre 5.000 bot pronti nello store di Apify, ognuno specializzato su un sito o un tipo di dato: Amazon, LinkedIn, Google Maps, siti di notizie, portali istituzionali e altro.\n\nPerfetto per:\n\nestrarre serie storiche da ISTAT, Eurostat o Our World in Data per attività di analisi dati e statistica in classe;\ncatalogare prodotti Amazon con prezzi e specifiche: inventari di laboratorio, libri di testo, materiali didattici;\nraccogliere offerte di lavoro su LinkedIn filtrate per ruolo e città, utili per orientamento o ricerca personale;\nestrarre attività commerciali e recensioni da Google Maps per analisi geografiche o territoriali."
+    "text": "Cosa fa\n\nRaccoglie note, link, liste e tabelle in un’unica pagina personalizzabile;\npermette di vedere gli stessi dati in più formati (Calendario, Lista, Kanban…);\ne tanto altro, ma andiamo per gradi.\n\nOggi puoi sbirciare un’introduzione visitando una pagina che ho preparato: se vorrai, potrai renderla tua duplicandola nel tuo workspace.\nApri il Notion di esempio\n\n\n\n\n\n\nTipTip extra\n\n\n\nUn Notion è completamente personalizzabile. Quando l’avrai duplicato nel tuo workspace, porta il cursore un pelo sopra il titolo della pagina e dai un tocco di stile al tuo nuovo second brain!"
   },
   {
-    "objectID": "edtech/numero-12.html#come-si-usa",
-    "href": "edtech/numero-12.html#come-si-usa",
-    "title": "Claude.ai + Apify",
-    "section": "Come si usa",
-    "text": "Come si usa\n\nCrea un account gratuito su apify.com → login con Google, nessuna carta di credito;\nvai su claude.ai → Impostazioni → Connettori, cerca Apify e connetti;\napri una nuova chat Claude e descrivi in italiano cosa vuoi estrarre;\n\n\n\n\n\n\n\nTipTip extra\n\n\n\nIl setup funziona anche “al contrario”: non serve sapere quale Actor usare. Scrivi “voglio i dati sulle offerte di lavoro per ingegneri a Milano da LinkedIn” e Claude sceglie, configura e lancia l’Actor giusto da solo. Tu aspetti i dati.\n\n\n\n\n\n\n\n\nNoteDisponibilità\n\n\n\nCompletamente gratuito. Apify include 5$ di crediti mensili rinnovabili automaticamente, senza carta di credito. Il piano free di Claude.ai basta per un uso esplorativo."
-  },
-  {
-    "objectID": "edtech/numero-10.html",
-    "href": "edtech/numero-10.html",
-    "title": "Icone personalizzate per le cartelle",
+    "objectID": "chi-sono.html",
+    "href": "chi-sono.html",
+    "title": "Chi sono",
     "section": "",
-    "text": "Hai decine di cartelle tutte uguali, o con icone confuse e disturbanti? Perdi tempo e pazienza ogni volta per trovare quella giusta?"
+    "text": "Sono [Nome Cognome], docente di Fisica alla scuola superiore."
   },
   {
-    "objectID": "edtech/numero-10.html#il-problema",
-    "href": "edtech/numero-10.html#il-problema",
-    "title": "Icone personalizzate per le cartelle",
-    "section": "",
-    "text": "Hai decine di cartelle tutte uguali, o con icone confuse e disturbanti? Perdi tempo e pazienza ogni volta per trovare quella giusta?"
-  },
-  {
-    "objectID": "edtech/numero-10.html#la-soluzione",
-    "href": "edtech/numero-10.html#la-soluzione",
-    "title": "Icone personalizzate per le cartelle",
-    "section": "La soluzione",
-    "text": "La soluzione\nPersonalizzare l’icona di ogni cartella con un simbolo diverso ti permette di riconoscerle a colpo d’occhio — senza leggere nemmeno il nome."
-  },
-  {
-    "objectID": "edtech/numero-10.html#come-si-usa",
-    "href": "edtech/numero-10.html#come-si-usa",
-    "title": "Icone personalizzate per le cartelle",
-    "section": "Come si usa",
-    "text": "Come si usa\nSu Mac:\n\nApri un’immagine qualsiasi (online o scaricata);\ntasto destro → Copia immagine;\nvai sulla cartella da personalizzare → tasto destro → Ottieni informazioni;\nnel pannello che si apre, clicca l’icona in alto a sinistra (si evidenzia) → incolla con ⌘V → fatto.\n\nSu Windows:\n\nTasto destro sulla cartella → Proprietà;\nPersonalizza → Icona cartella → Cambia icona.\n\n\n\n\n\n\n\nTipTip extra\n\n\n\nSu svgrepo.com puoi filtrare per stile monocromatico o outline e trovare icone pulite e segnaletiche: oltre 500.000 icone scaricabili gratis, senza registrazione."
+    "objectID": "chi-sono.html#contatti",
+    "href": "chi-sono.html#contatti",
+    "title": "Chi sono",
+    "section": "Contatti",
+    "text": "Contatti\n\nEmail: tua@email.it\nLinkedIn: profilo"
   },
   {
     "objectID": "edtech/numero-05.html",
@@ -385,256 +350,249 @@
     "text": "Ciò che si dice sul web\nNotebookLM riduce drasticamente le “allucinazioni” tipiche di altri modelli, perché risponde solo in base ai documenti caricati. Guida su Aranzulla\nDa settembre 2025 gli insegnanti possono creare e assegnare notebook direttamente in Google Classroom, trasformando i materiali in guide di studio, mappe mentali e audio overview. 6 modi di usare NotebookLM\nNotebookLM è disponibile gratuitamente per gli utenti Google Workspace for Education come servizio Core (come Gmail e Docs), con protezione dati di livello enterprise.\n\n\n\n\n\n\nNoteProva rapida da fare subito\n\n\n\n\n\n\nApri NotebookLM e crea un nuovo notebook;\ncarica delle slide o un PDF del tuo corso (Aggiungi fonte → scegli il tipo di documento);\nprova questo prompt: “Crea una guida allo studio interattiva basata su questi contenuti, con domande chiave, glossario e punti principali”;\nper generare un podcast, clicca l’icona Audio Overview e ascolta una discussione sui contenuti."
   },
   {
-    "objectID": "chi-sono.html",
-    "href": "chi-sono.html",
-    "title": "Chi sono",
+    "objectID": "edtech/numero-10.html",
+    "href": "edtech/numero-10.html",
+    "title": "Icone personalizzate per le cartelle",
     "section": "",
-    "text": "Sono [Nome Cognome], docente di Fisica alla scuola superiore."
+    "text": "Hai decine di cartelle tutte uguali, o con icone confuse e disturbanti? Perdi tempo e pazienza ogni volta per trovare quella giusta?"
   },
   {
-    "objectID": "chi-sono.html#contatti",
-    "href": "chi-sono.html#contatti",
-    "title": "Chi sono",
-    "section": "Contatti",
-    "text": "Contatti\n\nEmail: tua@email.it\nLinkedIn: profilo"
-  },
-  {
-    "objectID": "edtech/numero-11.html",
-    "href": "edtech/numero-11.html",
-    "title": "Notion",
+    "objectID": "edtech/numero-10.html#il-problema",
+    "href": "edtech/numero-10.html#il-problema",
+    "title": "Icone personalizzate per le cartelle",
     "section": "",
-    "text": "Non so te, ma questo è il periodo dell’anno in cui ho mille schede di Chrome aperte, post-it ovunque, una to-do list infinita, appunti sul telefono che non ritrovo più, e la sensazione costante di dimenticare cose importanti nel caos generale che governa le giornate.\nÈ in momenti come questo che una voce nella testa urla: “Apri un Notion!”"
+    "text": "Hai decine di cartelle tutte uguali, o con icone confuse e disturbanti? Perdi tempo e pazienza ogni volta per trovare quella giusta?"
   },
   {
-    "objectID": "edtech/numero-11.html#il-problema",
-    "href": "edtech/numero-11.html#il-problema",
-    "title": "Notion",
-    "section": "",
-    "text": "Non so te, ma questo è il periodo dell’anno in cui ho mille schede di Chrome aperte, post-it ovunque, una to-do list infinita, appunti sul telefono che non ritrovo più, e la sensazione costante di dimenticare cose importanti nel caos generale che governa le giornate.\nÈ in momenti come questo che una voce nella testa urla: “Apri un Notion!”"
-  },
-  {
-    "objectID": "edtech/numero-11.html#cosè-notion",
-    "href": "edtech/numero-11.html#cosè-notion",
-    "title": "Notion",
-    "section": "Cos’è Notion",
-    "text": "Cos’è Notion\nNotion è uno spazio di lavoro digitale tutto-in-uno — un po’ agenda, un po’ blocco note, un po’ archivio — pensato per chi vuole smettere di tenere tutto in testa e iniziare a scaricarlo in un unico posto organizzato. Nel mondo della produttività lo chiamano second brain: un sistema esterno che ricorda, raccoglie e ordina al posto tuo.\nÈ gratuito, funziona da browser e da app, e una volta impostato ti segue ovunque."
-  },
-  {
-    "objectID": "edtech/numero-11.html#cosa-fa",
-    "href": "edtech/numero-11.html#cosa-fa",
-    "title": "Notion",
-    "section": "Cosa fa",
-    "text": "Cosa fa\n\nRaccoglie note, link, liste e tabelle in un’unica pagina personalizzabile;\npermette di vedere gli stessi dati in più formati (Calendario, Lista, Kanban…);\ne tanto altro, ma andiamo per gradi.\n\nOggi puoi sbirciare un’introduzione visitando una pagina che ho preparato: se vorrai, potrai renderla tua duplicandola nel tuo workspace.\nApri il Notion di esempio\n\n\n\n\n\n\nTipTip extra\n\n\n\nUn Notion è completamente personalizzabile. Quando l’avrai duplicato nel tuo workspace, porta il cursore un pelo sopra il titolo della pagina e dai un tocco di stile al tuo nuovo second brain!"
-  },
-  {
-    "objectID": "edtech/numero-04.html",
-    "href": "edtech/numero-04.html",
-    "title": "Gemini in Google Classroom",
-    "section": "",
-    "text": "Passi ore a creare piani di lezione, inventare attività coinvolgenti e differenziare i contenuti per studenti con bisogni diversi? Ti ritrovi a riscrivere sempre le stesse griglie di valutazione o a cercare esempi pratici per spiegare concetti complessi?"
-  },
-  {
-    "objectID": "edtech/numero-04.html#il-problema",
-    "href": "edtech/numero-04.html#il-problema",
-    "title": "Gemini in Google Classroom",
-    "section": "",
-    "text": "Passi ore a creare piani di lezione, inventare attività coinvolgenti e differenziare i contenuti per studenti con bisogni diversi? Ti ritrovi a riscrivere sempre le stesse griglie di valutazione o a cercare esempi pratici per spiegare concetti complessi?"
-  },
-  {
-    "objectID": "edtech/numero-04.html#la-soluzione",
-    "href": "edtech/numero-04.html#la-soluzione",
-    "title": "Gemini in Google Classroom",
+    "objectID": "edtech/numero-10.html#la-soluzione",
+    "href": "edtech/numero-10.html#la-soluzione",
+    "title": "Icone personalizzate per le cartelle",
     "section": "La soluzione",
-    "text": "La soluzione\nGemini in Google Classroom è una suite di oltre 30 strumenti AI integrati direttamente in Classroom: ti aiuta a progettare lezioni, creare materiali e personalizzare contenuti in pochi minuti invece che in ore."
+    "text": "La soluzione\nPersonalizzare l’icona di ogni cartella con un simbolo diverso ti permette di riconoscerle a colpo d’occhio — senza leggere nemmeno il nome."
   },
   {
-    "objectID": "edtech/numero-04.html#cosa-fa",
-    "href": "edtech/numero-04.html#cosa-fa",
-    "title": "Gemini in Google Classroom",
-    "section": "Cosa fa",
-    "text": "Cosa fa\n\nGenera bozze di piani di lezione, griglie di valutazione, quiz, attività di apertura, liste di vocaboli e altro ancora usando l’intelligenza artificiale.\n\nPerfetto per:\n\ncreare rapidamente una lezione completa partendo dagli obiettivi di apprendimento;\ngenerare una griglia di valutazione personalizzata e importarla direttamente in un compito di Classroom;\ninventare “hook” creativi per catturare l’attenzione a inizio lezione;\ndifferenziare contenuti e creare testi o storie adattati al livello degli studenti;\ncreare domande di comprensione su testi specifici con diversi livelli di difficoltà;\nfare brainstorming su esempi del mondo reale per rendere concreti argomenti astratti;\ngenerare “choice board” con attività diverse, così gli studenti scelgono come dimostrare la comprensione."
-  },
-  {
-    "objectID": "edtech/numero-04.html#come-si-usa",
-    "href": "edtech/numero-04.html#come-si-usa",
-    "title": "Gemini in Google Classroom",
+    "objectID": "edtech/numero-10.html#come-si-usa",
+    "href": "edtech/numero-10.html#come-si-usa",
+    "title": "Icone personalizzate per le cartelle",
     "section": "Come si usa",
-    "text": "Come si usa\n\n\n\n\n\n\nImportantDisponibile solo in inglese\n\n\n\nAl momento Gemini in Classroom funziona solo in lingua inglese. Per usarlo devi cambiare temporaneamente la lingua dell’account Google in inglese.\n\n\nCambia la lingua dell’account Google in inglese:\n\nDalla home di Classroom, nella colonna di sinistra scorri in basso e clicca Impostazioni;\nClicca Gestisci nelle impostazioni dell’account;\nNella colonna di sinistra clicca Informazioni personali;\nScorri fino a Lingua e seleziona Inglese (Stati Uniti) o Inglese (Regno Unito).\n\nAccedi alla tab Gemini in Classroom:\n\nTorna alla home di Google Classroom;\nvedrai comparire una nuova tab “Gemini” nella barra di navigazione a sinistra;\ncliccala per accedere a tutti gli strumenti AI disponibili.\n\nInizia a creare contenuti:\n\nScegli uno degli oltre 30 strumenti (es. Outline a lesson plan, Create a rubric, Generate a quiz);\ninserisci le informazioni richieste (livello scolastico, argomento, obiettivi di apprendimento);\nGemini genererà una bozza che potrai modificare, perfezionare e assegnare alla classe col pulsante Add to class.\n\n\n\n\n\n\n\nWarningRivedi sempre i contenuti generati\n\n\n\nL’AI può fare errori: verifica sempre che i contenuti siano accurati e adatti al tuo contesto didattico prima di condividerli con gli studenti.\n\n\n\n\n\n\n\n\nTipTip extra\n\n\n\nDopo aver generato un contenuto, usa Start a chat with Gemini per affinarlo in modalità conversazionale: ad esempio “Rendi questa attività più adatta a studenti con DSA” oppure “Aggiungi 3 esempi legati alla vita quotidiana degli adolescenti”. Puoi anche creare Gems personalizzati — versioni specializzate di Gemini per compiti ricorrenti (generare sempre quiz nello stesso formato, creare rubriche secondo i tuoi standard)."
+    "text": "Come si usa\nSu Mac:\n\nApri un’immagine qualsiasi (online o scaricata);\ntasto destro → Copia immagine;\nvai sulla cartella da personalizzare → tasto destro → Ottieni informazioni;\nnel pannello che si apre, clicca l’icona in alto a sinistra (si evidenzia) → incolla con ⌘V → fatto.\n\nSu Windows:\n\nTasto destro sulla cartella → Proprietà;\nPersonalizza → Icona cartella → Cambia icona.\n\n\n\n\n\n\n\nTipTip extra\n\n\n\nSu svgrepo.com puoi filtrare per stile monocromatico o outline e trovare icone pulite e segnaletiche: oltre 500.000 icone scaricabili gratis, senza registrazione."
   },
   {
-    "objectID": "edtech/numero-06.html",
-    "href": "edtech/numero-06.html",
-    "title": "Scanner nascosto in Google Drive",
+    "objectID": "edtech/numero-12.html",
+    "href": "edtech/numero-12.html",
+    "title": "Claude.ai + Apify",
     "section": "",
-    "text": "Procrastini le scansioni perché la fotocopiatrice è un mistero? Perdi i PDF tra desktop e mail? Le mappe degli studenti sono illeggibili tra ombre e dita?"
+    "text": "Ti serve un dataset strutturato per un’attività didattica, ma passare ore su Our World in Data o ISTAT a copiare tabelle a mano è fuori discussione. Oppure vuoi catalogare i prezzi di strumenti da laboratorio su Amazon, monitorare offerte di lavoro su LinkedIn o estrarre dati da Google Maps — e ogni volta finisci a fare copia-incolla come nel 2005."
   },
   {
-    "objectID": "edtech/numero-06.html#il-problema",
-    "href": "edtech/numero-06.html#il-problema",
-    "title": "Scanner nascosto in Google Drive",
+    "objectID": "edtech/numero-12.html#il-problema",
+    "href": "edtech/numero-12.html#il-problema",
+    "title": "Claude.ai + Apify",
     "section": "",
-    "text": "Procrastini le scansioni perché la fotocopiatrice è un mistero? Perdi i PDF tra desktop e mail? Le mappe degli studenti sono illeggibili tra ombre e dita?"
+    "text": "Ti serve un dataset strutturato per un’attività didattica, ma passare ore su Our World in Data o ISTAT a copiare tabelle a mano è fuori discussione. Oppure vuoi catalogare i prezzi di strumenti da laboratorio su Amazon, monitorare offerte di lavoro su LinkedIn o estrarre dati da Google Maps — e ogni volta finisci a fare copia-incolla come nel 2005."
   },
   {
-    "objectID": "edtech/numero-06.html#la-soluzione",
-    "href": "edtech/numero-06.html#la-soluzione",
-    "title": "Scanner nascosto in Google Drive",
+    "objectID": "edtech/numero-12.html#la-soluzione",
+    "href": "edtech/numero-12.html#la-soluzione",
+    "title": "Claude.ai + Apify",
     "section": "La soluzione",
-    "text": "La soluzione\nL’app Google Drive ha uno scanner integrato che salva PDF direttamente in cartelle online. Niente più file sparsi o fotocopiatrici da decifrare."
+    "text": "La soluzione\nClaude.ai + Apify è un setup gratuito in due step che trasforma una richiesta in linguaggio naturale in dati strutturati pronti per Google Fogli, senza codice e senza aprire il browser."
   },
   {
-    "objectID": "edtech/numero-06.html#cosa-fa",
-    "href": "edtech/numero-06.html#cosa-fa",
-    "title": "Scanner nascosto in Google Drive",
+    "objectID": "edtech/numero-12.html#cosa-fa",
+    "href": "edtech/numero-12.html#cosa-fa",
+    "title": "Claude.ai + Apify",
     "section": "Cosa fa",
-    "text": "Cosa fa\n\nScansiona documenti e li converte automaticamente in PDF;\nriconosce e ritaglia i bordi del documento;\nediting rapido: rotazione, ritaglio, filtri (bianco/nero ad alto contrasto);\nsalva tutto su Drive, organizzato per cartelle.\n\nPerfetto per:\n\ndigitalizzare appunti scritti a mano per la Classroom;\nraccogliere mappe concettuali degli studenti con BES;\narchiviare documenti scolastici sempre disponibili;\nscansionare test per accessi agli atti."
+    "text": "Cosa fa\n\nDalla chat normale di Claude descrivi in italiano cosa vuoi estrarre: Claude trova lo strumento giusto, lo lancia e ti restituisce i dati nella conversazione;\na differenza di una normale ricerca con Claude, ChatGPT o Gemini, qui ottieni dati strutturati: righe, colonne, valori puliti, esportabili in CSV o Google Fogli in un clic;\naccede a oltre 5.000 bot pronti nello store di Apify, ognuno specializzato su un sito o un tipo di dato: Amazon, LinkedIn, Google Maps, siti di notizie, portali istituzionali e altro.\n\nPerfetto per:\n\nestrarre serie storiche da ISTAT, Eurostat o Our World in Data per attività di analisi dati e statistica in classe;\ncatalogare prodotti Amazon con prezzi e specifiche: inventari di laboratorio, libri di testo, materiali didattici;\nraccogliere offerte di lavoro su LinkedIn filtrate per ruolo e città, utili per orientamento o ricerca personale;\nestrarre attività commerciali e recensioni da Google Maps per analisi geografiche o territoriali."
   },
   {
-    "objectID": "edtech/numero-06.html#come-si-usa",
-    "href": "edtech/numero-06.html#come-si-usa",
-    "title": "Scanner nascosto in Google Drive",
+    "objectID": "edtech/numero-12.html#come-si-usa",
+    "href": "edtech/numero-12.html#come-si-usa",
+    "title": "Claude.ai + Apify",
     "section": "Come si usa",
-    "text": "Come si usa\n\nCrea la cartella → apri Google Drive, premi il “+” in basso a destra e seleziona Cartella (es. “Mappe 4A”);\nAvvia la scansione → entra nella cartella, premi di nuovo il “+” e seleziona Scansiona (o tocca l’icona fotocamera/documento sopra il “+”);\nScatta → inquadra il documento: il bordo blu mostra l’area acquisita. Scatta manualmente o aspetta lo scatto automatico;\nModifica → ruota, ritaglia o applica filtri (il bianco/nero è ottimo per i documenti scritti a mano);\nSalva → conferma per finalizzare.\n\n\n\n\n\n\n\nTipTip extra\n\n\n\nCondividi questa procedura con gli studenti: riceverai scansioni pulite e leggibili!"
+    "text": "Come si usa\n\nCrea un account gratuito su apify.com → login con Google, nessuna carta di credito;\nvai su claude.ai → Impostazioni → Connettori, cerca Apify e connetti;\napri una nuova chat Claude e descrivi in italiano cosa vuoi estrarre;\n\n\n\n\n\n\n\nTipTip extra\n\n\n\nIl setup funziona anche “al contrario”: non serve sapere quale Actor usare. Scrivi “voglio i dati sulle offerte di lavoro per ingegneri a Milano da LinkedIn” e Claude sceglie, configura e lancia l’Actor giusto da solo. Tu aspetti i dati.\n\n\n\n\n\n\n\n\nNoteDisponibilità\n\n\n\nCompletamente gratuito. Apify include 5$ di crediti mensili rinnovabili automaticamente, senza carta di credito. Il piano free di Claude.ai basta per un uso esplorativo."
   },
   {
-    "objectID": "edtech/numero-02.html",
-    "href": "edtech/numero-02.html",
-    "title": "Tab Resize",
+    "objectID": "edtech/numero-03.html",
+    "href": "edtech/numero-03.html",
+    "title": "Tactiq",
     "section": "",
-    "text": "Hai mai perso tempo a ridimensionare a mano le finestre per confrontare documenti, seguire tutorial o lavorare su più progetti insieme?"
+    "text": "Ti è mai capitato di perderti pezzi importanti di una riunione Meet per colpa della connessione, dell’audio disturbato, o semplicemente perché eri concentrato a prendere appunti?"
   },
   {
-    "objectID": "edtech/numero-02.html#il-problema",
-    "href": "edtech/numero-02.html#il-problema",
-    "title": "Tab Resize",
+    "objectID": "edtech/numero-03.html#il-problema",
+    "href": "edtech/numero-03.html#il-problema",
+    "title": "Tactiq",
     "section": "",
-    "text": "Hai mai perso tempo a ridimensionare a mano le finestre per confrontare documenti, seguire tutorial o lavorare su più progetti insieme?"
+    "text": "Ti è mai capitato di perderti pezzi importanti di una riunione Meet per colpa della connessione, dell’audio disturbato, o semplicemente perché eri concentrato a prendere appunti?"
   },
   {
-    "objectID": "edtech/numero-02.html#la-soluzione",
-    "href": "edtech/numero-02.html#la-soluzione",
-    "title": "Tab Resize",
+    "objectID": "edtech/numero-03.html#la-soluzione",
+    "href": "edtech/numero-03.html#la-soluzione",
+    "title": "Tactiq",
     "section": "La soluzione",
-    "text": "La soluzione\nTab Resize è un’estensione Chrome gratuita che sistema automaticamente le finestre con un clic."
+    "text": "La soluzione\nTactiq è un’estensione Chrome gratuita che trascrive automaticamente le tue riunioni Google Meet in tempo reale."
   },
   {
-    "objectID": "edtech/numero-02.html#cosa-fa",
-    "href": "edtech/numero-02.html#cosa-fa",
-    "title": "Tab Resize",
+    "objectID": "edtech/numero-03.html#cosa-fa",
+    "href": "edtech/numero-03.html#cosa-fa",
+    "title": "Tactiq",
     "section": "Cosa fa",
-    "text": "Cosa fa\n\nDivide lo schermo in layout predefiniti (metà schermo, quarti, terzi).\n\nPerfetto per:\n\nconfrontare documenti;\nseguire tutorial video mentre lavori;\ntenere aperte Gmail + Drive + Classroom;\ncorreggere compiti con le griglie di valutazione affianco."
+    "text": "Cosa fa\n\nTrascrive automaticamente l’audio in testo durante la riunione.\n\nPerfetto per:\n\nriunioni di dipartimento e coordinamenti;\nincontri di progetto;\nrecuperare decisioni e accordi presi durante la riunione."
   },
   {
-    "objectID": "edtech/numero-02.html#come-si-usa",
-    "href": "edtech/numero-02.html#come-si-usa",
-    "title": "Tab Resize",
+    "objectID": "edtech/numero-03.html#come-si-usa",
+    "href": "edtech/numero-03.html#come-si-usa",
+    "title": "Tactiq",
     "section": "Come si usa",
-    "text": "Come si usa\n\nInstalla l’estensione → Link diretto\nClicca l’icona nella barra degli strumenti;\nScegli il layout che preferisci;\nLe finestre si posizionano automaticamente.\n\n\n\n\n\n\n\nTipTip extra\n\n\n\nUsa Ctrl+Shift+A per attivare rapidamente il layout a metà schermo."
+    "text": "Come si usa\n\nInstalla l’estensione → Link diretto Chrome Web Store\nEntra in una riunione Meet come sempre;\nTactiq si attiva automaticamente, oppure la apri dal menù estensioni di Chrome;\nAl termine trovi la trascrizione completa salvata.\n\n\n\n\n\n\n\nTipTip extra\n\n\n\nCon il piano gratuito hai 10 trascrizioni al mese: di norma bastano per coprire le riunioni istituzionali mensili senza prendere un appunto a mano."
   },
   {
-    "objectID": "edtech/index.html",
-    "href": "edtech/index.html",
-    "title": "EdTech",
+    "objectID": "edtech/numero-01.html",
+    "href": "edtech/numero-01.html",
+    "title": "Tab Group di Chrome",
     "section": "",
-    "text": "Claude.ai + Apify\n\n\n\nAI\n\nDati\n\n\n\nUn setup gratuito in due step che trasforma una richiesta in italiano in dati strutturati pronti per Google Fogli: niente codice, niente copia-incolla.\n\n\n\n\n\nJul 6, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nNotion\n\n\n\nProduttività\n\n\n\nLo spazio di lavoro tutto-in-uno che raccoglie note, link, liste e tabelle in un solo posto: il tuo second brain, gratuito e sincronizzato ovunque.\n\n\n\n\n\nMay 21, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nIcone personalizzate per le cartelle\n\n\n\nProduttività\n\n\n\nAssegna a ogni cartella un’icona diversa e riconoscila a colpo d’occhio, senza leggere il nome: due minuti su Mac e su Windows.\n\n\n\n\n\nApr 8, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nSnapClass\n\n\n\nGoogle Fogli\n\n\n\nUn foglio Google pronto all’uso che trasforma i voti in istogramma e curva a campana interattiva: capisci com’è andata la verifica in 10 secondi, senza formule.\n\n\n\n\n\nMar 12, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nGestisci le iscrizioni in Gmail\n\n\n\nGmail\n\n\n\nUna schermata unica con tutte le newsletter a cui sei iscritto e la disiscrizione in un clic: fai riemergere le email importanti dal rumore di fondo.\n\n\n\n\n\nFeb 19, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nScanner nascosto in Google Drive\n\n\n\nGoogle Drive\n\n\n\nL’app Drive ha uno scanner integrato che salva PDF già ritagliati e filtrati direttamente nelle cartelle giuste: niente più file sparsi o fotocopiatrici da decifrare.\n\n\n\n\n\nJan 15, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nNotebookLM per Flipped & more\n\n\n\nAI\n\n\n\nL’AI di Google che risponde solo sui materiali che carichi: guide di studio, quiz, mappe e audio overview per la flipped classroom, senza allucinazioni.\n\n\n\n\n\nOct 22, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nGemini in Google Classroom\n\n\n\nAI\n\nGoogle Classroom\n\n\n\nOltre 30 strumenti AI dentro Classroom per progettare lezioni, griglie, quiz e materiali differenziati in minuti invece che ore.\n\n\n\n\n\nOct 10, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nTactiq\n\n\n\nGoogle Meet\n\nAI\n\n\n\nTrascrive in automatico le riunioni Google Meet in tempo reale: recuperi decisioni e accordi senza prendere un solo appunto a mano.\n\n\n\n\n\nOct 6, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nTab Resize\n\n\n\nGoogle Chrome\n\n\n\nSistema le finestre in layout predefiniti con un clic: mezzo schermo, quarti, terzi, per lavorare e confrontare senza trascinare a mano.\n\n\n\n\n\nSep 24, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nTab Group di Chrome\n\n\n\nGoogle Chrome\n\n\n\nRaggruppa le schede del browser in cluster con nome e colore: uno scaffale ordinato per ogni progetto.\n\n\n\n\n\nSep 4, 2025\n\n\n\n\n\nNo matching items"
+    "text": "Ti ritrovi con venti schede aperte e per trovare quella che ti serve ci metti più tempo che a ricercarla da capo. Ogni volta che chiudi il browser gli dici di non chiudere le schede, e nella sessione dopo ne aggiungi altre per paura di perdere ricerche preziose. Ma così non le consulti mai — e lo sai."
   },
   {
-    "objectID": "edtech/numero-08.html",
-    "href": "edtech/numero-08.html",
-    "title": "Gestisci le iscrizioni in Gmail",
+    "objectID": "edtech/numero-01.html#il-problema",
+    "href": "edtech/numero-01.html#il-problema",
+    "title": "Tab Group di Chrome",
     "section": "",
-    "text": "Newsletter di piattaforme provate una volta, offerte formative scadute, webinar del 2021… non le apri mai, ma continuano ad arrivare. Risultato? Le email importanti — circolari, comunicazioni dei genitori, messaggi del DS — finiscono sepolte sotto una marea di posta spazzatura."
+    "text": "Ti ritrovi con venti schede aperte e per trovare quella che ti serve ci metti più tempo che a ricercarla da capo. Ogni volta che chiudi il browser gli dici di non chiudere le schede, e nella sessione dopo ne aggiungi altre per paura di perdere ricerche preziose. Ma così non le consulti mai — e lo sai."
   },
   {
-    "objectID": "edtech/numero-08.html#il-problema",
-    "href": "edtech/numero-08.html#il-problema",
-    "title": "Gestisci le iscrizioni in Gmail",
-    "section": "",
-    "text": "Newsletter di piattaforme provate una volta, offerte formative scadute, webinar del 2021… non le apri mai, ma continuano ad arrivare. Risultato? Le email importanti — circolari, comunicazioni dei genitori, messaggi del DS — finiscono sepolte sotto una marea di posta spazzatura."
-  },
-  {
-    "objectID": "edtech/numero-08.html#la-soluzione",
-    "href": "edtech/numero-08.html#la-soluzione",
-    "title": "Gestisci le iscrizioni in Gmail",
+    "objectID": "edtech/numero-01.html#la-soluzione",
+    "href": "edtech/numero-01.html#la-soluzione",
+    "title": "Tab Group di Chrome",
     "section": "La soluzione",
-    "text": "La soluzione\nGestisci iscrizioni è una funzionalità nativa di Gmail (dal 2025) che mostra in un’unica schermata tutte le mailing list a cui sei iscritto e ti permette di cancellarti con un solo clic."
+    "text": "La soluzione\nI Tab Group sono una funzionalità nativa di Chrome (nessuna installazione) che raggruppa le schede in cluster con nome e colore: ogni progetto ha il suo scaffale ordinato."
   },
   {
-    "objectID": "edtech/numero-08.html#come-si-usa",
-    "href": "edtech/numero-08.html#come-si-usa",
-    "title": "Gestisci le iscrizioni in Gmail",
+    "objectID": "edtech/numero-01.html#cosa-fa",
+    "href": "edtech/numero-01.html#cosa-fa",
+    "title": "Tab Group di Chrome",
+    "section": "Cosa fa",
+    "text": "Cosa fa\n\nCrea gruppi di schede colorati e nominati, che collassi ed espandi con un clic per liberare la barra. Con Salva gruppo i gruppi sopravvivono ai riavvii e si sincronizzano su Chrome negli altri dispositivi: in genere li ritrovi anche su smartphone e tablet, ovunque accedi con il tuo account.\nI gruppi non finiscono nella giungla dei preferiti: restano in una sezione dedicata e a colori, sempre a vista."
+  },
+  {
+    "objectID": "edtech/numero-01.html#perfetto-per",
+    "href": "edtech/numero-01.html#perfetto-per",
+    "title": "Tab Group di Chrome",
+    "section": "Perfetto per",
+    "text": "Perfetto per\n\nRicerca a tema: tenere insieme fonti, articoli e approfondimenti di un argomento senza perderli nella marea;\nLavoro multi-progetto: un gruppo “Bandi”, uno “Strumenti AI”, uno “Viaggio”, con colori diversi;\nSessioni ricorrenti: salvare un gruppo di siti che riapri ogni settimana (portale, mail, gestionale);\nShopping o confronti: raccogliere in un gruppo tutte le schede di prodotti da comparare."
+  },
+  {
+    "objectID": "edtech/numero-01.html#come-si-usa",
+    "href": "edtech/numero-01.html#come-si-usa",
+    "title": "Tab Group di Chrome",
     "section": "Come si usa",
-    "text": "Come si usa\nLink diretto (devi essere già loggato) — copia e incolla nella barra del browser:\nmail.google.com/mail/#sub\n\nScorri l’elenco e clicca sui mittenti per vedere le email ricevute;\nclicca Annulla iscrizione.\n\nPerfetto per:\n\npulizia di inizio/fine anno scolastico;\nfar riemergere le email importanti dal rumore di fondo;\nriprendere il controllo della casella di posta;\nfare ordine dopo corsi di formazione e webinar.\n\n\n\n\n\n\n\nWarningIl vero costo delle newsletter fantasma\n\n\n\nSi stimano almeno ~20 email inutili a settimana, mescolate a scadenze, documenti e convocazioni importanti. In un anno fanno oltre 1.000 email spazzatura. Quella circolare urgente che non hai visto? Forse era sepolta sotto l’ennesima promo di un servizio provato una volta nel 2022. Il costo non è in megabyte: è in attenzione, tempo e focus."
+    "text": "Come si usa\n\nClic destro su una scheda → Aggiungi scheda a nuovo gruppo;\nAssegna nome e colore al gruppo, poi clicca l’etichetta per collassarlo/espanderlo;\nClic destro sull’etichetta → Salva gruppo perché sopravviva a chiusura e riavvio: comparirà come “pillola” nella barra dei preferiti.\n\n\n\n\n\n\n\nTipTip extra\n\n\n\nDue cose da ricordare. Primo: se non vedi la pillola dei gruppi salvati, attiva l’impostazione “Mostra i gruppi di schede salvati” nella barra dei preferiti. Secondo: se non li ritrovi sugli altri dispositivi, controlla che Chrome Sync sia attivo nelle impostazioni."
   },
   {
-    "objectID": "didattica/igcse/index.html",
-    "href": "didattica/igcse/index.html",
-    "title": "IGCSE — Materiali",
+    "objectID": "edtech/numero-09.html",
+    "href": "edtech/numero-09.html",
+    "title": "SnapClass",
     "section": "",
-    "text": "Materiali del corso Cambridge IGCSE (Maths).\n\n\n\n\n\n\n\n\n\nSets\n\n\nInsiemi: teoria, vocabolario e test IGCSE.\n\n\n\n\n\n\n\n\nNo matching items"
+    "text": "Hai appena finito un giro di interrogazioni o corretto un compito. Hai i voti segnati, ma per capire davvero com’è andata — dove si concentra la classe, quanti sono sotto la sufficienza, se c’è una coda di eccellenze — dovresti metterti a contare, raggruppare, fare calcoli. Chi ha tempo?"
   },
   {
-    "objectID": "didattica/prima/fisica/index.html",
-    "href": "didattica/prima/fisica/index.html",
-    "title": "Fisica — Classe Prima",
+    "objectID": "edtech/numero-09.html#il-problema",
+    "href": "edtech/numero-09.html#il-problema",
+    "title": "SnapClass",
     "section": "",
-    "text": "Materiali di Fisica per la classe prima.\n\n\n\n\n\n\n\n\n\nOscillatore armonico smorzato\n\n\nEsempio: una formula e un grafico generato da Python.\n\n\n\n\n\nJul 19, 2026\n\n\n\n\n\nNo matching items"
+    "text": "Hai appena finito un giro di interrogazioni o corretto un compito. Hai i voti segnati, ma per capire davvero com’è andata — dove si concentra la classe, quanti sono sotto la sufficienza, se c’è una coda di eccellenze — dovresti metterti a contare, raggruppare, fare calcoli. Chi ha tempo?"
   },
   {
-    "objectID": "didattica/prima/lezioni/2026-09-23-measure-errors/index.html",
-    "href": "didattica/prima/lezioni/2026-09-23-measure-errors/index.html",
-    "title": "Random & Systematic Error",
+    "objectID": "edtech/numero-09.html#la-soluzione",
+    "href": "edtech/numero-09.html#la-soluzione",
+    "title": "SnapClass",
+    "section": "La soluzione",
+    "text": "La soluzione\nSnapClass è un foglio Google pronto all’uso che trasforma i tuoi voti in un istogramma chiaro e in una curva a campana interattiva, senza formule da scrivere e senza nulla da configurare."
+  },
+  {
+    "objectID": "edtech/numero-09.html#cosa-fa",
+    "href": "edtech/numero-09.html#cosa-fa",
+    "title": "SnapClass",
+    "section": "Cosa fa",
+    "text": "Cosa fa\nInserisci i voti nella colonna A e il foglio genera automaticamente due grafici: un istogramma che mostra la distribuzione per fasce di voto e una curva a campana interattiva — passando il cursore sulla curva vedi il voto esatto con la relativa densità, per una lettura ancora più precisa.\nPerfetto per:\n\ndopo un compito in classe: capire in 10 secondi se la verifica era tarata bene;\nconfronto tra sezioni: usare due copie del foglio per confrontare la stessa prova in due classi diverse;\nautoriflessione didattica: tenere traccia visiva dell’andamento nel tempo, verifica dopo verifica."
+  },
+  {
+    "objectID": "edtech/numero-09.html#come-si-usa",
+    "href": "edtech/numero-09.html#come-si-usa",
+    "title": "SnapClass",
+    "section": "Come si usa",
+    "text": "Come si usa\n\nApri il foglio → SnapClass su Google Fogli\nClicca File → Crea una copia (il foglio si salva nel tuo Drive);\ncancella i dati di esempio nella colonna A e inserisci i tuoi;\nguarda i grafici aggiornarsi in tempo reale sul fianco.\n\n\n\n\n\n\n\nTipTip extra: non solo voti\n\n\n\nSnapClass funziona con qualsiasi serie di numeri, anche fuori dalla scuola:\n\nBollette: segni gli importi mese per mese e vedi su quale fascia si concentrano — e quanto spesso arriva la mazzata anomala;\nSpese quotidiane: caffè, pranzo, spesa… butta dentro i numeri di un mese e scopri la tua fascia di spesa “tipica” e quanto spesso sgarri;\nKm al giorno: auto, piedi, bici? Segna i chilometri per qualche settimana e scopri il tuo schema reale di mobilità;\nOre di sonno: segnale per un mese e vedi se la tua “normalità” è davvero quella che pensi.\n\nInsomma, ovunque ci sia un numero e una curiosità, SnapClass ti darà il trend."
+  },
+  {
+    "objectID": "didattica/igcse/sets.html",
+    "href": "didattica/igcse/sets.html",
+    "title": "Sets",
+    "section": "",
+    "text": "NoteDefining Sets\n\n\n\n\n\nVideo di riferimento: Algebra 1 – Defining Sets\n\n\n\n\n\n\n\n\n\nNoteSet Equality and Subsets\n\n\n\n\n\nAlgebra 2 – Set Equality and Subsets\n\n\nAmmette anche il caso \\(A = B\\). Funziona come il \\(\\leq\\) tra numeri: \\[3 \\leq 5 \\quad \\text{ma anche} \\quad 3 \\leq 3\\] Allo stesso modo, \\(A \\subseteq A\\) è sempre vero (ogni insieme è sottoinsieme di sé stesso).\n\n\n\nEsclude il caso \\(A = B\\). Funziona come il \\(&lt;\\) tra numeri: \\[3 &lt; 5 \\quad \\text{ma} \\quad 3 \\not&lt; 3\\]\n\n\n\nSiano \\(A = \\{1, 2\\}\\) e \\(B = \\{1, 2, 3\\}\\):\n\n\\(A \\subseteq B\\) ✓ — ogni elemento di \\(A\\) sta in \\(B\\)\n\\(A \\subsetneq B\\) ✓ — vale l’inclusione e \\(A \\neq B\\) (manca il 3)\n\nOra sia invece \\(A = B = \\{1, 2\\}\\):\n\n\\(A \\subseteq B\\) — vale ancora\n\\(A \\subsetneq B\\) — non vale, perché \\(A\\) e \\(B\\) sono uguali\n\nIn sintesi: \\(\\subseteq\\) sta a \\(\\subsetneq\\) come \\(\\leq\\) sta a \\(&lt;\\).\n\n\n\n\n\n\n\n\n\n\nNoteVenn Diagrams, Unions, and Intersections\n\n\n\n\n\nAlgebra 3 – Venn Diagrams, Unions, and Intersections\n\n\n\n\n\n\n\n\n\nNoteComplement and Relative Complement\n\n\n\n\n\nAlgebra 4 – Complement and Relative Complement\n\n\n\n\n\n\n\n\n\nNoteKey Vocabulary\n\n\n\n\n\n\n\n\n\n\n\n\n\nTermine inglese\nTermine italiano\nSimbolo/Nota\n\n\n\n\nSet\nInsieme\n\n\n\nElement / Member\nElemento\n∈\n\n\nEmpty set\nInsieme vuoto\n∅\n\n\nSet membership\nAppartenenza\n∈ / ∉\n\n\nListing notation\nNotazione per elencazione\n\\(\\{1, 2, 3\\}\\)\n\n\nSet-builder notation\nNotazione per proprietà (intensionale)\n\\(\\{x \\mid P(x)\\}\\)\n\n\nEllipsis\nPuntini di sospensione\n…\n\n\nNatural numbers\nNumeri naturali\n\\(\\mathbb{N}\\)\n\n\nIntegers\nNumeri interi\n\\(\\mathbb{Z}\\)\n\n\nRational numbers\nNumeri razionali\n\\(\\mathbb{Q}\\)\n\n\nReal numbers\nNumeri reali\n\\(\\mathbb{R}\\)\n\n\nComplex numbers\nNumeri complessi\n\\(\\mathbb{C}\\)\n\n\nEquality (of sets)\nUguaglianza (di insiemi)\n\\(A = B\\)\n\n\nSubset\nSottoinsieme\n⊆\n\n\nProper subset\nSottoinsieme proprio\n⊊\n\n\nSuperset\nSovrainsieme\n⊇\n\n\nProper superset\nSovrainsieme proprio\n⊋\n\n\nVenn Diagram\nDiagramma di Venn\n\n\n\nDisjoint sets\nInsiemi disgiunti\n\\(A \\cap B = \\emptyset\\)\n\n\nIntersection\nIntersezione\n∩\n\n\nUnion\nUnione\n∪\n\n\nUniversal set / Universe\nInsieme universale / Universo\n\\(U\\)\n\n\nComplement (absolute)\nComplementare (assoluto)\n\\(A'\\)\n\n\nRelative complement\nComplementare relativo / Differenza\n\\(B \\setminus A\\)"
+  },
+  {
+    "objectID": "didattica/igcse/sets.html#teoria",
+    "href": "didattica/igcse/sets.html#teoria",
+    "title": "Sets",
+    "section": "",
+    "text": "NoteDefining Sets\n\n\n\n\n\nVideo di riferimento: Algebra 1 – Defining Sets\n\n\n\n\n\n\n\n\n\nNoteSet Equality and Subsets\n\n\n\n\n\nAlgebra 2 – Set Equality and Subsets\n\n\nAmmette anche il caso \\(A = B\\). Funziona come il \\(\\leq\\) tra numeri: \\[3 \\leq 5 \\quad \\text{ma anche} \\quad 3 \\leq 3\\] Allo stesso modo, \\(A \\subseteq A\\) è sempre vero (ogni insieme è sottoinsieme di sé stesso).\n\n\n\nEsclude il caso \\(A = B\\). Funziona come il \\(&lt;\\) tra numeri: \\[3 &lt; 5 \\quad \\text{ma} \\quad 3 \\not&lt; 3\\]\n\n\n\nSiano \\(A = \\{1, 2\\}\\) e \\(B = \\{1, 2, 3\\}\\):\n\n\\(A \\subseteq B\\) ✓ — ogni elemento di \\(A\\) sta in \\(B\\)\n\\(A \\subsetneq B\\) ✓ — vale l’inclusione e \\(A \\neq B\\) (manca il 3)\n\nOra sia invece \\(A = B = \\{1, 2\\}\\):\n\n\\(A \\subseteq B\\) — vale ancora\n\\(A \\subsetneq B\\) — non vale, perché \\(A\\) e \\(B\\) sono uguali\n\nIn sintesi: \\(\\subseteq\\) sta a \\(\\subsetneq\\) come \\(\\leq\\) sta a \\(&lt;\\).\n\n\n\n\n\n\n\n\n\n\nNoteVenn Diagrams, Unions, and Intersections\n\n\n\n\n\nAlgebra 3 – Venn Diagrams, Unions, and Intersections\n\n\n\n\n\n\n\n\n\nNoteComplement and Relative Complement\n\n\n\n\n\nAlgebra 4 – Complement and Relative Complement\n\n\n\n\n\n\n\n\n\nNoteKey Vocabulary\n\n\n\n\n\n\n\n\n\n\n\n\n\nTermine inglese\nTermine italiano\nSimbolo/Nota\n\n\n\n\nSet\nInsieme\n\n\n\nElement / Member\nElemento\n∈\n\n\nEmpty set\nInsieme vuoto\n∅\n\n\nSet membership\nAppartenenza\n∈ / ∉\n\n\nListing notation\nNotazione per elencazione\n\\(\\{1, 2, 3\\}\\)\n\n\nSet-builder notation\nNotazione per proprietà (intensionale)\n\\(\\{x \\mid P(x)\\}\\)\n\n\nEllipsis\nPuntini di sospensione\n…\n\n\nNatural numbers\nNumeri naturali\n\\(\\mathbb{N}\\)\n\n\nIntegers\nNumeri interi\n\\(\\mathbb{Z}\\)\n\n\nRational numbers\nNumeri razionali\n\\(\\mathbb{Q}\\)\n\n\nReal numbers\nNumeri reali\n\\(\\mathbb{R}\\)\n\n\nComplex numbers\nNumeri complessi\n\\(\\mathbb{C}\\)\n\n\nEquality (of sets)\nUguaglianza (di insiemi)\n\\(A = B\\)\n\n\nSubset\nSottoinsieme\n⊆\n\n\nProper subset\nSottoinsieme proprio\n⊊\n\n\nSuperset\nSovrainsieme\n⊇\n\n\nProper superset\nSovrainsieme proprio\n⊋\n\n\nVenn Diagram\nDiagramma di Venn\n\n\n\nDisjoint sets\nInsiemi disgiunti\n\\(A \\cap B = \\emptyset\\)\n\n\nIntersection\nIntersezione\n∩\n\n\nUnion\nUnione\n∪\n\n\nUniversal set / Universe\nInsieme universale / Universo\n\\(U\\)\n\n\nComplement (absolute)\nComplementare (assoluto)\n\\(A'\\)\n\n\nRelative complement\nComplementare relativo / Differenza\n\\(B \\setminus A\\)"
+  },
+  {
+    "objectID": "didattica/igcse/sets.html#esercizi",
+    "href": "didattica/igcse/sets.html#esercizi",
+    "title": "Sets",
+    "section": "Esercizi",
+    "text": "Esercizi\n\n\n\n\n\n\nTipNota: cardinalità dell’intersezione\n\n\n\n\n\n\\(n(A)\\) indica la cardinalità di un insieme, cioè il numero di elementi che contiene. Quindi \\(n(A \\cap B)\\) significa “quanti elementi appartengono contemporaneamente ad \\(A\\) e a \\(B\\)”.\nEsempio: \\[A = \\{1, 2, 3, 4\\}, \\quad B = \\{3, 4, 5, 6\\}\\] \\[A \\cap B = \\{3, 4\\} \\quad\\Rightarrow\\quad n(A \\cap B) = 2\\]\n\n\n\nTest IGCSE: Scarica il test (Google Drive)\n\n\n\n\n\n\nWarningSoluzioni (Marks Scheme)\n\n\n\n\n\nScarica lo schema di correzione (Google Drive)"
+  },
+  {
+    "objectID": "didattica/prima/fisica/moto-smorzato.html",
+    "href": "didattica/prima/fisica/moto-smorzato.html",
+    "title": "Oscillatore armonico smorzato",
+    "section": "",
+    "text": "L’ampiezza di un oscillatore smorzato decade nel tempo secondo:\n\\[\nx(t) = e^{-\\gamma t}\\cos(\\omega t)\n\\]\n\nimport numpy as np\nimport matplotlib.pyplot as plt\nt = np.linspace(0, 10, 500)\nx = np.exp(-0.4*t)*np.cos(3.0*t)\nfig, ax = plt.subplots()\nax.plot(t, x)\nax.set_xlabel(\"tempo (s)\"); ax.set_ylabel(\"posizione\")\nplt.show()\n\n\n\n\n\n\n\nFigure 1: Oscillatore armonico smorzato."
+  },
+  {
+    "objectID": "didattica/prima/index.html",
+    "href": "didattica/prima/index.html",
+    "title": "Classe Prima",
+    "section": "",
+    "text": "Materie attive quest’anno:\n\nFisica\n\n\n\n\n\n\n\n\n\n\n\n\nDate\n\n\n\nTitle\n\n\n\nArgomento\n\n\n\n\n\n\n\n\nSep 23, 2026\n\n\nRandom & Systematic Error\n\n\nMaking sense of scatter in repeated measurements\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "didattica/seconda/fisica/index.html",
+    "href": "didattica/seconda/fisica/index.html",
+    "title": "Fisica — Classe Seconda",
+    "section": "",
+    "text": "Materiali di Fisica per la classe seconda.\n\n\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "didattica/seconda/lezioni/2026-09-21-energy-work/index.html",
+    "href": "didattica/seconda/lezioni/2026-09-21-energy-work/index.html",
+    "title": "Energy: stores, transfers and work",
     "section": "",
     "text": "Apri le slide a schermo intero ↗"
   },
   {
-    "objectID": "didattica/prima/lezioni/2026-09-23-measure-errors/index.html#slide-della-lezione",
-    "href": "didattica/prima/lezioni/2026-09-23-measure-errors/index.html#slide-della-lezione",
-    "title": "Random & Systematic Error",
+    "objectID": "didattica/seconda/lezioni/2026-09-21-energy-work/index.html#slide-della-lezione",
+    "href": "didattica/seconda/lezioni/2026-09-21-energy-work/index.html#slide-della-lezione",
+    "title": "Energy: stores, transfers and work",
     "section": "",
     "text": "Apri le slide a schermo intero ↗"
   },
   {
-    "objectID": "didattica/prima/lezioni/2026-09-23-measure-errors/index.html#materiali-e-indicazioni-per-lo-studio",
-    "href": "didattica/prima/lezioni/2026-09-23-measure-errors/index.html#materiali-e-indicazioni-per-lo-studio",
-    "title": "Random & Systematic Error",
+    "objectID": "didattica/seconda/lezioni/2026-09-21-energy-work/index.html#materiali-e-indicazioni-per-lo-studio",
+    "href": "didattica/seconda/lezioni/2026-09-21-energy-work/index.html#materiali-e-indicazioni-per-lo-studio",
+    "title": "Energy: stores, transfers and work",
     "section": "Materiali e indicazioni per lo studio",
     "text": "Materiali e indicazioni per lo studio\n(da compilare)"
   },
   {
-    "objectID": "didattica/seconda/index.html",
-    "href": "didattica/seconda/index.html",
-    "title": "Classe Seconda",
+    "objectID": "didattica/quarta/index.html",
+    "href": "didattica/quarta/index.html",
+    "title": "Classe Quarta",
     "section": "",
-    "text": "Materie attive quest’anno:\n\nFisica\n\n\n\n\n\n\n\n\n\n\n\n\nDate\n\n\n\nTitle\n\n\n\nArgomento\n\n\n\n\n\n\n\n\nSep 21, 2026\n\n\nEnergy: stores, transfers and work\n\n\nFrom a braking car to a law of nature\n\n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "didattica/quarta/fisica/index.html",
-    "href": "didattica/quarta/fisica/index.html",
-    "title": "Fisica — Classe Quarta",
-    "section": "",
-    "text": "Materiali di Fisica per la classe quarta.\n\n\n\n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "didattica/quarta/lezioni/2026-09-21-campoelettrico-flusso/index.html",
-    "href": "didattica/quarta/lezioni/2026-09-21-campoelettrico-flusso/index.html",
-    "title": "Linee di forza e flusso del campo elettrico",
-    "section": "",
-    "text": "Apri le slide a schermo intero ↗"
-  },
-  {
-    "objectID": "didattica/quarta/lezioni/2026-09-21-campoelettrico-flusso/index.html#slide-della-lezione",
-    "href": "didattica/quarta/lezioni/2026-09-21-campoelettrico-flusso/index.html#slide-della-lezione",
-    "title": "Linee di forza e flusso del campo elettrico",
-    "section": "",
-    "text": "Apri le slide a schermo intero ↗"
-  },
-  {
-    "objectID": "didattica/quarta/lezioni/2026-09-21-campoelettrico-flusso/index.html#materiali-e-indicazioni-per-lo-studio",
-    "href": "didattica/quarta/lezioni/2026-09-21-campoelettrico-flusso/index.html#materiali-e-indicazioni-per-lo-studio",
-    "title": "Linee di forza e flusso del campo elettrico",
-    "section": "Materiali e indicazioni per lo studio",
-    "text": "Materiali e indicazioni per lo studio\nEsercizi assegnati per il 28/09 ↗"
+    "text": "Materie attive quest’anno:\n\nFisica\n\n\n\n\n\n\n\n\n\n\n\n\nDate\n\n\n\nTitle\n\n\n\nArgomento\n\n\n\n\n\n\n\n\nSep 21, 2026\n\n\nLinee di forza e flusso del campo elettrico\n\n\nDal disegno al numero: contare le linee\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "didattica/archivio/index.html",
