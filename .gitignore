@@ -1,3 +1,9 @@
+# File di appoggio LaTeX (pdflatex)
+*.aux
+*.log
+*.out
+*.toc
+
 # Output e cache di Quarto
 /_site/
 /.quarto/
