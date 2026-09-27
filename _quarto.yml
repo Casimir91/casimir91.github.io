@@ -3,6 +3,8 @@ project:
 
 website:
   title: "Prof. Rosi"
+  resources:
+    - CNAME
   site-url: "https://casimir91.github.io"
   open-graph: true
   twitter-card: true
