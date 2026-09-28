@@ -372,7 +372,7 @@ svg text{font-family:var(--sans)}
     <h2 style="margin-bottom:22px">Una previsione, prima di continuare</h2>
     <p style="font-size:32px;margin-bottom:26px">Una carica puntiforme sta al centro di una sfera immaginaria di raggio <span class="tex">R</span>. Se raddoppio <span class="tex">R</span>, il flusso (electric flux) attraverso quella superficie…</p>
     <div class="fragment fade-up">
-      <ul class="w-poll" data-poll="raggio" data-correct="1">
+      <ul class="w-poll" data-prevent-swipe data-poll="raggio" data-correct="1">
         <li>raddoppia</li><li>resta uguale</li><li>si dimezza</li>
       </ul>
     </div>
@@ -448,7 +448,7 @@ svg text{font-family:var(--sans)}
   <div class="s">
     <div class="kicker">Verificatelo voi</div>
     <h2 style="margin-bottom:22px">Fate variare il raggio R</h2>
-    <div class="lab">
+    <div class="lab" data-prevent-swipe>
       <div class="ctl">
         <div class="row"><div class="cap"><span>Raggio R</span><b id="vR">0,50 m</b></div>
           <input type="range" id="sR" min="0.10" max="2.00" step="0.05" value="0.50"></div>
@@ -474,7 +474,7 @@ svg text{font-family:var(--sans)}
     <p style="font-size:32px;margin-bottom:20px" class="fragment fade-up">Il flusso <b>resta uguale</b>.</p>
     <p class="fragment fade-up" style="font-size:28px">E cala come <span class="tex">1/R^2</span>, l'area cresce come <span class="tex">R^2</span>: il prodotto — cioè il numero di linee che attraversano la superficie — non cambia.</p>
     <div class="fragment fade-up">
-      <div class="w-recap" data-poll="raggio" style="margin-top:24px"></div>
+      <div class="w-recap" data-prevent-swipe data-poll="raggio" style="margin-top:24px"></div>
     </div>
   </div>
   <aside class="notes">Confronta con il voto iniziale. Il conteggio dei click (se usati) riappare qui automaticamente.</aside>
