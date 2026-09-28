@@ -10,9 +10,6 @@ listing:
   sort-ui: false
   filter-ui: false
 ---
-Materie attive quest'anno:
-
-- [Fisica](fisica/index.qmd)
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
