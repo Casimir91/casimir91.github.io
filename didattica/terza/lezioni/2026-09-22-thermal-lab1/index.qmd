@@ -3,6 +3,7 @@ title: "Build and calibrate a thermometer"
 subtitle: "Arduino, a thermistor and four water baths"
 date: 2026-09-22
 categories: [Fisica]
+tipo: "Lab1"
 ---
 
 ## Slide della lezione
