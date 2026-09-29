@@ -14,13 +14,19 @@
     "items": []
   },
   {
-    "listing": "/didattica/quarta/fisica/index.html",
-    "items": []
+    "listing": "/didattica/quarta/index.html",
+    "items": [
+      "/didattica/quarta/lezioni/2026-09-04-campoelettrico-intro/index.html",
+      "/didattica/quarta/lezioni/2026-09-07-campo-coulomb/index.html",
+      "/didattica/quarta/lezioni/2026-09-21-campoelettrico-flusso/index.html",
+      "/didattica/quarta/lezioni/2026-09-28-teorema-gauss/index.html"
+    ]
   },
   {
     "listing": "/didattica/seconda/index.html",
     "items": [
-      "/didattica/seconda/lezioni/2026-09-21-energy-work/index.html"
+      "/didattica/seconda/lezioni/2026-09-21-energy-work/index.html",
+      "/didattica/seconda/lezioni/2026-11-09-motion-speed/index.html"
     ]
   },
   {
@@ -54,6 +60,8 @@
   {
     "listing": "/didattica/prima/index.html",
     "items": [
+      "/didattica/prima/lezioni/2026-09-09-measure-intro/index.html",
+      "/didattica/prima/lezioni/2026-09-16-measure-standardform/index.html",
       "/didattica/prima/lezioni/2026-09-23-measure-errors/index.html"
     ]
   },
@@ -62,12 +70,8 @@
     "items": []
   },
   {
-    "listing": "/didattica/quarta/index.html",
-    "items": [
-      "/didattica/quarta/lezioni/2026-09-04-campoelettrico-intro/index.html",
-      "/didattica/quarta/lezioni/2026-09-21-campoelettrico-flusso/index.html",
-      "/didattica/quarta/lezioni/2026-09-28-teorema-gauss/index.html"
-    ]
+    "listing": "/didattica/quarta/fisica/index.html",
+    "items": []
   },
   {
     "listing": "/didattica/archivio/index.html",
@@ -76,6 +80,8 @@
   {
     "listing": "/didattica/terza/index.html",
     "items": [
+      "/didattica/terza/lezioni/2026-09-08-thermal-temperature/index.html",
+      "/didattica/terza/lezioni/2026-09-11-thermal-thermometer/index.html",
       "/didattica/terza/lezioni/2026-09-18-thermal-expansion/index.html",
       "/didattica/terza/lezioni/2026-09-22-thermal-lab1/index.html"
     ]
