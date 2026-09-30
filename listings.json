@@ -41,15 +41,12 @@
     ]
   },
   {
-    "listing": "/didattica/prima/fisica/index.html",
+    "listing": "/didattica/prima/index.html",
     "items": [
-      "/didattica/prima/fisica/moto-smorzato.html"
-    ]
-  },
-  {
-    "listing": "/didattica/igcse/index.html",
-    "items": [
-      "/didattica/igcse/sets.html"
+      "/didattica/prima/lezioni/2026-09-09-measure-intro/index.html",
+      "/didattica/prima/lezioni/2026-09-16-measure-standardform/index.html",
+      "/didattica/prima/lezioni/2026-09-23-measure-errors/index.html",
+      "/didattica/prima/lezioni/2026-09-30-measure-density-lab1/index.html"
     ]
   },
   {
@@ -69,11 +66,15 @@
     ]
   },
   {
-    "listing": "/didattica/prima/index.html",
+    "listing": "/didattica/igcse/index.html",
     "items": [
-      "/didattica/prima/lezioni/2026-09-09-measure-intro/index.html",
-      "/didattica/prima/lezioni/2026-09-16-measure-standardform/index.html",
-      "/didattica/prima/lezioni/2026-09-23-measure-errors/index.html"
+      "/didattica/igcse/sets.html"
+    ]
+  },
+  {
+    "listing": "/didattica/prima/fisica/index.html",
+    "items": [
+      "/didattica/prima/fisica/moto-smorzato.html"
     ]
   },
   {
