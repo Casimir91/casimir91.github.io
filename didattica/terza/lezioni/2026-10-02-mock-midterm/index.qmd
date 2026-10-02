@@ -1,0 +1,18 @@
+---
+title: "Mock Midterm Thermal Physics"
+subtitle: "Test e soluzioni, versioni A, B e C"
+date: 2026-10-02
+categories: [Fisica]
+---
+
+## Test
+
+[Versione A (PDF) ↗](terza_2026-10-02_mock-midterm_A.pdf){target="_blank" .btn .btn-outline-primary}
+[Versione B (PDF) ↗](terza_2026-10-02_mock-midterm_B.pdf){target="_blank" .btn .btn-outline-primary}
+[Versione C (PDF) ↗](terza_2026-10-02_mock-midterm_C.pdf){target="_blank" .btn .btn-outline-primary}
+
+## Soluzioni
+
+[Soluzioni A (PDF) ↗](terza_2026-10-02_mock-midterm_A_soluzioni.pdf){target="_blank" .btn .btn-outline-primary}
+[Soluzioni B (PDF) ↗](terza_2026-10-02_mock-midterm_B_soluzioni.pdf){target="_blank" .btn .btn-outline-primary}
+[Soluzioni C (PDF) ↗](terza_2026-10-02_mock-midterm_C_soluzioni.pdf){target="_blank" .btn .btn-outline-primary}
