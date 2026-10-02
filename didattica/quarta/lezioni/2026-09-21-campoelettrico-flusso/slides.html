@@ -194,7 +194,7 @@ svg text{font-family:var(--sans)}
     <p class="fragment fade-up" style="font-size:32px;margin-bottom:24px">3 gennaio 2026: 147,1 milioni di km dal Sole. 6 luglio 2026: 152,1 milioni di km.</p>
     <p class="fragment fade-up" style="font-size:38px;font-weight:700;line-height:1.25">A Bologna, a mezzogiorno, un metro quadro orizzontale riceve energia solare. Quante volte di più al solstizio d'estate che a quello d'inverno?</p>
     <div class="fragment fade-up" style="margin-top:26px">
-      <ul class="w-poll" data-poll="stagioni" data-correct="2"><li>≈ 1,1 volte</li><li>≈ 1,5 volte</li><li>≈ 2,5 volte</li><li>≈ 10 volte</li></ul>
+      <ul class="w-poll" data-prevent-swipe data-poll="stagioni" data-correct="2"><li>≈ 1,1 volte</li><li>≈ 1,5 volte</li><li>≈ 2,5 volte</li><li>≈ 10 volte</li></ul>
     </div>
     <div class="src">Distanze Terra–Sole: EarthSky e thesuntoday.org (2026). Energia al di fuori dell'atmosfera.</div>
   </div>
@@ -227,7 +227,7 @@ svg text{font-family:var(--sans)}
   <div class="s">
     <div class="kicker">Il campo punto per punto</div>
     <h2 style="margin-bottom:18px">Una freccia in ogni punto</h2>
-    <div class="w-field" data-charges="1:0:0" data-mode="arrows"></div>
+    <div class="w-field" data-prevent-swipe data-charges="1:0:0" data-mode="arrows"></div>
   </div>
   <aside class="notes">[13–18 min] Prima di muovere il puntatore: se raddoppio la distanza dalla carica, cosa succede alla lunghezza della freccia? (1/4.) Passa il puntatore per leggere |E| (unità arbitrarie k·q/u², k = 1).
   Poi passa alla modalità «linee» dal selettore: le linee sono le frecce raccordate. Chiedi: dove sono più fitte? Perché? (vicino alla carica, dove E è più intenso).</aside>
@@ -270,7 +270,7 @@ svg text{font-family:var(--sans)}
   <div class="s">
     <div class="kicker">Due cariche</div>
     <h2 style="margin-bottom:18px">Leggere le configurazioni</h2>
-    <div class="w-field" data-charges="1:-3:0|-1:3:0" data-mode="lines"></div>
+    <div class="w-field" data-prevent-swipe data-charges="1:-3:0|-1:3:0" data-mode="lines"></div>
   </div>
   <aside class="notes">[28–34 min] Prima di muovere: disegna alla lavagna (o chiedi di prevedere) le linee di due cariche uguali. Nel punto medio E = 0: le linee «si respingono». Preset dipolo / due uguali / singola dal selettore; il clic su una carica ne inverte il segno.
   Lettura per simmetria: quante linee escono da ciascuna? Dove il disegno è più fitto? Il campo è più intenso tra le due cariche del dipolo.</aside>
@@ -311,12 +311,12 @@ svg text{font-family:var(--sans)}
   <div class="s">
     <div class="kicker">Previsione</div>
     <h2 style="margin-bottom:22px">Una carica di prova positiva, lasciata ferma su una linea di forza, ne percorre la traiettoria?</h2>
-    <ol class="w-quiz" data-correct="1">
+    <ol class="w-quiz" data-prevent-swipe data-correct="1">
       <li>Sempre</li>
       <li>Solo se la linea è rettilinea</li>
       <li>Mai</li>
     </ol>
-    <div class="w-expl">La forza è sempre tangente alla linea, quindi non ha componente perpendicolare alla velocità: non può far curvare la carica quanto curva la linea. Parte lungo la linea, ma la velocità acquisita ricorda la direzione di un attimo prima e se ne stacca. Nel campo uniforme la linea è una retta e coincidono.</div>
+    <div class="w-expl" data-prevent-swipe>La forza è sempre tangente alla linea, quindi non ha componente perpendicolare alla velocità: non può far curvare la carica quanto curva la linea. Parte lungo la linea, ma la velocità acquisita ricorda la direzione di un attimo prima e se ne stacca. Nel campo uniforme la linea è una retta e coincidono.</div>
   </div>
   <aside class="notes">[36–38 min] PREVISIONE prima di vedere. Raccogli le risposte per alzata di mano, poi clicca la risposta scelta dalla classe per mostrare quella corretta. Non commentare ancora: la verifica è la slide successiva.
   Se te lo chiedono («perché la forza non la raddrizza in ogni punto?»): la forza cambia la velocità (a = F/m), non la imposta. Per far curvare la traiettoria serve una componente della forza perpendicolare alla velocità (a⊥ = v²/R), ma qui F è sempre tangente alla linea, quindi lungo la linea la componente normale è nulla. Non dipende dalla velocità iniziale in modo decisivo: con v₀ = 0 parte tangente ma si stacca; con una v₀ non tangente si stacca subito.</aside>
@@ -327,7 +327,7 @@ svg text{font-family:var(--sans)}
   <div class="s">
     <div class="kicker" style="color:var(--bord)">Errore tipico</div>
     <h2 style="margin-bottom:16px">La linea di forza non è una traiettoria</h2>
-    <div class="lab" style="grid-template-columns:330px 1fr;gap:38px">
+    <div class="lab" data-prevent-swipe style="grid-template-columns:330px 1fr;gap:38px">
       <div class="ctl">
         <div class="row"><div class="cap"><span>Configurazione</span></div><div class="chips" id="tM"></div></div>
         <div class="row"><div class="cap"><span>Partenza</span></div><div style="font-size:22px;line-height:1.3">clic sul disegno per cambiare punto</div></div>
@@ -421,7 +421,7 @@ svg text{font-family:var(--sans)}
   <div class="s">
     <div class="kicker">Provalo</div>
     <h2 style="margin-bottom:18px">Inclina la superficie, conta le linee</h2>
-    <div class="lab" style="grid-template-columns:400px 1fr;gap:44px">
+    <div class="lab" data-prevent-swipe style="grid-template-columns:400px 1fr;gap:44px">
       <div class="ctl">
         <div class="row"><div class="cap"><span>Angolo θ</span><b id="fT">0°</b></div>
           <input type="range" id="fS" min="0" max="180" step="5" value="0"></div>
@@ -613,7 +613,7 @@ svg text{font-family:var(--sans)}
   <div class="s">
     <div class="kicker">E se l'esponente non fosse 2?</div>
     <h2 style="margin-bottom:18px">Linee che attraversano la sfera di raggio r</h2>
-    <div class="w-plot" data-fn="12*x|12|12/x" data-x="0.5,4" data-y="0,50" data-labels="r (raggio),linee"
+    <div class="w-plot" data-prevent-swipe data-fn="12*x|12|12/x" data-x="0.5,4" data-y="0,50" data-labels="r (raggio),linee"
          data-legend="n = 1: E ∝ 1/r|n = 2: E ∝ 1/r²|n = 3: E ∝ 1/r³"
          data-caption="Con E ∝ 1/rⁿ il numero di linee è E × 4πr² ∝ r^(2−n), normalizzato a 12 linee per r = 1."></div>
   </div>
@@ -627,7 +627,7 @@ svg text{font-family:var(--sans)}
   <div class="s">
     <div class="kicker">Ritorno alla previsione</div>
     <h2 style="margin-bottom:18px">Cosa avevamo previsto</h2>
-    <div class="w-recap" data-poll="stagioni"></div>
+    <div class="w-recap" data-prevent-swipe data-poll="stagioni"></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:34px;margin-top:30px">
       <div class="card fragment fade-up" style="padding:24px 30px">
         <div class="label" style="margin-bottom:6px">Inclinazione</div>
@@ -688,12 +688,12 @@ svg text{font-family:var(--sans)}
   <div class="s">
     <div class="kicker">Esercizio 2 · concettuale</div>
     <h2 style="margin-bottom:22px">Flusso netto nullo su una superficie chiusa: che cosa ne segue?</h2>
-    <ol class="w-quiz" data-correct="1">
+    <ol class="w-quiz" data-prevent-swipe data-correct="1">
       <li>E = 0 in ogni punto della superficie</li>
       <li>La carica netta all'interno è nulla; E può essere non nullo sulla superficie</li>
       <li>Dentro non c'è alcuna carica</li>
     </ol>
-    <div class="w-expl">Un cubo in campo uniforme ha Φ netto = 0 ma E ≠ 0 su ogni faccia. Dentro possono esserci cariche di segno opposto: conta solo la somma (le linee che entrano sono tante quante quelle che escono).</div>
+    <div class="w-expl" data-prevent-swipe>Un cubo in campo uniforme ha Φ netto = 0 ma E ≠ 0 su ogni faccia. Dentro possono esserci cariche di segno opposto: conta solo la somma (le linee che entrano sono tante quante quelle che escono).</div>
     <div class="src">Adattato da OpenStax, University Physics vol. 2, cap. 6, domanda concettuale 7 (CC BY 4.0), via Physics LibreTexts.</div>
   </div>
   <aside class="notes">[90–93 min] Previsione a mano alzata, poi clicca la risposta scelta. Ragionamento con le linee: entrano tante linee quante ne escono, quindi non nascono e non finiscono linee dentro, quindi la somma algebrica delle cariche è nulla (potrebbe esserci un dipolo). Controesempio per la prima risposta: la slide del cubo in campo uniforme. Per la terza: un dipolo racchiuso.</aside>
