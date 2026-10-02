@@ -1,0 +1,10 @@
+---
+title: "Energy and work · Exercise sheet"
+subtitle: "Kinetic energy, gravitational potential energy, work and stopping distances"
+date: 2026-10-02
+categories: [Fisica]
+---
+
+## Materiali e indicazioni per lo studio
+
+[Foglio di esercizi (PDF) ↗](worksheet.pdf){target="_blank" .btn .btn-outline-primary}

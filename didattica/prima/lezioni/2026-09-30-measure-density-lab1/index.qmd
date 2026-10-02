@@ -13,3 +13,7 @@ tipo: "Lab1"
 :::
 
 [Apri le slide a schermo intero ↗](slides.html){target="_blank" .btn .btn-primary}
+
+## Materiali e indicazioni per lo studio
+
+[Template del lab report guidato (PDF) ↗](Template_LabReport_Lab1.pdf){target="_blank" .btn .btn-outline-primary}
