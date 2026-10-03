@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="description" content="Il cannone di Newton: una simulazione per capire cos’è un’orbita.">
 
-<title>hello, world – Prof.&nbsp;Rosi</title>
+<title>Perché la Luna non cade sulla Terra? – Prof.&nbsp;Rosi</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -26,27 +27,27 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-de60624a5cb141114e0ea2b9bc293073.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-5685cd926c25366c96d9f1407e584118.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-de60624a5cb141114e0ea2b9bc293073.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-de60624a5cb141114e0ea2b9bc293073.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-5685cd926c25366c96d9f1407e584118.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-de60624a5cb141114e0ea2b9bc293073.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -76,12 +77,18 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
-<meta property="og:title" content="hello, world · fisica e matematica">
-<meta property="og:description" content="cit. un computer qualunque">
+<meta property="og:title" content="Perché la Luna non cade sulla Terra? – Prof.&nbsp;Rosi">
+<meta property="og:description" content="Il cannone di Newton: una simulazione per capire cos’è un’orbita.">
+<meta property="og:image" content="https://casimir91.github.io/images/orbita-circolare.png">
 <meta property="og:site_name" content="Prof.&nbsp;Rosi">
-<meta name="twitter:title" content="hello, world – Prof.&nbsp;Rosi">
-<meta name="twitter:description" content="cit. un computer qualunque">
-<meta name="twitter:card" content="summary">
+<meta property="og:image:height" content="576">
+<meta property="og:image:width" content="1008">
+<meta name="twitter:title" content="Perché la Luna non cade sulla Terra? – Prof.&nbsp;Rosi">
+<meta name="twitter:description" content="Il cannone di Newton: una simulazione per capire cos’è un’orbita.">
+<meta name="twitter:image" content="https://casimir91.github.io/images/orbita-circolare.png">
+<meta name="twitter:image-height" content="576">
+<meta name="twitter:image-width" content="1008">
+<meta name="twitter:card" content="summary_large_image">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
@@ -262,7 +269,7 @@ ul.task-list li input[type="checkbox"] {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Prof.&nbsp;Rosi</span>
     </a>
   </div>
@@ -273,29 +280,29 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
+    <a class="nav-link" href="../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./didattica/index.html"> 
+    <a class="nav-link" href="../didattica/index.html"> 
 <span class="menu-text">Didattica</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./lab/index.html"> 
+    <a class="nav-link" href="../lab/index.html"> 
 <span class="menu-text">Lab</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./edtech/index.html"> 
+    <a class="nav-link" href="../edtech/index.html"> 
 <span class="menu-text">EdTech</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./stories/index.html"> 
+    <a class="nav-link" href="../stories/index.html"> 
 <span class="menu-text">Stories</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./chi-sono.html"> 
+    <a class="nav-link" href="../chi-sono.html"> 
 <span class="menu-text">Chi sono</span></a>
   </li>  
   <li class="nav-item compact">
@@ -322,10 +329,14 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">hello, world</h1>
-<p class="subtitle lead">cit. un computer qualunque</p>
+<h1 class="title">Perché la Luna non cade sulla Terra?</h1>
 </div>
 
+<div>
+  <div class="description">
+    Il cannone di Newton: una simulazione per capire cos’è un’orbita.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
@@ -340,124 +351,42 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<style>
-  /* Titolo e sottotitolo in stile "da codice" (solo su questa pagina). Font di sistema a spaziatura fissa:
-     nessun file da caricare. Se si vuole un font diverso, lo sceglie il docente. */
-  #title-block-header h1.title,
-  #title-block-header .subtitle {
-    font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-    letter-spacing: -0.01em;
-  }
-  .etichetta-luce {
-    margin: 0 0 0.4rem;
-    font-size: 0.9rem;
-    opacity: 0.8;
-  }
-  .interruttore-luce {
-    display: inline-flex;
-    align-items: center;
-    position: relative;
-    width: 88px;
-    height: 44px;
-    padding: 0;
-    border-radius: 22px;
-    border: 1px solid currentColor;
-    background: transparent;
-    color: inherit;
-    cursor: pointer;
-    margin: 0 0 1rem;
-  }
-  .interruttore-luce .pallino {
-    position: absolute;
-    top: 3px;
-    left: 3px;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: currentColor;
-    transition: transform 0.2s;
-  }
-  .interruttore-luce[aria-pressed="true"] .pallino {
-    transform: translateX(44px);
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .interruttore-luce .pallino { transition: none; }
-  }
-  .hero-fluido {
-    height: 65svh;
-    max-height: 560px;
-    border-radius: 12px;
-    overflow: hidden;
-    background: #0b0b10;
-  }
-  .hero-fluido iframe {
-    width: 100%;
-    height: 100%;
-    border: 0;
-    display: block;
-  }
-</style>
-
-<p class="etichetta-luce">Per i tuoi occhi</p>
-
-<button class="interruttore-luce" id="interruttore-luce" aria-pressed="false" aria-label="Passa al tema scuro">
-  <i class="bi bi-sun" aria-hidden="true" style="position:absolute;left:11px;top:11px;font-size:20px"></i>
-  <i class="bi bi-moon" aria-hidden="true" style="position:absolute;right:11px;top:11px;font-size:20px"></i>
-  <span class="pallino"></span>
-</button>
-
-<div class="hero-fluido">
-  <iframe src="interattivi/fluido.html" title="Simulazione di fluido: tocca e trascina" loading="lazy"></iframe>
+<p><em>Un esperimento mentale di Newton, 1687.</em></p>
+<iframe src="cannone-di-newton.html" title="Simulazione: il cannone di Newton" style="width:100%; max-width:760px; height:780px; border:none; display:block; margin:0 auto; background:transparent;" loading="lazy">
+</iframe>
+<p>Newton immaginò questo esperimento proprio per rispondere a una domanda precisa: <strong>perché la Luna non cade sulla Terra? Perché la Terra non cade sul Sole?</strong> Da qui parte la risposta.</p>
+<section id="perché-gli-astronauti-fluttuano" class="level2">
+<h2 class="anchored" data-anchor-id="perché-gli-astronauti-fluttuano">Perché gli astronauti fluttuano</h2>
+<p><em>Assenza di peso, non di gravità</em></p>
+<p>Gli astronauti a bordo della Stazione Spaziale Internazionale orbitano a circa 400 km di quota. Lì la gravità terrestre non è affatto sparita: vale ancora circa il 90% di quella che si avverte a terra. Se la gravità c’è ancora, perché fluttuano?</p>
+<p>Perché la stazione — e tutto ciò che contiene, astronauti compresi — sta cadendo. Continuamente. Come un ascensore il cui cavo si sia appena spezzato: chi ci sta dentro non sente più il pavimento spingere contro i piedi, perché cabina e passeggero cadono alla stessa identica velocità. Non manca la forza peso; manca la forza normale che di solito la bilancia.</p>
+<p>La differenza tra la ISS e l’ascensore è che la stazione non tocca mai terra. Cade, ma si muove anche abbastanza velocemente di lato da restare sempre alla stessa distanza dal suolo, mentre la superficie terrestre le si incurva sotto. Fluttuare in orbita non è assenza di gravità: è una caduta libera che non finisce mai.</p>
+</section>
+<section id="cosè-unorbita" class="level2">
+<h2 class="anchored" data-anchor-id="cosè-unorbita">Cos’è un’orbita</h2>
+<p><em>Cadere, e continuare a mancare il bersaglio</em></p>
+<p>Un’orbita è esattamente questo: una traiettoria in caduta libera che non interseca mai il corpo verso cui si sta cadendo. Non serve nessun motore acceso, nessuna spinta che si opponga alla gravità — basta una velocità tangenziale (perpendicolare alla direzione della caduta) sufficientemente grande.</p>
+<p>Non c’è una “forza centrifuga” reale che bilancia la gravità, come si dice a volte impropriamente: è la gravità stessa a fare da forza centripeta, curvando la traiettoria. L’orbita non è un equilibrio di forze opposte, ma il risultato di una sola forza che agisce su un corpo già in moto.</p>
+</section>
+<section id="perché-la-luna-non-cade-sulla-terra-e-la-terra-non-cade-sul-sole" class="level2">
+<h2 class="anchored" data-anchor-id="perché-la-luna-non-cade-sulla-terra-e-la-terra-non-cade-sul-sole">Perché la Luna non cade sulla Terra, e la Terra non cade sul Sole</h2>
+<p><em>La stessa caduta, a scale diverse</em></p>
+<p>Lo stesso meccanismo vale a qualunque scala. La Luna sta cadendo verso la Terra in questo momento — come in ogni istante degli ultimi quattro miliardi di anni — perché la gravità non si spegne mai; a farle mancare il bersaglio è la stessa componente di velocità laterale di cui parla il cannone qui sopra.</p>
+<p>La Terra, a sua volta, sta cadendo verso il Sole esattamente allo stesso modo: la sua velocità orbitale di circa 30 km/s è la componente tangenziale che le permette di restare in un’orbita quasi circolare invece di essere risucchiata verso il centro del Sistema Solare. Quella velocità non è una scelta, ma un’eredità: risale alla nube di gas e polvere che, contraendosi sotto la propria gravità circa 4,6 miliardi di anni fa, ha dato origine al Sole e al disco protoplanetario da cui si sono formati i pianeti. Per conservazione del momento angolare — lo stesso principio per cui un pattinatore gira più veloce quando raccoglie le braccia al petto — la nube in collasso ha accelerato la propria rotazione, appiattendosi nel disco su cui, ancora oggi, orbitano quasi tutti i pianeti. La Terra ha semplicemente ereditato la velocità tangenziale di quel disco nel punto in cui si è formata: né troppo lenta da cadere nel Sole, né troppo veloce da sfuggirgli.</p>
+<p>Quello che cambia da un caso all’altro non è il principio, ma un solo parametro: quanto velocemente il corpo si muove rispetto alla velocità dell’orbita circolare a quella distanza. Torna al simulatore in cima alla pagina e prova a muovere il cursore: ora sai cosa stai guardando.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Curiosità">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-
-<script>
-  (function () {
-    var b = document.getElementById('interruttore-luce');
-    if (!b) return;
-    if (typeof window.quartoToggleColorScheme !== 'function') {
-      b.style.display = 'none';
-      return;
-    }
-    function sync() {
-      var scuro = document.body.classList.contains('quarto-dark');
-      b.setAttribute('aria-pressed', scuro ? 'true' : 'false');
-      b.setAttribute('aria-label', scuro ? 'Passa al tema chiaro' : 'Passa al tema scuro');
-    }
-    b.addEventListener('click', function () { window.quartoToggleColorScheme(); });
-    new MutationObserver(sync).observe(document.body, { attributes: true, attributeFilter: ['class'] });
-    sync();
-  })();
-</script>
-<section id="perché" class="level2">
-<h2 class="anchored" data-anchor-id="perché">Perché</h2>
-<p>Ciao. Questo sito è fatto per te.</p>
-<p>È il posto dove trovi tutto quello che preparo per le lezioni: slide, spiegazioni, esercizi e soluzioni, insieme ad animazioni e simulazioni che puoi toccare e muovere, non solo guardare. L’ho pensato per lo smartphone, perché è da lì che di solito leggi.</p>
-<p>Se sei un mio studente, è casa tua. Se sei qui perché ti sono rimaste domande sulla scienza, sulla fisica, sul mondo che ci circonda, o sulla sua filosofia e la sua storia, di quelle a cui non hai mai avuto il tempo di rispondere, fatti un giro: c’è posto anche per te. E se insegni anche tu, c’è una parte da cui prendere spunto. Fai con calma: c’è tutto.</p>
-</section>
-<section id="cosa" class="level2">
-<h2 class="anchored" data-anchor-id="cosa">Cosa</h2>
-<p>Il sito ha quattro sezioni.</p>
-<p><strong>Didattica.</strong> I materiali dei corsi che insegno a scuola: slide, spiegazioni, esercizi con soluzioni, template, laboratori.</p>
-<p><strong>Lab.</strong> Domande semplici, risposte con simulazioni.</p>
-<p><strong>EdTech.</strong> Strumenti e metodi per chi insegna.</p>
-<p><strong>Stories.</strong> Brevi riflessioni sulla scienza.</p>
-</section>
-<section id="come" class="level2">
-<h2 class="anchored" data-anchor-id="come">Come</h2>
-<p>Sei uno studente → <a href="./didattica/index.html"><strong>Didattica</strong></a></p>
-<p>Hai una curiosità → <a href="./lab/index.html"><strong>Lab</strong></a> e <a href="./stories/index.html"><strong>Stories</strong></a></p>
-<p>Insegni anche tu → <a href="./edtech/index.html"><strong>EdTech</strong></a> e <a href="./lab/index.html"><strong>Lab</strong></a></p>
-<p>Il menu è in alto. Per cambiare tema, usa l’interruttore in cima alla pagina.</p>
-</section>
-<section id="quando" class="level2">
-<h2 class="anchored" data-anchor-id="quando">Quando</h2>
-<p>Dopo la laurea in astrofisica mi sono occupato di come si apprende la fisica. La magistrale in didattica della fisica mi ha portato a studiare epistemologia e storia della fisica, misconcezioni degli studenti, progetti di innovazione didattica, pedagogia e psicologia dell’apprendimento. Ne è derivata la domanda di ricerca che guida il sito: in che modo conviene spiegare un concetto a chi lo incontra per la prima volta?</p>
-<p>L’impostazione è quella del <em>learning experience design</em>, che integra interaction design, instructional design e la nozione di <em>affordance</em>: la forma di un oggetto predispone il modo in cui lo si usa. A questo si aggiunge l’attenzione alla tipografia. L’approccio è maturato attraverso la mia ricerca in comunicazione e divulgazione scientifica e attraverso l’insegnamento, che svolgo a tempo pieno, ogni giorno, da quattro anni.</p>
-<p>Negli ultimi due anni ho osservato che molti studenti si muovono con più naturalezza sullo smartphone che sul computer, e che è lo smartphone il dispositivo che hanno sempre a portata di mano. Per questo il sito parte da lì: non come luogo dove studiare a lungo, ma come primo punto di contatto, il gancio da cui iniziare.</p>
-</section>
-<section id="chi" class="level2">
-<h2 class="anchored" data-anchor-id="chi">Chi</h2>
-<p>Sono un prof di fisica e matematica e insegno al liceo. Se vuoi sapere di più, <a href="./chi-sono.html">vai a Chi sono</a>.</p>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Curiosità
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Nel simulatore in cima alla pagina tutti i numeri sono reali: la velocità di fuga dalla Terra, il raggio terrestre, persino la quota — impossibile — della montagna di Newton. Non sono valori di comodo scelti per far tornare i conti: sono le cifre vere del nostro pianeta.</p>
+</div>
+</div>
 
 
 </section>
