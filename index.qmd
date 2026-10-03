@@ -2,7 +2,14 @@
 title: "hello, world"
 subtitle: "cit. un computer qualunque"
 open-graph:
-  title: "hello, world · fisica e matematica"
+  title: "Prof. Rosi"
+  description: "hello, world · fisica e matematica"
+  image: images/og-cover.png
+description-meta: "hello, world · fisica e matematica"
+twitter-card:
+  title: "Prof. Rosi"
+  description: "hello, world · fisica e matematica"
+  image: images/og-cover.png
 toc: false
 ---
 
@@ -56,6 +63,9 @@ toc: false
     border-radius: 12px;
     overflow: hidden;
     background: #0b0b10;
+  }
+  @media (min-width: 992px) {
+    .hero-fluido { margin-bottom: 17px; }
   }
   .hero-fluido iframe {
     width: 100%;

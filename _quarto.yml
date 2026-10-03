@@ -29,6 +29,6 @@ format:
   html:
     theme:
       light: sandstone
-      dark: darkly
+      dark: [darkly, custom-dark.scss]
     respect-user-color-scheme: true
     toc: true

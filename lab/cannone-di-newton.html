@@ -190,6 +190,20 @@
     font-size: 10.5px;
     color: var(--ink-faint);
   }
+
+  /* Modalità scura: segue il tema del sito (se incorporato) o del dispositivo */
+  :root.dark{
+    --card: #1b2230;
+    --ink: #e8ebf2;
+    --ink-soft: #aab3c5;
+    --ink-faint: #6e7789;
+    --line: #3a4252;
+    --accent: #7ba5ee;
+  }
+  .dark .orbit-svg [stroke="#1e2430"]{ stroke: var(--ink); }
+  .dark .orbit-svg [fill="#2a5aa8"]{ fill: var(--accent); }
+  .dark .orbit-svg [fill="#eaf3fa"]{ fill: #1d3347; }
+  .dark .orbit-svg [fill="#9dbf9a"]{ fill: #587f5c; }
 </style>
 
 <div class="page">
@@ -517,3 +531,24 @@
 </script>
 
 </body></html>
+
+<script>
+(function(){
+  var root=document.documentElement;
+  function parentDark(){
+    try{
+      if(window.parent!==window) return window.parent.document.body.classList.contains('quarto-dark');
+    }catch(e){}
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+  function sync(){ root.classList.toggle('dark', parentDark()); }
+  sync();
+  try{
+    if(window.parent!==window){
+      new MutationObserver(sync).observe(window.parent.document.body,{attributes:true,attributeFilter:['class']});
+    } else if(window.matchMedia){
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',sync);
+    }
+  }catch(e){}
+})();
+</script>
