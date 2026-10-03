@@ -1,0 +1,32 @@
+---
+title: "Didattica"
+subtitle: "Scegli la tua classe"
+toc: false
+listing:
+  type: grid
+  sort: false
+  sort-ui: false
+  filter-ui: false
+  contents:
+    - title: "Classe Prima"
+      description: "Experimental skills · Forces · Equilibrium"
+      path: prima/index.qmd
+    - title: "Classe Seconda"
+      description: "Motion · Energy · Waves"
+      path: seconda/index.qmd
+    - title: "Classe Terza"
+      description: "Temperature · Sound · Light"
+      path: terza/index.qmd
+    - title: "Classe Quarta"
+      description: "Fields · Maxwell's Equation · Modern Physics"
+      path: quarta/index.qmd
+    - title: "Corso TOLC"
+      description: "Contenuti in arrivo."
+---
+
+```{=html}
+<style>
+  /* Card senza immagine: niente riquadro grigio segnaposto */
+  .listing-item-img-placeholder { display: none; }
+</style>
+```

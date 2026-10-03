@@ -1,0 +1,12 @@
+---
+title: "Lab"
+subtitle: "Domande semplici, risposte con simulazioni"
+toc: false
+listing:
+  contents: "*.qmd"
+  type: grid
+  fields: [image, title, description]
+  image-height: 200px
+  sort-ui: false
+  filter-ui: false
+---

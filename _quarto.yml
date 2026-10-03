@@ -12,14 +12,10 @@ website:
     left:
       - href: index.qmd
         text: Home
-      - text: Didattica
-        menu:
-          - { text: "Prima",      href: didattica/prima/index.qmd }
-          - { text: "Seconda",    href: didattica/seconda/index.qmd }
-          - { text: "Terza",      href: didattica/terza/index.qmd }
-          - { text: "Quarta",     href: didattica/quarta/index.qmd }
-          - { text: "Corso TOLC", href: didattica/tolc/index.qmd }
-
+      - href: didattica/index.qmd
+        text: Didattica
+      - href: lab/index.qmd
+        text: Lab
       - href: edtech/index.qmd
         text: EdTech
       - href: stories/index.qmd
@@ -31,5 +27,8 @@ website:
 
 format:
   html:
-    theme: sandstone
+    theme:
+      light: sandstone
+      dark: darkly
+    respect-user-color-scheme: true
     toc: true
