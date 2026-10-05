@@ -1,0 +1,11 @@
+---
+title: "Energy and work · Mock midterm"
+subtitle: "Practice test on energy stores, kinetic and potential energy, work and stopping distances"
+date: 2026-10-05
+categories: [Fisica]
+---
+
+## Materiali e indicazioni per lo studio
+
+[Mock test (PDF) ↗](mock-midterm.pdf){target="_blank" .btn .btn-outline-primary}
+[Soluzioni (PDF) ↗](mock-midterm-solutions.pdf){target="_blank" .btn .btn-outline-primary}

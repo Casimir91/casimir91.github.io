@@ -4,6 +4,7 @@ project:
     - CNAME
     - toolbox/*.html
     - toolbox/*.css
+    - toolbox/*.js
 
 website:
   title: "Prof. Rosi"
