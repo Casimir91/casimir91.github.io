@@ -5,29 +5,49 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Timer · Toolbox</title>
 <link rel="stylesheet" href="toolbox.css">
+<script src="toolbox.js"></script>
 <style>
-  .digits { font-size: calc(var(--zoom, 1) * min(27vw, 45vh)); }
-  .digits.long { font-size: calc(var(--zoom, 1) * min(19vw, 45vh)); }
+  /* Progress ring: a stadium-shaped outline around the digits that empties as time runs out. */
+  .ring {
+    --ringw: clamp(6px, 1.4vmin, 16px);
+    position: relative; display: inline-block;
+    font-size: calc(var(--zoom, 1) * min(22vw, 36vh));
+    padding: .1em .3em; border-radius: 999px;
+  }
+  .ring.long { font-size: calc(var(--zoom, 1) * min(16vw, 36vh)); }
+  .ring::before {
+    content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+    padding: var(--ringw);
+    background: conic-gradient(var(--primary) var(--p, 100%), var(--border) 0);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask-composite: exclude;
+  }
+  .digits { font-size: inherit; }
+
   .setup { display: flex; gap: .5rem; align-items: center; justify-content: center; flex-wrap: wrap; padding: .5rem 1rem; }
   .setup input {
     width: 5.5rem; padding: .5rem; font-size: 1.25rem; text-align: center;
     background: var(--surface); border: 1px solid var(--border); border-radius: .5rem;
   }
   .setup label { color: var(--muted); }
-  body.done { animation: flash .8s steps(1) infinite; }
+
+  /* Alarm: same in every palette on purpose, it must always be unmistakable. */
+  body.done { --primary: #fff; --border: rgba(255,255,255,.4); animation: flash .8s steps(1) infinite; }
   @keyframes flash { 50% { background: var(--danger); color: #fff; } }
-  body.done .digits { color: inherit; }
   @media (prefers-reduced-motion: reduce) { body.done { animation: none; background: var(--danger); color: #fff; } }
 </style>
 </head>
-<body>
+<body data-zoom-max="1.2">
   <div class="topbar">
     <a href="index.html">← Toolbox</a>
-    <span class="status" id="status" style="padding:0;min-height:0">Set a time and press Start</span>
+    <span class="status" id="status">Set a time and press Start</span>
+    <div class="themebar" id="themebar"></div>
   </div>
 
   <main class="main">
-    <div class="digits" id="display" aria-live="off">05:00</div>
+    <div class="ring" id="ring"><div class="digits" id="display" aria-live="off">05:00</div></div>
   </main>
 
   <div class="setup" id="setup">
@@ -49,7 +69,6 @@
     <button id="reset">Reset</button>
     <button id="zoomOut" aria-label="Smaller digits">A−</button>
     <button id="zoomIn" aria-label="Larger digits">A+</button>
-    <button id="theme">Light / Dark</button>
   </div>
 
 <script>
@@ -61,13 +80,14 @@
   let endAt = 0;           // epoch ms
   let running = false, iv = null, alarmIv = null, audio = null;
 
-  /* ---------- display ---------- */
   function render(ms) {
     const s = Math.ceil(ms / 1000);
     const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
     const txt = h > 0 ? `${h}:${pad(m)}:${pad(sec)}` : `${pad(m)}:${pad(sec)}`;
     $("display").textContent = txt;
-    $("display").classList.toggle("long", h > 0);
+    $("ring").classList.toggle("long", h > 0);
+    const pct = total > 0 ? Math.max(0, Math.min(100, (ms / total) * 100)) : 0;
+    $("ring").style.setProperty("--p", pct + "%");
     document.title = (running ? txt + " · " : "") + "Timer · Toolbox";
   }
   const readInputs = () => {
@@ -97,6 +117,7 @@
   }
   function alarmOn() {
     document.body.classList.add("done");
+    document.body.classList.remove("idle");
     $("status").textContent = "Time is up!";
     beep(); let n = 0;
     alarmIv = setInterval(() => { beep(); if (++n >= 15) clearInterval(alarmIv); }, 1000);
@@ -114,7 +135,7 @@
   }
   function stop() {
     running = false; clearInterval(iv);
-    $("start").textContent = "Start"; $("setup").style.opacity = 1;
+    $("start").textContent = "Start"; $("setup").style.opacity = "";
   }
   $("start").onclick = () => {
     if (!audio) { try { audio = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {} }
@@ -138,30 +159,12 @@
   document.querySelectorAll("[data-add]").forEach(b =>
     b.onclick = () => {
       const d = +b.dataset.add * 1000;
-      if (running) { endAt += d; loop(); }
+      if (running) { endAt += d; total = Math.max(total, endAt - Date.now()); loop(); }
       else { alarmOff(); setTotal(Math.round((readInputs() + d) / 1000)); }
     });
   ["min", "sec"].forEach(id => $(id).addEventListener("input", () => {
     if (!running) { total = remaining = readInputs(); render(remaining); }
   }));
-
-  /* ---------- zoom, theme, wake lock ---------- */
-  let zoom = 1;
-  const setZoom = z => { zoom = Math.min(1.3, Math.max(0.4, z)); document.documentElement.style.setProperty("--zoom", zoom); };
-  $("zoomIn").onclick = () => setZoom(zoom + 0.1);
-  $("zoomOut").onclick = () => setZoom(zoom - 0.1);
-
-  const root = document.documentElement;
-  try { const t = localStorage.getItem("toolbox-theme"); if (t) root.dataset.theme = t; } catch (e) {}
-  $("theme").onclick = () => {
-    const next = root.dataset.theme === "dark" ? "light" : "dark";
-    root.dataset.theme = next;
-    try { localStorage.setItem("toolbox-theme", next); } catch (e) {}
-  };
-
-  async function wake() { try { if ("wakeLock" in navigator) await navigator.wakeLock.request("screen"); } catch (e) {} }
-  wake();
-  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") wake(); });
 
   render(remaining);
 })();

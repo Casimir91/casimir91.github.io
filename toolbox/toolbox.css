@@ -1,42 +1,76 @@
-/* Toolbox shared styles — colours follow the Bootswatch "sandstone" palette.
-   When the site gets its custom palette, only the variables below need changing. */
+/* Toolbox shared styles.
+   Two independent choices: palette (data-palette) and mode (data-mode = light | dark).
+   Default: palette "light" (black on white), mode "light".
+   To change a colour, edit the variable in the matching block below. */
+
 :root {
-  --bg: #ffffff;
-  --fg: #3e3f3a;
-  --muted: #8e8c84;
-  --surface: #f8f5f0;
-  --border: #dfd7ca;
-  --primary: #325d88;
-  --primary-fg: #ffffff;
-  --accent: #f47c3c;
-  --danger: #d9534f;
   --font: Roboto, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
-}
-:root[data-theme="dark"] {
-  --bg: #22282e;
-  --fg: #f8f5f0;
-  --muted: #a7a49b;
-  --surface: #2d353d;
-  --border: #46505a;
-  --primary: #6fa3d6;
-  --primary-fg: #14202c;
+  --danger: #d9534f;
 }
 
+/* ---------- LIGHT palette: black on white / white on black ---------- */
+:root, :root[data-palette="light"][data-mode="light"] {
+  --bg: #ffffff; --fg: #000000; --muted: #666666;
+  --surface: #f2f2f2; --border: #cfcfcf;
+  --primary: #325d88; --primary-fg: #ffffff; --accent: #f47c3c;
+}
+:root[data-palette="light"][data-mode="dark"] {
+  --bg: #000000; --fg: #ffffff; --muted: #aaaaaa;
+  --surface: #1a1a1a; --border: #444444;
+  --primary: #8fb8e0; --primary-fg: #000000; --accent: #f47c3c;
+}
+
+/* ---------- ZEN palette: paper and ink-green ---------- */
+:root[data-palette="zen"][data-mode="light"] {
+  --bg: #f3efe6; --fg: #4a5a4e; --muted: #7d8a7f;
+  --surface: #e9e4d6; --border: #d3ccb8;
+  --primary: #5f7a63; --primary-fg: #ffffff; --accent: #b0803a;
+}
+:root[data-palette="zen"][data-mode="dark"] {
+  --bg: #1f2a24; --fg: #cfe3cf; --muted: #93a899;
+  --surface: #28362e; --border: #3b4c41;
+  --primary: #9fc5a3; --primary-fg: #14201a; --accent: #d9b36a;
+}
+
+/* ---------- OCEAN palette ---------- */
+:root[data-palette="ocean"][data-mode="light"] {
+  --bg: #eaf4fb; --fg: #0b3d66; --muted: #4f7595;
+  --surface: #d9eaf6; --border: #b7d3e8;
+  --primary: #1b6aa5; --primary-fg: #ffffff; --accent: #e07b39;
+}
+:root[data-palette="ocean"][data-mode="dark"] {
+  --bg: #0a1b2e; --fg: #cfeaff; --muted: #86a9c6;
+  --surface: #112a44; --border: #1f4468;
+  --primary: #6bb6ee; --primary-fg: #06182a; --accent: #f0a05a;
+}
+
+/* ---------- AMBER palette ---------- */
+:root[data-palette="amber"][data-mode="light"] {
+  --bg: #fbf3e2; --fg: #6b3a00; --muted: #9a7a45;
+  --surface: #f3e6c8; --border: #e0cfa6;
+  --primary: #b45f06; --primary-fg: #ffffff; --accent: #3a6ea5;
+}
+:root[data-palette="amber"][data-mode="dark"] {
+  --bg: #000000; --fg: #ffb000; --muted: #b08a2e;
+  --surface: #1a1200; --border: #4a3500;
+  --primary: #ffb000; --primary-fg: #000000; --accent: #ffd27a;
+}
+
+/* ---------- base ---------- */
 * { box-sizing: border-box; }
 html, body { height: 100%; margin: 0; }
 body {
   background: var(--bg);
   color: var(--fg);
   font-family: var(--font);
-  display: flex;
-  flex-direction: column;
+  display: flex; flex-direction: column;
   min-height: 100dvh;
   -webkit-text-size-adjust: 100%;
 }
 
 .topbar {
   display: flex; align-items: center; justify-content: space-between;
-  gap: .5rem; padding: .6rem 1rem; flex-wrap: wrap;
+  gap: .75rem 1rem; padding: .6rem 1rem; flex-wrap: wrap;
 }
 .topbar a { color: var(--primary); text-decoration: none; font-weight: 500; }
 .topbar a:hover { text-decoration: underline; }
@@ -55,15 +89,14 @@ body {
   white-space: nowrap;
   text-align: center;
 }
+:root[data-palette="zen"] .digits { font-weight: 300; }
 
 .controls {
   display: flex; flex-wrap: wrap; gap: .5rem;
   justify-content: center; align-items: center;
   padding: .75rem 1rem 1rem;
 }
-button, input {
-  font: inherit; color: inherit;
-}
+button, input { font: inherit; color: inherit; }
 button {
   background: var(--surface); border: 1px solid var(--border);
   border-radius: .5rem; padding: .6rem 1rem; cursor: pointer;
@@ -71,7 +104,45 @@ button {
 }
 button:hover { border-color: var(--primary); }
 button.primary { background: var(--primary); color: var(--primary-fg); border-color: var(--primary); font-weight: 500; }
-button.danger { color: var(--danger); }
+button[aria-pressed="true"].toggle { border-color: var(--primary); box-shadow: inset 0 0 0 1px var(--primary); }
 button:focus-visible, input:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 
-.status { color: var(--muted); font-size: .9rem; text-align: center; padding: 0 1rem .75rem; min-height: 1.6rem; }
+.status { color: var(--muted); font-size: .9rem; text-align: center; min-height: 1.4rem; }
+
+/* ---------- theme bar (built by toolbox.js) ---------- */
+.themebar { display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; }
+.themebar .dot {
+  width: 2.25rem; height: 2.25rem; min-width: 0; min-height: 0; padding: 0; border-radius: 50%;
+  border: 2px solid var(--border);
+  background: linear-gradient(135deg, var(--d1) 50%, var(--d2) 50%);
+}
+.themebar .dot[aria-pressed="true"] { outline: 3px solid var(--primary); outline-offset: 2px; }
+.dot[data-p="light"] { --d1: #ffffff; --d2: #000000; }
+.dot[data-p="zen"]   { --d1: #f3efe6; --d2: #5f7a63; }
+.dot[data-p="ocean"] { --d1: #eaf4fb; --d2: #1b6aa5; }
+.dot[data-p="amber"] { --d1: #fbf3e2; --d2: #ffb000; }
+.themebar .mode { font-size: 1.2rem; line-height: 1; padding: .4rem .7rem; min-height: 2.25rem; }
+.themebar .toggle { padding: .35rem .8rem; min-height: 2.25rem; font-size: .9rem; }
+
+/* ---------- Zen: controls fade away when idle, leaving only the digits ---------- */
+.topbar, .controls, .setup { transition: opacity .8s ease; }
+body.idle .topbar, body.idle .controls, body.idle .setup { opacity: 0; pointer-events: none; }
+
+/* ---------- optional slow animations (off by default, CSS only) ---------- */
+/* Diagonal wave: soft bands of colour travelling from top-left to bottom-right.
+   The layer is larger than the screen and is translated by exactly one period
+   (50vmax along the 135° direction = 35.355vmax on each axis), so the loop is seamless. */
+html[data-anim="on"] body::before {
+  content: ""; position: fixed; inset: -60vmax; z-index: -1; pointer-events: none;
+  background: repeating-linear-gradient(135deg,
+    var(--bg) 0,
+    color-mix(in srgb, var(--bg) 82%, var(--primary)) 25vmax,
+    var(--bg) 50vmax);
+  animation: wave 40s linear infinite;
+  will-change: transform;
+}
+html[data-anim="on"] body.done::before { display: none; }
+@keyframes wave { from { transform: translate(0, 0); } to { transform: translate(35.355vmax, 35.355vmax); } }
+@media (prefers-reduced-motion: reduce) {
+  html[data-anim="on"] body::before { animation: none; }
+}
