@@ -1,5 +1,5 @@
 ---
-title: "Il Teorema di Gauss"
+title: "Dimostrazione e Applicazione del teorema di Gauss"
 subtitle: "Dimostrazione: dalla sfera a una superficie qualsiasi"
 date: 2026-09-30
 categories: [Fisica]
