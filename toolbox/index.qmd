@@ -14,7 +14,7 @@ toc: false
 ### Clock
 Large HH:MM:SS display that adapts to any screen and orientation. Optional synchronisation with a network time reference.
 
-[Open the clock](clock.html){.btn .btn-primary}
+[Open the clock](clock.html){.btn .btn-primary target="_blank" rel="noopener"}
 :::
 :::
 :::
@@ -25,7 +25,7 @@ Large HH:MM:SS display that adapts to any screen and orientation. Optional synch
 ### Timer
 Countdown with presets, visual and audible alarm at zero. Ideal for tests and group activities.
 
-[Open the timer](timer.html){.btn .btn-primary}
+[Open the timer](timer.html){.btn .btn-primary target="_blank" rel="noopener"}
 :::
 :::
 :::
