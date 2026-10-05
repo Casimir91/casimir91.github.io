@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Clock · Toolbox</title>
+<link rel="stylesheet" href="toolbox.css">
+<style>
+  /* Landscape: one line HH:MM:SS. Portrait: three stacked rows, so digits stay huge on phones. */
+  .digits { font-size: calc(var(--zoom, 1) * min(19vw, 52vh)); }
+  .digits .sep { display: inline; }
+  .digits .part { display: inline; }
+  @media (orientation: portrait) {
+    .digits { font-size: calc(var(--zoom, 1) * min(46vw, 22vh)); }
+    .digits .part { display: block; }
+    .digits .sep { display: none; }
+  }
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <a href="index.html">← Toolbox</a>
+    <span class="status" id="status" style="padding:0;min-height:0">Device clock</span>
+  </div>
+
+  <main class="main">
+    <div class="digits" id="clock" aria-live="off">
+      <span class="part" id="h">--</span><span class="sep">:</span><span class="part" id="m">--</span><span class="sep">:</span><span class="part" id="s">--</span>
+    </div>
+  </main>
+
+  <div class="controls">
+    <button id="zoomOut" aria-label="Smaller digits">A−</button>
+    <button id="zoomIn" aria-label="Larger digits">A+</button>
+    <button id="sync">Sync with server</button>
+    <button id="theme">Light / Dark</button>
+  </div>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const pad = n => String(n).padStart(2, "0");
+  let offset = 0; // ms to add to device time
+
+  /* ---------- rendering ---------- */
+  function tick() {
+    const now = Date.now() + offset;
+    const d = new Date(now);
+    $("h").textContent = pad(d.getHours());
+    $("m").textContent = pad(d.getMinutes());
+    $("s").textContent = pad(d.getSeconds());
+    setTimeout(tick, 1000 - (now % 1000) + 5); // wake just after the next second
+  }
+  tick();
+
+  /* ---------- zoom (CSS variable only, no API) ---------- */
+  let zoom = 1;
+  const setZoom = z => {
+    zoom = Math.min(1.3, Math.max(0.4, z));
+    document.documentElement.style.setProperty("--zoom", zoom);
+  };
+  $("zoomIn").onclick = () => setZoom(zoom + 0.1);
+  $("zoomOut").onclick = () => setZoom(zoom - 0.1);
+
+  /* ---------- theme ---------- */
+  const root = document.documentElement;
+  try { const t = localStorage.getItem("toolbox-theme"); if (t) root.dataset.theme = t; } catch (e) {}
+  $("theme").onclick = () => {
+    const next = root.dataset.theme === "dark" ? "light" : "dark";
+    root.dataset.theme = next;
+    try { localStorage.setItem("toolbox-theme", next); } catch (e) {}
+  };
+
+  /* ---------- keep the screen awake (optional, silently ignored if unsupported) ---------- */
+  let lock = null;
+  async function wake() {
+    try { if ("wakeLock" in navigator) lock = await navigator.wakeLock.request("screen"); } catch (e) {}
+  }
+  wake();
+  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") wake(); });
+
+  /* ---------- sync with server ----------
+     The Date header of an HTTP response has 1 s resolution. We poll this site until the
+     header's second changes: that instant is a precise second boundary on the server clock
+     (error ≈ polling interval, a few tens of ms). */
+  async function sample() {
+    const t0 = performance.now(), w0 = Date.now();
+    const r = await fetch(location.pathname + "?_=" + Math.random(), { method: "HEAD", cache: "no-store" });
+    const t1 = performance.now();
+    const date = r.headers.get("Date");
+    if (!date) throw new Error("no Date header");
+    return { server: Date.parse(date), local: w0 + (t1 - t0) / 2 };
+  }
+  async function syncNow() {
+    const btn = $("sync"), st = $("status");
+    btn.disabled = true; st.textContent = "Syncing…";
+    try {
+      let prev = await sample();
+      const start = performance.now();
+      while (performance.now() - start < 3500) {
+        await new Promise(r => setTimeout(r, 80));
+        const cur = await sample();
+        if (cur.server !== prev.server) {
+          const boundaryLocal = (prev.local + cur.local) / 2;
+          const newOffset = cur.server - boundaryLocal;
+          if (Math.abs(newOffset) > 3600e3) throw new Error("implausible offset");
+          offset = newOffset;
+          const s = (offset / 1000).toFixed(2);
+          st.textContent = `Synced · device clock was ${offset > 0 ? "behind" : "ahead"} by ${Math.abs(s)} s`;
+          return;
+        }
+        prev = cur;
+      }
+      throw new Error("Date header did not change");
+    } catch (e) {
+      st.textContent = "Sync failed (works only when the page is served online) · using device clock";
+    } finally {
+      btn.disabled = false;
+    }
+  }
+  $("sync").onclick = syncNow;
+})();
+</script>
+</body>
+</html>

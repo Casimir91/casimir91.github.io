@@ -1,0 +1,37 @@
+---
+title: "Toolbox"
+subtitle: "Classroom and lab tools that run in the browser — on computer, smartphone and interactive whiteboard"
+toc: false
+---
+
+## Basic tools
+
+::::: {.row .row-cols-1 .row-cols-md-2 .g-3}
+
+::: {.col}
+::: {.card .h-100}
+::: {.card-body}
+### Clock
+Large HH:MM:SS display that adapts to any screen and orientation. Optional synchronisation with a network time reference.
+
+[Open the clock](clock.html){.btn .btn-primary}
+:::
+:::
+:::
+
+::: {.col}
+::: {.card .h-100}
+::: {.card-body}
+### Timer
+Countdown with presets, visual and audible alarm at zero. Ideal for tests and group activities.
+
+[Open the timer](timer.html){.btn .btn-primary}
+:::
+:::
+:::
+
+:::::
+
+## Lab tools
+
+*Coming soon: audio analyser (oscilloscope, FFT spectrum, CSV export), accelerometer and gyroscope.*

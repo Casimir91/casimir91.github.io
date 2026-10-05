@@ -2,6 +2,8 @@ project:
   type: website
   resources:
     - CNAME
+    - toolbox/*.html
+    - toolbox/*.css
 
 website:
   title: "Prof. Rosi"
@@ -18,6 +20,8 @@ website:
         text: Lab
       - href: edtech/index.qmd
         text: EdTech
+      - href: toolbox/index.qmd
+        text: Toolbox
       - href: stories/index.qmd
         text: Stories
     right:

@@ -1,0 +1,77 @@
+/* Toolbox shared styles — colours follow the Bootswatch "sandstone" palette.
+   When the site gets its custom palette, only the variables below need changing. */
+:root {
+  --bg: #ffffff;
+  --fg: #3e3f3a;
+  --muted: #8e8c84;
+  --surface: #f8f5f0;
+  --border: #dfd7ca;
+  --primary: #325d88;
+  --primary-fg: #ffffff;
+  --accent: #f47c3c;
+  --danger: #d9534f;
+  --font: Roboto, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+}
+:root[data-theme="dark"] {
+  --bg: #22282e;
+  --fg: #f8f5f0;
+  --muted: #a7a49b;
+  --surface: #2d353d;
+  --border: #46505a;
+  --primary: #6fa3d6;
+  --primary-fg: #14202c;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font);
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  -webkit-text-size-adjust: 100%;
+}
+
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: .5rem; padding: .6rem 1rem; flex-wrap: wrap;
+}
+.topbar a { color: var(--primary); text-decoration: none; font-weight: 500; }
+.topbar a:hover { text-decoration: underline; }
+
+.main {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 0 1rem; min-height: 0;
+}
+
+.digits {
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -.01em;
+  line-height: 1;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.controls {
+  display: flex; flex-wrap: wrap; gap: .5rem;
+  justify-content: center; align-items: center;
+  padding: .75rem 1rem 1rem;
+}
+button, input {
+  font: inherit; color: inherit;
+}
+button {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: .5rem; padding: .6rem 1rem; cursor: pointer;
+  min-height: 2.75rem; min-width: 2.75rem;
+}
+button:hover { border-color: var(--primary); }
+button.primary { background: var(--primary); color: var(--primary-fg); border-color: var(--primary); font-weight: 500; }
+button.danger { color: var(--danger); }
+button:focus-visible, input:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+.status { color: var(--muted); font-size: .9rem; text-align: center; padding: 0 1rem .75rem; min-height: 1.6rem; }
