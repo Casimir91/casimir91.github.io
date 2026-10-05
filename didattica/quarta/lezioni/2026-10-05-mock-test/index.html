@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2026-10-05">
 
-<title>Classe Quarta – Prof.&nbsp;Rosi</title>
+<title>Mock test: Elettrostatica e teorema di Gauss – Prof.&nbsp;Rosi</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -26,29 +27,27 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../../">
-<script src="../../site_libs/quarto-listing/list.min.js"></script>
-<script src="../../site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../../site_libs/quarto-html/popper.min.js"></script>
-<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
-<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-de60624a5cb141114e0ea2b9bc293073.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-52a1f3633cf0215026c8c874589d56c0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-de60624a5cb141114e0ea2b9bc293073.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="../../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../../">
+<script src="../../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../../site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../../site_libs/bootstrap/bootstrap-de60624a5cb141114e0ea2b9bc293073.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../../site_libs/bootstrap/bootstrap-dark-52a1f3633cf0215026c8c874589d56c0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../../../site_libs/bootstrap/bootstrap-de60624a5cb141114e0ea2b9bc293073.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -76,69 +75,13 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
 
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-subtitle',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-title-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<meta property="og:title" content="Classe Quarta – Prof.&nbsp;Rosi">
+<meta property="og:title" content="Mock test: Elettrostatica e teorema di Gauss – Prof.&nbsp;Rosi">
+<meta property="og:description" content="Test e soluzioni">
 <meta property="og:site_name" content="Prof.&nbsp;Rosi">
-<meta name="twitter:title" content="Classe Quarta – Prof.&nbsp;Rosi">
+<meta name="twitter:title" content="Mock test: Elettrostatica e teorema di Gauss – Prof.&nbsp;Rosi">
+<meta name="twitter:description" content="Test e soluzioni">
 <meta name="twitter:card" content="summary">
 </head>
 
@@ -320,7 +263,7 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../../index.html">
+    <a class="navbar-brand" href="../../../../index.html">
     <span class="navbar-title">Prof.&nbsp;Rosi</span>
     </a>
   </div>
@@ -331,29 +274,29 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../index.html"> 
+    <a class="nav-link" href="../../../../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../didattica/index.html"> 
+    <a class="nav-link" href="../../../../didattica/index.html"> 
 <span class="menu-text">Didattica</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../lab/index.html"> 
+    <a class="nav-link" href="../../../../lab/index.html"> 
 <span class="menu-text">Lab</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../edtech/index.html"> 
+    <a class="nav-link" href="../../../../edtech/index.html"> 
 <span class="menu-text">EdTech</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../stories/index.html"> 
+    <a class="nav-link" href="../../../../stories/index.html"> 
 <span class="menu-text">Stories</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../chi-sono.html"> 
+    <a class="nav-link" href="../../../../chi-sono.html"> 
 <span class="menu-text">Chi sono</span></a>
   </li>  
   <li class="nav-item compact">
@@ -373,8 +316,15 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#test" id="toc-test" class="nav-link active" data-scroll-target="#test">Test</a></li>
+  <li><a href="#soluzioni" id="toc-soluzioni" class="nav-link" data-scroll-target="#soluzioni">Soluzioni</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -382,14 +332,24 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Classe Quarta</h1>
-</div>
+<h1 class="title">Mock test: Elettrostatica e teorema di Gauss</h1>
+<p class="subtitle lead">Test e soluzioni</p>
+  <div class="quarto-categories">
+    <div class="quarto-category">Fisica</div>
+  </div>
+  </div>
 
 
 
 <div class="quarto-title-meta">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 5, 2026</p>
+    </div>
+  </div>
   
     
   </div>
@@ -399,121 +359,18 @@ window.Quarto = {
 </header>
 
 
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll(".quarto-listing a").forEach(a => {
-    a.target = "_blank";
-    a.rel = "noopener";
-  });
-});
-</script>
+<section id="test" class="level2">
+<h2 class="anchored" data-anchor-id="test">Test</h2>
+<p><a href="quarta_2026-10-05_mock-test.pdf" class="btn btn-outline-primary" target="_blank">Mock test (PDF) ↗</a></p>
+</section>
+<section id="soluzioni" class="level2">
+<h2 class="anchored" data-anchor-id="soluzioni">Soluzioni</h2>
+<p><a href="quarta_2026-10-05_mock-test_soluzioni.pdf" class="btn btn-outline-primary" target="_blank">Soluzioni (PDF) ↗</a></p>
 
 
+</section>
 
-
-<div class="quarto-listing quarto-listing-container-table" id="listing-listing">
-<table class="quarto-listing-table table">
-<thead>
-<tr>
-
-<th>
-Date
-</th>
-
-<th>
-Title
-</th>
-
-<th>
-Argomento
-</th>
-
-</tr>
-</thead>
-<tbody class="list">
-
-<tr data-index="0" data-categories="RmlzaWNh" data-listing-date-sort="1788472800000" data-listing-file-modified-sort="1790616258250" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="16" data-listing-title-sort="Che cos'è un campo?" data-listing-filename-sort="index.qmd">
-<td>
-<span class="listing-date">Sep 4, 2026</span>
-</td>
-<td>
-<a href="../../didattica/quarta/lezioni/2026-09-04-campoelettrico-intro/index.html" class="title listing-title">Che cos’è un campo?</a>
-</td>
-<td>
-<span class="listing-subtitle">Dalla forza al campo: un cambio di prospettiva</span>
-</td>
-
-</tr>
-
-<tr data-index="1" data-categories="RmlzaWNh" data-listing-date-sort="1788732000000" data-listing-file-modified-sort="1790663682108" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="16" data-listing-title-sort="Campo, elettrizzazione, legge di Coulomb" data-listing-filename-sort="index.qmd">
-<td>
-<span class="listing-date">Sep 7, 2026</span>
-</td>
-<td>
-<a href="../../didattica/quarta/lezioni/2026-09-07-campo-coulomb/index.html" class="title listing-title">Campo, elettrizzazione, legge di Coulomb</a>
-</td>
-<td>
-<span class="listing-subtitle">Il campo elettrico · lezione 2</span>
-</td>
-
-</tr>
-
-<tr data-index="2" data-categories="RmlzaWNh" data-listing-date-sort="1789941600000" data-listing-file-modified-sort="1790527702351" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="30" data-listing-title-sort="Linee di forza e flusso del campo elettrico" data-listing-filename-sort="index.qmd">
-<td>
-<span class="listing-date">Sep 21, 2026</span>
-</td>
-<td>
-<a href="../../didattica/quarta/lezioni/2026-09-21-campoelettrico-flusso/index.html" class="title listing-title">Linee di forza e flusso del campo elettrico</a>
-</td>
-<td>
-<span class="listing-subtitle">Dal disegno al numero: contare le linee</span>
-</td>
-
-</tr>
-
-<tr data-index="3" data-categories="RmlzaWNh" data-listing-date-sort="1790546400000" data-listing-file-modified-sort="1790584262761" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="16" data-listing-title-sort="Il Teorema di Gauss" data-listing-filename-sort="index.qmd">
-<td>
-<span class="listing-date">Sep 28, 2026</span>
-</td>
-<td>
-<a href="../../didattica/quarta/lezioni/2026-09-28-teorema-gauss/index.html" class="title listing-title">Il Teorema di Gauss</a>
-</td>
-<td>
-<span class="listing-subtitle">Dal flusso alla sorgente</span>
-</td>
-
-</tr>
-
-<tr data-index="4" data-categories="RmlzaWNh" data-listing-date-sort="1790719200000" data-listing-file-modified-sort="1791190665365" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="16" data-listing-title-sort="Dimostrazione e Applicazione del teorema di Gauss" data-listing-filename-sort="index.qmd">
-<td>
-<span class="listing-date">Sep 30, 2026</span>
-</td>
-<td>
-<a href="../../didattica/quarta/lezioni/2026-09-30-teorema-gauss-dimostrazione/index.html" class="title listing-title">Dimostrazione e Applicazione del teorema di Gauss</a>
-</td>
-<td>
-<span class="listing-subtitle">Dimostrazione: dalla sfera a una superficie qualsiasi</span>
-</td>
-
-</tr>
-
-<tr data-index="5" data-categories="RmlzaWNh" data-listing-date-sort="1791151200000" data-listing-file-modified-sort="1791194561458" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="11" data-listing-title-sort="Mock test: Elettrostatica e teorema di Gauss" data-listing-filename-sort="index.qmd">
-<td>
-<span class="listing-date">Oct 5, 2026</span>
-</td>
-<td>
-<a href="../../didattica/quarta/lezioni/2026-10-05-mock-test/index.html" class="title listing-title">Mock test: Elettrostatica e teorema di Gauss</a>
-</td>
-<td>
-<span class="listing-subtitle">Test e soluzioni</span>
-</td>
-
-</tr>
-
-</tbody>
-</table>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
