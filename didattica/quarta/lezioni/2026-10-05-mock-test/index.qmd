@@ -1,0 +1,14 @@
+---
+title: "Mock test: Elettrostatica e teorema di Gauss"
+subtitle: "Test e soluzioni"
+date: 2026-10-05
+categories: [Fisica]
+---
+
+## Test
+
+[Mock test (PDF) ↗](quarta_2026-10-05_mock-test.pdf){target="_blank" .btn .btn-outline-primary}
+
+## Soluzioni
+
+[Soluzioni (PDF) ↗](quarta_2026-10-05_mock-test_soluzioni.pdf){target="_blank" .btn .btn-outline-primary}
