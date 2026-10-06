@@ -1,0 +1,13 @@
+---
+title: "Midterm Test: Testo e soluzioni"
+subtitle: "Speed, distance-time graphs, energy and work: testi delle versioni A, B, C e soluzioni"
+date: 2026-10-06
+categories: [Fisica]
+---
+
+## Materiali e indicazioni per lo studio
+
+[Test Versione A (PDF) ↗](test-A.pdf){target="_blank" .btn .btn-outline-primary}
+[Test Versione B (PDF) ↗](test-B.pdf){target="_blank" .btn .btn-outline-primary}
+[Test Versione C (PDF) ↗](test-C.pdf){target="_blank" .btn .btn-outline-primary}
+[Soluzioni A, B, C (PDF) ↗](soluzioni-ABC.pdf){target="_blank" .btn .btn-outline-primary}
