@@ -25,22 +25,32 @@
     "items": []
   },
   {
-    "listing": "/didattica/seconda/fisica/index.html",
-    "items": []
-  },
-  {
-    "listing": "/didattica/prima/index.html",
+    "listing": "/didattica/seconda/index.html",
     "items": [
-      "/didattica/prima/lezioni/2026-09-09-measure-intro/index.html",
-      "/didattica/prima/lezioni/2026-09-16-measure-standardform/index.html",
-      "/didattica/prima/lezioni/2026-09-23-measure-errors/index.html",
-      "/didattica/prima/lezioni/2026-09-30-measure-density-lab1/index.html"
+      "/didattica/seconda/lezioni/2026-09-11-motion-speed/index.html",
+      "/didattica/seconda/lezioni/2026-09-21-energy-work/index.html",
+      "/didattica/seconda/lezioni/2026-10-02-energy-work-exercises/index.html",
+      "/didattica/seconda/lezioni/2026-10-05-mock-midterm/index.html",
+      "/didattica/seconda/lezioni/2026-10-06-midterm-test/index.html"
     ]
   },
   {
-    "listing": "/didattica/igcse/index.html",
+    "listing": "/didattica/index.html",
     "items": [
-      "/didattica/igcse/sets.html"
+      "/didattica/prima/index.html",
+      "/didattica/seconda/index.html",
+      "/didattica/terza/index.html",
+      "/didattica/quarta/index.html"
+    ]
+  },
+  {
+    "listing": "/didattica/prima/fisica/index.html",
+    "items": []
+  },
+  {
+    "listing": "/lab/index.html",
+    "items": [
+      "/lab/luna.html"
     ]
   },
   {
@@ -60,32 +70,23 @@
     ]
   },
   {
-    "listing": "/lab/index.html",
+    "listing": "/didattica/igcse/index.html",
     "items": [
-      "/lab/luna.html"
+      "/didattica/igcse/sets.html"
     ]
   },
   {
-    "listing": "/didattica/prima/fisica/index.html",
+    "listing": "/didattica/prima/index.html",
+    "items": [
+      "/didattica/prima/lezioni/2026-09-09-measure-intro/index.html",
+      "/didattica/prima/lezioni/2026-09-16-measure-standardform/index.html",
+      "/didattica/prima/lezioni/2026-09-23-measure-errors/index.html",
+      "/didattica/prima/lezioni/2026-09-30-measure-density-lab1/index.html"
+    ]
+  },
+  {
+    "listing": "/didattica/seconda/fisica/index.html",
     "items": []
-  },
-  {
-    "listing": "/didattica/index.html",
-    "items": [
-      "/didattica/prima/index.html",
-      "/didattica/seconda/index.html",
-      "/didattica/terza/index.html",
-      "/didattica/quarta/index.html"
-    ]
-  },
-  {
-    "listing": "/didattica/seconda/index.html",
-    "items": [
-      "/didattica/seconda/lezioni/2026-09-11-motion-speed/index.html",
-      "/didattica/seconda/lezioni/2026-09-21-energy-work/index.html",
-      "/didattica/seconda/lezioni/2026-10-02-energy-work-exercises/index.html",
-      "/didattica/seconda/lezioni/2026-10-05-mock-midterm/index.html"
-    ]
   },
   {
     "listing": "/didattica/quarta/index.html",
