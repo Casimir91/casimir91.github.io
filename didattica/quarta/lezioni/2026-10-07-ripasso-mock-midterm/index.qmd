@@ -1,0 +1,10 @@
+---
+title: "Esercizi di ripasso sul teorema di Gauss, sul campo e sulla carica"
+subtitle: "Ripasso in preparazione al mock midterm"
+date: 2026-10-07
+categories: [Fisica]
+---
+
+## Esercizi
+
+[Esercizi di ripasso (PDF) ↗](quarta_2026-10-07_ripasso-mock-midterm.pdf){target="_blank" .btn .btn-outline-primary}
