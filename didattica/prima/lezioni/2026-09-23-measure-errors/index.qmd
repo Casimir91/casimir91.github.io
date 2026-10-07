@@ -15,4 +15,4 @@ categories: [Fisica]
 
 ## Materiali e indicazioni per lo studio
 
-*(da compilare)*
+[Exam-style questions (PDF) ↗](alfa-23set-scheda.pdf){target="_blank" .btn .btn-outline-primary}

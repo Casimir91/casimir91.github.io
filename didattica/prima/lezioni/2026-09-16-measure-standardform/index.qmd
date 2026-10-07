@@ -12,3 +12,9 @@ categories: [Fisica]
 :::
 
 [Apri le slide a schermo intero ↗](slides.html){target="_blank" .btn .btn-primary}
+
+## Materiali e indicazioni per lo studio
+
+[Esercizi — versione studenti (PDF) ↗](1A_16-09_Exercises_students.pdf){target="_blank" .btn .btn-outline-primary}
+
+[Esercizi — versione docente con soluzioni (PDF) ↗](1A_16-09_Exercises_TEACHER.pdf){target="_blank" .btn .btn-outline-secondary}

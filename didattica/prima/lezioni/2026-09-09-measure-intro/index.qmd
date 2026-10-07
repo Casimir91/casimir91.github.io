@@ -12,3 +12,7 @@ categories: [Fisica]
 :::
 
 [Apri le slide a schermo intero ↗](slides.html){target="_blank" .btn .btn-primary}
+
+## Materiali e indicazioni per lo studio
+
+[Estimate, then measure (PDF) ↗](estimate_then_measure.pdf){target="_blank" .btn .btn-outline-primary}
