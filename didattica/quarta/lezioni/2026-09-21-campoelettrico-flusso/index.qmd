@@ -16,3 +16,5 @@ categories: [Fisica]
 ## Materiali e indicazioni per lo studio
 
 [Esercizi assegnati per il 28/09 (PDF) ↗](esercizi-28-09.pdf){target="_blank" .btn .btn-outline-primary}
+
+[Copione della lezione in italiano (PDF) ↗](copione_it.pdf){target="_blank" .btn .btn-outline-primary}

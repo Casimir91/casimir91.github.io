@@ -15,4 +15,5 @@ categories: [Fisica]
 
 ## Materiali e indicazioni per lo studio
 
-*(da compilare)*
+[Copione della lezione in italiano (PDF) ↗](copione_it.pdf){target="_blank" .btn .btn-outline-primary}
+[Copione della lezione in inglese (PDF) ↗](copione_en.pdf){target="_blank" .btn .btn-outline-primary}

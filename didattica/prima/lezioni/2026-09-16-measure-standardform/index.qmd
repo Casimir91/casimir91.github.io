@@ -18,3 +18,6 @@ categories: [Fisica]
 [Esercizi — versione studenti (PDF) ↗](1A_16-09_Exercises_students.pdf){target="_blank" .btn .btn-outline-primary}
 
 [Esercizi — versione docente con soluzioni (PDF) ↗](1A_16-09_Exercises_TEACHER.pdf){target="_blank" .btn .btn-outline-secondary}
+
+[Copione della lezione in italiano (PDF) ↗](copione_it.pdf){target="_blank" .btn .btn-outline-primary}
+[Copione della lezione in inglese (PDF) ↗](copione_en.pdf){target="_blank" .btn .btn-outline-primary}

@@ -12,3 +12,7 @@ categories: [Fisica]
 :::
 
 [Apri le slide a schermo intero ↗](slides.html){target="_blank" .btn .btn-primary}
+
+## Materiali e indicazioni per lo studio
+
+[Copione della lezione in italiano (PDF) ↗](copione_it.pdf){target="_blank" .btn .btn-outline-primary}
