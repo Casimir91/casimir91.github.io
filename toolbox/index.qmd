@@ -32,6 +32,23 @@ Countdown with presets, visual and audible alarm at zero. Ideal for tests and gr
 
 :::::
 
+## Games
+
+::::: {.row .row-cols-1 .row-cols-md-2 .g-3}
+
+::: {.col}
+::: {.card .h-100}
+::: {.card-body}
+### Physics Wordle
+Guess the physics word of the day in six tries: particles, units, scientists, optics, astronomy — from *quark* to *laser* to *milky*. A new word every day.
+
+[Play Wordle](wordle.html){.btn .btn-primary target="_blank" rel="noopener"}
+:::
+:::
+:::
+
+:::::
+
 ## Lab tools
 
 *Coming soon: audio analyser (oscilloscope, FFT spectrum, CSV export), accelerometer and gyroscope.*
