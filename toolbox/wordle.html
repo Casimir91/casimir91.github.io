@@ -47,6 +47,10 @@
   .result { text-align: center; display: flex; flex-direction: column; gap: .5rem; align-items: center; }
   .result[hidden] { display: none; }
   .result .small { color: var(--muted); font-size: .9rem; }
+  .def { max-width: 34rem; padding: 0 1rem; }
+  .def[hidden] { display: none; }
+  .def-word { font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+  .def-text { margin-top: .15rem; font-size: .95rem; }
   button.btn { padding: .6rem 1.2rem; }
 
   .rules { max-width: 34rem; margin: 0 auto; padding: 0 1rem 1.5rem; color: var(--muted); font-size: .92rem; }
@@ -83,6 +87,7 @@
     <div class="status" id="status" aria-live="polite"></div>
     <div class="board" id="board" aria-label="Game board"></div>
     <div class="result" id="result" hidden>
+      <div class="def" id="def" hidden><div class="def-word" id="defWord"></div><div class="def-text" id="defText" lang="it"></div></div>
       <div id="stats"></div>
       <button class="btn primary" id="share" type="button">Share result</button>
       <div class="small" id="next"></div>
@@ -105,6 +110,7 @@
   </details>
 
 <script src="wordle-words.js"></script>
+<script src="wordle-defs.js"></script>
 <script>
 (() => {
   /* ---------- word lists (wordle-words.js) ----------
@@ -251,6 +257,8 @@
                                : "The word was " + ANSWER.toUpperCase());
     $("stats").textContent = "Played " + s.played + " · Won " + (s.played ? Math.round(100 * s.won / s.played) : 0) +
                              "% · Streak " + s.streak + " (best " + s.max + ")";
+    const defs = window.WORDLE_DEFS || {};
+    if (defs[ANSWER]) { $("defWord").textContent = ANSWER; $("defText").textContent = defs[ANSWER]; $("def").hidden = false; }
     $("result").hidden = false;
     const tick = () => {
       const n = new Date(), m = new Date(n); m.setHours(24, 0, 0, 0);
