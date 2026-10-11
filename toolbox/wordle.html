@@ -262,10 +262,12 @@
     tick(); nextIv = setInterval(tick, 1000);
   }
   $("share").onclick = async () => {
-    const em = cb ? { ok: "🟧", near: "🟦", no: "⬛" } : { ok: "🟩", near: "🟨", no: "⬛" };
+    /* Same convention as the original game: white squares in light mode, black in dark mode.
+       The text is only the result (no link), ready to paste into a chat. */
+    const blank = document.documentElement.dataset.mode === "dark" ? "⬛" : "⬜";
+    const em = cb ? { ok: "🟧", near: "🟦", no: blank } : { ok: "🟩", near: "🟨", no: blank };
     const grid = state.guesses.map(g => evaluate(g, ANSWER).map(s => em[s]).join("")).join("\n");
-    const url = location.href.split("#")[0].split("?")[0];
-    const text = "Physics Wordle #" + (DAY + 1) + " " + (state.status === "won" ? state.guesses.length : "X") + "/6\n" + grid + "\n" + url;
+    const text = "Physics Wordle " + (DAY + 1) + " " + (state.status === "won" ? state.guesses.length : "X") + "/6\n\n" + grid;
     let ok = false;
     try { await navigator.clipboard.writeText(text); ok = true; } catch (e) {
       try { const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); ok = document.execCommand("copy"); ta.remove(); } catch (e2) {}
