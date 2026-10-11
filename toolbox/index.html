@@ -76,6 +76,7 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
+<link rel="stylesheet" href="index-cards.css">
 <meta property="og:title" content="Toolbox – Prof.&nbsp;Rosi">
 <meta property="og:description" content="Classroom and lab tools that run in the browser — on computer, smartphone and interactive whiteboard">
 <meta property="og:site_name" content="Prof.&nbsp;Rosi">
@@ -346,44 +347,67 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="basic-tools" class="level2">
 <h2 class="anchored" data-anchor-id="basic-tools">Basic tools</h2>
-<div class="row row-cols-1 row-cols-md-2 g-3">
-<div class="col">
-<div class="card h-100">
-<section id="clock" class="level3 card-body">
-<h3 class="anchored" data-anchor-id="clock">Clock</h3>
-<p>Large HH:MM:SS display that adapts to any screen and orientation. Optional synchronisation with a network time reference.</p>
-<p><a href="clock.html" class="btn btn-primary" target="_blank" rel="noopener">Open the clock</a></p>
-</section>
-</div>
-</div>
-<div class="col">
-<div class="card h-100">
-<section id="timer" class="level3 card-body">
-<h3 class="anchored" data-anchor-id="timer">Timer</h3>
-<p>Countdown with presets, visual and audible alarm at zero. Ideal for tests and group activities.</p>
-<p><a href="timer.html" class="btn btn-primary" target="_blank" rel="noopener">Open the timer</a></p>
-</section>
-</div>
-</div>
+<div class="tb-grid">
+
+  <a class="tb-card" href="clock.html" target="_blank" rel="noopener">
+    <div class="tb-preview"><div class="tb-clock" id="tb-clock" aria-hidden="true">00:00:00</div></div>
+    <div class="tb-body">
+      <div class="tb-title">Clock</div>
+      <p>Large HH:MM:SS display that adapts to any screen and orientation. Optional synchronisation with a network time reference.</p>
+      <div class="tb-meta">Fullscreen · 4 palettes · light and dark</div>
+      <div class="tb-open">Open the clock →</div>
+    </div>
+  </a>
+
+  <a class="tb-card" href="timer.html" target="_blank" rel="noopener">
+    <div class="tb-preview"><div class="tb-ring" id="tb-ring" aria-hidden="true"><span id="tb-timer">01:00</span></div></div>
+    <div class="tb-body">
+      <div class="tb-title">Timer</div>
+      <p>Countdown with presets, visual and audible alarm at zero. Ideal for tests and group activities.</p>
+      <div class="tb-meta">Presets from 1 to 60 min · alarm · +/− 1 min</div>
+      <div class="tb-open">Open the timer →</div>
+    </div>
+  </a>
+
 </div>
 </section>
 <section id="games" class="level2">
 <h2 class="anchored" data-anchor-id="games">Games</h2>
-<div class="row row-cols-1 row-cols-md-2 g-3">
-<div class="col">
-<div class="card h-100">
-<section id="physics-wordle" class="level3 card-body">
-<h3 class="anchored" data-anchor-id="physics-wordle">Physics Wordle</h3>
-<p>Guess the physics word of the day in six tries: particles, units, scientists, optics, astronomy — from <em>quark</em> to <em>laser</em> to <em>milky</em>. A new word every day.</p>
-<p><a href="wordle.html" class="btn btn-primary" target="_blank" rel="noopener">Play Wordle</a></p>
-</section>
-</div>
-</div>
+<div class="tb-grid">
+
+  <a class="tb-card" href="wordle.html" target="_blank" rel="noopener">
+    <div class="tb-preview"><div class="tb-wgrid" aria-hidden="true"><span class="tb-t n" style="--d:0.3s">L</span><span class="tb-t y" style="--d:0.52s">A</span><span class="tb-t n" style="--d:0.74s">S</span><span class="tb-t n" style="--d:0.96s">E</span><span class="tb-t y" style="--d:1.18s">R</span><span class="tb-t g" style="--d:1.9s">Q</span><span class="tb-t g" style="--d:2.12s">U</span><span class="tb-t g" style="--d:2.34s">A</span><span class="tb-t n" style="--d:2.56s">S</span><span class="tb-t n" style="--d:2.78s">I</span><span class="tb-t g" style="--d:3.5s">Q</span><span class="tb-t g" style="--d:3.72s">U</span><span class="tb-t g" style="--d:3.94s">A</span><span class="tb-t g" style="--d:4.16s">R</span><span class="tb-t g" style="--d:4.38s">K</span></div></div>
+    <div class="tb-body">
+      <div class="tb-title">Physics Wordle</div>
+      <p>Guess the physics word of the day in six tries: particles, units, scientists, optics, astronomy — from <em>quark</em> to <em>laser</em> to <em>milky</em>.</p>
+      <div class="tb-meta">New word every day · works on smartphone</div>
+      <div class="tb-open">Play Wordle →</div>
+    </div>
+  </a>
+
 </div>
 </section>
 <section id="lab-tools" class="level2">
 <h2 class="anchored" data-anchor-id="lab-tools">Lab tools</h2>
 <p><em>Coming soon: audio analyser (oscilloscope, FFT spectrum, CSV export), accelerometer and gyroscope.</em></p>
+<script>
+(() => {
+  const pad = n => String(n).padStart(2, "0");
+  const clock = document.getElementById("tb-clock");
+  const tickClock = () => { const d = new Date(); clock.textContent = pad(d.getHours()) + ":" + pad(d.getMinutes()) + ":" + pad(d.getSeconds()); };
+  tickClock(); setInterval(tickClock, 1000);
+
+  /* the timer preview counts down 60 s and starts over */
+  const ring = document.getElementById("tb-ring"), txt = document.getElementById("tb-timer");
+  let left = 60;
+  const tickTimer = () => {
+    txt.textContent = pad(Math.floor(left / 60)) + ":" + pad(left % 60);
+    ring.style.setProperty("--p", (left / 60 * 100) + "%");
+    left = left <= 0 ? 60 : left - 1;
+  };
+  tickTimer(); setInterval(tickTimer, 1000);
+})();
+</script>
 
 
 </section>

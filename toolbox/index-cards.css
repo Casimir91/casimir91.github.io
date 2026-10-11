@@ -1,0 +1,86 @@
+/* Toolbox index: tool cards with live previews.
+   Colours come from the site theme (Bootstrap variables), so light and dark mode both work. */
+
+.tb-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+  gap: 1.25rem;
+  margin: 1rem 0 2.25rem;
+}
+
+.tb-card {
+  display: flex; flex-direction: column;
+  border: 1px solid var(--bs-border-color, #dee2e6);
+  border-radius: .75rem; overflow: hidden;
+  background: var(--bs-body-bg, #fff);
+  color: var(--bs-body-color, #212529);
+  text-decoration: none;
+  transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+}
+.tb-card:hover, .tb-card:focus-visible {
+  transform: translateY(-3px);
+  box-shadow: 0 .5rem 1.25rem rgba(0, 0, 0, .18);
+  border-color: var(--bs-link-color, var(--bs-primary, #325d88));
+  color: var(--bs-body-color, #212529);
+  text-decoration: none;
+}
+
+.tb-preview {
+  height: 9.5rem;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--bs-secondary-bg, #f2f2f2);
+  border-bottom: 1px solid var(--bs-border-color, #dee2e6);
+}
+
+.tb-body { padding: 1rem 1.1rem 1.1rem; display: flex; flex-direction: column; gap: .3rem; flex: 1; }
+.tb-title { font-size: 1.2rem; font-weight: 500; line-height: 1.2; }
+.tb-body p { margin: 0; font-size: .95rem; }
+.tb-meta { color: var(--bs-secondary-color, #6c757d); font-size: .82rem; }
+.tb-open { margin-top: auto; padding-top: .6rem; color: var(--bs-link-color, var(--bs-primary, #325d88)); font-weight: 500; }
+.tb-card:hover .tb-open, .tb-card:focus-visible .tb-open { text-decoration: underline; }
+
+/* ---------- Clock preview ---------- */
+.tb-clock {
+  font-size: 2.4rem; font-weight: 500; line-height: 1;
+  font-variant-numeric: tabular-nums; letter-spacing: -.01em;
+}
+
+/* ---------- Timer preview: ring that empties over a 60 s loop ---------- */
+.tb-ring {
+  --p: 100%;
+  position: relative; display: inline-block;
+  padding: .15em .5em; border-radius: 999px;
+  font-size: 2.2rem; font-weight: 500; line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+.tb-ring::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  padding: 6px;
+  background: conic-gradient(var(--bs-link-color, var(--bs-primary, #325d88)) var(--p), var(--bs-border-color, #dee2e6) 0);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+
+/* ---------- Wordle preview: three guesses revealed in a loop (pure CSS) ---------- */
+.tb-wgrid { display: grid; grid-template-columns: repeat(5, 1.9rem); grid-auto-rows: 1.9rem; gap: 4px; }
+.tb-t {
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 1rem;
+  border: 2px solid var(--c); background: var(--c); color: var(--tc, #fff);
+  animation: tb-flip 10s infinite backwards; animation-delay: var(--d, 0s);
+}
+.tb-t.n { --c: color-mix(in srgb, var(--bs-body-color, #212529) 22%, var(--bs-body-bg, #fff)); --tc: var(--bs-body-color, #212529); }
+.tb-t.y { --c: #c9a227; --tc: #000; }
+.tb-t.g { --c: #2f7d3f; }
+@keyframes tb-flip {
+  0%       { background: transparent; border-color: var(--bs-border-color, #adb5bd); color: var(--bs-body-color, #212529); transform: rotateX(0); }
+  3%       { transform: rotateX(90deg); }
+  6%, 86%  { background: var(--c); border-color: var(--c); color: var(--tc, #fff); transform: rotateX(0); }
+  92%, 100%{ background: transparent; border-color: var(--bs-border-color, #adb5bd); color: var(--bs-body-color, #212529); transform: rotateX(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tb-t { animation: none; }
+  .tb-card { transition: none; }
+}
