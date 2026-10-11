@@ -263,11 +263,18 @@
   }
   $("share").onclick = async () => {
     /* Same convention as the original game: white squares in light mode, black in dark mode.
-       The text is only the result (no link), ready to paste into a chat. */
+       The message is the result plus the link to play, so whoever receives it can tap and play. */
     const blank = document.documentElement.dataset.mode === "dark" ? "⬛" : "⬜";
     const em = cb ? { ok: "🟧", near: "🟦", no: blank } : { ok: "🟩", near: "🟨", no: blank };
     const grid = state.guesses.map(g => evaluate(g, ANSWER).map(s => em[s]).join("")).join("\n");
-    const text = "Physics Wordle " + (DAY + 1) + " " + (state.status === "won" ? state.guesses.length : "X") + "/6\n\n" + grid;
+    const url = location.origin + location.pathname;
+    const text = "Physics Wordle " + (DAY + 1) + " " + (state.status === "won" ? state.guesses.length : "X") + "/6\n\n" + grid + "\n\n" + url;
+
+    /* Touch devices: open the system share sheet (WhatsApp, Messages…). Elsewhere: copy to clipboard. */
+    if (navigator.share && matchMedia("(pointer: coarse)").matches) {
+      try { await navigator.share({ text }); return; }
+      catch (e) { if (e && e.name === "AbortError") return; /* closed by the user */ }
+    }
     let ok = false;
     try { await navigator.clipboard.writeText(text); ok = true; } catch (e) {
       try { const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); ok = document.execCommand("copy"); ta.remove(); } catch (e2) {}
