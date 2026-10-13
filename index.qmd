@@ -136,7 +136,7 @@ Sei uno studente → [**Didattica**](didattica/index.qmd)
 
 Hai una curiosità → [**Lab**](lab/index.qmd) e [**Stories**](stories/index.qmd)
 
-Insegni anche tu → [**EdTech**](edtech/index.qmd) e [**Lab**](lab/index.qmd)
+Insegni anche tu → [**EdTech**](edtech/index.qmd) e [**Toolbox**](toolbox/index.qmd)
 
 Il menu è in alto. Per cambiare tema, usa l'interruttore in cima alla pagina.
 
