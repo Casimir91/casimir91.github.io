@@ -12,7 +12,7 @@ format:
 <figure class="ritratto"><img src="images/chi-sono/ritratto.webp" width="640" height="960" decoding="async" alt="Ritratto di Ermes Rosi: sorride, con barba e dolcevita nero, su sfondo blu petrolio."></figure>
 ```
 
-Sono un fisico di formazione e insegno matematica e fisica al Liceo STEAM International di Bologna. Dopo la laurea magistrale, con una tesi in didattica della fisica, mi sono occupato di divulgazione scientifica e poi di insegnamento.
+Sono un astrofisico di formazione e insegno matematica e fisica al Liceo STEAM International di Bologna. Dopo la laurea magistrale, con una tesi in didattica della fisica, mi sono occupato di divulgazione scientifica e poi di insegnamento.
 
 Considero la scienza una materia che necessita di un coinvolgimento attivo. Lo studente deve imparare a confrontarsi con sfide e problemi reali perché solo in questo modo imparerà a far parte del mondo, scegliendo con consapevolezza un futuro desiderabile. Per interiorizzare i metodi e gli strumenti propri dell'esplorazione scientifica, la mia metodologia didattica integra alla lezione tradizionale project-based learning, inquiry-based learning, microcontrollori e codice, portando la teoria dentro uno strumento da costruire per poter misurare il mondo.
 
