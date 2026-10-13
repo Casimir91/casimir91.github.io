@@ -1,0 +1,23 @@
+/* Ritratto accanto alla presentazione (chi-sono.qmd) */
+.ritratto {
+  float: right;
+  width: clamp(150px, 30%, 240px);
+  margin: .35rem 0 1rem 1.75rem;
+}
+.ritratto img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: .75rem;
+}
+/* il titolo e il carosello ripartono sotto la foto, senza sovrapporsi */
+main.content h2,
+.carosello { clear: both; }
+
+@media (max-width: 575.98px) {
+  .ritratto {
+    float: none;
+    width: min(60%, 220px);
+    margin: 0 auto 1.5rem;
+  }
+}

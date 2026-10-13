@@ -1,0 +1,162 @@
+<script>
+/* Carosello "momenti": frecce, puntini, pausa, autoplay lento.
+   Lo scorrimento vero e proprio e' CSS scroll-snap (vedi carosello.css). */
+(function () {
+  "use strict";
+
+  var INTERVAL = 5500; // ms tra una foto e la successiva
+
+  function init(root) {
+    var track  = root.querySelector(".car-track");
+    var slides = Array.prototype.slice.call(track.children);
+    var dots   = Array.prototype.slice.call(root.querySelectorAll(".car-dot"));
+    var prev   = root.querySelector(".car-prev");
+    var next   = root.querySelector(".car-next");
+    var toggle = root.querySelector(".car-toggle");
+    var motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    var n = slides.length;
+
+    var index = 0, timer = null;
+    var userStopped = false;   // pausa scelta dall'utente (gesto o pulsante)
+    var hovering = false, hoverIgnored = false, focused = false, visible = false;
+    var busy = false, busyTimer = null;   // scorrimento comandato da pulsanti/autoplay in corso
+
+    /* sfondo sfocato: usa la stessa immagine, quando e' stata caricata */
+    slides.forEach(function (slide) {
+      var img = slide.querySelector("img");
+      var frame = slide.querySelector(".car-frame");
+      function setBg() {
+        var url = new URL(img.getAttribute("src"), document.baseURI).href;
+        frame.style.setProperty("--bg", 'url("' + url + '")');
+      }
+      if (img.complete && img.naturalWidth) setBg();
+      else img.addEventListener("load", setBg, { once: true });
+    });
+
+    function canPlay() {
+      return !userStopped && !motion.matches && !(hovering && !hoverIgnored) && !focused &&
+             visible && !document.hidden;
+    }
+
+    function schedule() {
+      clearTimeout(timer);
+      timer = null;
+      if (canPlay()) timer = setTimeout(function () { go(index + 1); }, INTERVAL);
+    }
+
+    function render() {
+      dots.forEach(function (d, i) {
+        if (i === index) d.setAttribute("aria-current", "true");
+        else d.removeAttribute("aria-current");
+      });
+      var autoplaying = !userStopped && !motion.matches;
+      toggle.hidden = motion.matches;
+      toggle.dataset.state = autoplaying ? "playing" : "paused";
+      toggle.setAttribute("aria-label", autoplaying
+        ? "Metti in pausa lo scorrimento automatico"
+        : "Avvia lo scorrimento automatico");
+      // durante l'autoplay non annunciare ogni cambio di foto
+      track.setAttribute("aria-live", autoplaying ? "off" : "polite");
+    }
+
+    function go(i, smooth) {
+      var target = (i + n) % n;
+      var wraps = (index === n - 1 && target === 0) || (index === 0 && target === n - 1);
+      var behavior = (smooth === false || wraps || motion.matches) ? "instant" : "smooth";
+      busy = true;
+      clearTimeout(busyTimer);
+      busyTimer = setTimeout(function () { busy = false; }, 900);   // rete di sicurezza per scrollend
+      track.scrollTo({ left: target * track.clientWidth, behavior: behavior });
+      index = target;
+      render();
+      schedule();
+    }
+
+    /* l'indice segue lo scroll (swipe, trackpad, tastiera) */
+    var ticking = false;
+    track.addEventListener("scroll", function () {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function () {
+        ticking = false;
+        var i = Math.round(track.scrollLeft / track.clientWidth);
+        if (!busy && i !== index && i >= 0 && i < n) { index = i; render(); }
+        schedule();
+      });
+    }, { passive: true });
+
+    track.addEventListener("scrollend", function () {
+      busy = false;
+      clearTimeout(busyTimer);
+      var i = Math.round(track.scrollLeft / track.clientWidth);
+      if (i >= 0 && i < n && i !== index) { index = i; render(); }
+      schedule();
+    });
+
+    window.addEventListener("resize", function () {
+      track.scrollTo({ left: index * track.clientWidth, behavior: "instant" });
+    });
+
+    /* primo gesto dell'utente = stop definitivo (finche' non preme "avvia") */
+    function stopForUser() {
+      if (userStopped) return;
+      userStopped = true;
+      render();
+      schedule();
+    }
+    track.addEventListener("pointerdown", function () { busy = false; stopForUser(); });
+    track.addEventListener("wheel", function (e) {
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) stopForUser();
+    }, { passive: true });
+    root.addEventListener("keydown", function (e) {
+      if (["ArrowLeft", "ArrowRight", "Home", "End"].indexOf(e.key) !== -1) stopForUser();
+    });
+
+    prev.addEventListener("click", function () { stopForUser(); go(index - 1); });
+    next.addEventListener("click", function () { stopForUser(); go(index + 1); });
+    dots.forEach(function (d, i) {
+      d.addEventListener("click", function () { stopForUser(); go(i); });
+    });
+    toggle.addEventListener("click", function () {
+      userStopped = !userStopped;
+      hoverIgnored = !userStopped;   // appena premuto "avvia", il mouse sopra non deve bloccarlo
+      render();
+      schedule();
+    });
+
+    /* tastiera sulla pista (e' focalizzabile: tabindex="0") */
+    track.addEventListener("keydown", function (e) {
+      if (e.key === "Home") { e.preventDefault(); go(0); }
+      if (e.key === "End")  { e.preventDefault(); go(n - 1); }
+      // le frecce scorrono gia' in modo nativo sul contenitore
+    });
+
+    /* pausa temporanea: mouse sopra, focus dentro, scheda nascosta, fuori schermo */
+    root.addEventListener("mouseenter", function () { hovering = true; schedule(); });
+    root.addEventListener("mouseleave", function () { hovering = false; hoverIgnored = false; schedule(); });
+    // la pausa per focus vale solo per il focus da tastiera, non per il clic sui pulsanti
+    root.addEventListener("focusin",  function (e) {
+      focused = e.target.matches(":focus-visible");
+      schedule();
+    });
+    root.addEventListener("focusout", function () { focused = false; schedule(); });
+    document.addEventListener("visibilitychange", schedule);
+    motion.addEventListener("change", function () { render(); schedule(); });
+
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (entries) {
+        visible = entries[0].isIntersecting;
+        schedule();
+      }, { threshold: 0.4 }).observe(root);
+    } else {
+      visible = true;
+    }
+
+    root.classList.add("is-ready");
+    render();
+    schedule();
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll(".carosello"), init);
+})();
+</script>
