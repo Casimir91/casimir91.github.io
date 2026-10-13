@@ -1,0 +1,18 @@
+---
+title: "Midterm: Elettrostatica e teorema di Gauss"
+subtitle: "Testo (versioni x, y, z) e soluzioni"
+date: 2026-10-12
+categories: [Fisica]
+---
+
+## Test
+
+[Midterm, versione x (PDF) ↗](quarta_2026-10-12_midterm_x.pdf){target="_blank" .btn .btn-outline-primary}
+[Midterm, versione y (PDF) ↗](quarta_2026-10-12_midterm_y.pdf){target="_blank" .btn .btn-outline-primary}
+[Midterm, versione z (PDF) ↗](quarta_2026-10-12_midterm_z.pdf){target="_blank" .btn .btn-outline-primary}
+
+[Formulario (PDF) ↗](quarta_2026-10-12_midterm_formulario.pdf){target="_blank" .btn .btn-outline-primary}
+
+## Soluzioni
+
+[Soluzioni e griglia di correzione (PDF) ↗](quarta_2026-10-12_midterm_soluzioni.pdf){target="_blank" .btn .btn-outline-primary}
