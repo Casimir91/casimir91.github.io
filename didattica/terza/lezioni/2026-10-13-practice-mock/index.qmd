@@ -1,0 +1,16 @@
+---
+title: "Practice e Mock Test: Thermal Physics"
+subtitle: "Calore, potenza e fisica termica: test e soluzioni"
+date: 2026-10-13
+categories: [Fisica]
+---
+
+## Practice test
+
+[Practice test (PDF) ↗](terza_2026-10-13_practice-test.pdf){target="_blank" .btn .btn-outline-primary}
+[Soluzioni practice (PDF) ↗](terza_2026-10-13_practice-soluzioni.pdf){target="_blank" .btn .btn-outline-primary}
+
+## Mock test
+
+[Mock test (PDF) ↗](terza_2026-10-13_mock-test.pdf){target="_blank" .btn .btn-outline-primary}
+[Soluzioni mock (PDF) ↗](terza_2026-10-13_mock-soluzioni.pdf){target="_blank" .btn .btn-outline-primary}
