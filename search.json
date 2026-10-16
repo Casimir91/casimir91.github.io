@@ -130,14 +130,14 @@
     "href": "didattica/terza/lezioni/2026-10-06-particle-model/index.html",
     "title": "Particle Model and Kinetic Theory",
     "section": "",
-    "text": "Apri le slide a schermo intero ↗"
+    "text": "Evaporazione ed ebollizione non sono la stessa cosa. Per capire la differenza si entra nella materia, da una goccia d’inchiostro che si diffonde fino alla distribuzione delle velocità delle particelle.\nPercorso: moto browniano · perché un gas preme sulle pareti · il kelvin · la «coda veloce» delle particelle."
   },
   {
     "objectID": "didattica/terza/lezioni/2026-10-06-particle-model/index.html#slide-della-lezione",
     "href": "didattica/terza/lezioni/2026-10-06-particle-model/index.html#slide-della-lezione",
     "title": "Particle Model and Kinetic Theory",
-    "section": "",
-    "text": "Apri le slide a schermo intero ↗"
+    "section": "Slide della lezione",
+    "text": "Slide della lezione\n\n\n\n\nApri le slide a schermo intero ↗"
   },
   {
     "objectID": "didattica/terza/lezioni/2026-10-06-particle-model/index.html#materiali-e-indicazioni-per-lo-studio",
@@ -151,14 +151,14 @@
     "href": "didattica/terza/lezioni/2026-10-09-specific-heat/index.html",
     "title": "How much energy does it take?",
     "section": "",
-    "text": "Apri le slide a schermo intero ↗"
+    "text": "Scaldare non vuol dire per forza avvicinare una fiamma. Dalla siringa al mulinello di Joule si arriva a una grandezza che dice quanta energia serve per scaldare ogni materiale, e spiega perché a ottobre il mare è ancora tiepido.\nPercorso: lavoro ed energia termica · il mulinello di Joule · capacità termica e calore specifico."
   },
   {
     "objectID": "didattica/terza/lezioni/2026-10-09-specific-heat/index.html#slide-della-lezione",
     "href": "didattica/terza/lezioni/2026-10-09-specific-heat/index.html#slide-della-lezione",
     "title": "How much energy does it take?",
-    "section": "",
-    "text": "Apri le slide a schermo intero ↗"
+    "section": "Slide della lezione",
+    "text": "Slide della lezione\n\n\n\n\nApri le slide a schermo intero ↗"
   },
   {
     "objectID": "didattica/terza/lezioni/2026-10-09-specific-heat/index.html#materiali-e-indicazioni-per-lo-studio",
@@ -172,14 +172,14 @@
     "href": "didattica/terza/lezioni/2026-09-08-thermal-temperature/index.html",
     "title": "What is temperature?",
     "section": "",
-    "text": "Apri le slide a schermo intero ↗"
+    "text": "Che cos’è la temperatura? «Ciò che misura un termometro». E il termometro? «Lo strumento che misura la temperatura». Un giro in tondo: la definizione che sembrava ovvia non definisce niente, e per uscirne serve qualcosa che venga prima del termometro.\nPercorso: dal tatto al principio zero della termodinamica."
   },
   {
     "objectID": "didattica/terza/lezioni/2026-09-08-thermal-temperature/index.html#slide-della-lezione",
     "href": "didattica/terza/lezioni/2026-09-08-thermal-temperature/index.html#slide-della-lezione",
     "title": "What is temperature?",
-    "section": "",
-    "text": "Apri le slide a schermo intero ↗"
+    "section": "Slide della lezione",
+    "text": "Slide della lezione\n\n\n\n\nApri le slide a schermo intero ↗"
   },
   {
     "objectID": "didattica/terza/lezioni/2026-09-08-thermal-temperature/index.html#materiali-e-indicazioni-per-lo-studio",
@@ -193,7 +193,7 @@
     "href": "didattica/terza/index.html",
     "title": "Classe Terza",
     "section": "",
-    "text": "Date\n\n\n\nTitle\n\n\n\nArgomento\n\n\n\nTipo\n\n\n\n\n\n\n\n\nSep 8, 2026\n\n\nWhat is temperature?\n\n\nFeedback on the diagnostic test — opening the thermodynamics unit\n\n\n \n\n\n\n\n\n\nSep 11, 2026\n\n\nScales, Absolute Zero, and What a Thermometer Really Does\n\n\nPicking up from last time\n\n\n \n\n\n\n\n\n\nSep 18, 2026\n\n\nLinear Expansion\n\n\nFrom a real bridge to a law: why bridges need a joint\n\n\n \n\n\n\n\n\n\nSep 22, 2026\n\n\nBuild and calibrate a thermometer\n\n\nArduino, a thermistor and four water baths\n\n\nLab1\n\n\n\n\n\n\nSep 29, 2026\n\n\nMarking Group X’s thermometer report\n\n\nAlternative to Practical skills, from your own Lab 1 data\n\n\n \n\n\n\n\n\n\nOct 2, 2026\n\n\nMock Midterm Thermal Physics\n\n\nTest e soluzioni, versioni A, B e C\n\n\n \n\n\n\n\n\n\nOct 6, 2026\n\n\nParticle Model and Kinetic Theory\n\n\nFrom macro to micro\n\n\n \n\n\n\n\n\n\nOct 9, 2026\n\n\nHow much energy does it take?\n\n\nWork, thermal energy and specific heat capacity\n\n\n \n\n\n\n\n\n\nOct 12, 2026\n\n\nHow does thermal energy travel?\n\n\nConduction, convection and radiation\n\n\n \n\n\n\n\n\n\nOct 13, 2026\n\n\nPractice e Mock Test: Thermal Physics\n\n\nCalore, potenza e fisica termica: test e soluzioni\n\n\n \n\n\n\n\n\n\nNo matching items"
+    "text": "Date\n\n\n\nTitle\n\n\n\nDomanda\n\n\n\nTipo\n\n\n\n\n\n\n\n\nSep 8, 2026\n\n\nWhat is temperature?\n\n\nSe un cubo di metallo e uno di legno stanno nella stessa stanza da ore, perché al tatto uno sembra più freddo?\n\n\n \n\n\n\n\n\n\nSep 11, 2026\n\n\nScales, Absolute Zero, and What a Thermometer Really Does\n\n\nPicking up from last time\n\n\n \n\n\n\n\n\n\nSep 18, 2026\n\n\nLinear Expansion\n\n\nIl Golden Gate Bridge ha una campata di 1275 m: tra la notte più fredda e il giorno più caldo, di quanto cambia la sua lunghezza?\n\n\n \n\n\n\n\n\n\nSep 22, 2026\n\n\nBuild and calibrate a thermometer\n\n\nUn sensore Arduino restituisce il numero 524: che temperatura è?\n\n\nLab1\n\n\n\n\n\n\nSep 29, 2026\n\n\nMarking Group X’s thermometer report\n\n\nAlternative to Practical skills, from your own Lab 1 data\n\n\n \n\n\n\n\n\n\nOct 2, 2026\n\n\nMock Midterm Thermal Physics\n\n\nTest e soluzioni, versioni A, B e C\n\n\n \n\n\n\n\n\n\nOct 6, 2026\n\n\nParticle Model and Kinetic Theory\n\n\nL’acqua bolle a 100 °C: perché allora una pozzanghera a 20 °C si asciuga?\n\n\n \n\n\n\n\n\n\nOct 9, 2026\n\n\nHow much energy does it take?\n\n\nSe comprimo di scatto l’aria di una siringa isolata, senza nessuna fiamma, cosa succede alla sua temperatura?\n\n\n \n\n\n\n\n\n\nOct 12, 2026\n\n\nHow does thermal energy travel?\n\n\nIl mare è a 20 °C e l’aria pure: perché in acqua senti freddo e in aria no?\n\n\n \n\n\n\n\n\n\nOct 13, 2026\n\n\nPractice e Mock Test: Thermal Physics\n\n\nCalore, potenza e fisica termica: test e soluzioni\n\n\n \n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "didattica/archivio/index.html",
@@ -207,14 +207,14 @@
     "href": "didattica/quarta/lezioni/2026-09-28-teorema-gauss/index.html",
     "title": "Il Teorema di Gauss",
     "section": "",
-    "text": "Apri le slide a schermo intero ↗"
+    "text": "Dal 1823 ci si chiede perché il cielo di notte sia buio. Per rispondere si rifà un conto semplice: la luce di una stella si spalma su sfere sempre più grandi. Lo stesso conto, applicato a una carica, dice che cosa c’è dentro una scatola chiusa senza aprirla.\nPercorso: il paradosso di Olbers · il teorema di Gauss · tre trucchi per far tornare i conti."
   },
   {
     "objectID": "didattica/quarta/lezioni/2026-09-28-teorema-gauss/index.html#slide-della-lezione",
     "href": "didattica/quarta/lezioni/2026-09-28-teorema-gauss/index.html#slide-della-lezione",
     "title": "Il Teorema di Gauss",
-    "section": "",
-    "text": "Apri le slide a schermo intero ↗"
+    "section": "Slide della lezione",
+    "text": "Slide della lezione\n\n\n\n\nApri le slide a schermo intero ↗"
   },
   {
     "objectID": "didattica/quarta/lezioni/2026-09-28-teorema-gauss/index.html#materiali-e-indicazioni-per-lo-studio",
@@ -270,14 +270,14 @@
     "href": "didattica/quarta/lezioni/2026-09-04-campoelettrico-intro/index.html",
     "title": "Che cos’è un campo?",
     "section": "",
-    "text": "Apri le slide a schermo intero ↗"
+    "text": "«Azione a distanza» non è una spiegazione. Per uscirne bisogna cambiare prospettiva: non più la forza fra due corpi, ma qualcosa che esiste anche senza il secondo.\nPercorso: il campo come ciò che sente una carica di prova · il vento attorno a un ostacolo, un campo che conosci già · le quattro forze fondamentali, in un ordine che sorprende · l’elettroscopio."
   },
   {
     "objectID": "didattica/quarta/lezioni/2026-09-04-campoelettrico-intro/index.html#slide-della-lezione",
     "href": "didattica/quarta/lezioni/2026-09-04-campoelettrico-intro/index.html#slide-della-lezione",
     "title": "Che cos’è un campo?",
-    "section": "",
-    "text": "Apri le slide a schermo intero ↗"
+    "section": "Slide della lezione",
+    "text": "Slide della lezione\n\n\n\n\nApri le slide a schermo intero ↗"
   },
   {
     "objectID": "didattica/quarta/lezioni/2026-09-04-campoelettrico-intro/index.html#materiali-e-indicazioni-per-lo-studio",
@@ -326,14 +326,14 @@
     "href": "didattica/seconda/lezioni/2026-10-12-power-efficiency/index.html",
     "title": "Power and efficiency",
     "section": "",
-    "text": "Apri le slide a schermo intero ↗"
+    "text": "«Forte», «energico», «potente» sono parole di tutti i giorni che in fisica non sono sinonimi. Dal sollevatore al centro dati, lo stesso lavoro può costare potenze molto diverse.\nPercorso: lavoro, potenza e rendimento · fonti di energia rinnovabili e non, a confronto."
   },
   {
     "objectID": "didattica/seconda/lezioni/2026-10-12-power-efficiency/index.html#slide-della-lezione",
     "href": "didattica/seconda/lezioni/2026-10-12-power-efficiency/index.html#slide-della-lezione",
     "title": "Power and efficiency",
-    "section": "",
-    "text": "Apri le slide a schermo intero ↗"
+    "section": "Slide della lezione",
+    "text": "Slide della lezione\n\n\n\n\nApri le slide a schermo intero ↗"
   },
   {
     "objectID": "didattica/seconda/fisica/index.html",
@@ -347,14 +347,14 @@
     "href": "didattica/prima/lezioni/2026-09-23-measure-errors/index.html",
     "title": "Random & Systematic Error",
     "section": "",
-    "text": "Apri le slide a schermo intero ↗"
+    "text": "Ventotto persone cronometrano lo stesso identico evento e ottengono ventotto valori diversi. Da dove viene la dispersione? E ripetere la misura basta a eliminare l’errore?\nPercorso: sensibilità dello strumento · errore casuale e sistematico, con il bersaglio delle freccette · la media e l’anomalia da giustificare."
   },
   {
     "objectID": "didattica/prima/lezioni/2026-09-23-measure-errors/index.html#slide-della-lezione",
     "href": "didattica/prima/lezioni/2026-09-23-measure-errors/index.html#slide-della-lezione",
     "title": "Random & Systematic Error",
-    "section": "",
-    "text": "Apri le slide a schermo intero ↗"
+    "section": "Slide della lezione",
+    "text": "Slide della lezione\n\n\n\n\nApri le slide a schermo intero ↗"
   },
   {
     "objectID": "didattica/prima/lezioni/2026-09-23-measure-errors/index.html#materiali-e-indicazioni-per-lo-studio",
@@ -368,14 +368,14 @@
     "href": "didattica/prima/lezioni/2026-10-07-measure-density-lab2/index.html",
     "title": "Measuring Density by Water Displacement",
     "section": "",
-    "text": "Apri le slide a schermo intero ↗"
+    "text": "Ogni misura ha la sua incertezza, e la densità, calcolata da due misure, la eredita. Fin dove un numero con il suo errore ti dice di che cosa è fatto un oggetto?\nPercorso: come l’errore passa da due misure a una densità · incertezza relativa · il confronto con la tabella dei materiali."
   },
   {
     "objectID": "didattica/prima/lezioni/2026-10-07-measure-density-lab2/index.html#slide-della-lezione",
     "href": "didattica/prima/lezioni/2026-10-07-measure-density-lab2/index.html#slide-della-lezione",
     "title": "Measuring Density by Water Displacement",
-    "section": "",
-    "text": "Apri le slide a schermo intero ↗"
+    "section": "Slide della lezione",
+    "text": "Slide della lezione\n\n\n\n\nApri le slide a schermo intero ↗"
   },
   {
     "objectID": "didattica/prima/lezioni/2026-10-07-measure-density-lab2/index.html#materiali-e-indicazioni-per-lo-studio",
@@ -879,21 +879,21 @@
     "href": "didattica/prima/index.html",
     "title": "Classe Prima",
     "section": "",
-    "text": "Date\n\n\n\nTitle\n\n\n\nArgomento\n\n\n\nTipo\n\n\n\n\n\n\n\n\nSep 9, 2026\n\n\nOur agreement for the year\n\n\nExpectations, assessment, and a first taste of measuring\n\n\n \n\n\n\n\n\n\nSep 16, 2026\n\n\nMeasuring like a scientist\n\n\nSI units, standard form, significant figures — and a case for Sherlock Holmes\n\n\n \n\n\n\n\n\n\nSep 23, 2026\n\n\nRandom & Systematic Error\n\n\nMaking sense of scatter in repeated measurements\n\n\n \n\n\n\n\n\n\nSep 30, 2026\n\n\nHow big is it? Volume and density\n\n\nLab: measuring volume by water displacement and finding the density of twelve cubes\n\n\nLab1\n\n\n\n\n\n\nOct 7, 2026\n\n\nMeasuring Density by Water Displacement\n\n\nalternative to practical skills (Paper 6 IGCSE)\n\n\nLab2\n\n\n\n\n\n\nNo matching items"
+    "text": "Date\n\n\n\nTitle\n\n\n\nDomanda\n\n\n\nTipo\n\n\n\n\n\n\n\n\nSep 9, 2026\n\n\nOur agreement for the year\n\n\nExpectations, assessment, and a first taste of measuring\n\n\n \n\n\n\n\n\n\nSep 16, 2026\n\n\nMeasuring like a scientist\n\n\nIl cronometro del telefono segna 11,3748 s sui 100 metri: perché Sherlock Holmes non ci crede?\n\n\n \n\n\n\n\n\n\nSep 23, 2026\n\n\nRandom & Systematic Error\n\n\nIl cronometro segna i centesimi di secondo: la tua misura è precisa al centesimo?\n\n\n \n\n\n\n\n\n\nSep 30, 2026\n\n\nHow big is it? Volume and density\n\n\nCome si misura il volume di un sasso, che non ha spigoli né formule?\n\n\nLab1\n\n\n\n\n\n\nOct 7, 2026\n\n\nMeasuring Density by Water Displacement\n\n\nMisuri la densità di un oggetto di metallo: puoi dire con certezza di che materiale è?\n\n\nLab2\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "didattica/prima/lezioni/2026-09-16-measure-standardform/index.html",
     "href": "didattica/prima/lezioni/2026-09-16-measure-standardform/index.html",
     "title": "Measuring like a scientist",
     "section": "",
-    "text": "Apri le slide a schermo intero ↗"
+    "text": "Più decimali non significano più precisione. Per sapere quante cifre di un risultato sono vere bisogna partire da dove nasce l’incertezza.\nPercorso: unità SI e prefissi · notazione scientifica · cifre significative · il tempo di reazione umano."
   },
   {
     "objectID": "didattica/prima/lezioni/2026-09-16-measure-standardform/index.html#slide-della-lezione",
     "href": "didattica/prima/lezioni/2026-09-16-measure-standardform/index.html#slide-della-lezione",
     "title": "Measuring like a scientist",
-    "section": "",
-    "text": "Apri le slide a schermo intero ↗"
+    "section": "Slide della lezione",
+    "text": "Slide della lezione\n\n\n\n\nApri le slide a schermo intero ↗"
   },
   {
     "objectID": "didattica/prima/lezioni/2026-09-16-measure-standardform/index.html#materiali-e-indicazioni-per-lo-studio",
@@ -907,14 +907,14 @@
     "href": "didattica/prima/lezioni/2026-09-30-measure-density-lab1/index.html",
     "title": "How big is it? Volume and density",
     "section": "",
-    "text": "Apri le slide a schermo intero ↗"
+    "text": "Un cubo si misura con il righello, un sasso no. Con un metodo e dodici cubetti da identificare si arriva a una domanda semplice: affondano o galleggiano?\nPercorso: volume per spostamento d’acqua · cilindro graduato · densità · l’incertezza scritta accanto a ogni valore."
   },
   {
     "objectID": "didattica/prima/lezioni/2026-09-30-measure-density-lab1/index.html#slide-della-lezione",
     "href": "didattica/prima/lezioni/2026-09-30-measure-density-lab1/index.html#slide-della-lezione",
     "title": "How big is it? Volume and density",
-    "section": "",
-    "text": "Apri le slide a schermo intero ↗"
+    "section": "Slide della lezione",
+    "text": "Slide della lezione\n\n\n\n\nApri le slide a schermo intero ↗"
   },
   {
     "objectID": "didattica/prima/lezioni/2026-09-30-measure-density-lab1/index.html#materiali-e-indicazioni-per-lo-studio",
@@ -935,7 +935,7 @@
     "href": "didattica/seconda/index.html",
     "title": "Classe Seconda",
     "section": "",
-    "text": "Date\n\n\n\nTitle\n\n\n\nArgomento\n\n\n\n\n\n\n\n\nSep 11, 2026\n\n\nSpeed: v = s/t\n\n\nAverage speed, unit conversions, and reading distance–time graphs\n\n\n\n\n\n\nSep 21, 2026\n\n\nEnergy: stores, transfers and work\n\n\nFrom a braking car to a law of nature\n\n\n\n\n\n\nOct 2, 2026\n\n\nEnergy and work · Exercise sheet\n\n\nKinetic energy, gravitational potential energy, work and stopping distances\n\n\n\n\n\n\nOct 5, 2026\n\n\nEnergy and work · Mock midterm\n\n\nPractice test on energy stores, kinetic and potential energy, work and stopping distances\n\n\n\n\n\n\nOct 6, 2026\n\n\nMidterm Test: Testo e soluzioni\n\n\nSpeed, distance-time graphs, energy and work: testi delle versioni A, B, C e soluzioni\n\n\n\n\n\n\nOct 12, 2026\n\n\nPower and efficiency\n\n\nHow fast energy is transferred, and how much of it is useful\n\n\n\n\n\n\nNo matching items"
+    "text": "Date\n\n\n\nTitle\n\n\n\nDomanda\n\n\n\n\n\n\n\n\nSep 11, 2026\n\n\nSpeed: v = s/t\n\n\nAverage speed, unit conversions, and reading distance–time graphs\n\n\n\n\n\n\nSep 21, 2026\n\n\nEnergy: stores, transfers and work\n\n\nA 50 km/h un’auto frena in circa 14 m: e a 100 km/h?\n\n\n\n\n\n\nOct 2, 2026\n\n\nEnergy and work · Exercise sheet\n\n\nKinetic energy, gravitational potential energy, work and stopping distances\n\n\n\n\n\n\nOct 5, 2026\n\n\nEnergy and work · Mock midterm\n\n\nPractice test on energy stores, kinetic and potential energy, work and stopping distances\n\n\n\n\n\n\nOct 6, 2026\n\n\nMidterm Test: Testo e soluzioni\n\n\nSpeed, distance-time graphs, energy and work: testi delle versioni A, B, C e soluzioni\n\n\n\n\n\n\nOct 12, 2026\n\n\nPower and efficiency\n\n\nDue sollevatori alzano lo stesso bilanciere alla stessa altezza, uno in 0,6 secondi e l’altro in 3: chi è più potente?\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "didattica/seconda/lezioni/2026-10-06-midterm-test/index.html",
@@ -977,14 +977,14 @@
     "href": "didattica/seconda/lezioni/2026-09-21-energy-work/index.html",
     "title": "Energy: stores, transfers and work",
     "section": "",
-    "text": "Apri le slide a schermo intero ↗"
+    "text": "L’intuizione dice «il doppio». Per sapere se regge serve una grandezza che non si vede.\nPercorso: gli accumuli di energia e i suoi trasferimenti (stores and transfers) · energia cinetica e potenziale · il lavoro."
   },
   {
     "objectID": "didattica/seconda/lezioni/2026-09-21-energy-work/index.html#slide-della-lezione",
     "href": "didattica/seconda/lezioni/2026-09-21-energy-work/index.html#slide-della-lezione",
     "title": "Energy: stores, transfers and work",
-    "section": "",
-    "text": "Apri le slide a schermo intero ↗"
+    "section": "Slide della lezione",
+    "text": "Slide della lezione\n\n\n\n\nApri le slide a schermo intero ↗"
   },
   {
     "objectID": "didattica/seconda/lezioni/2026-09-21-energy-work/index.html#materiali-e-indicazioni-per-lo-studio",
@@ -998,7 +998,7 @@
     "href": "didattica/quarta/index.html",
     "title": "Classe Quarta",
     "section": "",
-    "text": "Date\n\n\n\nTitle\n\n\n\nArgomento\n\n\n\n\n\n\n\n\nSep 4, 2026\n\n\nChe cos’è un campo?\n\n\nDalla forza al campo: un cambio di prospettiva\n\n\n\n\n\n\nSep 7, 2026\n\n\nCampo, elettrizzazione, legge di Coulomb\n\n\nIl campo elettrico · lezione 2\n\n\n\n\n\n\nSep 21, 2026\n\n\nLinee di forza e flusso del campo elettrico\n\n\nDal disegno al numero: contare le linee\n\n\n\n\n\n\nSep 28, 2026\n\n\nIl Teorema di Gauss\n\n\nDal flusso alla sorgente\n\n\n\n\n\n\nSep 30, 2026\n\n\nDimostrazione e Applicazione del teorema di Gauss\n\n\nDimostrazione: dalla sfera a una superficie qualsiasi\n\n\n\n\n\n\nOct 5, 2026\n\n\nMock test: Elettrostatica e teorema di Gauss\n\n\nTest e soluzioni\n\n\n\n\n\n\nOct 7, 2026\n\n\nEsercizi di ripasso sul teorema di Gauss, sul campo e sulla carica\n\n\nRipasso in preparazione al mock midterm\n\n\n\n\n\n\nOct 12, 2026\n\n\nMidterm: Elettrostatica e teorema di Gauss\n\n\nTesto (versioni x, y, z) e soluzioni\n\n\n\n\n\n\nNo matching items"
+    "text": "Date\n\n\n\nTitle\n\n\n\nDomanda\n\n\n\n\n\n\n\n\nSep 4, 2026\n\n\nChe cos’è un campo?\n\n\nLa Terra attira la Luna a 380 000 km: attraverso che cosa?\n\n\n\n\n\n\nSep 7, 2026\n\n\nCampo, elettrizzazione, legge di Coulomb\n\n\nIl campo elettrico · lezione 2\n\n\n\n\n\n\nSep 21, 2026\n\n\nLinee di forza e flusso del campo elettrico\n\n\nA gennaio la Terra è più vicina al Sole, eppure fa freddo: allora che cosa decide quanta energia riceviamo?\n\n\n\n\n\n\nSep 28, 2026\n\n\nIl Teorema di Gauss\n\n\nChe cosa hanno in comune il buio della notte e una carica elettrica?\n\n\n\n\n\n\nSep 30, 2026\n\n\nDimostrazione e Applicazione del teorema di Gauss\n\n\nUna carica chiusa in una sfera, in una scatola o in un sacchetto accartocciato: il flusso che ne esce cambia?\n\n\n\n\n\n\nOct 5, 2026\n\n\nMock test: Elettrostatica e teorema di Gauss\n\n\nTest e soluzioni\n\n\n\n\n\n\nOct 7, 2026\n\n\nEsercizi di ripasso sul teorema di Gauss, sul campo e sulla carica\n\n\nRipasso in preparazione al mock midterm\n\n\n\n\n\n\nOct 12, 2026\n\n\nMidterm: Elettrostatica e teorema di Gauss\n\n\nTesto (versioni x, y, z) e soluzioni\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "didattica/quarta/lezioni/2026-10-12-midterm/index.html",
@@ -1040,14 +1040,14 @@
     "href": "didattica/quarta/lezioni/2026-09-30-teorema-gauss-dimostrazione/index.html",
     "title": "Dimostrazione e Applicazione del teorema di Gauss",
     "section": "",
-    "text": "Apri le slide a schermo intero ↗"
+    "text": "Il teorema vale per qualunque forma e si dimostra in tre mosse, partendo dalla sfera perfetta. Poi serve davvero: filo, piano e sfera carica si calcolano senza integrali, guardando la simmetria.\nPercorso: dalla sfera a una forma qualunque · la superficie gaussiana giusta · il campo di filo, piano e sfera carica."
   },
   {
     "objectID": "didattica/quarta/lezioni/2026-09-30-teorema-gauss-dimostrazione/index.html#slide-della-lezione",
     "href": "didattica/quarta/lezioni/2026-09-30-teorema-gauss-dimostrazione/index.html#slide-della-lezione",
     "title": "Dimostrazione e Applicazione del teorema di Gauss",
-    "section": "",
-    "text": "Apri le slide a schermo intero ↗"
+    "section": "Slide della lezione",
+    "text": "Slide della lezione\n\n\n\n\nApri le slide a schermo intero ↗"
   },
   {
     "objectID": "didattica/quarta/lezioni/2026-09-30-teorema-gauss-dimostrazione/index.html#materiali-e-indicazioni-per-lo-studio",
@@ -1061,14 +1061,14 @@
     "href": "didattica/quarta/lezioni/2026-09-21-campoelettrico-flusso/index.html",
     "title": "Linee di forza e flusso del campo elettrico",
     "section": "",
-    "text": "Apri le slide a schermo intero ↗"
+    "text": "Contare le linee di un campo e contare i raggi del Sole che cadono su un metro quadro è lo stesso gesto. Si parte dalla luce e si arriva al flusso.\nPercorso: linee di forza, e perché non sono traiettorie · il flusso e l’inclinazione · perché il campo di una carica cala come 1/r²."
   },
   {
     "objectID": "didattica/quarta/lezioni/2026-09-21-campoelettrico-flusso/index.html#slide-della-lezione",
     "href": "didattica/quarta/lezioni/2026-09-21-campoelettrico-flusso/index.html#slide-della-lezione",
     "title": "Linee di forza e flusso del campo elettrico",
-    "section": "",
-    "text": "Apri le slide a schermo intero ↗"
+    "section": "Slide della lezione",
+    "text": "Slide della lezione\n\n\n\n\nApri le slide a schermo intero ↗"
   },
   {
     "objectID": "didattica/quarta/lezioni/2026-09-21-campoelettrico-flusso/index.html#materiali-e-indicazioni-per-lo-studio",
@@ -1110,14 +1110,14 @@
     "href": "didattica/terza/lezioni/2026-09-18-thermal-expansion/index.html",
     "title": "Linear Expansion",
     "section": "",
-    "text": "Apri le slide a schermo intero ↗"
+    "text": "Pochi millimetri, pochi centimetri o quasi un metro? Prima si fa una previsione. Da un ponte vero si arriva a una legge, e a capire perché i ponti hanno i giunti.\nPercorso: la dilatazione lineare e il coefficiente di ogni materiale · dal buco che si allarga alla vaschetta di espansione."
   },
   {
     "objectID": "didattica/terza/lezioni/2026-09-18-thermal-expansion/index.html#slide-della-lezione",
     "href": "didattica/terza/lezioni/2026-09-18-thermal-expansion/index.html#slide-della-lezione",
     "title": "Linear Expansion",
-    "section": "",
-    "text": "Apri le slide a schermo intero ↗"
+    "section": "Slide della lezione",
+    "text": "Slide della lezione\n\n\n\n\nApri le slide a schermo intero ↗"
   },
   {
     "objectID": "didattica/terza/lezioni/2026-09-18-thermal-expansion/index.html#materiali-e-indicazioni-per-lo-studio",
@@ -1131,14 +1131,14 @@
     "href": "didattica/terza/lezioni/2026-09-22-thermal-lab1/index.html",
     "title": "Build and calibrate a thermometer",
     "section": "",
-    "text": "Apri le slide a schermo intero ↗"
+    "text": "Il numero va da 0 a 1023 e non ha unità. Con un termistore e quattro bagni d’acqua bisogna trasformarlo in un termometro che sbagli meno di 1 °C, e dire onestamente quanto ci si può fidare.\nPercorso: Arduino e termistore · la taratura · il grafico su carta millimetrata."
   },
   {
     "objectID": "didattica/terza/lezioni/2026-09-22-thermal-lab1/index.html#slide-della-lezione",
     "href": "didattica/terza/lezioni/2026-09-22-thermal-lab1/index.html#slide-della-lezione",
     "title": "Build and calibrate a thermometer",
-    "section": "",
-    "text": "Apri le slide a schermo intero ↗"
+    "section": "Slide della lezione",
+    "text": "Slide della lezione\n\n\n\n\nApri le slide a schermo intero ↗"
   },
   {
     "objectID": "didattica/terza/lezioni/2026-09-22-thermal-lab1/index.html#materiali-e-indicazioni-per-lo-studio",
@@ -1152,14 +1152,14 @@
     "href": "didattica/terza/lezioni/2026-10-12-heat-transfer/index.html",
     "title": "How does thermal energy travel?",
     "section": "",
-    "text": "Apri le slide a schermo intero ↗"
+    "text": "Il termometro dà lo stesso valore, eppure la pelle protesta. Per capirlo bisogna seguire l’energia termica nei suoi tre modi di viaggiare.\nPercorso: conduzione, convezione, irraggiamento · le correnti in un serbatoio d’acqua · quale faccia di un cubo di metallo emette di più."
   },
   {
     "objectID": "didattica/terza/lezioni/2026-10-12-heat-transfer/index.html#slide-della-lezione",
     "href": "didattica/terza/lezioni/2026-10-12-heat-transfer/index.html#slide-della-lezione",
     "title": "How does thermal energy travel?",
-    "section": "",
-    "text": "Apri le slide a schermo intero ↗"
+    "section": "Slide della lezione",
+    "text": "Slide della lezione\n\n\n\n\nApri le slide a schermo intero ↗"
   },
   {
     "objectID": "didattica/terza/lezioni/2026-10-12-heat-transfer/index.html#materiali-e-indicazioni-per-lo-studio",
