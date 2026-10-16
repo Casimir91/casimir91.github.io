@@ -1,9 +1,15 @@
 ---
 title: "Che cos'è un campo?"
-subtitle: "Dalla forza al campo: un cambio di prospettiva"
+subtitle: "La Terra attira la Luna a 380 000 km: attraverso che cosa?"
 date: 2026-09-04
 categories: [Fisica]
 ---
+
+::: {.callout-note appearance="simple" icon=false}
+«Azione a distanza» non è una spiegazione. Per uscirne bisogna cambiare prospettiva: non più la forza fra due corpi, ma qualcosa che esiste anche senza il secondo.
+
+**Percorso:** il campo come ciò che sente una carica di prova · il vento attorno a un ostacolo, un campo che conosci già · le quattro forze fondamentali, in un ordine che sorprende · l'elettroscopio.
+:::
 
 ## Slide della lezione
 

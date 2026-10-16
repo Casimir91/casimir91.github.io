@@ -1,10 +1,16 @@
 ---
 title: "How big is it? Volume and density"
-subtitle: "Lab: measuring volume by water displacement and finding the density of twelve cubes"
+subtitle: "Come si misura il volume di un sasso, che non ha spigoli né formule?"
 date: 2026-09-30
 categories: [Fisica]
 tipo: "Lab1"
 ---
+
+::: {.callout-note appearance="simple" icon=false}
+Un cubo si misura con il righello, un sasso no. Con un metodo e dodici cubetti da identificare si arriva a una domanda semplice: affondano o galleggiano?
+
+**Percorso:** volume per spostamento d'acqua · cilindro graduato · densità · l'incertezza scritta accanto a ogni valore.
+:::
 
 ## Slide della lezione
 

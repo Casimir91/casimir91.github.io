@@ -1,9 +1,15 @@
 ---
 title: "Il Teorema di Gauss"
-subtitle: "Dal flusso alla sorgente"
+subtitle: "Che cosa hanno in comune il buio della notte e una carica elettrica?"
 date: 2026-09-28
 categories: [Fisica]
 ---
+
+::: {.callout-note appearance="simple" icon=false}
+Dal 1823 ci si chiede perché il cielo di notte sia buio. Per rispondere si rifà un conto semplice: la luce di una stella si spalma su sfere sempre più grandi. Lo stesso conto, applicato a una carica, dice che cosa c'è dentro una scatola chiusa senza aprirla.
+
+**Percorso:** il paradosso di Olbers · il teorema di Gauss · tre trucchi per far tornare i conti.
+:::
 
 ## Slide della lezione
 

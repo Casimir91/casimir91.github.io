@@ -1,10 +1,16 @@
 ---
 title: "Build and calibrate a thermometer"
-subtitle: "Arduino, a thermistor and four water baths"
+subtitle: "Un sensore Arduino restituisce il numero 524: che temperatura è?"
 date: 2026-09-22
 categories: [Fisica]
 tipo: "Lab1"
 ---
+
+::: {.callout-note appearance="simple" icon=false}
+Il numero va da 0 a 1023 e non ha unità. Con un termistore e quattro bagni d'acqua bisogna trasformarlo in un termometro che sbagli meno di 1 °C, e dire onestamente quanto ci si può fidare.
+
+**Percorso:** Arduino e termistore · la taratura · il grafico su carta millimetrata.
+:::
 
 ## Slide della lezione
 

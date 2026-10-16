@@ -1,9 +1,15 @@
 ---
 title: "Particle Model and Kinetic Theory"
-subtitle: "From macro to micro"
+subtitle: "L'acqua bolle a 100 °C: perché allora una pozzanghera a 20 °C si asciuga?"
 date: 2026-10-06
 categories: [Fisica]
 ---
+
+::: {.callout-note appearance="simple" icon=false}
+Evaporazione ed ebollizione non sono la stessa cosa. Per capire la differenza si entra nella materia, da una goccia d'inchiostro che si diffonde fino alla distribuzione delle velocità delle particelle.
+
+**Percorso:** moto browniano · perché un gas preme sulle pareti · il kelvin · la «coda veloce» delle particelle.
+:::
 
 ## Slide della lezione
 

@@ -1,9 +1,15 @@
 ---
 title: "How much energy does it take?"
-subtitle: "Work, thermal energy and specific heat capacity"
+subtitle: "Se comprimo di scatto l'aria di una siringa isolata, senza nessuna fiamma, cosa succede alla sua temperatura?"
 date: 2026-10-09
 categories: [Fisica]
 ---
+
+::: {.callout-note appearance="simple" icon=false}
+Scaldare non vuol dire per forza avvicinare una fiamma. Dalla siringa al mulinello di Joule si arriva a una grandezza che dice quanta energia serve per scaldare ogni materiale, e spiega perché a ottobre il mare è ancora tiepido.
+
+**Percorso:** lavoro ed energia termica · il mulinello di Joule · capacità termica e calore specifico.
+:::
 
 ## Slide della lezione
 

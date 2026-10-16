@@ -1,9 +1,15 @@
 ---
 title: "Linear Expansion"
-subtitle: "From a real bridge to a law: why bridges need a joint"
+subtitle: "Il Golden Gate Bridge ha una campata di 1275 m: tra la notte più fredda e il giorno più caldo, di quanto cambia la sua lunghezza?"
 date: 2026-09-18
 categories: [Fisica]
 ---
+
+::: {.callout-note appearance="simple" icon=false}
+Pochi millimetri, pochi centimetri o quasi un metro? Prima si fa una previsione. Da un ponte vero si arriva a una legge, e a capire perché i ponti hanno i giunti.
+
+**Percorso:** la dilatazione lineare e il coefficiente di ogni materiale · dal buco che si allarga alla vaschetta di espansione.
+:::
 
 ## Slide della lezione
 

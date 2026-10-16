@@ -1,9 +1,15 @@
 ---
 title: "Linee di forza e flusso del campo elettrico"
-subtitle: "Dal disegno al numero: contare le linee"
+subtitle: "A gennaio la Terra è più vicina al Sole, eppure fa freddo: allora che cosa decide quanta energia riceviamo?"
 date: 2026-09-21
 categories: [Fisica]
 ---
+
+::: {.callout-note appearance="simple" icon=false}
+Contare le linee di un campo e contare i raggi del Sole che cadono su un metro quadro è lo stesso gesto. Si parte dalla luce e si arriva al flusso.
+
+**Percorso:** linee di forza, e perché non sono traiettorie · il flusso e l'inclinazione · perché il campo di una carica cala come 1/r².
+:::
 
 ## Slide della lezione
 

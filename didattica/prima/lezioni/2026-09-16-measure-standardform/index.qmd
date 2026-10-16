@@ -1,9 +1,15 @@
 ---
 title: "Measuring like a scientist"
-subtitle: "SI units, standard form, significant figures — and a case for Sherlock Holmes"
+subtitle: "Il cronometro del telefono segna 11,3748 s sui 100 metri: perché Sherlock Holmes non ci crede?"
 date: 2026-09-16
 categories: [Fisica]
 ---
+
+::: {.callout-note appearance="simple" icon=false}
+Più decimali non significano più precisione. Per sapere quante cifre di un risultato sono vere bisogna partire da dove nasce l'incertezza.
+
+**Percorso:** unità SI e prefissi · notazione scientifica · cifre significative · il tempo di reazione umano.
+:::
 
 ## Slide della lezione
 

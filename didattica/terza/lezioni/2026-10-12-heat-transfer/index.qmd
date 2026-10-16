@@ -1,9 +1,15 @@
 ---
 title: "How does thermal energy travel?"
-subtitle: "Conduction, convection and radiation"
+subtitle: "Il mare è a 20 °C e l'aria pure: perché in acqua senti freddo e in aria no?"
 date: 2026-10-12
 categories: [Fisica]
 ---
+
+::: {.callout-note appearance="simple" icon=false}
+Il termometro dà lo stesso valore, eppure la pelle protesta. Per capirlo bisogna seguire l'energia termica nei suoi tre modi di viaggiare.
+
+**Percorso:** conduzione, convezione, irraggiamento · le correnti in un serbatoio d'acqua · quale faccia di un cubo di metallo emette di più.
+:::
 
 ## Slide della lezione
 

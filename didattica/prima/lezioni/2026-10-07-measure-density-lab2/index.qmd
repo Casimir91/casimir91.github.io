@@ -1,10 +1,16 @@
 ---
 title: "Measuring Density by Water Displacement"
-subtitle: "alternative to practical skills (Paper 6 IGCSE)"
+subtitle: "Misuri la densità di un oggetto di metallo: puoi dire con certezza di che materiale è?"
 date: 2026-10-07
 categories: [Fisica]
 tipo: "Lab2"
 ---
+
+::: {.callout-note appearance="simple" icon=false}
+Ogni misura ha la sua incertezza, e la densità, calcolata da due misure, la eredita. Fin dove un numero con il suo errore ti dice di che cosa è fatto un oggetto?
+
+**Percorso:** come l'errore passa da due misure a una densità · incertezza relativa · il confronto con la tabella dei materiali.
+:::
 
 ## Slide della lezione
 

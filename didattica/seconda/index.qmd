@@ -5,7 +5,7 @@ listing:
   type: table
   fields: [date, title, subtitle]
   field-display-names:
-    subtitle: "Argomento"
+    subtitle: "Domanda"
   sort: "date asc"
   sort-ui: false
   filter-ui: false

@@ -1,9 +1,15 @@
 ---
 title: "Dimostrazione e Applicazione del teorema di Gauss"
-subtitle: "Dimostrazione: dalla sfera a una superficie qualsiasi"
+subtitle: "Una carica chiusa in una sfera, in una scatola o in un sacchetto accartocciato: il flusso che ne esce cambia?"
 date: 2026-09-30
 categories: [Fisica]
 ---
+
+::: {.callout-note appearance="simple" icon=false}
+Il teorema vale per qualunque forma e si dimostra in tre mosse, partendo dalla sfera perfetta. Poi serve davvero: filo, piano e sfera carica si calcolano senza integrali, guardando la simmetria.
+
+**Percorso:** dalla sfera a una forma qualunque · la superficie gaussiana giusta · il campo di filo, piano e sfera carica.
+:::
 
 ## Slide della lezione
 
