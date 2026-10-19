@@ -3,7 +3,7 @@ title: "Measuring Density by Water Displacement"
 subtitle: "Misuri la densità di un oggetto di metallo: puoi dire con certezza di che materiale è?"
 date: 2026-10-07
 categories: [Fisica]
-tipo: "Lab2"
+tipo: "Lab"
 ---
 
 ::: {.callout-note appearance="simple" icon=false}

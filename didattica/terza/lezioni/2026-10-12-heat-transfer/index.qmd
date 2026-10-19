@@ -2,6 +2,7 @@
 title: "How does thermal energy travel?"
 subtitle: "Il mare è a 20 °C e l'aria pure: perché in acqua senti freddo e in aria no?"
 date: 2026-10-12
+tipo: "Lecture"
 categories: [Fisica]
 ---
 

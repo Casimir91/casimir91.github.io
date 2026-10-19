@@ -2,6 +2,7 @@
 title: "Il Teorema di Gauss"
 subtitle: "Che cosa hanno in comune il buio della notte e una carica elettrica?"
 date: 2026-09-28
+tipo: "Lecture"
 categories: [Fisica]
 ---
 

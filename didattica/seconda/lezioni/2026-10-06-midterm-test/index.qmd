@@ -2,6 +2,7 @@
 title: "Midterm Test: Testo e soluzioni"
 subtitle: "Speed, distance-time graphs, energy and work: testi delle versioni A, B, C e soluzioni"
 date: 2026-10-06
+tipo: "Test"
 categories: [Fisica]
 ---
 

@@ -2,6 +2,7 @@
 title: "Energy and work · Exercise sheet"
 subtitle: "Kinetic energy, gravitational potential energy, work and stopping distances"
 date: 2026-10-02
+tipo: "Practice"
 categories: [Fisica]
 ---
 

@@ -1,0 +1,21 @@
+---
+title: "La bussola e il campo magnetico della Terra"
+subtitle: "L'ago della bussola punta al Nord: ma che cosa c'è, davvero, al Nord?"
+date: 2026-10-19
+tipo: "Lecture"
+categories: [Fisica]
+---
+
+::: {.callout-note appearance="simple" icon=false}
+Si parte da ciò che tutti hanno visto, una bussola, e si arriva a un'idea nuova: un campo che non si può sondare con una carica di prova, ma con un ago che ruota.
+
+**Percorso:** l'ago come sonda del campo magnetico · mappare il campo di una calamita · il verso delle linee e il momento magnetico · la Terra come calamita e lo scudo contro il vento solare · perché il monopolo magnetico non esiste.
+:::
+
+## Slide della lezione
+
+::: {style="position: relative; padding-top: 56.25%;"}
+<iframe src="slides.html" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allowfullscreen></iframe>
+:::
+
+[Apri le slide a schermo intero ↗](slides.html){target="_blank" .btn .btn-primary}

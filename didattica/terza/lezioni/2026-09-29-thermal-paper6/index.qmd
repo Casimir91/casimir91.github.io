@@ -2,6 +2,7 @@
 title: "Marking Group X's thermometer report"
 subtitle: "Alternative to Practical skills, from your own Lab 1 data"
 date: 2026-09-29
+tipo: "Practice"
 categories: [Fisica]
 ---
 

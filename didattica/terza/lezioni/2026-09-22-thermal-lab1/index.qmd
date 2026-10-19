@@ -3,7 +3,7 @@ title: "Build and calibrate a thermometer"
 subtitle: "Un sensore Arduino restituisce il numero 524: che temperatura è?"
 date: 2026-09-22
 categories: [Fisica]
-tipo: "Lab1"
+tipo: "Lab"
 ---
 
 ::: {.callout-note appearance="simple" icon=false}

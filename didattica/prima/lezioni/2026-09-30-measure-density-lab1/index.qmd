@@ -3,7 +3,7 @@ title: "How big is it? Volume and density"
 subtitle: "Come si misura il volume di un sasso, che non ha spigoli né formule?"
 date: 2026-09-30
 categories: [Fisica]
-tipo: "Lab1"
+tipo: "Lab"
 ---
 
 ::: {.callout-note appearance="simple" icon=false}

@@ -2,6 +2,7 @@
 title: "Practice e Mock Test: Thermal Physics"
 subtitle: "Calore, potenza e fisica termica: test e soluzioni"
 date: 2026-10-13
+tipo: "Mock"
 categories: [Fisica]
 ---
 

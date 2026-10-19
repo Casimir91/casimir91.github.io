@@ -2,6 +2,7 @@
 title: "Our agreement for the year"
 subtitle: "Expectations, assessment, and a first taste of measuring"
 date: 2026-09-09
+tipo: "Lecture"
 categories: [Fisica]
 ---
 

@@ -2,6 +2,7 @@
 title: "How much energy does it take?"
 subtitle: "Se comprimo di scatto l'aria di una siringa isolata, senza nessuna fiamma, cosa succede alla sua temperatura?"
 date: 2026-10-09
+tipo: "Lecture"
 categories: [Fisica]
 ---
 

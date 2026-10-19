@@ -2,6 +2,7 @@
 title: "Energy: stores, transfers and work"
 subtitle: "A 50 km/h un'auto frena in circa 14 m: e a 100 km/h?"
 date: 2026-09-21
+tipo: "Lecture"
 categories: [Fisica]
 ---
 

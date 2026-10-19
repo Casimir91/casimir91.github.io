@@ -3,10 +3,10 @@ title: "Classe Prima"
 listing:
   contents: lezioni
   type: table
-  fields: [date, title, subtitle, tipo]
+  fields: [date, tipo, title, subtitle]
   field-display-names:
-    subtitle: "Domanda"
-    tipo: "Tipo"
+    tipo: "Type"
+    subtitle: "Driving question"
   sort: "date asc"
   sort-ui: false
   filter-ui: false

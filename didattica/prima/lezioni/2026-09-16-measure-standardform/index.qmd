@@ -2,6 +2,7 @@
 title: "Measuring like a scientist"
 subtitle: "Il cronometro del telefono segna 11,3748 s sui 100 metri: perché Sherlock Holmes non ci crede?"
 date: 2026-09-16
+tipo: "Lecture"
 categories: [Fisica]
 ---
 

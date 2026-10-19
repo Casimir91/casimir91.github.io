@@ -2,6 +2,7 @@
 title: "Mock test: Elettrostatica e teorema di Gauss"
 subtitle: "Test e soluzioni"
 date: 2026-10-05
+tipo: "Mock"
 categories: [Fisica]
 ---
 

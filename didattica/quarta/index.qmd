@@ -3,9 +3,10 @@ title: "Classe Quarta"
 listing:
   contents: lezioni
   type: table
-  fields: [date, title, subtitle]
+  fields: [date, tipo, title, subtitle]
   field-display-names:
-    subtitle: "Domanda"
+    tipo: "Type"
+    subtitle: "Driving question"
   sort: "date asc"
   sort-ui: false
   filter-ui: false

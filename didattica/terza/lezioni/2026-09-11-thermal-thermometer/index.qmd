@@ -2,6 +2,7 @@
 title: "Scales, Absolute Zero, and What a Thermometer Really Does"
 subtitle: "Picking up from last time"
 date: 2026-09-11
+tipo: "Lecture"
 categories: [Fisica]
 ---
 

@@ -2,6 +2,7 @@
 title: "Linee di forza e flusso del campo elettrico"
 subtitle: "A gennaio la Terra è più vicina al Sole, eppure fa freddo: allora che cosa decide quanta energia riceviamo?"
 date: 2026-09-21
+tipo: "Lecture"
 categories: [Fisica]
 ---
 

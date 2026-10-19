@@ -2,6 +2,7 @@
 title: "Midterm: Elettrostatica e teorema di Gauss"
 subtitle: "Testo (versioni x, y, z) e soluzioni"
 date: 2026-10-12
+tipo: "Test"
 categories: [Fisica]
 ---
 

@@ -2,6 +2,7 @@
 title: "What is temperature?"
 subtitle: "Se un cubo di metallo e uno di legno stanno nella stessa stanza da ore, perché al tatto uno sembra più freddo?"
 date: 2026-09-08
+tipo: "Lecture"
 categories: [Fisica]
 ---
 

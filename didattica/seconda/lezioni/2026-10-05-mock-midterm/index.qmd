@@ -2,6 +2,7 @@
 title: "Energy and work · Mock midterm"
 subtitle: "Practice test on energy stores, kinetic and potential energy, work and stopping distances"
 date: 2026-10-05
+tipo: "Mock"
 categories: [Fisica]
 ---
 

@@ -2,6 +2,7 @@
 title: "Dimostrazione e Applicazione del teorema di Gauss"
 subtitle: "Una carica chiusa in una sfera, in una scatola o in un sacchetto accartocciato: il flusso che ne esce cambia?"
 date: 2026-09-30
+tipo: "Lecture"
 categories: [Fisica]
 ---
 

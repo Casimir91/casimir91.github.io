@@ -2,6 +2,7 @@
 title: "Campo, elettrizzazione, legge di Coulomb"
 subtitle: "Il campo elettrico · lezione 2"
 date: 2026-09-07
+tipo: "Lecture"
 categories: [Fisica]
 ---
 

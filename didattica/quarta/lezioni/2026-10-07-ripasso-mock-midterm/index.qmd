@@ -2,6 +2,7 @@
 title: "Esercizi di ripasso sul teorema di Gauss, sul campo e sulla carica"
 subtitle: "Ripasso in preparazione al mock midterm"
 date: 2026-10-07
+tipo: "Practice"
 categories: [Fisica]
 ---
 

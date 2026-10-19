@@ -1,12 +1,13 @@
 ---
 title: "Power and efficiency"
-subtitle: "Due sollevatori alzano lo stesso bilanciere alla stessa altezza, uno in 0,6 secondi e l'altro in 3: chi è più potente?"
+subtitle: "Cosa vuol dire essere forte secondo la Fisica?"
 date: 2026-10-12
+tipo: "Lecture"
 categories: [Fisica]
 ---
 
 ::: {.callout-note appearance="simple" icon=false}
-«Forte», «energico», «potente» sono parole di tutti i giorni che in fisica non sono sinonimi. Dal sollevatore al centro dati, lo stesso lavoro può costare potenze molto diverse.
+«Forte», «energico», «potente» sono parole di tutti i giorni che in fisica non sono sinonimi. Dal powerlifter al Datacenter, la stessa energia può essere erogata con costi molto diversi.
 
 **Percorso:** lavoro, potenza e rendimento · fonti di energia rinnovabili e non, a confronto.
 :::

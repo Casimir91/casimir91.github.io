@@ -2,6 +2,7 @@
 title: "Linear Expansion"
 subtitle: "Il Golden Gate Bridge ha una campata di 1275 m: tra la notte più fredda e il giorno più caldo, di quanto cambia la sua lunghezza?"
 date: 2026-09-18
+tipo: "Lecture"
 categories: [Fisica]
 ---
 
