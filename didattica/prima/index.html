@@ -86,7 +86,7 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: ['listing-date','listing-title','listing-subtitle','listing-tipo',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-title-sort'] }],
+      valueNames: ['listing-date','listing-tipo','listing-title','listing-subtitle',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-title-sort'] }],
       
       searchColumns: ["listing-date","listing-title","listing-author"],
     };
@@ -425,24 +425,27 @@ Date
 </th>
 
 <th>
+Type
+</th>
+
+<th>
 Title
 </th>
 
 <th>
-Domanda
-</th>
-
-<th>
-Tipo
+Driving question
 </th>
 
 </tr>
 </thead>
 <tbody class="list">
 
-<tr data-index="0" data-categories="RmlzaWNh" data-listing-date-sort="1788904800000" data-listing-file-modified-sort="1791569061851" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="44" data-listing-title-sort="Our agreement for the year" data-listing-filename-sort="index.qmd">
+<tr data-index="0" data-categories="RmlzaWNh" data-listing-date-sort="1788904800000" data-listing-file-modified-sort="1792178990644" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="44" data-listing-title-sort="Our agreement for the year" data-listing-filename-sort="index.qmd">
 <td>
 <span class="listing-date">Sep 9, 2026</span>
+</td>
+<td>
+<span class="listing-tipo">Lecture</span>
 </td>
 <td>
 <a href="../../didattica/prima/lezioni/2026-09-09-measure-intro/index.html" class="title listing-title">Our agreement for the year</a>
@@ -450,15 +453,15 @@ Tipo
 <td>
 <span class="listing-subtitle">Expectations, assessment, and a first taste of measuring</span>
 </td>
-<td>
-<span class="listing-tipo">&nbsp;</span>
-</td>
 
 </tr>
 
-<tr data-index="1" data-categories="RmlzaWNh" data-listing-date-sort="1789509600000" data-listing-file-modified-sort="1792148472874" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="93" data-listing-title-sort="Measuring like a scientist" data-listing-filename-sort="index.qmd">
+<tr data-index="1" data-categories="RmlzaWNh" data-listing-date-sort="1789509600000" data-listing-file-modified-sort="1792178990646" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="93" data-listing-title-sort="Measuring like a scientist" data-listing-filename-sort="index.qmd">
 <td>
 <span class="listing-date">Sep 16, 2026</span>
+</td>
+<td>
+<span class="listing-tipo">Lecture</span>
 </td>
 <td>
 <a href="../../didattica/prima/lezioni/2026-09-16-measure-standardform/index.html" class="title listing-title">Measuring like a scientist</a>
@@ -466,15 +469,15 @@ Tipo
 <td>
 <span class="listing-subtitle">Il cronometro del telefono segna 11,3748 s sui 100 metri: perché Sherlock Holmes non ci crede?</span>
 </td>
-<td>
-<span class="listing-tipo">&nbsp;</span>
-</td>
 
 </tr>
 
-<tr data-index="2" data-categories="RmlzaWNh" data-listing-date-sort="1790114400000" data-listing-file-modified-sort="1792148472875" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="96" data-listing-title-sort="Random &amp; Systematic Error" data-listing-filename-sort="index.qmd">
+<tr data-index="2" data-categories="RmlzaWNh" data-listing-date-sort="1790114400000" data-listing-file-modified-sort="1792178990647" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="96" data-listing-title-sort="Random &amp; Systematic Error" data-listing-filename-sort="index.qmd">
 <td>
 <span class="listing-date">Sep 23, 2026</span>
+</td>
+<td>
+<span class="listing-tipo">Lecture</span>
 </td>
 <td>
 <a href="../../didattica/prima/lezioni/2026-09-23-measure-errors/index.html" class="title listing-title">Random &amp; Systematic Error</a>
@@ -482,15 +485,15 @@ Tipo
 <td>
 <span class="listing-subtitle">Il cronometro segna i centesimi di secondo: la tua misura è precisa al centesimo?</span>
 </td>
-<td>
-<span class="listing-tipo">&nbsp;</span>
-</td>
 
 </tr>
 
-<tr data-index="3" data-categories="RmlzaWNh" data-listing-date-sort="1790719200000" data-listing-file-modified-sort="1792148472877" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="75" data-listing-title-sort="How big is it? Volume and density" data-listing-filename-sort="index.qmd">
+<tr data-index="3" data-categories="RmlzaWNh" data-listing-date-sort="1790719200000" data-listing-file-modified-sort="1792178990648" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="75" data-listing-title-sort="How big is it? Volume and density" data-listing-filename-sort="index.qmd">
 <td>
 <span class="listing-date">Sep 30, 2026</span>
+</td>
+<td>
+<span class="listing-tipo">Lab</span>
 </td>
 <td>
 <a href="../../didattica/prima/lezioni/2026-09-30-measure-density-lab1/index.html" class="title listing-title">How big is it? Volume and density</a>
@@ -498,24 +501,21 @@ Tipo
 <td>
 <span class="listing-subtitle">Come si misura il volume di un sasso, che non ha spigoli né formule?</span>
 </td>
-<td>
-<span class="listing-tipo">Lab1</span>
-</td>
 
 </tr>
 
-<tr data-index="4" data-categories="RmlzaWNh" data-listing-date-sort="1791324000000" data-listing-file-modified-sort="1792148472879" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="83" data-listing-title-sort="Measuring Density by Water Displacement" data-listing-filename-sort="index.qmd">
+<tr data-index="4" data-categories="RmlzaWNh" data-listing-date-sort="1791324000000" data-listing-file-modified-sort="1792178990649" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="83" data-listing-title-sort="Measuring Density by Water Displacement" data-listing-filename-sort="index.qmd">
 <td>
 <span class="listing-date">Oct 7, 2026</span>
+</td>
+<td>
+<span class="listing-tipo">Lab</span>
 </td>
 <td>
 <a href="../../didattica/prima/lezioni/2026-10-07-measure-density-lab2/index.html" class="title listing-title">Measuring Density by Water Displacement</a>
 </td>
 <td>
 <span class="listing-subtitle">Misuri la densità di un oggetto di metallo: puoi dire con certezza di che materiale è?</span>
-</td>
-<td>
-<span class="listing-tipo">Lab2</span>
 </td>
 
 </tr>
