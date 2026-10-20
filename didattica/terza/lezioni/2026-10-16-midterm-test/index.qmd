@@ -1,0 +1,15 @@
+---
+title: "Midterm Test: Thermal Physics"
+subtitle: "Testo e soluzioni"
+date: 2026-10-16
+tipo: "Test"
+categories: [Fisica]
+---
+
+## Test
+
+[Midterm test (PDF) ↗](terza_2026-10-16_midterm-test.pdf){target="_blank" .btn .btn-outline-primary}
+
+## Soluzioni
+
+[Soluzioni (PDF) ↗](terza_2026-10-16_midterm-soluzioni.pdf){target="_blank" .btn .btn-outline-primary}
