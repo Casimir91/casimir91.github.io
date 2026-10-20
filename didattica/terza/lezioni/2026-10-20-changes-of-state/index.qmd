@@ -1,0 +1,26 @@
+---
+title: "Changes of State and Mixtures"
+subtitle: "Quanto ghiaccio va in un mocktail?"
+date: 2026-10-20
+tipo: "Lecture"
+categories: [Fisica]
+---
+
+::: {.callout-note appearance="simple" icon=false}
+Un cubetto di ghiaccio non fa solo abbassare la temperatura: deve prima scaldarsi e poi fondere, e ogni passaggio costa energia. Dalla curva di riscaldamento ai calori latenti si arriva a prevedere la temperatura di equilibrio di una mescolanza, anche quando c'è del ghiaccio.
+
+**Percorso:** curva di riscaldamento · calori latenti · mescolanze e temperatura di equilibrio · il bilancio con il ghiaccio (il mocktail, la lava sul ghiaccio).
+:::
+
+## Slide della lezione
+
+::: {style="position: relative; padding-top: 56.25%;"}
+<iframe src="slides.html" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allowfullscreen></iframe>
+:::
+
+[Apri le slide a schermo intero ↗](slides.html){target="_blank" .btn .btn-primary}
+
+## Materiali e indicazioni per lo studio
+
+[Copione della lezione in italiano (PDF) ↗](copione_it.pdf){target="_blank" .btn .btn-outline-primary}
+[Copione della lezione in inglese (PDF) ↗](copione_en.pdf){target="_blank" .btn .btn-outline-primary}
