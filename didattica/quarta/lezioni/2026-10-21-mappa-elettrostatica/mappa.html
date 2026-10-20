@@ -1,0 +1,1193 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mappe dell'elettrostatica</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=STIX+Two+Text:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+/* Layout concept: one stage, three views of the same 19 concepts, E at the hub.
+   Rings = number of links away from E. "Always valid" nodes are solid, "valid only with symmetry" nodes are dashed.
+   Ground is millimetre paper, the paper of the Paper 6 graph. */
+:root {
+  --bg: #E8EDED;
+  --mm-minor: rgba(21, 38, 45, .07);
+  --mm-major: rgba(21, 38, 45, .15);
+  --ink: #15262D;
+  --muted: #4B5E66;
+  --panel: #F4F7F6;
+  --blk: #DEE7E6;
+  --line: #B7C5C8;
+  --edge: #5F767F;
+  --hub: #0A3F4B;      --hub-on: #FFFFFF;
+  --al: #0D6575;       --al-on: #FFFFFF;
+  --ca: #8F4A00;       --ca-bg: #FBE6C6;
+  --qt: #55459A;       --qt-bg: #E5E0F4;
+  --rp: #2F6285;       --rp-bg: #D9E7F1;
+  --me: #15262D;       --me-bg: #F6F9F8;
+  --er: #A3254C;       --er-bg: #F8DAE3;
+  --sel: #15262D;
+  --halo: #E8EDED;
+  --b1: #0D6575; --b2: #7A4FA3; --b3: #A85600; --b4: #2F7D4F; --b5: #A3254C; --bon: #FFFFFF;
+  --f-body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-head: "Bricolage Grotesque", "Atkinson Hyperlegible", system-ui, sans-serif;
+  --f-math: "STIX Two Text", "Cambria Math", "Times New Roman", serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0F1A1F; --mm-minor: rgba(220, 238, 242, .06); --mm-major: rgba(220, 238, 242, .13);
+    --ink: #E3EEF0; --muted: #A6BAC0; --panel: #172830; --blk: #0E1A20; --line: #2F4650; --edge: #8AA5AE;
+    --hub: #7FD6E6; --hub-on: #021419; --al: #4DB6C8; --al-on: #03171C;
+    --ca: #F2B766; --ca-bg: #3B2A12; --qt: #B9AAF2; --qt-bg: #28234A;
+    --rp: #8DBCE0; --rp-bg: #16303F; --me: #E3EEF0; --me-bg: #172830;
+    --er: #F59BB5; --er-bg: #3B1825; --sel: #FFFFFF; --halo: #0F1A1F;
+    --b1: #4DB6C8; --b2: #B79BE0; --b3: #F2B766; --b4: #7BD09B; --b5: #F59BB5; --bon: #07161B;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0F1A1F; --mm-minor: rgba(220, 238, 242, .06); --mm-major: rgba(220, 238, 242, .13);
+  --ink: #E3EEF0; --muted: #A6BAC0; --panel: #172830; --blk: #0E1A20; --line: #2F4650; --edge: #8AA5AE;
+  --hub: #7FD6E6; --hub-on: #021419; --al: #4DB6C8; --al-on: #03171C;
+  --ca: #F2B766; --ca-bg: #3B2A12; --qt: #B9AAF2; --qt-bg: #28234A;
+  --rp: #8DBCE0; --rp-bg: #16303F; --me: #E3EEF0; --me-bg: #172830;
+  --er: #F59BB5; --er-bg: #3B1825; --sel: #FFFFFF; --halo: #0F1A1F;
+  --b1: #4DB6C8; --b2: #B79BE0; --b3: #F2B766; --b4: #7BD09B; --b5: #F59BB5; --bon: #07161B;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 16px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 14px 24px; }
+.app { max-width: 1480px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--sel); outline-offset: 2px; }
+
+/* header */
+.head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 6px 24px; }
+h1 { font-weight: 700; font-size: clamp(1.35rem, 2.6vw, 1.9rem); line-height: 1.12; margin: 0; letter-spacing: -.01em; text-wrap: balance; }
+.head p { margin: 0; color: var(--muted); font-size: .92rem; max-width: 60ch; }
+
+/* tabs */
+.bar { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; justify-content: space-between; }
+.tabs { max-width: 100%; overflow-x: auto; display: flex; gap: 4px; padding: 3px; background: var(--panel); border: 1.5px solid var(--line); border-radius: 10px; }
+.tab { border: 0; background: transparent; padding: 7px 14px; border-radius: 7px; cursor: pointer; font-weight: 700; font-size: .92rem; color: var(--muted); min-height: 38px; }
+.tab small { display: block; font-weight: 400; font-size: .72rem; line-height: 1.1; }
+.tab[aria-selected="true"] { background: var(--ink); color: var(--bg); }
+.tab[aria-selected="true"] small { color: inherit; opacity: .8; }
+@media (max-width: 560px) { .tab small { display: none; } .tab { padding: 7px 10px; font-size: .86rem; } .btn { padding: 6px 10px; } }
+.tools { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.btn { background: var(--panel); border: 1.5px solid var(--line); border-radius: 8px; padding: 6px 12px; cursor: pointer; font-weight: 700; font-size: .88rem; min-height: 38px; min-width: 38px; }
+.btn:hover { border-color: var(--ink); }
+.btn[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.btn[hidden] { display: none; }
+
+/* legend */
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 0; padding: 0; list-style: none; font-size: .84rem; color: var(--muted); }
+.legend li { display: inline-flex; align-items: center; gap: 7px; }
+.legend svg { width: 30px; height: 18px; flex: none; }
+.legend b { color: var(--ink); font-weight: 700; }
+
+/* stage + panel */
+.main { position: relative; }
+.stage { position: relative; border: 1.5px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--bg); height: clamp(440px, 78vh, 900px); }
+.stage svg.view { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; cursor: grab; display: block; user-select: none; -webkit-user-select: none; }
+.stage svg.view.drag { cursor: grabbing; }
+.stage svg.view[hidden] { display: none; }
+.hint { position: absolute; left: 10px; bottom: 8px; margin: 0; font-size: .76rem; color: var(--muted); background: var(--bg); padding: 2px 8px; border-radius: 6px; max-width: calc(100% - 20px); pointer-events: none; }
+
+/* svg parts */
+.mmgrid { fill: url(#mm-pat); pointer-events: none; }
+.ringline { fill: none; stroke: var(--edge); stroke-opacity: .35; stroke-width: 1.4; stroke-dasharray: 2 7; stroke-linecap: round; pointer-events: none; }
+.ringlab { font: 700 15px var(--f-body); fill: var(--muted); letter-spacing: .04em; paint-order: stroke; stroke: var(--halo); stroke-width: 5px; text-anchor: middle; pointer-events: none; }
+.edge path { fill: none; stroke: var(--edge); stroke-width: 1.8; transition: opacity .15s, stroke-width .15s; }
+.edge.cross path { stroke-dasharray: 7 5; }
+.edge.cross .elab { font-style: italic; }
+.edge .elab { font: 400 15px var(--f-body); fill: var(--ink); paint-order: stroke; stroke: var(--halo); stroke-width: 6px; stroke-linejoin: round; text-anchor: middle; pointer-events: none; }
+.edge .head { fill: var(--edge); stroke: none; }
+.edge.on path { stroke: var(--ink); stroke-width: 2.8; }
+.edge.on .head { fill: var(--ink); }
+.view.has-focus .edge:not(.on) { opacity: .16; }
+.view.has-focus .node:not(.near) { opacity: .34; }
+.node { cursor: pointer; }
+.node .box { stroke-width: 2.2; transition: stroke-width .12s; }
+.node .t { font: 700 20px var(--f-body); }
+.node .f { font: italic 400 18.5px var(--f-math); }
+.node .g { font: 700 15px var(--f-body); }
+.node.sel .box, .node:focus-visible .box { stroke: var(--sel); stroke-width: 4; }
+.node:focus { outline: none; }
+.node.k-al .box { fill: var(--al); stroke: var(--al); } .node.k-al text { fill: var(--al-on); }
+.node.k-ca .box { fill: var(--ca-bg); stroke: var(--ca); stroke-dasharray: 6 4; } .node.k-ca text { fill: var(--ink); } .node.k-ca .g { fill: var(--ca); }
+.node.k-qt .box { fill: var(--qt-bg); stroke: var(--qt); } .node.k-qt text { fill: var(--ink); } .node.k-qt .g { fill: var(--qt); }
+.node.k-rp .box { fill: var(--rp-bg); stroke: var(--rp); } .node.k-rp text { fill: var(--ink); } .node.k-rp .g { fill: var(--rp); }
+.node.k-me .box { fill: var(--me-bg); stroke: var(--me); stroke-width: 3; } .node.k-me text { fill: var(--ink); }
+.node.k-er .box { fill: var(--er-bg); stroke: var(--er); } .node.k-er text { fill: var(--ink); } .node.k-er .g { fill: var(--er); }
+.node.k-hub .box { fill: var(--hub); stroke: var(--hub); } .node.k-hub text { fill: var(--hub-on); }
+.node.k-hub.sel .box { stroke: var(--sel); }
+.node .qmark { display: none; font-style: normal; font-weight: 700; }
+.ripasso .node:not(.k-hub):not(.show) .f:not(.qmark) { visibility: hidden; }
+.ripasso .node:not(.k-hub):not(.show) .qmark { display: block; }
+.mk { fill: var(--edge); }
+
+/* mind map */
+.mltxt { font: 700 23px var(--f-body); fill: var(--bon); letter-spacing: .02em; }
+.kw .kwt { font: 700 24px var(--f-body); fill: var(--ink); }
+.node.kw .kwt { fill: var(--ink); }
+.kw .kwg { font-size: 16px; fill: var(--muted); }
+#v-mentale .kw .f { fill: var(--ink); font-size: 21px; }
+.assoc-l { font: 400 19px var(--f-body); fill: var(--ink); paint-order: stroke; stroke: var(--halo); stroke-width: 6px; stroke-linejoin: round; pointer-events: none; }
+.kw .hit { fill: transparent; stroke: none; }
+.kw { cursor: pointer; }
+.kw:hover .hit, .kw.sel .hit { fill: var(--bg); stroke: var(--sel); stroke-width: 2; }
+.kw.sel .hit { stroke-width: 3; }
+.mm-centre { pointer-events: none; }
+.assoc { fill: none; stroke: var(--ink); stroke-width: 2.4; stroke-dasharray: 8 6; stroke-linecap: round; pointer-events: none; }
+.assoc-h { fill: var(--ink); pointer-events: none; }
+.view.has-focus .sub { opacity: .45; }
+#v-mentale .node.k-hub .t { fill: var(--hub-on); } #v-mentale .node.k-hub .f { fill: var(--hub-on); }
+
+/* graph */
+.gl { stroke: var(--edge); stroke-width: 1.8; stroke-opacity: .7; }
+.gl.cross { stroke-dasharray: 6 5; }
+.gl.on { stroke: var(--ink); stroke-width: 3; stroke-opacity: 1; }
+.view.has-focus .gl:not(.on) { stroke-opacity: .12; }
+.gnode .gg { font: 700 15px var(--f-body); pointer-events: none; }
+.gnode.k-al .gg { fill: var(--al-on); } .gnode.k-hub .gg { fill: var(--hub-on); font-size: 20px; }
+.gnode.k-ca .gg { fill: var(--ca); } .gnode.k-qt .gg { fill: var(--qt); } .gnode.k-rp .gg { fill: var(--rp); } .gnode.k-me .gg { fill: var(--ink); } .gnode.k-er .gg { fill: var(--er); }
+.gnode .glab, .gnode.k-al .glab, .gnode.k-ca .glab, .gnode.k-qt .glab, .gnode.k-rp .glab, .gnode.k-me .glab, .gnode.k-er .glab, .gnode.k-hub .glab {
+  font: 700 17px var(--f-body); fill: var(--ink); paint-order: stroke; stroke: var(--halo); stroke-width: 5px; stroke-linejoin: round; pointer-events: none; }
+
+/* panel */
+.panel { background: var(--panel); border: 1.5px solid var(--line); border-radius: 16px; padding: 16px; display: grid; gap: 10px; min-width: 0; align-content: start; box-shadow: 0 10px 30px rgba(10, 30, 40, .22); }
+@media (min-width: 980px) {
+  .panel { position: absolute; top: 10px; width: min(440px, calc(100% - 20px)); max-height: calc(100% - 20px); overflow: auto; z-index: 6; display: none; }
+  .panel.open { display: grid; }
+  .panel.right { right: 10px; } .panel.left { left: 10px; }
+}
+@media (max-width: 979px) {
+  .panel { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; max-height: 58vh; overflow: auto; border-radius: 14px 14px 0 0; border-bottom: 0;
+    padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+    transform: translateY(105%); visibility: hidden; transition: transform .22s ease, visibility 0s .22s; }
+  .panel.open { transform: none; visibility: visible; transition: transform .22s ease; }
+}
+@media (prefers-reduced-motion: reduce) { .panel, .panel.open { transition: none; } }
+.panel .x { justify-self: end; margin: -2px -2px -44px 0; z-index: 2; position: relative; }
+.pk { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; font-size: .76rem; letter-spacing: .05em; text-transform: uppercase; padding: 3px 9px 3px 7px; border-radius: 5px; justify-self: start; }
+.pk.k-al { background: var(--al); color: var(--al-on); }
+.pk.k-hub { background: var(--hub); color: var(--hub-on); }
+.pk.k-ca { background: var(--ca-bg); color: var(--ca); border: 1.5px dashed var(--ca); }
+.pk.k-qt { background: var(--qt-bg); color: var(--qt); border: 1.5px solid var(--qt); }
+.pk.k-rp { background: var(--rp-bg); color: var(--rp); border: 1.5px solid var(--rp); }
+.pk.k-me { background: var(--me-bg); color: var(--ink); border: 2px solid var(--ink); }
+.pk.k-er { background: var(--er-bg); color: var(--er); border: 1.5px solid var(--er); }
+
+/* detail panel: one general ground, information gathered on darker blocks, one text face, formulas in the math face */
+#panel-body { display: grid; gap: 14px; }
+.ph { display: grid; gap: 8px; padding: 2px 2px 4px; }
+.panel h2 { font-family: var(--f-body); font-weight: 700; font-size: 1.55rem; line-height: 1.15; margin: 0; text-wrap: balance; }
+.panel .en { margin: 0; color: var(--muted); font-size: .92rem; }
+.blk { background: var(--blk); border-radius: 12px; padding: 16px 18px 18px; display: grid; gap: 12px; min-width: 0; }
+.blk h3 { margin: 0; font-size: .72rem; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); }
+.blk p { margin: 0; font-size: 1rem; line-height: 1.55; }
+.blk sub, .blk sup { font-size: .72em; line-height: 0; }
+.blk var { font-style: normal; font-family: inherit; font-size: 1em; }
+.fm2 var { font-style: italic; font-family: var(--f-math); font-size: 1em; }
+.fq { display: grid; gap: 4px; }
+.cap { font-size: .86rem; color: var(--muted); }
+.fm2 { font-family: var(--f-math); font-size: 1.32rem; line-height: 1.5; overflow-x: auto; }
+.fq .frac > span:first-child { border-bottom: 1.5px solid currentColor; }
+.vec { position: relative; display: inline-block; }
+.vec::after { content: "→"; position: absolute; left: .08em; top: -.62em; font-size: .62em; font-style: normal; }
+.frac { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; text-align: center; line-height: 1.25; margin: 0 .15em; }
+.frac > span:first-child { padding: 0 .3em; }
+.frac > span:last-child { padding: 0 .3em; }
+.st { display: grid !important; grid-template-columns: 26px 1fr; gap: 10px; }
+.sn { background: var(--ink); color: var(--bg); border-radius: 50%; width: 24px; height: 24px; display: grid; place-items: center; font-size: .8rem; margin-top: 1px; }
+.exq { font-size: 1rem; }
+.exs { color: var(--muted); }
+.exr { color: var(--al); }
+.prop { display: block; width: 100%; text-align: left; background: transparent; border: 0; border-radius: 8px; padding: 6px 8px; margin: 0 -8px; cursor: pointer; font-size: .95rem; line-height: 1.4; width: calc(100% + 16px); }
+.prop:hover { background: var(--panel); }
+.prop u { text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
+/* hidden answers and small figures */
+.mt { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.mr { display: grid; grid-template-columns: 5.2em 1fr 3.6em; gap: 2px 12px; align-items: baseline; }
+.me { color: var(--muted); font-size: .9rem; }
+.mx { min-width: 0; }
+.mp { justify-self: end; display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; font-size: .95rem; }
+.sv { width: 16px; height: 16px; color: var(--al); flex: none; }
+.qi { display: grid; gap: 10px; }
+#panel-body .blk > .qi + .qi { margin-top: 10px; }
+.opts { display: grid; gap: 6px; }
+.opt { display: grid !important; grid-template-columns: 1.5em 1fr; gap: 6px; }
+.ol { color: var(--muted); }
+.rev { display: block; }
+.rev > summary { list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; width: max-content; max-width: 100%;
+  padding: 7px 14px; min-height: 38px; border: 1.5px solid var(--line); border-radius: 8px; background: var(--panel); color: var(--ink); font-weight: 600; font-size: .9rem; }
+.rev > summary::-webkit-details-marker { display: none; }
+.rev > summary::after { content: "+"; font-weight: 700; }
+.rev[open] > summary::after { content: "−"; }
+.rev > summary:hover { border-color: var(--ink); }
+.rev > summary:focus-visible { outline: 3px solid var(--al); outline-offset: 2px; }
+.revb { display: grid; gap: 12px; margin-top: 14px; }
+.fig { margin: 0; display: grid; gap: 6px; }
+.fig svg { width: 100%; height: auto; display: block; color: var(--ink); }
+.fig figcaption { font-size: .86rem; color: var(--muted); }
+.fig .l { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.fig .thick { stroke-width: 3; }
+.fig .dash { stroke-dasharray: 4 3; }
+.fig .acc { stroke: var(--al); }
+.fig .f { fill: currentColor; stroke: none; }
+.fig .h { fill: currentColor; stroke: none; }
+.fig .h.acc { fill: var(--al); stroke: none; }
+.fig .tx { font: 13px var(--f-body); fill: currentColor; }
+.guide { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 6px 28px; max-width: 120ch; font-size: .92rem; }
+.guide p { margin: 0; }
+.foot { color: var(--muted); font-size: .84rem; max-width: 100ch; margin: 2px 0 0; }
+</style>
+
+</head>
+<body>
+<div class="app">
+  <header class="head">
+    <h1>Elettrostatica fino a Gauss</h1>
+    <p>Tutto parte dal campo elettrico. Tocca un concetto: trovi formule, unità, esempi svolti, e domande ed esercizi da provare prima di scoprire la risposta.</p>
+  </header>
+
+  <div class="bar">
+    <div class="tabs" role="tablist" aria-label="Tipo di mappa">
+      <button class="tab" role="tab" id="tab-concettuale" aria-selected="true" aria-controls="v-concettuale" data-view="concettuale">Mappa concettuale<small>con frasi sulle frecce</small></button>
+      <button class="tab" role="tab" id="tab-mentale" aria-selected="false" aria-controls="v-mentale" data-view="mentale">Mappa mentale<small>a rami, per gruppi</small></button>
+    </div>
+    <div class="tools">
+      <button class="btn" id="b-ripasso" aria-pressed="false" title="Nasconde le formule: prova a ricordarle prima di toccare il riquadro">Ripasso: nascondi formule</button>
+      <button class="btn" id="b-out" aria-label="Riduci">−</button>
+      <button class="btn" id="b-in" aria-label="Ingrandisci">+</button>
+      <button class="btn" id="b-fit">Intera</button>
+    </div>
+  </div>
+
+  <ul class="legend" aria-label="Legenda">
+    <li><svg viewBox="0 0 30 18" aria-hidden="true"><rect x="1" y="1" width="28" height="16" rx="4" fill="var(--al)" stroke="var(--al)" stroke-width="2"/></svg><span><b>Vale sempre</b> (definizione, legge)</span></li>
+    <li><svg viewBox="0 0 30 18" aria-hidden="true"><rect x="1" y="1" width="28" height="16" rx="4" fill="var(--ca-bg)" stroke="var(--ca)" stroke-width="2" stroke-dasharray="5 3"/></svg><span><b>Vale solo con la simmetria</b> indicata</span></li>
+    <li><svg viewBox="0 0 30 18" aria-hidden="true"><rect x="1" y="1" width="28" height="16" rx="4" fill="var(--qt-bg)" stroke="var(--qt)" stroke-width="2"/></svg><span><b>Grandezza</b> o dato</span></li>
+    <li><svg viewBox="0 0 30 18" aria-hidden="true"><rect x="1" y="1" width="28" height="16" rx="4" fill="var(--rp-bg)" stroke="var(--rp)" stroke-width="2"/></svg><span><b>Rappresentazione</b></span></li>
+    <li><svg viewBox="0 0 30 18" aria-hidden="true"><rect x="1.5" y="1.5" width="27" height="15" rx="4" fill="var(--me-bg)" stroke="var(--me)" stroke-width="3"/></svg><span><b>Metodo</b></span></li>
+    <li><svg viewBox="0 0 30 18" aria-hidden="true"><rect x="1" y="1" width="28" height="16" rx="4" fill="var(--er-bg)" stroke="var(--er)" stroke-width="2"/></svg><span><b>Attenzione</b> agli errori</span></li>
+  </ul>
+
+  <div class="main">
+    <div class="stage" id="stage">
+      <svg class="view" id="v-concettuale" role="tabpanel" aria-labelledby="tab-concettuale" aria-label="Mappa concettuale dell'elettrostatica, con il campo elettrico al centro"></svg>
+      <svg class="view" id="v-mentale" role="tabpanel" aria-labelledby="tab-mentale" aria-label="Mappa mentale dell'elettrostatica, con il campo elettrico al centro" hidden></svg>
+      <p class="hint" id="hint">Trascina per spostare · rotellina o due dita per zoomare · tocca un concetto per leggerlo.</p>
+    </div>
+
+    <aside class="panel" id="panel" aria-live="polite" aria-label="Dettaglio del concetto">
+      <button class="btn x" id="b-close" aria-label="Chiudi dettaglio">✕</button>
+      <div id="panel-body"></div>
+    </aside>
+  </div>
+
+  <p class="foot" id="foot"></p>
+</div>
+<script>
+/* ===== data: 19 concepts, shared by the three views ===== */
+var v = function (s) { return "<var>" + s + "</var>"; };
+var fr = function (a, b) { return '<span class="frac"><span>' + a + "</span><span>" + b + "</span></span>"; };
+var vc = function (s) { return '<span class="vec"><var>' + s + "</var></span>"; };
+var Q0 = v("q") + "<sub>0</sub>", E0 = v("ε") + "<sub>0</sub>";
+
+var KIND = {
+  hub: { cls: "k-hub", glyph: "◆" },
+  def: { cls: "k-al", glyph: "◆", lab: "Definizione" },
+  law: { cls: "k-al", glyph: "●", lab: "Legge" },
+  cas: { cls: "k-ca", glyph: "▲", lab: "Risultato di caso" },
+  qty: { cls: "k-qt", glyph: "■", lab: "Grandezza" },
+  phe: { cls: "k-qt", glyph: "■", lab: "Fenomeno" },
+  rep: { cls: "k-rp", glyph: "◇", lab: "Rappresentazione" },
+  met: { cls: "k-me", glyph: "➤", lab: "Metodo" },
+  err: { cls: "k-er", glyph: "!", lab: "Attenzione" }
+};
+
+/* Fields of a node: t title, en English term, f text shown in the map (\n = new line), kw keyword for the mind map,
+   d what it is, q formulas [{c caption, f html}], u units, w when it holds, how steps, x things to remember,
+   ex examples [{t problem, s steps, r result}]. ang = angle on the concept map (0 = east, 90 = south). */
+var NODES = [
+  { id: "campo", kind: "hub", t: "Campo elettrico", en: "electric field, E", f: "E = F / q₀", kw: "campo E",
+    d: "Il campo elettrico in un punto dice quale forza agirebbe su una carica positiva di prova messa lì, per ogni coulomb di carica di prova. Esiste anche se la carica di prova non c'è.",
+    q: [{ c: "definizione", f: vc("E") + " = " + fr(vc("F"), Q0) }],
+    u: "newton su coulomb, N/C. È un vettore: ha modulo, direzione e verso della forza su una carica positiva.",
+    w: "Sempre. È la definizione. Le formule di sfera, filo e piano sono casi particolari che valgono solo con la loro simmetria.",
+    x: ["La carica di prova " + Q0 + " è piccola e positiva, così non disturba la sorgente.", "Il valore di E non dipende da " + Q0 + ": dipende solo dalle sorgenti e dal punto."],
+    ex: [{ t: "Una carica di prova " + Q0 + " = 2,0 nC, posta in un punto, subisce una forza F = 6,0 µN. Quanto vale E?",
+           s: [v("E") + " = " + v("F") + " / " + Q0, "= 6,0·10<sup>−6</sup> N / 2,0·10<sup>−9</sup> C"], r: v("E") + " = 3,0·10<sup>3</sup> N/C, nel verso della forza." }] },
+
+  { id: "carica", kind: "qty", t: "Carica elettrica", en: "electric charge, q", f: "q = n · e", kw: "carica", ang: 200,
+    d: "Proprietà della materia che produce forze elettriche. È positiva o negativa, si conserva ed è quantizzata: ogni carica è un multiplo intero della carica elementare.",
+    q: [{ f: v("q") + " = " + v("n") + " · " + v("e") }],
+    u: "coulomb, C. La carica elementare è e = 1,602·10<sup>−19</sup> C.",
+    w: "Sempre. Nei conduttori le cariche sono libere di muoversi, negli isolanti no.",
+    x: ["È la sorgente del campo elettrico."],
+    ex: [{ t: "Un corpo ha carica Q = −3,2 µC. Quanti elettroni in eccesso ha?",
+           s: [v("n") + " = |" + v("Q") + "| / " + v("e"), "= 3,2·10<sup>−6</sup> C / 1,602·10<sup>−19</sup> C"], r: v("n") + " ≈ 2,0·10<sup>13</sup> elettroni." }] },
+
+  { id: "elettr", kind: "phe", t: "Elettrizzazione", en: "charging", f: "strofinio · contatto · induzione", kw: "elettrizzazione", ang: 232,
+    d: "Processo che porta un corpo a avere una carica netta. Non crea carica: la sposta da un corpo all'altro.",
+    u: "Si misura la carica risultante in coulomb, C.",
+    w: "Sempre. Negli isolanti non c'è movimento di cariche libere ma polarizzazione.",
+    x: ["Strofinio: passano elettroni da un materiale all'altro, uno resta positivo e l'altro negativo.", "Contatto: un corpo carico cede carica a uno scarico, che prende lo stesso segno.", "Induzione: si avvicina un corpo carico senza toccare, la carica si separa, poi si collega a terra."],
+    ex: [{ t: "Una bacchetta di vetro strofinata con la seta viene avvicinata a una sfera conduttrice isolata. Cosa succede alla sfera?",
+           s: ["Il vetro cede elettroni alla seta e resta positivo.", "Nella sfera gli elettroni si spostano verso la bacchetta: il lato vicino diventa negativo, quello lontano positivo."], r: "La sfera è ancora neutra in totale, ma è polarizzata." }] },
+
+  { id: "coulomb", kind: "law", t: "Forza di Coulomb", en: "Coulomb's law", f: "F = k |q₁q₂| / r²", kw: "Coulomb", ang: 152,
+    d: "Forza tra due cariche puntiformi ferme. È lungo la retta che le unisce: attrattiva se i segni sono opposti, repulsiva se sono uguali.",
+    q: [{ f: v("F") + " = " + v("k") + " " + fr("|" + v("q") + "<sub>1</sub> " + v("q") + "<sub>2</sub>|", v("r") + "<sup>2</sup>") }, { c: "costante", f: v("k") + " = " + fr("1", "4π" + E0) }],
+    u: "newton, N. k = 8,99·10<sup>9</sup> N·m²/C². r in metri.",
+    w: "Cariche puntiformi ferme, oppure sfere cariche in modo uniforme con r misurata tra i centri.",
+    x: ["Se r raddoppia, la forza diventa un quarto.", "Le due cariche si esercitano forze uguali e opposte."],
+    ex: [{ t: "Due cariche, " + v("q") + "<sub>1</sub> = 3,0 µC e " + v("q") + "<sub>2</sub> = −2,0 µC, distano 0,30 m. Calcola la forza.",
+           s: [v("F") + " = 8,99·10<sup>9</sup> · 3,0·10<sup>−6</sup> · 2,0·10<sup>−6</sup> / 0,30<sup>2</sup>", "= 5,39·10<sup>−2</sup> / 9,0·10<sup>−2</sup>"], r: v("F") + " ≈ 0,60 N, attrattiva." }] },
+
+  { id: "puntif", kind: "cas", t: "Carica puntiforme", en: "point charge", f: "E = k Q / r²", kw: "carica puntiforme", ang: 132,
+    d: "Campo prodotto da una sola carica puntiforme. Si ricava mettendo la forza di Coulomb nella definizione di campo.",
+    q: [{ f: v("E") + " = " + v("k") + " " + fr(v("Q"), v("r") + "<sup>2</sup>") + " = " + fr(v("Q"), "4π" + E0 + v("r") + "<sup>2</sup>") }],
+    u: "N/C. r è la distanza dalla carica, in metri.",
+    w: "Solo se la sorgente è una carica puntiforme. Il verso è uscente se Q è positiva, entrante se è negativa.",
+    x: ["Il campo cala come 1/r²: a distanza doppia è un quarto."],
+    ex: [{ t: "Una carica Q = 5,0 nC. Quanto vale il campo a 0,10 m?",
+           s: [v("E") + " = 8,99·10<sup>9</sup> · 5,0·10<sup>−9</sup> / 0,10<sup>2</sup>", "= 44,95 / 1,0·10<sup>−2</sup>"], r: v("E") + " ≈ 4,5·10<sup>3</sup> N/C, uscente dalla carica." }] },
+
+  { id: "cost", kind: "qty", t: "Costanti e unità", en: "constants and units", f: "k · ε₀ · e · mₑ · mₚ", kw: "costanti", ang: 178,
+    d: "I valori numerici che servono negli esercizi di elettrostatica e i prefissi più usati.",
+    q: [{ c: "Coulomb", f: v("k") + " = 8,99·10<sup>9</sup> N·m²/C²" }, { c: "permittività del vuoto", f: E0 + " = 8,85·10<sup>−12</sup> C²/(N·m²)" }, { c: "legame", f: v("k") + " = 1 / (4π" + E0 + ")" },
+       { c: "carica elementare", f: v("e") + " = 1,602·10<sup>−19</sup> C" }, { c: "massa dell'elettrone", f: v("m") + "<sub>e</sub> = 9,11·10<sup>−31</sup> kg" }, { c: "massa del protone", f: v("m") + "<sub>p</sub> = 1,67·10<sup>−27</sup> kg" }],
+    u: "1 nC = 10<sup>−9</sup> C. 1 µC = 10<sup>−6</sup> C. 1 mC = 10<sup>−3</sup> C. 1 cm = 10<sup>−2</sup> m.",
+    ex: [{ t: "Converti 3,2 µC in coulomb e 5 cm in metri.", s: ["3,2 µC = 3,2·10<sup>−6</sup> C", "5 cm = 5·10<sup>−2</sup> m"], r: "Prima di calcolare, porta sempre tutto in unità SI." }] },
+
+  { id: "forza", kind: "law", t: "Forza su una carica", en: "force on a charge", f: "F = q E", kw: "forza F = qE", ang: 244,
+    d: "È la definizione di campo letta al contrario: se conosci E in un punto, la forza su una carica q messa lì è q per E.",
+    q: [{ c: "forza", f: vc("F") + " = " + v("q") + " " + vc("E") }, { c: "accelerazione, con campo uniforme", f: vc("a") + " = " + fr(v("q") + " " + vc("E"), v("m")) }],
+    u: "newton, N. Modulo: F = |q| E.",
+    w: "Sempre. Se q è negativa la forza ha verso opposto a E.",
+    x: ["Con E uniforme la forza è costante: il moto è uniformemente accelerato."],
+    ex: [{ t: "Un elettrone è in un campo uniforme E = 2,0·10<sup>3</sup> N/C. Calcola forza e accelerazione.",
+           s: [v("F") + " = " + v("e") + v("E") + " = 1,602·10<sup>−19</sup> · 2,0·10<sup>3</sup> = 3,2·10<sup>−16</sup> N", v("a") + " = " + v("F") + " / " + v("m") + "<sub>e</sub> = 3,2·10<sup>−16</sup> / 9,11·10<sup>−31</sup>"],
+           r: v("a") + " ≈ 3,5·10<sup>14</sup> m/s², nel verso opposto a E." }] },
+
+  { id: "sovr", kind: "law", t: "Composizione dei campi", en: "vector sum of fields", f: "stessa retta: si somma o si sottrae\ncon un angolo: trigonometria", kw: "composizione", ang: 288,
+    d: "Quando più sorgenti agiscono nello stesso punto, il campo totale è la somma dei vettori dei singoli campi. Si sommano i vettori, mai i moduli.",
+    q: [{ c: "somma vettoriale", f: vc("E") + "<sub>tot</sub> = " + vc("E") + "<sub>1</sub> + " + vc("E") + "<sub>2</sub> + …" },
+        { c: "componenti", f: v("E") + "<sub>x</sub> = " + v("E") + "<sub>1x</sub> + " + v("E") + "<sub>2x</sub>" + " &nbsp; " + v("E") + "<sub>y</sub> = " + v("E") + "<sub>1y</sub> + " + v("E") + "<sub>2y</sub>" },
+        { c: "modulo e direzione", f: v("E") + " = √(" + v("E") + "<sub>x</sub><sup>2</sup> + " + v("E") + "<sub>y</sub><sup>2</sup>) &nbsp; tan " + v("θ") + " = " + fr(v("E") + "<sub>y</sub>", v("E") + "<sub>x</sub>") }],
+    u: "N/C, come ogni campo.",
+    w: "Sempre.",
+    how: ["Disegna ogni campo nel punto, con direzione e verso giusti.", "Se i campi sono sulla stessa retta: stesso verso si somma, verso opposto si sottrae.", "Se c'è un angolo: scomponi ogni campo con seno e coseno, somma le componenti, poi ricava modulo e angolo."],
+    ex: [{ t: "Nello stesso punto E₁ = 300 N/C verso destra e E₂ = 500 N/C verso sinistra. Trova il campo totale.",
+           s: ["Stessa retta, versi opposti: si sottrae.", v("E") + " = 500 − 300"], r: v("E") + " = 200 N/C, verso sinistra." },
+         { t: "Nello stesso punto E₁ = 300 N/C lungo x e E₂ = 400 N/C lungo y. Trova il campo totale.",
+           s: [v("E") + " = √(300<sup>2</sup> + 400<sup>2</sup>) = √250000", "tan " + v("θ") + " = 400 / 300, quindi " + v("θ") + " = 53° rispetto a E₁"], r: v("E") + " = 500 N/C, inclinato di 53° rispetto all'asse x." }] },
+
+  { id: "linee", kind: "rep", t: "Linee di forza", en: "field lines", f: "tangenti a E", kw: "linee di forza", ang: 350,
+    d: "Un modo di disegnare il campo. In ogni punto il campo è tangente alla linea, e dove le linee sono più fitte il campo è più intenso.",
+    u: "Nessuna: sono un disegno, non una grandezza.",
+    w: "Servono a capire direzione e verso di E prima di calcolare, e a controllare il segno del risultato.",
+    x: ["Escono dalle cariche positive ed entrano in quelle negative.", "Due linee non si incrociano mai."],
+    ex: [{ t: "Due cariche uguali e opposte, +Q e −Q. Come sono le linee?",
+           s: ["Partono dalla carica positiva e arrivano alla negativa.", "Tra le due cariche sono più fitte."], r: "Lì il campo è più intenso, ed è diretto da +Q verso −Q." }] },
+
+  { id: "flusso", kind: "def", t: "Flusso del campo", en: "electric flux, Φ", f: "Φ = E · A · cos θ", kw: "flusso Φ", ang: 52,
+    d: "Misura quanto campo attraversa una superficie. Dipende da quanto è intenso il campo, da quanto è grande la superficie e da come è inclinata.",
+    q: [{ c: "campo uniforme, superficie piana", f: "Φ = " + v("E") + " · " + v("A") + " · cos " + v("θ") }],
+    u: "N·m²/C. θ è l'angolo tra E e la normale alla superficie.",
+    w: "Così com'è solo se E è uniforme e la superficie è piana. Altrimenti si somma il contributo di ogni piccola parte.",
+    x: ["θ è l'angolo con la normale, non con la superficie.", "Se E è parallelo alla superficie, θ = 90° e Φ = 0.", "Su una superficie chiusa il flusso uscente è positivo, quello entrante è negativo."],
+    ex: [{ t: "Un campo uniforme E = 2,0·10<sup>3</sup> N/C attraversa una superficie di area 0,50 m². Calcola il flusso per θ = 0°, 60°, 90°.",
+           s: ["θ = 0°: Φ = 2000 · 0,50 · 1 = 1000", "θ = 60°: Φ = 2000 · 0,50 · 0,5 = 500", "θ = 90°: Φ = 2000 · 0,50 · 0 = 0"], r: "Valori in N·m²/C." }] },
+
+  { id: "gauss", kind: "law", t: "Teorema di Gauss", en: "Gauss's law", f: "Φ = Qᵢₙₜ / ε₀", kw: "Gauss", ang: 60,
+    d: "Il flusso del campo attraverso una superficie chiusa dipende solo dalla carica che c'è dentro.",
+    q: [{ f: "Φ<sub>chiusa</sub>(" + vc("E") + ") = " + fr(v("Q") + "<sub>int</sub>", E0) }],
+    u: "Φ in N·m²/C. Q<sub>int</sub> in coulomb, somma algebrica delle cariche dentro.",
+    w: "Sempre, per qualunque superficie chiusa. Per ricavare E serve però una simmetria.",
+    how: ["Riconosco la simmetria: sfera, cilindro o piano.", "Scelgo la superficie con quella simmetria, passante per il punto che mi interessa.", "Scrivo " + v("E") + " · " + v("A") + "<sub>gauss</sub> = " + v("Q") + "<sub>int</sub> / " + E0 + " e ricavo " + v("E") + "."],
+    x: ["Le cariche fuori non cambiano il flusso totale, ma cambiano E nei singoli punti.", "Flusso nullo: dentro le cariche sommano zero, oppure non ce ne sono."],
+    ex: [{ t: "Una superficie chiusa contiene +3,0 nC e −1,0 nC. Calcola il flusso.",
+           s: [v("Q") + "<sub>int</sub> = 3,0 − 1,0 = 2,0 nC", "Φ = 2,0·10<sup>−9</sup> / 8,85·10<sup>−12</sup>"], r: "Φ ≈ 2,3·10<sup>2</sup> N·m²/C, uscente." }] },
+
+  { id: "dens", kind: "qty", t: "Densità di carica", en: "charge density", f: "λ · σ · ρ", kw: "densità λ σ ρ", ang: 8,
+    d: "Carica per unità di lunghezza, di superficie o di volume. Serve a trovare la carica dentro una superficie gaussiana.",
+    q: [{ c: "lineare, C/m", f: v("Q") + " = " + v("λ") + " · " + v("L") }, { c: "superficiale, C/m²", f: v("Q") + " = " + v("σ") + " · " + v("A") }, { c: "volumetrica, C/m³", f: v("Q") + " = " + v("ρ") + " · " + v("V") }],
+    u: "λ in C/m, σ in C/m², ρ in C/m³.",
+    w: "Se la carica è distribuita in modo uniforme.",
+    ex: [{ t: "Un filo lungo 2,0 m con λ = 5,0 nC/m. Quanta carica ha?", s: [v("Q") + " = 5,0 · 2,0"], r: v("Q") + " = 10 nC." },
+         { t: "Una sfera di raggio 0,10 m con ρ = 3,0 µC/m³. Quanta carica ha?", s: [v("V") + " = 4/3 · π · 0,10<sup>3</sup> = 4,19·10<sup>−3</sup> m³", v("Q") + " = 3,0·10<sup>−6</sup> · 4,19·10<sup>−3</sup>"], r: v("Q") + " ≈ 1,3·10<sup>−8</sup> C." }] },
+
+  { id: "sfera", kind: "cas", t: "Simmetria sferica", en: "carica puntiforme, guscio, sfera piena", f: "E = kQ / r²  (r ≥ R)", kw: "sfera", ang: 110,
+    d: "Campo di una carica che dipende solo dalla distanza dal centro. Superficie gaussiana: sfera di raggio r, area 4πr².",
+    q: [{ c: "fuori, r ≥ R", f: v("E") + " = " + fr(v("Q"), "4π" + E0 + v("r") + "<sup>2</sup>") + " = " + v("k") + " " + fr(v("Q"), v("r") + "<sup>2</sup>") },
+        { c: "dentro un guscio o un conduttore, r < R", f: v("E") + " = 0" },
+        { c: "dentro una sfera piena uniforme, r < R", f: v("E") + " = " + v("k") + " " + fr(v("Q") + " " + v("r"), v("R") + "<sup>3</sup>") + " = " + fr(v("ρ") + " " + v("r"), "3" + E0) }],
+    u: "N/C. r è la distanza dal centro, non dal bordo.",
+    w: "Solo se la carica dipende soltanto dalla distanza dal centro. Fuori coincide con una carica puntiforme Q messa nel centro.",
+    ex: [{ t: "Un guscio sferico di raggio 0,20 m con Q = 2,0 µC. Trova E a 0,50 m e a 0,10 m dal centro.",
+           s: ["r = 0,50 m: " + v("E") + " = 8,99·10<sup>9</sup> · 2,0·10<sup>−6</sup> / 0,50<sup>2</sup> = 7,2·10<sup>4</sup> N/C", "r = 0,10 m è dentro il guscio: " + v("E") + " = 0"], r: "Fuori 7,2·10<sup>4</sup> N/C, dentro 0." },
+         { t: "Stessa carica ma sfera piena uniforme. Trova E a 0,10 m dal centro.",
+           s: [v("E") + " = " + v("k") + v("Q") + v("r") + " / " + v("R") + "<sup>3</sup>", "= 8,99·10<sup>9</sup> · 2,0·10<sup>−6</sup> · 0,10 / 0,20<sup>3</sup>"], r: v("E") + " ≈ 2,2·10<sup>5</sup> N/C." }] },
+
+  { id: "filo", kind: "cas", t: "Simmetria cilindrica", en: "filo carico infinito", f: "E = λ / (2π ε₀ r)", kw: "filo", ang: 88,
+    d: "Campo di un filo carico molto lungo. Superficie gaussiana: cilindro coassiale di raggio r e lunghezza L. Sulle basi il flusso è nullo; sulla superficie laterale vale E · 2πrL; la carica dentro è λL.",
+    q: [{ f: v("E") + " = " + fr(v("λ"), "2π" + E0 + v("r")) + " = " + fr("2" + v("k") + v("λ"), v("r")) }],
+    u: "N/C. r è la distanza dall'asse del filo.",
+    w: "Solo se il filo è molto lungo rispetto a r e il punto è lontano dalle estremità.",
+    x: ["Il campo cala come 1/r, non come 1/r²."],
+    ex: [{ t: "Un filo molto lungo con λ = 4,0 nC/m. Trova E a 0,20 m dall'asse.",
+           s: [v("E") + " = 2 · 8,99·10<sup>9</sup> · 4,0·10<sup>−9</sup> / 0,20", "= 71,9 / 0,20"], r: v("E") + " ≈ 3,6·10<sup>2</sup> N/C. A 0,40 m sarebbe la metà." }] },
+
+  { id: "piano", kind: "cas", t: "Simmetria piana", en: "piano carico infinito", f: "E = σ / (2 ε₀)", kw: "piano", ang: 72,
+    d: "Campo di un piano carico molto esteso. Superficie gaussiana: scatola con due basi di area A, una per lato. Sulle facce laterali il flusso è nullo; sulle basi vale 2EA; la carica dentro è σA.",
+    q: [{ f: v("E") + " = " + fr(v("σ"), "2" + E0) }],
+    u: "N/C. Il campo è perpendicolare al piano.",
+    w: "Solo se il piano è molto esteso rispetto alla distanza del punto.",
+    x: ["Il campo non dipende dalla distanza dal piano."],
+    ex: [{ t: "Un piano con σ = 2,0 µC/m². Trova E a 1 cm e a 1 m.",
+           s: [v("E") + " = 2,0·10<sup>−6</sup> / (2 · 8,85·10<sup>−12</sup>)"], r: v("E") + " ≈ 1,1·10<sup>5</sup> N/C, uguale a 1 cm e a 1 m." }] },
+
+  { id: "doppio", kind: "cas", t: "Due piani paralleli", en: "+σ e −σ", f: "E = σ / ε₀ tra i piani", kw: "due piani", ang: 44,
+    d: "Si ottiene sovrapponendo i campi di due piani con carica opposta. Tra i piani i due campi hanno lo stesso verso e si sommano; fuori hanno verso opposto e si annullano.",
+    q: [{ c: "tra i piani", f: v("E") + " = " + fr(v("σ"), E0) }, { c: "fuori dai piani", f: v("E") + " = 0" }],
+    u: "N/C. Tra i piani il campo è uniforme, diretto dal piano positivo a quello negativo.",
+    w: "Solo se i piani sono molto estesi e vicini rispetto alle loro dimensioni.",
+    ex: [{ t: "Due piani con σ = ±2,0 µC/m². Trova E tra i piani e fuori.",
+           s: [v("E") + " = 2,0·10<sup>−6</sup> / 8,85·10<sup>−12</sup>"], r: "Tra i piani 2,3·10<sup>5</sup> N/C, fuori 0." }] },
+
+  { id: "cond", kind: "cas", t: "Conduttore in equilibrio", en: "conductor in electrostatic equilibrium", f: "E = 0 dentro · σ/ε₀ fuori", kw: "conduttore", ang: 30,
+    d: "In un conduttore con le cariche ferme, le cariche stanno sulla superficie. Dentro il campo è nullo; sulla superficie è perpendicolare ad essa. Si ricava con Gauss su un piccolo cilindro a cavallo della superficie.",
+    q: [{ c: "dentro", f: v("E") + " = 0" }, { c: "appena fuori", f: v("E") + " = " + fr(v("σ"), E0) }],
+    u: "N/C.",
+    w: "Solo se le cariche sono ferme, cioè in equilibrio elettrostatico.",
+    ex: [{ t: "Un conduttore con σ = 3,0 µC/m² sulla superficie. Trova E dentro e appena fuori.",
+           s: ["Dentro: " + v("E") + " = 0", "Fuori: " + v("E") + " = 3,0·10<sup>−6</sup> / 8,85·10<sup>−12</sup>"], r: "Dentro 0, appena fuori 3,4·10<sup>5</sup> N/C." }] },
+
+  { id: "metodo", kind: "met", t: "Come si risolve", en: "problem-solving routine", f: "strumento giusto, poi controllo", kw: "metodo", ang: 26,
+    d: "Un percorso in tre mosse per partire da qualunque esercizio di elettrostatica.",
+    how: ["Cosa mi chiede? Una forza, un campo in un punto, un flusso, una carica interna, una superficie da scegliere.", "Scelgo lo strumento, con la tabella qui sotto.", "Controllo direzione e verso con le linee di forza, unità di misura, ordine di grandezza, e il caso limite: lontano dalla sorgente E deve diventare piccolo."],
+    q: [{ c: "forza tra due cariche", f: "Coulomb" }, { c: "forza su una carica in un campo noto", f: v("F") + " = " + v("q") + v("E") }, { c: "campo di poche cariche puntiformi", f: "campo di ciascuna, poi somma di vettori" },
+        { c: "campo con simmetria", f: "Gauss con sfera, cilindro o scatola" }, { c: "flusso attraverso una superficie", f: "Φ = " + v("E") + v("A") + " cos " + v("θ") + ", o Gauss se è chiusa" }, { c: "carica dentro la superficie", f: v("λ") + v("L") + ", " + v("σ") + v("A") + " oppure " + v("ρ") + v("V") }],
+    ex: [{ t: "Un filo carico molto lungo: quanto vale il campo a 10 cm?", s: ["Ha simmetria cilindrica: scelgo Gauss con un cilindro coassiale."], r: "Strumento: simmetria cilindrica." },
+         { t: "Tre cariche puntiformi ai vertici di un triangolo: campo nel quarto vertice?", s: ["Non c'è simmetria: calcolo il campo di ciascuna carica e sommo i vettori."], r: "Strumento: composizione dei campi." }] },
+
+  { id: "errori", kind: "err", t: "Errori frequenti", en: "common mistakes", f: "7 trappole", kw: "errori", ang: 326,
+    d: "Le sette trappole che costano più punti.",
+    x: ["Flusso nullo non vuol dire campo nullo: vuol dire carica interna nulla.", "Gauss vale sempre, ma E = Q/(ε₀A) vale solo con la simmetria giusta.", "Il campo cala come 1/r² per la sfera, come 1/r per il filo, per niente per il piano.", "Il flusso usa l'angolo con la normale.", "r è la distanza dal centro nella sfera e dall'asse nel filo, non dal bordo.", "Si sommano i vettori, non i moduli.", "Se la carica è negativa il verso di E si inverte."],
+    ex: [{ t: "Una superficie chiusa ha flusso zero. Dentro non c'è campo?", s: ["Il flusso zero dice solo che la carica netta dentro è zero."], r: "Il campo può esserci anche in punti della superficie: due cariche uguali e opposte lo mostrano." }] }
+];
+
+/* Links read as propositions: [from] -- label --> [to]. x = cross-link between different branches. */
+var EDGES = [
+  { a: "carica", b: "campo", l: "è la sorgente del" },
+  { a: "elettr", b: "carica", l: "sposta la" },
+  { a: "carica", b: "coulomb", l: "interagisce secondo la" },
+  { a: "coulomb", b: "campo", l: "divisa per q₀ definisce il" },
+  { a: "coulomb", b: "puntif", l: "per una sola carica dà la" },
+  { a: "campo", b: "forza", l: "su una carica q esercita la" },
+  { a: "campo", b: "sovr", l: "con più sorgenti segue la" },
+  { a: "campo", b: "linee", l: "si visualizza con le" },
+  { a: "campo", b: "flusso", l: "attraverso una superficie dà il" },
+  { a: "flusso", b: "gauss", l: "su superficie chiusa segue il" },
+  { a: "dens", b: "gauss", l: "fornisce Qᵢₙₜ al" },
+  { a: "gauss", b: "sfera", l: "con una sfera dà la" },
+  { a: "gauss", b: "filo", l: "con un cilindro dà la" },
+  { a: "gauss", b: "piano", l: "con una scatola dà la" },
+  { a: "gauss", b: "cond", l: "su un conduttore dà il" },
+  { a: "piano", b: "doppio", l: "due piani sovrapposti danno i" },
+  { a: "metodo", b: "campo", l: "guida il calcolo del" },
+  { a: "errori", b: "campo", l: "avverte sul calcolo del" },
+  { a: "cost", b: "carica", l: "fissa l'unità della", x: 1 },
+  { a: "cost", b: "coulomb", l: "fornisce k alla", x: 1 },
+  { a: "coulomb", b: "gauss", l: "con simmetria sferica equivale al", x: 1, bend: -0.1, at: 0.3 },
+  { a: "puntif", b: "sfera", l: "fuori dal guscio coincide con la", x: 1 }
+];
+
+var BRANCHES = [
+  { id: "b1", name: "Da dove nasce", css: "--b1", ang: 190, span: 56, items: ["carica", "elettr", "coulomb", "puntif", "cost"] },
+  { id: "b2", name: "Cosa fa", css: "--b2", ang: 262, span: 60, items: ["forza", "sovr", "linee"] },
+  { id: "b5", name: "Come lo uso", css: "--b5", ang: 322, span: 30, items: ["metodo", "errori"] },
+  { id: "b3", name: "Flusso e Gauss", css: "--b3", ang: 14, span: 48, items: ["flusso", "gauss", "dens"] },
+  { id: "b4", name: "Con la simmetria", css: "--b4", ang: 100, span: 100, items: ["sfera", "filo", "piano", "doppio", "cond"] }
+];
+
+var BYID = {}; NODES.forEach(function (n) { BYID[n.id] = n; });
+var ADJ = {}; NODES.forEach(function (n) { ADJ[n.id] = []; });
+EDGES.forEach(function (e, i) { e.i = i; ADJ[e.a].push(e); ADJ[e.b].push(e); });
+/* ring = minimum number of links from E (used only to place nodes) */
+(function () {
+  BYID.campo.ring = 0; var q = ["campo"];
+  while (q.length) { var c = q.shift(); ADJ[c].forEach(function (e) { var o = e.a === c ? e.b : e.a; if (BYID[o].ring == null) { BYID[o].ring = BYID[c].ring + 1; q.push(o); } }); }
+})();
+/* ===== exercise layer: questions with hidden answers and exercises with hidden solutions (taken from the 12/10 test for now; swap for the homework of the unit) =====
+   qz  questions with the answer hidden under a tap      -> block "Domande"
+   mex worked exercises, solution hidden under a tap     -> one block each "Prova tu"
+   Numbers are those of version x, checked against the teacher's solutions. */
+
+var N1 = function (n) { return (Math.round(n * 10) / 10).toString(); };
+function arrow(x1, y1, x2, y2, cls) {
+  var dx = x2 - x1, dy = y2 - y1, L = Math.hypot(dx, dy) || 1, ux = dx / L, uy = dy / L, s = 7, w = 3.4, bx = x2 - ux * s, by = y2 - uy * s;
+  return '<line class="l ' + (cls || "") + '" x1="' + N1(x1) + '" y1="' + N1(y1) + '" x2="' + N1(bx) + '" y2="' + N1(by) + '"/>' +
+    '<polygon class="h ' + (cls || "") + '" points="' + N1(x2) + "," + N1(y2) + " " + N1(bx - uy * w) + "," + N1(by + ux * w) + " " + N1(bx + uy * w) + "," + N1(by - ux * w) + '"/>';
+}
+function tx(x, y, s, anchor, cls) { return '<text class="tx ' + (cls || "") + '" x="' + N1(x) + '" y="' + N1(y) + '" text-anchor="' + (anchor || "middle") + '">' + s + "</text>"; }
+function chg(cx, cy, sign, r) { return '<circle class="l" cx="' + N1(cx) + '" cy="' + N1(cy) + '" r="' + (r || 10) + '"/>' + tx(cx, cy + 4.5, sign, "middle"); }
+function figure(w, h, inner, cap) {
+  return '<figure class="fig"><svg viewBox="0 0 ' + w + " " + h + '" role="img" aria-label="' + cap + '">' + inner + "</svg><figcaption>" + cap + "</figcaption></figure>";
+}
+
+/* Es. 3: field lines of +2q and -q (eight leave +2q, four end on -q, four go to infinity) */
+function figDueCariche() {
+  var UP = [
+    [[2.82,0.12],[3.19,0.25],[3.53,0.37],[3.87,0.48],[4.21,0.58],[4.56,0.67],[4.92,0.73],[5.28,0.75],[5.64,0.74],[5.99,0.68],[6.34,0.57],[6.67,0.44],[6.99,0.28],[7.23,0.15]],
+    [[2.70,0.28],[2.92,0.60],[3.13,0.89],[3.36,1.17],[3.59,1.44],[3.84,1.70],[4.11,1.94],[4.39,2.16],[4.71,2.34],[5.04,2.47],[5.39,2.55],[5.75,2.56],[6.10,2.49],[6.43,2.34],[6.72,2.13],[6.95,1.85],[7.13,1.54],[7.27,1.21],[7.36,0.86],[7.43,0.51],[7.46,0.30]],
+    [[2.30,0.28],[2.08,0.60],[1.88,0.90],[1.68,1.20],[1.49,1.50],[1.30,1.80],[1.11,2.11],[0.93,2.42],[0.82,2.61]],
+    [[2.18,0.12],[1.81,0.25],[1.48,0.38],[1.14,0.50],[0.80,0.63],[0.47,0.76],[0.13,0.89],[-0.20,1.02],[-0.54,1.15],[-0.87,1.29],[-1.21,1.42]]];
+  var AR = [[4.21,0.58,4.56,0.67],[4.11,1.94,4.39,2.16],[1.88,0.90,1.68,1.20],[1.14,0.50,0.80,0.63]];
+  var S = 32, X = function (x) { return (x + 1.3) * S; }, Y = function (y, m) { return 90 - m * y * S; }, o = "";
+  [1, -1].forEach(function (m) {
+    UP.forEach(function (c) { o += '<polyline class="l acc" points="' + c.map(function (p) { return N1(X(p[0])) + "," + N1(Y(p[1], m)); }).join(" ") + '"/>'; });
+    AR.forEach(function (a) { o += arrow(X(a[0]), Y(a[1], m), X(a[2]), Y(a[3], m), "acc"); });
+  });
+  o += chg(X(2.5), 90, "+") + tx(X(2.5), 90 + 28, "+2q") + chg(X(7.5), 90, "−") + tx(X(7.5), 90 + 28, "−q");
+  return figure(320, 184, o, "Otto linee escono da +2q, quattro entrano in −q, le altre quattro vanno all'infinito.");
+}
+
+/* Es. 5 and 6: one pair of panels per symmetry, lines on the left and the gaussian surface on the right */
+function radial(cx, cy, r0, r1, n, rot) {
+  var o = "";
+  for (var i = 0; i < n; i++) { var a = rot + i * 2 * Math.PI / n; o += arrow(cx + r0 * Math.cos(a), cy + r0 * Math.sin(a), cx + r1 * Math.cos(a), cy + r1 * Math.sin(a), "acc"); }
+  return o;
+}
+function figSym(kind) {
+  var A = "", B = "", cap;
+  if (kind === "filo") {
+    A = '<circle class="f" cx="75" cy="55" r="3.5"/>' + radial(75, 55, 9, 45, 12, 0);
+    B = '<line class="l thick" x1="55" y1="6" x2="55" y2="104"/>' +
+      '<line class="l acc" x1="5" y1="22" x2="5" y2="88"/><line class="l acc" x1="105" y1="22" x2="105" y2="88"/>' +
+      '<ellipse class="l acc" cx="55" cy="22" rx="50" ry="8"/>' +
+      '<path class="l acc" d="M5 88 A50 8 0 0 0 105 88"/><path class="l acc dash" d="M5 88 A50 8 0 0 1 105 88"/>' +
+      '<circle class="f" cx="105" cy="55" r="3"/>' + tx(112, 50, "P", "start");
+    cap = "Filo: linee radiali uscenti, superficie gaussiana cilindrica coassiale.";
+  } else if (kind === "piano") {
+    A = '<line class="l thick" x1="75" y1="6" x2="75" y2="104"/>';
+    [20, 38, 56, 74, 92].forEach(function (y) { A += arrow(81, y, 134, y, "acc") + arrow(69, y, 16, y, "acc"); });
+    B = '<line class="l thick" x1="60" y1="6" x2="60" y2="104"/>' +
+      '<rect class="l acc" x="15" y="33" width="90" height="44"/>' +
+      '<circle class="f" cx="105" cy="55" r="3"/>' + tx(112, 50, "P", "start");
+    cap = "Piano: linee perpendicolari e parallele, scatola simmetrica rispetto al piano.";
+  } else {
+    A = '<circle class="l" cx="75" cy="55" r="14"/>' + radial(75, 55, 19, 50, 12, 0.26);
+    B = '<circle class="l" cx="50" cy="55" r="16"/><circle class="l acc" cx="50" cy="55" r="50"/>' +
+      '<circle class="f" cx="100" cy="55" r="3"/>' + tx(107, 50, "P", "start");
+    cap = "Sfera: linee radiali uscenti, superficie gaussiana sferica concentrica.";
+  }
+  var o = A + '<g transform="translate(150 0)">' + B + "</g>" + tx(75, 122, "linee di campo") + tx(225, 122, "superficie gaussiana");
+  return figure(300, 128, o, cap);
+}
+
+/* Es. 7a: E1, E2 and E_tot in M */
+function figVettori() {
+  var o = '<line class="l" x1="10" y1="112" x2="290" y2="112"/>' + chg(30, 112, "+") + tx(30, 140, "Q₁") + chg(270, 112, "+") + tx(270, 140, "Q₂") +
+    '<line class="l dash" x1="150" y1="40" x2="150" y2="118"/>' + tx(150, 134, "M") +
+    arrow(150, 96, 180, 96, "acc") + tx(188, 100, "E₁", "start") +
+    arrow(150, 76, 30, 76, "acc") + tx(90, 69, "E₂") +
+    arrow(150, 56, 60, 56, "acc") + tx(105, 49, "E_tot");
+  return figure(300, 146, o, "E₂ è quattro volte E₁, quindi E_tot è tre volte E₁ e punta verso Q₁.");
+}
+
+/* Es. 9f: E(r) of a uniformly charged sphere */
+function figEr() {
+  var pts = [], r;
+  for (r = 1; r <= 3.001; r += 0.1) pts.push(N1(36 + 70 * r) + "," + N1(120 - 90 / (r * r)));
+  var o = arrow(36, 120, 284, 120, "") + arrow(36, 120, 36, 8, "") +
+    '<line class="l dash" x1="106" y1="30" x2="106" y2="120"/>' +
+    '<polyline class="l acc" points="36,120 106,30"/><polyline class="l acc" points="' + pts.join(" ") + '"/>' +
+    tx(278, 136, "r", "end") + tx(24, 14, "E", "end") + tx(106, 136, "R") + tx(30, 134, "0", "end") +
+    tx(34, 22, "cresce con r", "start") + tx(176, 62, "cala come 1/r²", "start");
+  return figure(300, 142, o, "Dentro E cresce linearmente da zero, in r = R è massimo, fuori scende come 1/r².");
+}
+
+var ES5 = "Disegna le linee di campo (<em>field lines</em>) con il verso e la superficie gaussiana (<em>Gaussian surface</em>) che useresti per calcolare E nel punto P.";
+var KQ = function (s) { return v("k") + " " + s; };
+
+var MID = {
+  campo: {
+    qz: [{ e: "Es. 1.4", q: "In un punto P il campo elettrico vale E. Si sostituisce la carica di prova (<em>test charge</em>) q₀ con una carica 2q₀ dello stesso segno. In P:",
+           o: ["il campo vale E/2 e la forza F", "il campo vale E e la forza F", "il campo vale 2E e la forza F", "il campo vale E e la forza 2F"], a: 3,
+           w: "E = F/q₀ non dipende dalla carica di prova: dipende solo dalle sorgenti e dal punto. La forza F = qE invece raddoppia." },
+         { e: "Es. 1.4, variante", q: "In P una carica di prova positiva q₀ subisce la forza F e il campo è E. Si sostituisce q₀ con −q₀. In P:",
+           o: ["il campo vale E e la forza F", "il campo vale E e la forza −F", "il campo vale −E e la forza −F", "il campo vale −E e la forza F"], a: 1,
+           w: "Il campo non cambia, la forza sì: con carica negativa F = −q₀E ha verso opposto a E." }]
+  },
+  carica: {
+    qz: [{ e: "Es. 8e", q: "Il conto dà n = P / (eE) ≈ 2,98 elettroni in eccesso. Che numero scrivi nel riquadro e perché?", a: "n = 3.",
+           w: "La carica è quantizzata: n è un intero. Il 2,98 è solo l'effetto degli arrotondamenti sui dati." }]
+  },
+  elettr: {
+    qz: [{ e: "Es. 1.1", q: "Una bacchetta di vetro, strofinata con un panno di seta, si carica positivamente. Che cosa è successo?",
+           o: ["ha acquistato protoni", "ha perso elettroni", "ha acquistato elettroni", "il panno ha perso protoni"], a: 1,
+           w: "Si spostano solo gli elettroni: il vetro li cede alla seta. I protoni stanno nel nucleo e non si muovono." },
+         { e: "Es. 1.3", q: "Un'asta isolante carica negativamente viene avvicinata, senza toccarla, a una sfera metallica neutra e isolata. La sfera:",
+           o: ["si carica dello stesso segno dell'asta", "si carica con segno opposto a quello dell'asta", "resta neutra e non risente di forze", "resta neutra e viene attratta"], a: 3,
+           w: "Le cariche nella sfera si separano. Quelle di segno opposto all'asta sono più vicine e pesano di più: la sfera è attratta. In totale resta neutra." },
+         { e: "Es. 4a", q: "Una bacchetta di plastica carica negativamente tocca una sfera metallica isolata e poi viene allontanata. Che fenomeno è, e di che segno resta la carica sulla sfera?", a: "Contatto. La sfera resta negativa.",
+           w: "Gli elettroni passano dalla bacchetta alla sfera e ci restano." },
+         { e: "Es. 4b", q: "La bacchetta viene avvicinata, senza toccarla, alla sfera metallica. Si tocca la sfera con un dito, si toglie il dito e solo dopo si allontana la bacchetta. Fenomeno e segno?", a: "Induzione. La sfera resta positiva.",
+           w: "La bacchetta respinge gli elettroni, che scendono a terra attraverso il dito. Se si toglie il dito prima della bacchetta, quegli elettroni non tornano." },
+         { e: "Es. 4c", q: "La bacchetta viene avvicinata a un pezzetto di carta, che ne viene attratto. Che fenomeno è?", a: "Polarizzazione.",
+           w: "La carta è isolante: le cariche non si spostano, ma le molecole si orientano e il lato vicino alla bacchetta ha il segno opposto." }]
+  },
+  coulomb: {
+    qz: [{ e: "Es. 1.2", q: "Due cariche puntiformi uguali si respingono con una forza F. Si raddoppia la distanza fra loro. La forza diventa:", o: ["F/4", "F/2", "2F", "4F"], a: 0,
+           w: "F ∝ 1/r². Distanza doppia, forza divisa per 2², cioè un quarto." }],
+    mex: [{ e: "Es. 7b e 7d", t: "Q₁ = +2,0 µC e Q₂ = +8,0 µC sono ferme a d = 0,30 m. Scrivi in lettere la forza fra loro e dì se è attrattiva o repulsiva, poi calcolane il modulo.",
+            s: [v("F") + " = " + v("k") + " " + v("Q") + "<sub>1</sub>" + v("Q") + "<sub>2</sub> / " + v("d") + "<sup>2</sup>, repulsiva perché le cariche hanno lo stesso segno.", v("F") + " = 8,99·10<sup>9</sup> · 2,0·10<sup>−6</sup> · 8,0·10<sup>−6</sup> / 0,30<sup>2</sup>", "= 0,1438 / 0,090"],
+            r: v("F") + " ≈ 1,60 N, repulsiva." }]
+  },
+  puntif: {
+    mex: [{ e: "Es. 7e", t: "Q₁ = +2,0 µC in x = 0 e Q₂ = +8,0 µC in x = 0,30 m. Calcola il campo che ciascuna produce in M, a 0,15 m da entrambe.",
+            s: [v("E") + "<sub>1</sub> = " + v("k") + v("Q") + "<sub>1</sub> / 0,15<sup>2</sup> = 8,99·10<sup>9</sup> · 2,0·10<sup>−6</sup> / 0,0225 ≈ 7,99·10<sup>5</sup> N/C", v("E") + "<sub>2</sub> = " + v("k") + v("Q") + "<sub>2</sub> / 0,15<sup>2</sup> ≈ 3,20·10<sup>6</sup> N/C"],
+            r: v("E") + "<sub>2</sub> = 4" + v("E") + "<sub>1</sub>, perché Q₂ = 4Q₁ e la distanza è la stessa." }]
+  },
+  cost: {
+    mex: [{ e: "Es. 8c", t: "Una goccia d'olio ha raggio r = 0,80 µm e densità ρ = 900 kg/m³. Calcola volume, massa e peso.",
+            s: ["r = 0,80·10<sup>−6</sup> m", v("V") + " = 4/3 π r³ = 4/3 π (0,80·10<sup>−6</sup>)³ ≈ 2,14·10<sup>−18</sup> m³", v("m") + " = ρ" + v("V") + " = 900 · 2,14·10<sup>−18</sup> ≈ 1,93·10<sup>−15</sup> kg", v("P") + " = " + v("m") + v("g") + " = 1,93·10<sup>−15</sup> · 9,8"],
+            r: v("P") + " ≈ 1,89·10<sup>−14</sup> N. Il raggio va in metri prima di elevarlo al cubo: un prefisso sbagliato sposta il risultato di diciotto ordini di grandezza." }]
+  },
+  forza: {
+    qz: [{ e: "Es. 8a", q: "Una goccia con elettroni in eccesso è ferma sopra un filo orizzontale carico negativamente. Quali forze agiscono sulla goccia e che verso ha E nel punto in cui si trova?",
+           a: "Peso verso il basso, forza elettrica verso l'alto. E punta verso il basso.",
+           w: "Il filo è negativo, quindi E punta verso il filo. La goccia ha carica negativa, quindi F ha verso opposto a E, cioè verso l'alto." }],
+    mex: [{ e: "Es. 8b, 8d, 8e", t: "La goccia (r = 0,80 µm, ρ = 900 kg/m³) è ferma a d = 5,0 cm sopra un filo molto lungo con λ = −1,1·10<sup>−7</sup> C/m. Quanti elettroni in eccesso ha?",
+            s: ["Equilibrio: " + v("n") + v("e") + v("E") + " = " + v("P") + ", con " + v("E") + " = |λ| / (2π" + E0 + v("d") + ").", v("E") + " = 1,1·10<sup>−7</sup> / (2π · 8,85·10<sup>−12</sup> · 0,050) ≈ 3,96·10<sup>4</sup> N/C", v("n") + " = " + v("P") + " / (" + v("e") + v("E") + ") = 1,89·10<sup>−14</sup> / (1,602·10<sup>−19</sup> · 3,96·10<sup>4</sup>) ≈ 2,98"],
+            r: v("n") + " = 3 elettroni in eccesso." },
+          { e: "Es. 8f e 8g", t: "A parità di tutto il resto, la distanza dal filo raddoppia. La goccia sale o scende? Quanto vale l'accelerazione iniziale?",
+            s: ["E ∝ 1/d: il campo si dimezza, e con lui la forza elettrica. Il peso resta uguale.", "Risultante: " + v("P") + " − " + v("P") + "/2 = " + v("P") + "/2, verso il basso.", v("a") + " = " + v("g") + "/2"],
+            r: "Scende, con a ≈ 4,9 m/s² (4,87 m/s² con n = 3)." }]
+  },
+  sovr: {
+    mex: [{ e: "Es. 7a e 7e", t: "Due cariche positive, Q₁ = 2,0 µC e Q₂ = 8,0 µC, distano 0,30 m. In M, punto medio, disegna E₁, E₂ ed E_tot con lunghezze proporzionali e calcola E_tot.",
+            s: ["Stessa retta, versi opposti: si sottrae. E₁ va verso Q₂, E₂ va verso Q₁.", v("E") + "<sub>tot</sub> = " + v("E") + "<sub>2</sub> − " + v("E") + "<sub>1</sub> = 3,20·10<sup>6</sup> − 7,99·10<sup>5</sup>"],
+            r: v("E") + "<sub>tot</sub> ≈ 2,40·10<sup>6</sup> N/C, verso Q₁.", fig: figVettori() },
+          { e: "Es. 7c e 7f", t: "Esiste un punto P, a distanza s da Q₁, in cui il campo totale è nullo. Scrivi l'equazione, dì perché P sta fra le cariche e calcola s.",
+            s: ["I due campi hanno lo stesso modulo: " + v("k") + v("Q") + "<sub>1</sub>/s² = " + v("k") + v("Q") + "<sub>2</sub>/(d − s)².", "Fuori dal segmento i campi puntano nello stesso verso e non si compensano.", "Estraggo la radice: (d − s)/s = √(Q₂/Q₁) = 2, quindi d − s = 2s."],
+            r: v("s") + " = d/3 = 0,100 m." }]
+  },
+  linee: {
+    qz: [{ e: "Es. 1.5", q: "Le linee di campo (<em>field lines</em>) del campo elettrico:", o: ["si incrociano dove il campo è intenso", "sono sempre rette parallele", "partono dalle cariche negative", "sono più fitte dove il campo è più intenso"], a: 3,
+           w: "La densità delle linee misura l'intensità. Non si incrociano mai e partono dalle cariche positive." }],
+    mex: [{ e: "Es. 3", t: "Due cariche puntiformi, +2q e −q. Disegna le linee di campo con il verso: otto linee escono da +2q, traccia anche tutte le linee che arrivano su −q.",
+            s: ["Controlla quattro cose: il verso, la proporzione, che le linee non si incrocino, che le linee residue vadano all'infinito."],
+            r: "Le linee entrano in −q e il loro numero è proporzionale alla carica.", fig: figDueCariche() }]
+  },
+  flusso: {
+    qz: [{ e: "Es. 1.6", q: "Una carica puntiforme positiva è al centro di una sfera. Si raddoppia il raggio della sfera. Il flusso attraverso la sfera:", o: ["resta uguale", "si dimezza", "quadruplica", "raddoppia"], a: 0,
+           w: "Il flusso dipende solo dalla carica dentro: Q/ε₀ a ogni raggio. Il campo cala come 1/r², ma l'area cresce come r²." }],
+    mex: [{ e: "Es. 9b e 9c", t: "Una scatola cubica di lato L = 20 cm, senza coperchio, ha al centro una carica q = +6,0 nC. Calcola il flusso attraverso il coperchio mancante e attraverso le cinque facce.",
+            s: ["Richiudo la scatola: " + "Φ<sub>chiusa</sub> = " + v("q") + "/" + E0 + " = 6,0·10<sup>−9</sup> / 8,85·10<sup>−12</sup> ≈ 678 N·m²/C", "Le sei facce sono equivalenti: Φ<sub>coperchio</sub> = 678 / 6 ≈ 113 N·m²/C", "Φ<sub>5</sub> = Φ<sub>chiusa</sub> − Φ<sub>coperchio</sub> = 5" + v("q") + "/(6" + E0 + ")"],
+            r: "113 N·m²/C sul coperchio, 565 N·m²/C sulle cinque facce. Il lato L non serve." }]
+  },
+  gauss: {
+    qz: [{ e: "Es. 1.7", q: "Una superficie chiusa racchiude le cariche +q e −q. Vicinissima alla superficie, ma all'esterno, c'è una carica +2q. Il flusso netto attraverso la superficie vale:", o: ["0", "2q/ε₀", "q/ε₀", "3q/ε₀"], a: 0,
+           w: "Dentro c'è +q − q = 0. La carica +2q è fuori: cambia il campo sulla superficie, non il flusso netto." },
+         { e: "Es. 1.7, variante", q: "La superficie racchiude +4q e −q. Vicinissima, all'esterno, c'è +2q. Il flusso netto vale:", o: ["q/ε₀", "5q/ε₀", "4q/ε₀", "3q/ε₀"], a: 3,
+           w: "Conta solo la carica dentro: +4q − q = +3q. Il flusso è 3q/ε₀." },
+         { e: "Es. 2a", q: "Il flusso netto attraverso una superficie chiusa dipende solo dalla carica netta contenuta al suo interno. Vero o falso?", o: ["V", "F"], a: 0,
+           w: "È il teorema di Gauss: Φ = Q<sub>int</sub> / ε₀." },
+         { e: "Es. 2b", q: "Se il flusso netto attraverso una superficie chiusa è nullo, allora il campo E è nullo in ogni punto della superficie. Vero o falso?", o: ["V", "F"], a: 1,
+           w: "Flusso nullo dice solo che la carica interna è nulla. Un cubo in un campo uniforme ha flusso netto nullo, ma E non è zero: quanto entra da una faccia esce dall'opposta." }]
+  },
+  dens: {
+    mex: [{ e: "dato da ricavare", t: "La sfera isolante ha R = 30 cm e Q = +5,0 nC distribuita in tutto il volume. Quanto vale ρ? Verifica che E(R/2) torni con la formula in ρ.",
+            s: [v("V") + " = 4/3 π R³ = 4/3 π (0,30)³ ≈ 0,113 m³", "ρ = " + v("Q") + "/" + v("V") + " = 5,0·10<sup>−9</sup> / 0,113", "E(R/2) = ρ r / (3" + E0 + ") = 4,42·10<sup>−8</sup> · 0,15 / (3 · 8,85·10<sup>−12</sup>)"],
+            r: "ρ ≈ 4,4·10<sup>−8</sup> C/m³ e E(R/2) ≈ 250 N/C, come con kQr/R³. Attenzione al simbolo: nel problema della goccia d'olio ρ è la densità di massa, 900 kg/m³." }]
+  },
+  sfera: {
+    qz: [{ e: "Es. 1.8, versione z", q: "Una sfera isolante è carica uniformemente. Si raddoppia la distanza dal centro, restando fuori dalla sfera. Il campo elettrico:", o: ["si dimezza", "si riduce a un quarto", "raddoppia", "resta uguale"], a: 1,
+           w: "Fuori dalla sfera E = kQ/r²: distanza doppia, campo un quarto." }],
+    mex: [{ e: "Es. 9d e 9e", t: "Una sfera isolante di raggio R = 30 cm porta Q = +5,0 nC distribuita in tutto il volume. Calcola E a r = 2R e a r = R/2.",
+            s: ["r = 2R = 0,60 m è fuori: " + v("E") + " = " + v("k") + v("Q") + "/r² = 8,99·10<sup>9</sup> · 5,0·10<sup>−9</sup> / 0,60<sup>2</sup> ≈ 125 N/C", "r = R/2 = 0,15 m è dentro: " + v("E") + " = " + v("k") + v("Q") + v("r") + "/" + v("R") + "<sup>3</sup> = 8,99·10<sup>9</sup> · 5,0·10<sup>−9</sup> · 0,15 / 0,30<sup>3</sup> ≈ 250 N/C", "Dentro la carica racchiusa è Q (r/R)³ = Q/8 e l'area è 4πr²."],
+            r: "125 N/C a 2R, 250 N/C a R/2." },
+          { e: "Es. 5 e 6, versione z", t: ES5 + " La distribuzione è una sfera isolante carica in modo uniforme.", s: null, r: "Simmetria sferica: E · 4πr² = Q<sub>int</sub> / ε₀.", fig: figSym("sfera") },
+          { e: "Es. 9f", t: "Rappresenta qualitativamente E(r) da r = 0 a r = 3R, senza valori numerici.", s: null, r: "Due tratti: crescente fino a R, decrescente oltre.", fig: figEr() }]
+  },
+  filo: {
+    qz: [{ e: "Es. 1.8, versione x", q: "Un filo rettilineo infinito è carico uniformemente. Si raddoppia la distanza dal filo. Il campo elettrico:", o: ["si riduce a un quarto", "raddoppia", "resta uguale", "si dimezza"], a: 3,
+           w: "Per il filo E = λ/(2πε₀d): distanza doppia, campo dimezzato. È 1/d, non 1/d²." }],
+    mex: [{ e: "Es. 8d", t: "Un filo rettilineo molto lungo ha λ = −1,1·10<sup>−7</sup> C/m. Calcola il campo a 5,0 cm dal filo.",
+            s: [v("E") + " = |λ| / (2π" + E0 + v("d") + ") = 1,1·10<sup>−7</sup> / (2π · 8,85·10<sup>−12</sup> · 0,050)", "= 1,1·10<sup>−7</sup> / 2,78·10<sup>−12</sup>"],
+            r: v("E") + " ≈ 3,96·10<sup>4</sup> N/C, diretto verso il filo perché λ è negativo." },
+          { e: "Es. 5 e 6, versione x", t: ES5 + " La distribuzione è un filo infinito carico positivamente.", s: ["Le basi del cilindro non contribuiscono al flusso: resta la superficie laterale, 2πrL."], r: "Simmetria cilindrica: E · 2πrL = λL / ε₀.", fig: figSym("filo") }]
+  },
+  piano: {
+    qz: [{ e: "Es. 1.8, versione y", q: "Un piano infinito è carico uniformemente. Si raddoppia la distanza dal piano. Il campo elettrico:", o: ["si dimezza", "raddoppia", "resta uguale", "si riduce a un quarto"], a: 2,
+           w: "Per il piano E = σ/(2ε₀), senza la distanza." },
+         { e: "Es. 2c", q: "Il campo di un piano infinito uniformemente carico ha lo stesso modulo a qualunque distanza dal piano. Vero o falso?", o: ["V", "F"], a: 0,
+           w: "Le linee sono parallele ed equispaziate: la loro densità non cambia allontanandosi." }],
+    mex: [{ e: "Es. 5 e 6, versione y", t: ES5 + " La distribuzione è un piano infinito carico positivamente, visto di taglio.", s: ["Le facce laterali non contribuiscono al flusso: restano le due basi, ognuna di area A."], r: "Simmetria piana: E · 2A = σA / ε₀.", fig: figSym("piano") }]
+  },
+  metodo: {
+    mex: [{ e: "Es. 6", t: "Hai un filo, un piano oppure una sfera carica e un punto P. Come scegli la superficie gaussiana?",
+            s: ["Prima la forma segue la simmetria: cilindro coassiale, scatola simmetrica rispetto al piano, sfera concentrica.", "Poi la superficie deve passare per P.", "Infine l'orientamento: asse del cilindro lungo il filo, basi della scatola parallele al piano."],
+            r: "Gli schemi delle tre superfici sono nei riquadri delle tre simmetrie." }]
+  },
+  errori: {
+    mex: [{ e: "Es. 9c, la trappola", t: "Una scatola cubica senza coperchio ha una carica q al centro. Quanto vale il flusso attraverso le cinque facce?",
+            s: ["Non è q/ε₀: quello è il flusso della superficie chiusa, con il coperchio.", "Non è q/(6ε₀): quello è il flusso di una sola faccia."],
+            r: "Φ = 5q/(6ε₀): il totale meno la faccia mancante." }]
+  }
+};
+
+(function () {
+  for (var id in MID) {
+    var n = BYID[id], m = MID[id];
+    n.qz = m.qz; n.mex = m.mex;
+  }
+  /* the starter example of the sphere keeps only the shell: the full sphere now comes from the test */
+  if (BYID.sfera.ex.length > 1) BYID.sfera.ex.length = 1;
+})();
+/* ===== core: svg helpers, pan/zoom viewport, shared selection, panel, tabs ===== */
+var NS = "http://www.w3.org/2000/svg";
+function $(s, r) { return (r || document).querySelector(s); }
+function se(tag, attrs, parent) {
+  var e = document.createElementNS(NS, tag);
+  if (attrs) for (var k in attrs) e.setAttribute(k, attrs[k]);
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function addGrid(svg, W, H) {
+  var d = se("defs", null, svg);
+  d.innerHTML = '<pattern id="mm-pat-' + svg.id + '" width="100" height="100" patternUnits="userSpaceOnUse">' +
+    '<path d="M20 0V100M40 0V100M60 0V100M80 0V100M0 20H100M0 40H100M0 60H100M0 80H100" stroke="var(--mm-minor)" stroke-width="1" fill="none"/>' +
+    '<path d="M0 0V100M0 0H100" stroke="var(--mm-major)" stroke-width="1.4" fill="none"/></pattern>' +
+    '<marker id="ah-' + svg.id + '" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path d="M0 0L10 5L0 10z" class="mk"/></marker>';
+  se("rect", { x: -4000, y: -4000, width: 9000, height: 9000, "class": "mmgrid", fill: "url(#mm-pat-" + svg.id + ")" }, svg);
+}
+function reduced() { return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches; }
+
+function Viewport(svg, W, H) {
+  var self = this;
+  this.svg = svg; this.W = W; this.H = H; this.X0 = 0; this.Y0 = 0; this.touched = false; this.moved = 0;
+  this.vb = { x: 0, y: 0, w: W, h: H };
+  var ptrs = {}, last = null;
+  function rect() { return svg.getBoundingClientRect(); }
+  this.apply = function () { svg.setAttribute("viewBox", self.vb.x + " " + self.vb.y + " " + self.vb.w + " " + self.vb.h); };
+  this.fit = function (full) {
+    var r = rect(); if (!r.width || !r.height) return;
+    var a = r.width / r.height, w, h, CW = self.W, CH = self.H;
+    if (a > CW / CH) { h = CH; w = h * a; } else { w = CW; h = w / a; }
+    self.fitW = w;
+    var x = self.X0 + (CW - w) / 2, y = self.Y0 + (CH - h) / 2;
+    if (!full && r.width < 700 && self.focus) { w /= 2.6; h /= 2.6; x = self.focus.x - w / 2; y = self.focus.y - h / 2; }
+    self.vb = { x: x, y: y, w: w, h: h }; self.apply();
+  };
+  this.zoomAt = function (f, sx, sy) {
+    var r = rect(), nw = self.vb.w / f;
+    if (nw > self.fitW * 2.2 || nw < self.fitW / 6) return;
+    var nh = self.vb.h / f, px = sx == null ? r.width / 2 : sx, py = sy == null ? r.height / 2 : sy;
+    var wx = self.vb.x + self.vb.w * px / r.width, wy = self.vb.y + self.vb.h * py / r.height;
+    self.vb = { x: wx - nw * px / r.width, y: wy - nh * py / r.height, w: nw, h: nh }; self.touched = true; self.apply();
+  };
+  this.centerOn = function (x, y) {
+    self.vb.x = x - self.vb.w / 2; self.vb.y = y - self.vb.h / 2; self.apply();
+  };
+  svg.addEventListener("wheel", function (ev) {
+    ev.preventDefault(); var r = rect();
+    self.zoomAt(Math.exp(-ev.deltaY * 0.0015), ev.clientX - r.left, ev.clientY - r.top);
+  }, { passive: false });
+  svg.addEventListener("pointerdown", function (ev) {
+    ptrs[ev.pointerId] = { x: ev.clientX, y: ev.clientY }; self.moved = 0; last = null;
+    if (Object.keys(ptrs).length === 1) { last = { x: ev.clientX, y: ev.clientY }; }
+  });
+  svg.addEventListener("pointermove", function (ev) {
+    if (!ptrs[ev.pointerId]) return;
+    var ids = Object.keys(ptrs), r = rect();
+    if (ids.length === 2) {
+      var a = ptrs[ids[0]], b = ptrs[ids[1]], d0 = Math.hypot(a.x - b.x, a.y - b.y);
+      ptrs[ev.pointerId] = { x: ev.clientX, y: ev.clientY };
+      var a2 = ptrs[ids[0]], b2 = ptrs[ids[1]], d1 = Math.hypot(a2.x - b2.x, a2.y - b2.y);
+      if (d0 > 0 && d1 > 0) self.zoomAt(d1 / d0, (a2.x + b2.x) / 2 - r.left, (a2.y + b2.y) / 2 - r.top);
+      self.moved += 10; return;
+    }
+    if (!last) return;
+    var dx = ev.clientX - last.x, dy = ev.clientY - last.y; self.moved += Math.abs(dx) + Math.abs(dy);
+    ptrs[ev.pointerId] = { x: ev.clientX, y: ev.clientY };
+    if (self.moved > 5) {
+      if (self.dragNode && self.dragNode(ev, dx * self.vb.w / r.width, dy * self.vb.h / r.height)) { }
+      else { self.vb.x -= dx * self.vb.w / r.width; self.vb.y -= dy * self.vb.h / r.height; self.touched = true; self.apply(); svg.classList.add("drag"); }
+    }
+    last = { x: ev.clientX, y: ev.clientY };
+  });
+  function up(ev) { delete ptrs[ev.pointerId]; svg.classList.remove("drag"); last = null; if (self.endDrag) self.endDrag(); setTimeout(function () { self.moved = 0; }, 0); }
+  svg.addEventListener("pointerup", up); svg.addEventListener("pointercancel", up); svg.addEventListener("pointerleave", function (ev) { if (ev.pointerType === "mouse") up(ev); });
+}
+
+/* ===== app state ===== */
+var App = { sel: null, view: "concettuale", views: {} };
+var panelBody, panelEl;
+
+function propLine(id, e) {
+  var me = BYID[id], other = BYID[e.a === id ? e.b : e.a];
+  var s = e.a === id ? me.t + " " + e.l + " <u>" + other.t + "</u>" : "<u>" + other.t + "</u> " + e.l + " " + me.t;
+  return '<button class="prop" data-go="' + other.id + '">' + s + "</button>";
+}
+function blk(label, inner) { return '<section class="blk"><h3>' + label + "</h3>" + inner + "</section>"; }
+function paras(list, cls) { return list.map(function (t) { return '<p class="' + (cls || "") + '">' + t + "</p>"; }).join(""); }
+/* ----- questions and exercises with hidden answers ----- */
+function plain(t) { return String(t).replace(/<\/?em>/g, ""); }
+function revealBlock(label, inner) { return '<details class="rev"><summary>' + label + '</summary><div class="revb">' + inner + "</div></details>"; }
+function qzBlock(n) {
+  if (!n.qz) return "";
+  var items = n.qz.map(function (q) {
+    var vf = q.o && q.o[0] === "V", L = vf ? ["V", "F"] : ["A", "B", "C", "D"], T = vf ? ["vero", "falso"] : q.o, opts = "", ans;
+    if (q.o) opts = '<div class="opts">' + T.map(function (t, i) { return '<p class="opt"><span class="ol">' + L[i] + "</span><span>" + t + "</span></p>"; }).join("") + "</div>";
+    ans = q.o ? "Risposta " + L[q.a] + (vf ? "." : ". " + T[q.a]) : q.a;
+    return '<div class="qi"><p class="exq">' + plain(q.q) + "</p>" + opts +
+      revealBlock("Mostra la risposta", '<p class="exr">' + ans + '</p><p class="exs">' + q.w + "</p>") + "</div>";
+  }).join("");
+  return blk("Domande", items);
+}
+function mexBlocks(n) {
+  if (!n.mex) return "";
+  return n.mex.map(function (e, i) {
+    var inner = (e.fig || "") + (e.s ? paras(e.s, "exs") : "") + '<p class="exr">' + e.r + "</p>";
+    return blk(n.mex.length > 1 ? "Prova tu " + (i + 1) : "Prova tu", '<p class="exq">' + plain(e.t) + "</p>" + revealBlock(e.fig ? "Mostra la soluzione" : "Mostra lo svolgimento", inner));
+  }).join("");
+}
+function renderPanel(id) {
+  if (!id) { panelBody.innerHTML = ""; return; }
+  var n = BYID[id], k = KIND[n.kind], lab = n.kind === "hub" ? "Definizione" : k.lab;
+  var h = '<header class="ph"><span class="pk ' + k.cls + '"><span aria-hidden="true">' + k.glyph + "</span>" + lab + "</span><h2>" + n.t + '</h2><p class="en">' + n.en + "</p></header>";
+  if (n.d) h += blk("Che cos'è", paras([n.d]));
+  if (n.q && n.q.length) h += blk(n.kind === "met" ? "Quale strumento" : n.q.length > 1 ? "Formule" : "Formula", n.q.map(function (x) {
+    return '<div class="fq">' + (x.c ? '<span class="cap">' + x.c + "</span>" : "") + '<div class="fm2">' + x.f + "</div></div>";
+  }).join(""));
+  if (n.u) h += blk("Unità di misura", paras([n.u]));
+  if (n.how) h += blk(n.kind === "met" || n.id === "sovr" || n.id === "gauss" ? "Come si procede" : "Passi", n.how.map(function (t, i) { return '<p class="st"><span class="sn" aria-hidden="true">' + (i + 1) + "</span><span>" + t + "</span></p>"; }).join(""));
+  if (n.w) h += blk("Quando vale", paras([n.w]));
+  if (n.x) h += blk(n.kind === "err" ? "Le trappole" : "Da ricordare", paras(n.x));
+  if (n.ex) n.ex.forEach(function (e, i) {
+    h += blk(n.ex.length > 1 ? "Esempio " + (i + 1) : "Esempio", '<p class="exq">' + e.t + "</p>" + (e.s ? paras(e.s, "exs") : "") + '<p class="exr">' + e.r + "</p>");
+  });
+  h += qzBlock(n) + mexBlocks(n);
+  h += blk("Legami", ADJ[id].map(function (e) { return propLine(id, e); }).join(""));
+  panelBody.innerHTML = h;
+}
+App.select = function (id, opts) {
+  App.sel = id; renderPanel(id);
+  for (var k in App.views) if (App.views[k].onSelect) App.views[k].onSelect(id, opts || {});
+  if (panelEl) {
+    if (id) {
+      panelEl.classList.add("open");
+      var vw0 = App.views[App.view], wp = vw0 && vw0.where ? vw0.where(id) : null, fx = 0.3;
+      if (wp) fx = (wp.x - vw0.vp.vb.x) / vw0.vp.vb.w;
+      panelEl.classList.toggle("left", fx > 0.55); panelEl.classList.toggle("right", fx <= 0.55);
+      panelEl.scrollTop = 0;
+    } else panelEl.classList.remove("open");
+  }
+  var vw = App.views[App.view]; if (id && vw && vw.reveal) vw.reveal(id);
+};
+
+function boot() {
+  try { document.documentElement.lang = "it"; } catch (e) {}
+  panelBody = $("#panel-body"); panelEl = $("#panel");
+  panelBody.addEventListener("click", function (ev) {
+    var b = ev.target.closest("[data-go]"); if (b) App.select(b.getAttribute("data-go"), { jump: true });
+  });
+  $("#b-close").addEventListener("click", function () { App.select(null); });
+  $("#foot").innerHTML = "Le due mappe hanno gli stessi contenuti e cambiano solo nella forma. La mappa concettuale segue Novak e Cañas (frasi sugli archi, archi tratteggiati tra rami diversi); la mappa mentale segue Buzan (un colore per ramo, parola chiave sulla linea, frasi sugli archi tratteggiati del concetto scelto). Il pulsante Ripasso nasconde le formule: prova a ricordarle, poi tocca per controllare.";
+
+  var order = ["concettuale", "mentale"];
+  function show(name) {
+    if (order.indexOf(name) < 0) name = "concettuale";
+    App.view = name;
+    order.forEach(function (n) {
+      var on = n === name;
+      $("#v-" + n).toggleAttribute("hidden", !on);
+      $("#tab-" + n).setAttribute("aria-selected", on ? "true" : "false");
+      $("#tab-" + n).tabIndex = on ? 0 : -1;
+    });
+    var vw = App.views[name];
+    if (vw) { if (vw.onShow) vw.onShow(); if (!vw.vp.touched) vw.vp.fit(); if (App.sel && vw.reveal) vw.reveal(App.sel); }
+    try { if (location.hash.slice(1) !== name) history.replaceState(null, "", "#" + name); } catch (e) {}
+  }
+  order.forEach(function (n) {
+    var t = $("#tab-" + n);
+    t.addEventListener("click", function () { show(n); });
+    t.addEventListener("keydown", function (ev) {
+      var i = order.indexOf(n), j = ev.key === "ArrowRight" ? i + 1 : ev.key === "ArrowLeft" ? i - 1 : -1;
+      if (j >= 0 && j < order.length) { ev.preventDefault(); show(order[j]); $("#tab-" + order[j]).focus(); }
+    });
+  });
+  $("#b-in").addEventListener("click", function () { App.views[App.view].vp.zoomAt(1.3); });
+  $("#b-out").addEventListener("click", function () { App.views[App.view].vp.zoomAt(1 / 1.3); });
+  $("#b-fit").addEventListener("click", function () { var vp = App.views[App.view].vp; vp.touched = false; vp.fit(true); });
+  $("#b-ripasso").addEventListener("click", function () {
+    var on = this.getAttribute("aria-pressed") !== "true";
+    this.setAttribute("aria-pressed", on ? "true" : "false");
+    ["concettuale", "mentale"].forEach(function (n) { $("#v-" + n).classList.toggle("ripasso", on); });
+    Array.prototype.forEach.call(document.querySelectorAll(".view .node"), function (g) { g.classList.remove("show"); });
+    if (App.sel) { App.views.concettuale.onSelect(App.sel, {}); App.views.mentale.onSelect(App.sel, {}); }
+  });
+  document.addEventListener("keydown", function (ev) { if (ev.key === "Escape" && App.sel) App.select(null); });
+
+  buildConcept(); buildMind();
+  var h = ""; try { h = location.hash.slice(1); } catch (e) {}
+  show(h);
+  var rt; var ro = window.ResizeObserver ? new ResizeObserver(function () {
+    clearTimeout(rt); rt = setTimeout(function () { var vw = App.views[App.view]; if (vw && !vw.vp.touched) vw.vp.fit(); }, 60);
+  }) : null;
+  if (ro) ro.observe($("#stage"));
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { for (var k in App.views) if (App.views[k].relayout) App.views[k].relayout(); });
+}
+/* ===== view 1: concept map (Novak & Cañas): the proposition runs along each arc ===== */
+function buildConcept() {
+  var svg = $("#v-concettuale"), W = 2600, H = 1700, CX = W / 2, CY = H / 2;
+  addGrid(svg, W, H);
+  var RING = [null, [520, 330], [860, 540], [1060, 680], [1130, 740]];   /* only used to place the nodes */
+  var gD = se("defs", null, svg), gE = se("g", null, svg), gN = se("g", null, svg);
+  var pos = {}, els = {}, edgeEls = [];
+
+  function size(n) {
+    if (n.kind === "hub") return { w: 330, h: 146, hub: true };
+    var L = n.f.split("\n"), tw = n.t.length * 11.3 + 24, fw = 0;
+    L.forEach(function (s) { fw = Math.max(fw, s.length * 9.2); });
+    return { w: Math.max(tw, fw) + 36, h: 48 + 24 * L.length, L: L };
+  }
+  NODES.forEach(function (n) {
+    var rr = n.ring, a = (n.ang || 0) * Math.PI / 180;
+    pos[n.id] = rr === 0 ? { x: CX, y: CY } : { x: CX + RING[rr][0] * Math.cos(a), y: CY + RING[rr][1] * Math.sin(a) };
+    var s = size(n), k = KIND[n.kind];
+    var g = se("g", { "class": "node " + k.cls, tabindex: 0, role: "button", "data-id": n.id,
+      "aria-label": n.t + ", " + (n.kind === "hub" ? "definizione" : k.lab.toLowerCase()) + ". " + n.f.replace("\n", ", ") }, gN);
+    var p = pos[n.id];
+    g.setAttribute("transform", "translate(" + p.x.toFixed(1) + "," + p.y.toFixed(1) + ")");
+    if (s.hub) {
+      se("ellipse", { "class": "box", rx: s.w / 2, ry: s.h / 2 }, g);
+      var t1 = se("text", { "class": "t", y: -18, "text-anchor": "middle" }, g); t1.textContent = n.t; t1.style.fontSize = "28px";
+      var t2 = se("text", { "class": "f", y: 28, "text-anchor": "middle" }, g); t2.textContent = n.f; t2.style.fontSize = "36px";
+    } else {
+      se("rect", { "class": "box", x: -s.w / 2, y: -s.h / 2, width: s.w, height: s.h, rx: n.kind === "met" ? 6 : 12 }, g);
+      var ty = -s.h / 2 + 31;
+      var t = se("text", { "class": "t", x: 0, y: ty, "text-anchor": "middle" }, g);
+      var gs = se("tspan", { "class": "g" }, t); gs.textContent = k.glyph + " "; gs.setAttribute("aria-hidden", "true");
+      var tt = se("tspan", null, t); tt.textContent = n.t;
+      s.L.forEach(function (ln, i) { var f = se("text", { "class": "f", x: 0, y: ty + 27 + i * 24, "text-anchor": "middle" }, g); f.textContent = ln; });
+      var q = se("text", { "class": "f qmark", x: 0, y: ty + 27, "text-anchor": "middle" }, g); q.textContent = "?";
+    }
+    g.__s = s; els[n.id] = g;
+    g.addEventListener("click", function () { if (App.views.concettuale.vp.moved > 5) return; App.select(App.sel === n.id ? null : n.id); });
+    g.addEventListener("keydown", function (ev) { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); App.select(n.id); } });
+    g.addEventListener("mouseenter", function () { focusOn(n.id); });
+    g.addEventListener("mouseleave", function () { focusOn(App.sel); });
+    g.addEventListener("focus", function () { focusOn(n.id); });
+    g.addEventListener("blur", function () { focusOn(App.sel); });
+  });
+
+  function edge(p, s, q) {   /* point on the boundary of node p heading toward q */
+    var dx = q.x - p.x, dy = q.y - p.y, t;
+    if (s.hub) t = 1 / Math.sqrt(Math.pow(dx / (s.w / 2), 2) + Math.pow(dy / (s.h / 2), 2));
+    else t = 1 / Math.max(Math.abs(dx) / (s.w / 2), Math.abs(dy) / (s.h / 2));
+    return { x: p.x + dx * t, y: p.y + dy * t };
+  }
+  function split(txt) {
+    var mid = txt.length / 2, best = -1, bd = 1e9;
+    for (var i = 0; i < txt.length; i++) if (txt[i] === " " && Math.abs(i - mid) < bd) { bd = Math.abs(i - mid); best = i; }
+    return best < 0 ? [txt] : [txt.slice(0, best), txt.slice(best + 1)];
+  }
+  EDGES.forEach(function (e, i) {
+    var pa = pos[e.a], pb = pos[e.b], sa = els[e.a].__s, sb = els[e.b].__s;
+    var dx = pb.x - pa.x, dy = pb.y - pa.y, len = Math.hypot(dx, dy), bend = (e.bend != null ? e.bend : e.x ? 0.2 : 0.07) * len;
+    var nx = -dy / len, ny = dx / len, c = { x: (pa.x + pb.x) / 2 + nx * bend, y: (pa.y + pb.y) / 2 + ny * bend };
+    var p0 = edge(pa, sa, c), p1 = edge(pb, sb, c);
+    var ux = p1.x - c.x, uy = p1.y - c.y, ul = Math.hypot(ux, uy); ux /= ul; uy /= ul;
+    var tip = { x: p1.x + ux * 3, y: p1.y + uy * 3 }, bx = tip.x - ux * 13, by = tip.y - uy * 13;
+    var f1 = function (n) { return n.toFixed(1); };
+    var g = se("g", { "class": "edge" + (e.x ? " cross" : ""), "data-a": e.a, "data-b": e.b }, gE);
+    se("path", { d: "M" + f1(p0.x) + "," + f1(p0.y) + " Q" + f1(c.x) + "," + f1(c.y) + " " + f1(bx) + "," + f1(by) }, g);
+    se("polygon", { "class": "head", points: f1(tip.x) + "," + f1(tip.y) + " " + f1(bx - uy * 5.5) + "," + f1(by + ux * 5.5) + " " + f1(bx + uy * 5.5) + "," + f1(by - ux * 5.5) }, g);
+    /* the label runs on a copy of the curve that always reads left to right */
+    var ltr = p0.x <= bx, id = "lp-" + i;
+    se("path", { id: id, d: ltr ? "M" + f1(p0.x) + "," + f1(p0.y) + " Q" + f1(c.x) + "," + f1(c.y) + " " + f1(bx) + "," + f1(by) : "M" + f1(bx) + "," + f1(by) + " Q" + f1(c.x) + "," + f1(c.y) + " " + f1(p0.x) + "," + f1(p0.y) }, gD);
+    var near0 = e.b === "campo" ? 0.4 : e.a === "campo" ? 0.6 : 0.5;     /* hub edges: label nearer the outer node */
+    var at = e.at != null ? e.at : (ltr ? near0 : 1 - near0);
+    if (e.b === "campo" || e.a === "campo") { if (!ltr && e.at == null) at = 1 - near0; }
+    var o = { g: g, e: e, id: id, at: at, texts: [] };
+    for (var j = 0; j < 2; j++) {
+      var t = se("text", { "class": "elab" }, g), tp = se("textPath", { href: "#" + id, startOffset: (at * 100).toFixed(0) + "%", "text-anchor": "middle" }, t);
+      o.texts.push({ t: t, tp: tp });
+    }
+    edgeEls.push(o);
+  });
+  function fitLabels() {
+    edgeEls.forEach(function (o) {
+      var lp = document.getElementById(o.id), len = lp.getTotalLength(), avail = len * 0.8, txt = o.e.l;
+      var T = o.texts; T[1].t.style.display = "none"; T[0].t.style.display = "";
+      function set(lines, fs, dy) {
+        T[0].t.style.fontSize = T[1].t.style.fontSize = fs + "px";
+        T[0].tp.textContent = lines[0]; T[0].t.setAttribute("dy", dy[0]);
+        if (lines[1]) { T[1].t.style.display = ""; T[1].tp.textContent = lines[1]; T[1].t.setAttribute("dy", dy[1]); } else T[1].t.style.display = "none";
+        var w = T[0].tp.getComputedTextLength(); if (lines[1]) w = Math.max(w, T[1].tp.getComputedTextLength()); return w;
+      }
+      var fs = 16.5, w = set([txt], fs, [-7]);
+      if (w > avail) { var ls = split(txt); w = set(ls, fs, [-7, 14]); }
+      while (w > avail && fs > 13.5) { fs -= 0.5; w = set(split(txt), fs, [-7, 14]); }
+    });
+  }
+  fitLabels();
+
+  function focusOn(id) {
+    svg.classList.toggle("has-focus", !!id);
+    var near = {}; if (id) { near[id] = 1; ADJ[id].forEach(function (e) { near[e.a] = 1; near[e.b] = 1; }); }
+    for (var k in els) els[k].classList.toggle("near", !!near[k]);
+    edgeEls.forEach(function (o) { o.g.classList.toggle("on", !!id && (o.e.a === id || o.e.b === id)); });
+  }
+  var vw = App.views.concettuale = {
+    vp: new Viewport(svg, W, H),
+    where: function (id) { return pos[id]; },
+    relayout: fitLabels,
+    onSelect: function (id) {
+      focusOn(id);
+      for (var k in els) els[k].classList.toggle("sel", k === id);
+      if (id && svg.classList.contains("ripasso")) els[id].classList.add("show");
+    },
+    reveal: function (id) {
+      var vp = vw.vp, p = pos[id], r = svg.getBoundingClientRect(); if (!r.width) return;
+      var m = 0.12;
+      if (p.x < vp.vb.x + vp.vb.w * m || p.x > vp.vb.x + vp.vb.w * (1 - m) || p.y < vp.vb.y + vp.vb.h * m || p.y > vp.vb.y + vp.vb.h * (1 - m)) { vp.centerOn(p.x, p.y); vp.touched = true; }
+    }
+  };
+  svg.addEventListener("click", function (ev) { if (ev.target === svg || ev.target.classList.contains("mmgrid")) { if (vw.vp.moved <= 5) App.select(null); } });
+  vw.pos = pos; vw.vp.focus = { x: CX, y: CY };
+  (function () {
+    var x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+    NODES.forEach(function (n) { var p = pos[n.id], sz = els[n.id].__s; x0 = Math.min(x0, p.x - sz.w / 2); x1 = Math.max(x1, p.x + sz.w / 2); y0 = Math.min(y0, p.y - sz.h / 2); y1 = Math.max(y1, p.y + sz.h / 2); });
+    vw.vp.X0 = x0 - 50; vw.vp.Y0 = y0 - 40; vw.vp.W = x1 - x0 + 100; vw.vp.H = y1 - y0 + 90;
+  })();
+}
+/* ===== view 2: mind map (Buzan): central image, one colour per branch, keyword sits on its line ===== */
+function buildMind() {
+  var svg = $("#v-mentale"), W = 2400, H = 1500, CX = W / 2, CY = H / 2;
+  addGrid(svg, W, H);
+  var gB = se("g", null, svg), gA = se("g", null, svg), gK = se("g", null, svg), gL = se("g", null, svg), gC = se("g", null, svg);
+  var kws = {}, anchor = {}, bb = { x0: 1e9, y0: 1e9, x1: -1e9, y1: -1e9 };
+  function grow(x, y) { bb.x0 = Math.min(bb.x0, x); bb.x1 = Math.max(bb.x1, x); bb.y0 = Math.min(bb.y0, y); bb.y1 = Math.max(bb.y1, y); }
+
+  function pol(rx, ry, deg) { var a = deg * Math.PI / 180; return { x: CX + rx * Math.cos(a), y: CY + ry * Math.sin(a) }; }
+  function taper(p0, c, p1, w0, w1) {
+    var L = [], R = [], N = 24;
+    for (var i = 0; i <= N; i++) {
+      var t = i / N, x = (1 - t) * (1 - t) * p0.x + 2 * (1 - t) * t * c.x + t * t * p1.x, y = (1 - t) * (1 - t) * p0.y + 2 * (1 - t) * t * c.y + t * t * p1.y;
+      var dx = 2 * (1 - t) * (c.x - p0.x) + 2 * t * (p1.x - c.x), dy = 2 * (1 - t) * (c.y - p0.y) + 2 * t * (p1.y - c.y), d = Math.hypot(dx, dy) || 1, w = (w0 + (w1 - w0) * t) / 2;
+      L.push((x - dy / d * w).toFixed(1) + "," + (y + dx / d * w).toFixed(1)); R.push((x + dy / d * w).toFixed(1) + "," + (y - dx / d * w).toFixed(1));
+    }
+    return "M" + L.join("L") + "L" + R.reverse().join("L") + "Z";
+  }
+
+  /* central image: a charge with its radial field lines */
+  var cg = se("g", { "class": "mm-centre" }, gC);
+  for (var i = 0; i < 20; i++) {
+    var a = i * 18 * Math.PI / 180, x0 = CX + 108 * Math.cos(a), y0 = CY + 108 * Math.sin(a), x1 = CX + 142 * Math.cos(a), y1 = CY + 142 * Math.sin(a);
+    se("line", { x1: x0, y1: y0, x2: x1, y2: y1, stroke: "var(--hub)", "stroke-width": 3, "stroke-linecap": "round" }, cg);
+    se("polygon", { points: (x1 + 8 * Math.cos(a)).toFixed(1) + "," + (y1 + 8 * Math.sin(a)).toFixed(1) + " " + (x1 - 4 * Math.sin(a)).toFixed(1) + "," + (y1 + 4 * Math.cos(a)).toFixed(1) + " " + (x1 + 4 * Math.sin(a)).toFixed(1) + "," + (y1 - 4 * Math.cos(a)).toFixed(1), fill: "var(--hub)" }, cg);
+  }
+  var hub = se("g", { "class": "node k-hub", tabindex: 0, role: "button", "data-id": "campo", "aria-label": "Campo elettrico, definizione. E = F / q₀" }, gC);
+  hub.setAttribute("transform", "translate(" + CX + "," + CY + ")");
+  se("circle", { "class": "box", r: 96 }, hub);
+  var h1 = se("text", { "class": "t", y: -17, "text-anchor": "middle" }, hub); h1.textContent = "Campo"; h1.style.fontSize = "26px";
+  var h2 = se("text", { "class": "t", y: 11, "text-anchor": "middle" }, hub); h2.textContent = "elettrico"; h2.style.fontSize = "26px";
+  var h3 = se("text", { "class": "f", y: 46, "text-anchor": "middle" }, hub); h3.textContent = "E = F / q₀"; h3.style.fontSize = "27px";
+  kws.campo = hub; anchor.campo = { x: CX, y: CY };
+  hub.addEventListener("click", function () { if (vw0.vp.moved > 5) return; App.select(App.sel === "campo" ? null : "campo"); });
+  hub.addEventListener("keydown", function (ev) { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); App.select("campo"); } });
+
+  BRANCHES.forEach(function (b, bi) {
+    var col = "var(" + b.css + ")", a = b.ang * Math.PI / 180;
+    var p0 = pol(80, 80, b.ang), p1 = pol(470, 320, b.ang);
+    var bend = (bi % 2 ? -1 : 1) * 40, c = { x: (p0.x + p1.x) / 2 - Math.sin(a) * bend, y: (p0.y + p1.y) / 2 + Math.cos(a) * bend };
+    se("path", { d: taper(p0, c, p1, 34, 12), fill: col }, gB);
+    /* main label as a pill at the end of the main branch */
+    var lw = b.name.length * 13 + 38, lg = se("g", { "class": "mainlab", transform: "translate(" + p1.x.toFixed(1) + "," + p1.y.toFixed(1) + ")" }, gL);
+    se("rect", { x: -lw / 2, y: -23, width: lw, height: 46, rx: 23, fill: col }, lg);
+    var lt = se("text", { y: 8, "text-anchor": "middle", "class": "mltxt" }, lg); lt.textContent = b.name;
+    /* sub-branches */
+    var n = b.items.length, span = Math.min(b.span || 70, 26 * (n - 1)), half = span / 2;
+    b.items.forEach(function (id, i) {
+      var node = BYID[id], k = KIND[node.kind];
+      var ang = n === 1 ? b.ang : b.ang - half + span * i / (n - 1);
+      var s = pol(i % 2 ? 850 : 950, i % 2 ? 560 : 630, ang);
+      var right = Math.cos(ang * Math.PI / 180) >= 0;
+      var FL = node.f.split("\n"), fw = 0; FL.forEach(function (l) { fw = Math.max(fw, l.length * 9.4); });
+      var tw = Math.max(node.t.length * 13.2 + 34, fw + 26), x2 = right ? s.x + tw : s.x - tw;
+      var cc = { x: (p1.x + s.x) / 2 + (s.y - p1.y) * 0.12, y: (p1.y + s.y) / 2 - (s.x - p1.x) * 0.12 };
+      var g = se("g", { "class": "kw node " + k.cls, tabindex: 0, role: "button", "data-id": id, "aria-label": node.t + ", " + (k.lab || "").toLowerCase() }, gK);
+      se("path", { d: taper(p1, cc, s, 9, 4.5), fill: col, "class": "sub" }, gK);
+      var line = se("line", { x1: s.x, y1: s.y, x2: x2, y2: s.y, stroke: col, "stroke-width": 4.5, "stroke-linecap": "round", "class": "ul" }, g);
+      if (node.kind === "cas") line.setAttribute("stroke-dasharray", "9 6");
+      se("rect", { "class": "hit", x: Math.min(s.x, x2) - 6, y: s.y - 36, width: tw + 12, height: 54 + 26 * FL.length, rx: 8 }, g);
+      var tx = se("text", { x: right ? s.x + 9 : s.x - 9, y: s.y - 11, "text-anchor": right ? "start" : "end", "class": "kwt" }, g);
+      var gs = se("tspan", { "class": "kwg" }, tx); gs.textContent = k.glyph + " "; gs.setAttribute("aria-hidden", "true");
+      var ts = se("tspan", null, tx); ts.textContent = node.t;
+      FL.forEach(function (ln, li) {
+        var ft = se("text", { "class": "f", x: right ? s.x + 9 : s.x - 9, y: s.y + 29 + li * 26, "text-anchor": right ? "start" : "end" }, g); ft.textContent = ln;
+      });
+      var qm = se("text", { "class": "f qmark", x: right ? s.x + 9 : s.x - 9, y: s.y + 29, "text-anchor": right ? "start" : "end" }, g); qm.textContent = "?";
+      grow(s.x, s.y - 34); grow(x2, s.y + 14 + 26 * FL.length); kws[id] = g; anchor[id] = { x: right ? s.x + tw / 2 : s.x - tw / 2, y: s.y - 12 };
+      g.addEventListener("click", function () { if (vw0.vp.moved > 5) return; App.select(App.sel === id ? null : id); });
+      g.addEventListener("keydown", function (ev) { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); App.select(id); } });
+      g.addEventListener("mouseenter", function () { focusOn(id); });
+      g.addEventListener("mouseleave", function () { focusOn(App.sel); });
+      g.addEventListener("focus", function () { focusOn(id); });
+      g.addEventListener("blur", function () { focusOn(App.sel); });
+    });
+  });
+  hub.addEventListener("mouseenter", function () { focusOn("campo"); });
+  hub.addEventListener("mouseleave", function () { focusOn(App.sel); });
+
+  /* associations: dashed arrows drawn only for the focused keyword (Buzan's "arrows between related ideas") */
+  function focusOn(id) {
+    svg.classList.toggle("has-focus", !!id);
+    while (gA.firstChild) gA.removeChild(gA.firstChild);
+    var near = {}; if (id) { near[id] = 1; ADJ[id].forEach(function (e) { near[e.a] = 1; near[e.b] = 1; }); }
+    for (var k in kws) kws[k].classList.toggle("near", !!near[k]);
+    if (!id) return;
+    ADJ[id].forEach(function (e) {
+      var o = e.a === id ? e.b : e.a, p = anchor[e.a], q = anchor[e.b];
+      var dx = q.x - p.x, dy = q.y - p.y, d = Math.hypot(dx, dy), c = { x: (p.x + q.x) / 2 - dy * 0.18, y: (p.y + q.y) / 2 + dx * 0.18 };
+      var sh = function (pt, to, r) { var ux = to.x - pt.x, uy = to.y - pt.y, l = Math.hypot(ux, uy) || 1; return { x: pt.x + ux / l * r, y: pt.y + uy / l * r }; };
+      var s0 = sh(p, c, e.a === "campo" ? 100 : 30), s1 = sh(q, c, e.b === "campo" ? 100 : 30);
+      var ux = s1.x - c.x, uy = s1.y - c.y, ul = Math.hypot(ux, uy) || 1; ux /= ul; uy /= ul;
+      var bx = s1.x - ux * 12, by = s1.y - uy * 12;
+      se("path", { d: "M" + s0.x.toFixed(1) + "," + s0.y.toFixed(1) + " Q" + c.x.toFixed(1) + "," + c.y.toFixed(1) + " " + bx.toFixed(1) + "," + by.toFixed(1), "class": "assoc" }, gA);
+      se("polygon", { "class": "assoc-h", points: s1.x.toFixed(1) + "," + s1.y.toFixed(1) + " " + (bx - uy * 5).toFixed(1) + "," + (by + ux * 5).toFixed(1) + " " + (bx + uy * 5).toFixed(1) + "," + (by - ux * 5).toFixed(1) }, gA);
+      var lt2 = se("text", { "class": "assoc-l", x: ((p.x + 2 * c.x + q.x) / 4).toFixed(1), y: ((p.y + 2 * c.y + q.y) / 4 - 6).toFixed(1), "text-anchor": "middle" }, gA);
+      lt2.textContent = e.l;
+    });
+  }
+  var vw0 = App.views.mentale = {
+    vp: new Viewport(svg, W, H),
+    where: function (id) { return anchor[id]; },
+    onSelect: function (id) { focusOn(id); for (var k in kws) { kws[k].classList.toggle("sel", k === id); if (k === id && svg.classList.contains("ripasso") && k !== "campo") kws[k].classList.add("show"); } },
+    reveal: function (id) {
+      var p = anchor[id], vp = vw0.vp, m = 0.1; if (!p) return;
+      if (p.x < vp.vb.x + vp.vb.w * m || p.x > vp.vb.x + vp.vb.w * (1 - m) || p.y < vp.vb.y + vp.vb.h * m || p.y > vp.vb.y + vp.vb.h * (1 - m)) { vp.centerOn(p.x, p.y); vp.touched = true; }
+    }
+  };
+  vw0.vp.focus = { x: CX, y: CY };
+  vwBounds();
+  function vwBounds() { vw0.vp.X0 = bb.x0 - 40; vw0.vp.Y0 = bb.y0 - 30; vw0.vp.W = bb.x1 - bb.x0 + 80; vw0.vp.H = bb.y1 - bb.y0 + 60; }
+  svg.addEventListener("click", function (ev) { if (ev.target === svg || ev.target.classList.contains("mmgrid")) { if (vw0.vp.moved <= 5) App.select(null); } });
+}
+
+boot();
+</script>
+
+</body>
+</html>
