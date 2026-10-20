@@ -1146,10 +1146,10 @@ function needle(g,x,y,ang,l,w){
   var linesB=[],linesE=[];
   [0.5,0.8,1.15,1.6,-0.5,-0.8,-1.15,-1.6].forEach(function(v0){
     linesB.push(trace(FB,0,v0,1,function(u,v,nu,nv,n){return n>5&&u<0&&nu>=0;}));
-    linesB.push(trace(FB,0,v0,-1,function(u,v,nu,nv,n){return n>5&&u>0&&nu<=0;}));
+    linesB.push(trace(FB,0,v0,-1,function(u,v,nu,nv,n){return n>5&&u>0&&nu<=0;}).reverse());
   });
   [0.16,0.28,-0.16,-0.28].forEach(function(v0){linesB.push(trace(FB,0,v0,1,function(u,v,nu,nv,n){return n>5&&u<0&&nu>=0;}));});
-  linesB.push(trace(FB,0,0,1,null));linesB.push(trace(FB,0,0,-1,null));
+  linesB.push(trace(FB,0,0,1,null));linesB.push(trace(FB,0,0,-1,null).reverse());
   for(var q=0;q<20;q++){var an=q*2*Math.PI/20;linesE.push(trace(FE,1+0.1*Math.cos(an),0.1*Math.sin(an),1,function(u,v,nu,nv){return Math.hypot(nu+1,nv)<0.09;}));}
   var mode=0,showL=false,items=[];
   function X(u){return cx+u*S;}function Y(v){return cy-v*S;}
@@ -1223,10 +1223,10 @@ function needle(g,x,y,ang,l,w){
     LL=[];
     [0.5,0.8,1.15,1.6,-0.5,-0.8,-1.15,-1.6].forEach(function(v0){
       LL.push(trace(0,v0,1,function(u,v,nu,nv,n){return n>5&&u<0&&nu>=0;}));
-      LL.push(trace(0,v0,-1,function(u,v,nu,nv,n){return n>5&&u>0&&nu<=0;}));
+      LL.push(trace(0,v0,-1,function(u,v,nu,nv,n){return n>5&&u>0&&nu<=0;}).reverse());
     });
     [0.16,0.28,-0.16,-0.28].forEach(function(v0){LL.push(trace(0,v0,1,function(u,v,nu,nv,n){return n>5&&u<0&&nu>=0;}));});
-    LL.push(trace(0,0,1,null));LL.push(trace(0,0,-1,null));
+    LL.push(trace(0,0,1,null));LL.push(trace(0,0,-1,null).reverse());
   }
   function drawLines(){
     g.save();g.translate(X(mx),Y(my));g.rotate(-th);
