@@ -1,0 +1,16 @@
+---
+title: "Midterm Test"
+subtitle: "Test e soluzioni"
+date: 2026-10-14
+tipo: "Test"
+categories: [Fisica]
+---
+
+## Materiali e indicazioni per lo studio
+
+[Test Versione A (PDF) ↗](test-A.pdf){target="_blank" .btn .btn-outline-primary}
+[Test Versione B (PDF) ↗](test-B.pdf){target="_blank" .btn .btn-outline-primary}
+[Test Versione C (PDF) ↗](test-C.pdf){target="_blank" .btn .btn-outline-primary}
+[Soluzioni Versione A (PDF) ↗](soluzioni-A.pdf){target="_blank" .btn .btn-outline-primary}
+[Soluzioni Versione B (PDF) ↗](soluzioni-B.pdf){target="_blank" .btn .btn-outline-primary}
+[Soluzioni Versione C (PDF) ↗](soluzioni-C.pdf){target="_blank" .btn .btn-outline-primary}
