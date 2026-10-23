@@ -1,0 +1,11 @@
+---
+title: "Esercizi di calorimetria"
+subtitle: "Esercizi svolti"
+date: 2026-10-23
+tipo: "Practice"
+categories: [Fisica]
+---
+
+## Materiali e indicazioni per lo studio
+
+[Esercizi di calorimetria (PDF) ↗](esercizi-calorimetria.pdf){target="_blank" .btn .btn-outline-primary}
