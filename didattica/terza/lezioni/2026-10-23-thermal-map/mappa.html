@@ -1,0 +1,1144 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Thermal physics: Temperature, particles & mixtures</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=STIX+Two+Text:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+/* Layout concept: one stage, two views of the same 20 concepts, Thermal physics at the hub.
+   Rings = number of links away from the hub. "Always valid" nodes are solid, "valid only under a condition" nodes are dashed.
+   Ground is millimetre paper, the paper of the Paper 6 graph. */
+:root {
+  --bg: #E8EDED;
+  --mm-minor: rgba(21, 38, 45, .07);
+  --mm-major: rgba(21, 38, 45, .15);
+  --ink: #15262D;
+  --muted: #4B5E66;
+  --panel: #F4F7F6;
+  --blk: #DEE7E6;
+  --line: #B7C5C8;
+  --edge: #5F767F;
+  --hub: #0A3F4B;      --hub-on: #FFFFFF;
+  --al: #0D6575;       --al-on: #FFFFFF;
+  --ca: #8F4A00;       --ca-bg: #FBE6C6;
+  --qt: #55459A;       --qt-bg: #E5E0F4;
+  --rp: #2F6285;       --rp-bg: #D9E7F1;
+  --me: #15262D;       --me-bg: #F6F9F8;
+  --er: #A3254C;       --er-bg: #F8DAE3;
+  --sel: #15262D;
+  --halo: #E8EDED;
+  --b1: #0D6575; --b2: #7A4FA3; --b3: #A85600; --b4: #2F7D4F; --b5: #A3254C; --b6: #3F5C8C; --bon: #FFFFFF;
+  --tb: #7A8A90;
+  --f-body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-head: "Bricolage Grotesque", "Atkinson Hyperlegible", system-ui, sans-serif;
+  --f-math: "STIX Two Text", "Cambria Math", "Times New Roman", serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0F1A1F; --mm-minor: rgba(220, 238, 242, .06); --mm-major: rgba(220, 238, 242, .13);
+    --ink: #E3EEF0; --muted: #A6BAC0; --panel: #172830; --blk: #0E1A20; --line: #2F4650; --edge: #8AA5AE;
+    --hub: #7FD6E6; --hub-on: #021419; --al: #4DB6C8; --al-on: #03171C;
+    --ca: #F2B766; --ca-bg: #3B2A12; --qt: #B9AAF2; --qt-bg: #28234A;
+    --rp: #8DBCE0; --rp-bg: #16303F; --me: #E3EEF0; --me-bg: #172830;
+    --er: #F59BB5; --er-bg: #3B1825; --sel: #FFFFFF; --halo: #0F1A1F;
+    --b1: #4DB6C8; --b2: #B79BE0; --b3: #F2B766; --b4: #7BD09B; --b5: #F59BB5; --b6: #9BB4E0; --bon: #07161B; --tb: #8A9CA3;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0F1A1F; --mm-minor: rgba(220, 238, 242, .06); --mm-major: rgba(220, 238, 242, .13);
+  --ink: #E3EEF0; --muted: #A6BAC0; --panel: #172830; --blk: #0E1A20; --line: #2F4650; --edge: #8AA5AE;
+  --hub: #7FD6E6; --hub-on: #021419; --al: #4DB6C8; --al-on: #03171C;
+  --ca: #F2B766; --ca-bg: #3B2A12; --qt: #B9AAF2; --qt-bg: #28234A;
+  --rp: #8DBCE0; --rp-bg: #16303F; --me: #E3EEF0; --me-bg: #172830;
+  --er: #F59BB5; --er-bg: #3B1825; --sel: #FFFFFF; --halo: #0F1A1F;
+  --b1: #4DB6C8; --b2: #B79BE0; --b3: #F2B766; --b4: #7BD09B; --b5: #F59BB5; --b6: #9BB4E0; --bon: #07161B; --tb: #8A9CA3;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 16px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 14px 24px; }
+.app { max-width: 1480px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--sel); outline-offset: 2px; }
+
+/* header */
+.head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 6px 24px; }
+h1 { font-weight: 700; font-size: clamp(1.35rem, 2.6vw, 1.9rem); line-height: 1.12; margin: 0; letter-spacing: -.01em; text-wrap: balance; }
+.head p { margin: 0; color: var(--muted); font-size: .92rem; max-width: 60ch; }
+
+/* tabs */
+.bar { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; justify-content: space-between; }
+.tabs { max-width: 100%; overflow-x: auto; display: flex; gap: 4px; padding: 3px; background: var(--panel); border: 1.5px solid var(--line); border-radius: 10px; }
+.tab { border: 0; background: transparent; padding: 7px 14px; border-radius: 7px; cursor: pointer; font-weight: 700; font-size: .92rem; color: var(--muted); min-height: 38px; }
+.tab small { display: block; font-weight: 400; font-size: .72rem; line-height: 1.1; }
+.tab[aria-selected="true"] { background: var(--ink); color: var(--bg); }
+.tab[aria-selected="true"] small { color: inherit; opacity: .8; }
+@media (max-width: 560px) { .tab small { display: none; } .tab { padding: 7px 10px; font-size: .86rem; } .btn { padding: 6px 10px; } }
+.tools { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.btn { background: var(--panel); border: 1.5px solid var(--line); border-radius: 8px; padding: 6px 12px; cursor: pointer; font-weight: 700; font-size: .88rem; min-height: 38px; min-width: 38px; }
+.btn:hover { border-color: var(--ink); }
+.btn[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.btn[hidden] { display: none; }
+
+/* legend */
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 0; padding: 0; list-style: none; font-size: .84rem; color: var(--muted); }
+.legend li { display: inline-flex; align-items: center; gap: 7px; }
+.legend svg { width: 30px; height: 18px; flex: none; }
+.legend b { color: var(--ink); font-weight: 700; }
+
+/* stage + panel */
+.main { position: relative; }
+.stage { position: relative; border: 1.5px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--bg); height: clamp(440px, 78vh, 900px); }
+.stage svg.view { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; cursor: grab; display: block; user-select: none; -webkit-user-select: none; }
+.stage svg.view.drag { cursor: grabbing; }
+.stage svg.view[hidden] { display: none; }
+.hint { position: absolute; left: 10px; bottom: 8px; margin: 0; font-size: .76rem; color: var(--muted); background: var(--bg); padding: 2px 8px; border-radius: 6px; max-width: calc(100% - 20px); pointer-events: none; }
+
+/* svg parts */
+.mmgrid { fill: url(#mm-pat); pointer-events: none; }
+.ringline { fill: none; stroke: var(--edge); stroke-opacity: .35; stroke-width: 1.4; stroke-dasharray: 2 7; stroke-linecap: round; pointer-events: none; }
+.ringlab { font: 700 15px var(--f-body); fill: var(--muted); letter-spacing: .04em; paint-order: stroke; stroke: var(--halo); stroke-width: 5px; text-anchor: middle; pointer-events: none; }
+.edge path { fill: none; stroke: var(--edge); stroke-width: 1.8; transition: opacity .15s, stroke-width .15s; }
+.edge.cross path { stroke-dasharray: 7 5; }
+.edge.cross .elab { font-style: italic; }
+.edge .elab { font: 400 15px var(--f-body); fill: var(--ink); paint-order: stroke; stroke: var(--halo); stroke-width: 6px; stroke-linejoin: round; text-anchor: middle; pointer-events: none; }
+.edge .head { fill: var(--edge); stroke: none; }
+.edge.on path { stroke: var(--ink); stroke-width: 2.8; }
+.edge.on .head { fill: var(--ink); }
+.view.has-focus .edge:not(.on) { opacity: .16; }
+.view.has-focus .node:not(.near) { opacity: .34; }
+.node { cursor: pointer; }
+.node .box { stroke-width: 2.2; transition: stroke-width .12s; }
+.node .t { font: 700 20px var(--f-body); }
+.node .f { font: italic 400 18.5px var(--f-math); }
+.node .g { font: 700 15px var(--f-body); }
+.node.sel .box, .node:focus-visible .box { stroke: var(--sel); stroke-width: 4; }
+.node:focus { outline: none; }
+.node.k-al .box { fill: var(--al); stroke: var(--al); } .node.k-al text { fill: var(--al-on); }
+.node.k-ca .box { fill: var(--ca-bg); stroke: var(--ca); stroke-dasharray: 6 4; } .node.k-ca text { fill: var(--ink); } .node.k-ca .g { fill: var(--ca); }
+.node.k-qt .box { fill: var(--qt-bg); stroke: var(--qt); } .node.k-qt text { fill: var(--ink); } .node.k-qt .g { fill: var(--qt); }
+.node.k-rp .box { fill: var(--rp-bg); stroke: var(--rp); } .node.k-rp text { fill: var(--ink); } .node.k-rp .g { fill: var(--rp); }
+.node.k-me .box { fill: var(--me-bg); stroke: var(--me); stroke-width: 3; } .node.k-me text { fill: var(--ink); }
+.node.k-er .box { fill: var(--er-bg); stroke: var(--er); } .node.k-er text { fill: var(--ink); } .node.k-er .g { fill: var(--er); }
+.node.k-tb .box { fill: transparent; stroke: var(--tb); stroke-dasharray: 3 5; stroke-width: 2.2; } .node.k-tb text { fill: var(--muted); } .node.k-tb .g { fill: var(--tb); }
+.node.k-tb .qmark { display: none !important; }
+.pk.k-tb { background: transparent; color: var(--muted); border: 1.5px dotted var(--tb); }
+.ext { margin: 0; font-size: .86rem; color: var(--ca); }
+.dt { border-collapse: collapse; font-size: .95rem; }
+.dt th, .dt td { border: 1px solid var(--line); padding: 4px 10px; text-align: center; font-weight: 400; }
+.dt th { font-weight: 700; }
+.node.k-hub .box { fill: var(--hub); stroke: var(--hub); } .node.k-hub text { fill: var(--hub-on); }
+.node.k-hub.sel .box { stroke: var(--sel); }
+.node .qmark { display: none; font-style: normal; font-weight: 700; }
+.ripasso .node:not(.k-hub):not(.show) .f:not(.qmark) { visibility: hidden; }
+.ripasso .node:not(.k-hub):not(.show) .qmark { display: block; }
+.mk { fill: var(--edge); }
+
+/* mind map */
+.mltxt { font: 700 23px var(--f-body); fill: var(--bon); letter-spacing: .02em; }
+.kw .kwt { font: 700 24px var(--f-body); fill: var(--ink); }
+.node.kw .kwt { fill: var(--ink); }
+.kw .kwg { font-size: 16px; fill: var(--muted); }
+#v-mentale .kw .f { fill: var(--ink); font-size: 21px; }
+.assoc-l { font: 400 19px var(--f-body); fill: var(--ink); paint-order: stroke; stroke: var(--halo); stroke-width: 6px; stroke-linejoin: round; pointer-events: none; }
+.kw .hit { fill: transparent; stroke: none; }
+.kw { cursor: pointer; }
+.kw:hover .hit, .kw.sel .hit { fill: var(--bg); stroke: var(--sel); stroke-width: 2; }
+.kw.sel .hit { stroke-width: 3; }
+.mm-centre { pointer-events: none; }
+.assoc { fill: none; stroke: var(--ink); stroke-width: 2.4; stroke-dasharray: 8 6; stroke-linecap: round; pointer-events: none; }
+.assoc-h { fill: var(--ink); pointer-events: none; }
+.view.has-focus .sub { opacity: .45; }
+#v-mentale .node.k-hub .t { fill: var(--hub-on); } #v-mentale .node.k-hub .f { fill: var(--hub-on); }
+
+/* graph */
+.gl { stroke: var(--edge); stroke-width: 1.8; stroke-opacity: .7; }
+.gl.cross { stroke-dasharray: 6 5; }
+.gl.on { stroke: var(--ink); stroke-width: 3; stroke-opacity: 1; }
+.view.has-focus .gl:not(.on) { stroke-opacity: .12; }
+.gnode .gg { font: 700 15px var(--f-body); pointer-events: none; }
+.gnode.k-al .gg { fill: var(--al-on); } .gnode.k-hub .gg { fill: var(--hub-on); font-size: 20px; }
+.gnode.k-ca .gg { fill: var(--ca); } .gnode.k-qt .gg { fill: var(--qt); } .gnode.k-rp .gg { fill: var(--rp); } .gnode.k-me .gg { fill: var(--ink); } .gnode.k-er .gg { fill: var(--er); }
+.gnode .glab, .gnode.k-al .glab, .gnode.k-ca .glab, .gnode.k-qt .glab, .gnode.k-rp .glab, .gnode.k-me .glab, .gnode.k-er .glab, .gnode.k-hub .glab {
+  font: 700 17px var(--f-body); fill: var(--ink); paint-order: stroke; stroke: var(--halo); stroke-width: 5px; stroke-linejoin: round; pointer-events: none; }
+
+/* panel */
+.panel { background: var(--panel); border: 1.5px solid var(--line); border-radius: 16px; padding: 16px; display: grid; gap: 10px; min-width: 0; align-content: start; box-shadow: 0 10px 30px rgba(10, 30, 40, .22); }
+@media (min-width: 980px) {
+  .panel { position: absolute; top: 10px; width: min(440px, calc(100% - 20px)); max-height: calc(100% - 20px); overflow: auto; z-index: 6; display: none; }
+  .panel.open { display: grid; }
+  .panel.right { right: 10px; } .panel.left { left: 10px; }
+}
+@media (max-width: 979px) {
+  .panel { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; max-height: 58vh; overflow: auto; border-radius: 14px 14px 0 0; border-bottom: 0;
+    padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+    transform: translateY(105%); visibility: hidden; transition: transform .22s ease, visibility 0s .22s; }
+  .panel.open { transform: none; visibility: visible; transition: transform .22s ease; }
+}
+@media (prefers-reduced-motion: reduce) { .panel, .panel.open { transition: none; } }
+.panel .x { justify-self: end; margin: -2px -2px -44px 0; z-index: 2; position: relative; }
+.pk { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; font-size: .76rem; letter-spacing: .05em; text-transform: uppercase; padding: 3px 9px 3px 7px; border-radius: 5px; justify-self: start; }
+.pk.k-al { background: var(--al); color: var(--al-on); }
+.pk.k-hub { background: var(--hub); color: var(--hub-on); }
+.pk.k-ca { background: var(--ca-bg); color: var(--ca); border: 1.5px dashed var(--ca); }
+.pk.k-qt { background: var(--qt-bg); color: var(--qt); border: 1.5px solid var(--qt); }
+.pk.k-rp { background: var(--rp-bg); color: var(--rp); border: 1.5px solid var(--rp); }
+.pk.k-me { background: var(--me-bg); color: var(--ink); border: 2px solid var(--ink); }
+.pk.k-er { background: var(--er-bg); color: var(--er); border: 1.5px solid var(--er); }
+
+/* detail panel: one general ground, information gathered on darker blocks, one text face, formulas in the math face */
+#panel-body { display: grid; gap: 14px; }
+.ph { display: grid; gap: 8px; padding: 2px 2px 4px; }
+.panel h2 { font-family: var(--f-body); font-weight: 700; font-size: 1.55rem; line-height: 1.15; margin: 0; text-wrap: balance; }
+.panel .en { margin: 0; color: var(--muted); font-size: .92rem; }
+.blk { background: var(--blk); border-radius: 12px; padding: 16px 18px 18px; display: grid; gap: 12px; min-width: 0; }
+.blk h3 { margin: 0; font-size: .72rem; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); }
+.blk p { margin: 0; font-size: 1rem; line-height: 1.55; }
+.blk sub, .blk sup { font-size: .72em; line-height: 0; }
+.blk var { font-style: normal; font-family: inherit; font-size: 1em; }
+.fm2 var { font-style: italic; font-family: var(--f-math); font-size: 1em; }
+.fq { display: grid; gap: 4px; }
+.cap { font-size: .86rem; color: var(--muted); }
+.fm2 { font-family: var(--f-math); font-size: 1.32rem; line-height: 1.5; overflow-x: auto; }
+.fq .frac > span:first-child { border-bottom: 1.5px solid currentColor; }
+.vec { position: relative; display: inline-block; }
+.vec::after { content: "→"; position: absolute; left: .08em; top: -.62em; font-size: .62em; font-style: normal; }
+.frac { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; text-align: center; line-height: 1.25; margin: 0 .15em; }
+.frac > span:first-child { padding: 0 .3em; }
+.frac > span:last-child { padding: 0 .3em; }
+.st { display: grid !important; grid-template-columns: 26px 1fr; gap: 10px; }
+.sn { background: var(--ink); color: var(--bg); border-radius: 50%; width: 24px; height: 24px; display: grid; place-items: center; font-size: .8rem; margin-top: 1px; }
+.exq { font-size: 1rem; }
+.exs { color: var(--muted); }
+.exr { color: var(--al); }
+.prop { display: block; width: 100%; text-align: left; background: transparent; border: 0; border-radius: 8px; padding: 6px 8px; margin: 0 -8px; cursor: pointer; font-size: .95rem; line-height: 1.4; width: calc(100% + 16px); }
+.prop:hover { background: var(--panel); }
+.prop u { text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
+/* hidden answers and small figures */
+.mt { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.mr { display: grid; grid-template-columns: 5.2em 1fr 3.6em; gap: 2px 12px; align-items: baseline; }
+.me { color: var(--muted); font-size: .9rem; }
+.mx { min-width: 0; }
+.mp { justify-self: end; display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; font-size: .95rem; }
+.sv { width: 16px; height: 16px; color: var(--al); flex: none; }
+.qi { display: grid; gap: 10px; }
+#panel-body .blk > .qi + .qi { margin-top: 10px; }
+.opts { display: grid; gap: 6px; }
+.opt { display: grid !important; grid-template-columns: 1.5em 1fr; gap: 6px; }
+.ol { color: var(--muted); }
+.rev { display: block; }
+.rev > summary { list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; width: max-content; max-width: 100%;
+  padding: 7px 14px; min-height: 38px; border: 1.5px solid var(--line); border-radius: 8px; background: var(--panel); color: var(--ink); font-weight: 600; font-size: .9rem; }
+.rev > summary::-webkit-details-marker { display: none; }
+.rev > summary::after { content: "+"; font-weight: 700; }
+.rev[open] > summary::after { content: "−"; }
+.rev > summary:hover { border-color: var(--ink); }
+.rev > summary:focus-visible { outline: 3px solid var(--al); outline-offset: 2px; }
+.revb { display: grid; gap: 12px; margin-top: 14px; }
+.fig { margin: 0; display: grid; gap: 6px; }
+.fig svg { width: 100%; height: auto; display: block; color: var(--ink); }
+.fig figcaption { font-size: .86rem; color: var(--muted); }
+.fig .l { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.fig .thick { stroke-width: 3; }
+.fig .dash { stroke-dasharray: 4 3; }
+.fig .acc { stroke: var(--al); }
+.fig .f { fill: currentColor; stroke: none; }
+.fig .h { fill: currentColor; stroke: none; }
+.fig .h.acc { fill: var(--al); stroke: none; }
+.fig .tx { font: 13px var(--f-body); fill: currentColor; }
+.guide { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 6px 28px; max-width: 120ch; font-size: .92rem; }
+.guide p { margin: 0; }
+.foot { color: var(--muted); font-size: .84rem; max-width: 100ch; margin: 2px 0 0; }
+</style>
+
+<div class="app">
+  <header class="head">
+    <h1>Thermal physics: Temperature, particles & mixtures</h1>
+    <p>Everything starts from particles, energy and temperature. Tap a concept to see formulas, units, worked examples, and questions and exercises to try before you reveal the answer.</p>
+  </header>
+
+  <div class="bar">
+    <div class="tabs" role="tablist" aria-label="Type of map">
+      <button class="tab" role="tab" id="tab-concettuale" aria-selected="true" aria-controls="v-concettuale" data-view="concettuale">Concept map<small>phrases on the arrows</small></button>
+      <button class="tab" role="tab" id="tab-mentale" aria-selected="false" aria-controls="v-mentale" data-view="mentale">Mind map<small>branches, by group</small></button>
+    </div>
+    <div class="tools">
+      <button class="btn" id="b-ripasso" aria-pressed="false" title="Hides the formulas: try to recall them before you tap the box">Revision: hide formulas</button>
+      <button class="btn" id="b-out" aria-label="Zoom out">−</button>
+      <button class="btn" id="b-in" aria-label="Zoom in">+</button>
+      <button class="btn" id="b-fit">Whole map</button>
+    </div>
+  </div>
+
+  <ul class="legend" aria-label="Legend">
+    <li><svg viewBox="0 0 30 18" aria-hidden="true"><rect x="1" y="1" width="28" height="16" rx="4" fill="var(--al)" stroke="var(--al)" stroke-width="2"/></svg><span><b>Always holds</b> (definition, law)</span></li>
+    <li><svg viewBox="0 0 30 18" aria-hidden="true"><rect x="1" y="1" width="28" height="16" rx="4" fill="var(--ca-bg)" stroke="var(--ca)" stroke-width="2" stroke-dasharray="5 3"/></svg><span><b>Holds only under a condition</b></span></li>
+    <li><svg viewBox="0 0 30 18" aria-hidden="true"><rect x="1" y="1" width="28" height="16" rx="4" fill="var(--qt-bg)" stroke="var(--qt)" stroke-width="2"/></svg><span><b>Quantity</b>, data or phenomenon</span></li>
+    <li><svg viewBox="0 0 30 18" aria-hidden="true"><rect x="1" y="1" width="28" height="16" rx="4" fill="var(--rp-bg)" stroke="var(--rp)" stroke-width="2"/></svg><span><b>Representation</b></span></li>
+    <li><svg viewBox="0 0 30 18" aria-hidden="true"><rect x="1.5" y="1.5" width="27" height="15" rx="4" fill="var(--me-bg)" stroke="var(--me)" stroke-width="3"/></svg><span><b>Method</b></span></li>
+    <li><svg viewBox="0 0 30 18" aria-hidden="true"><rect x="1" y="1" width="28" height="16" rx="4" fill="var(--er-bg)" stroke="var(--er)" stroke-width="2"/></svg><span><b>Watch out</b> for mistakes</span></li>
+    <li><svg viewBox="0 0 30 18" aria-hidden="true"><rect x="1" y="1" width="28" height="16" rx="4" fill="none" stroke="var(--tb)" stroke-width="2" stroke-dasharray="2 3"/></svg><span><b>Coming soon</b></span></li>
+  </ul>
+
+  <div class="main">
+    <div class="stage" id="stage">
+      <svg class="view" id="v-concettuale" role="tabpanel" aria-labelledby="tab-concettuale" aria-label="Concept map of thermal physics"></svg>
+      <svg class="view" id="v-mentale" role="tabpanel" aria-labelledby="tab-mentale" aria-label="Mind map of thermal physics" hidden></svg>
+      <p class="hint" id="hint">Drag to move · scroll wheel or two fingers to zoom · tap a concept to read it.</p>
+    </div>
+
+    <aside class="panel" id="panel" aria-live="polite" aria-label="Concept details">
+      <button class="btn x" id="b-close" aria-label="Close details">✕</button>
+      <div id="panel-body"></div>
+    </aside>
+  </div>
+
+  <p class="foot" id="foot"></p>
+</div>
+<script>
+/* ===== data: 20 concepts of thermal physics (delta, 3A), shared by the two views ===== */
+var v = function (s) { return "<var>" + s + "</var>"; };
+var fr = function (a, b) { return '<span class="frac"><span>' + a + "</span><span>" + b + "</span></span>"; };
+var HUB = "thermal", HUBL = ["Thermal", "physics", "energy · particles"];
+var L0 = v("L") + "<sub>0</sub>", DT = "Δ" + v("T"), TEQ = v("T") + "<sub>eq</sub>";
+
+var KIND = {
+  hub: { cls: "k-hub", glyph: "◆" },
+  def: { cls: "k-al", glyph: "◆", lab: "Definition" },
+  law: { cls: "k-al", glyph: "●", lab: "Law" },
+  cas: { cls: "k-ca", glyph: "▲", lab: "Holds under a condition" },
+  qty: { cls: "k-qt", glyph: "■", lab: "Quantity" },
+  phe: { cls: "k-qt", glyph: "■", lab: "Phenomenon" },
+  rep: { cls: "k-rp", glyph: "◇", lab: "Representation" },
+  met: { cls: "k-me", glyph: "➤", lab: "Method" },
+  err: { cls: "k-er", glyph: "!", lab: "Watch out" },
+  tbd: { cls: "k-tb", glyph: "…", lab: "Coming soon" }
+};
+
+/* Fields: t title, en English term (subtitle), f text on the map (\n = new line), d what it is, q formulas [{c caption, f html}],
+   qt title of the formula block, u units, w when it holds, how steps (howT = "How to proceed"), x things to remember,
+   ex worked examples [{t, s steps, r result}], ext = extension beyond 0653. ang = angle on the concept map (0 = east, 90 = south). */
+var NODES = [
+  { id: "thermal", kind: "hub", t: "Thermal physics", en: "particles, energy and temperature", f: "particles · energy · temperature",
+    d: "Thermal physics describes matter as particles that are always moving. The energy of the particles is the internal energy of a body; temperature tells us how fast, on average, they move; heat is energy that moves from a hotter body to a colder one.",
+    qt: "The three equations of calorimetry",
+    q: [{ c: "one body, the temperature changes", f: v("Q") + " = " + v("m") + " " + v("c") + " " + DT },
+        { c: "one body, the state changes at constant temperature", f: v("Q") + " = " + v("m") + " " + v("L") },
+        { c: "two bodies in contact, nothing escapes", f: "Σ" + v("Q") + " = 0" }],
+    u: "Energy in joules, J. Temperature in °C or K. Mass in kilograms, kg.",
+    x: ["Before writing any term, ask one question: is the temperature changing, or is the state changing?"] },
+
+  { id: "particle", kind: "def", t: "Particle model", en: "kinetic particle model of matter", f: "solid · liquid · gas", ang: 180,
+    d: "All matter is made of tiny particles that are always moving. Brownian motion is the evidence: smoke grains jiggle at random because invisible air particles keep hitting them.",
+    x: ["Solid: particles touching, in a regular pattern, vibrating about fixed positions, held by strong forces.",
+        "Liquid: particles still touching but disordered, free to slide past one another.",
+        "Gas: particles far apart, moving fast and at random, with almost no forces between them.",
+        "Gas pressure comes from the collisions of the particles with the walls. More collisions per second, more pressure."],
+    w: "Always. When a body is heated its particles do not get bigger: they move faster and, on average, further apart.",
+    ex: [{ t: "The outlet of a syringe is sealed and the plunger is pushed in slowly, so the temperature does not change. Why does the pressure of the air rise?",
+           s: ["Same particles, same average speed, but a smaller volume."], r: "The particles hit the walls more often: more collisions per second, so more pressure." }] },
+
+  { id: "temp", kind: "def", t: "Temperature", en: "temperature and thermal equilibrium", f: "same T ⇔ equilibrium", ang: 270,
+    d: "Two bodies in contact exchange energy until nothing changes any more: they are in thermal equilibrium, and what has become equal is their temperature. In the particle model, temperature is related to the average kinetic energy of the particles.",
+    qt: "Zeroth law",
+    q: [{ f: "A ~ C and B ~ C  ⇒  A ~ B" }],
+    w: "Always. The zeroth law is what makes a thermometer meaningful: the thermometer is the body C.",
+    x: ["The sign ~ means: in thermal equilibrium with.", "Average does not mean equal: at the same temperature some particles are fast and some are slow.", "Equal temperature does not mean equal internal energy, which also depends on mass and material."],
+    ex: [{ t: "A metal cube and a wooden cube have been in the same room for hours. Which one is colder?",
+           s: ["Both have been in contact with the air for hours: they are in thermal equilibrium with it, so with each other."],
+           r: "Same temperature. The metal only feels colder because it takes energy from your hand faster." }] },
+
+  { id: "scales", kind: "qty", t: "Thermometers and scales", en: "Celsius, kelvin, absolute zero", f: "T / K = θ / °C + 273", ang: 252,
+    d: "A thermometer uses a property that changes with temperature: the length of a liquid column, the resistance of a thermistor, the voltage of a thermocouple. The Celsius scale has two fixed points, 0 °C for melting ice and 100 °C for boiling water at standard pressure. The kelvin scale starts from absolute zero, where the particles have the least possible energy.",
+    q: [{ c: "conversion", f: v("T") + " / K = " + v("θ") + " / °C + 273" }, { c: "absolute zero", f: "0 K = −273 °C" }],
+    u: "Kelvin, K, and degree Celsius, °C. A change of 1 K is the same as a change of 1 °C.",
+    x: ["Calibration: fixing the scale with two known points and equal divisions in between.",
+        "Sensitivity: how much the reading changes for each degree. A narrower tube is more sensitive.",
+        "Range: the lowest and the highest temperature the instrument can read."],
+    ex: [{ t: "Convert room temperature, 20 °C, to kelvin, and the boiling point of liquid nitrogen, 77 K, to degrees Celsius.",
+           s: ["20 + 273 = 293 K", "77 − 273 = −196 °C"], r: "293 K and −196 °C. Watch the sign." }] },
+
+  { id: "expansion", kind: "cas", t: "Thermal expansion", en: "linear, area and volume expansion", f: "ΔL = α L₀ ΔT", ang: 150,
+    d: "When a solid is heated its particles vibrate more and, on average, sit slightly further apart, so the solid expands in every direction. The increase in length is proportional to the original length and to the change in temperature.",
+    q: [{ c: "linear expansion", f: "Δ" + v("L") + " = " + v("α") + " " + L0 + " " + DT },
+        { c: "area and volume", f: "Δ" + v("A") + " = " + v("β") + " " + v("A") + "<sub>0</sub> " + DT + ", &nbsp;" + v("β") + " ≈ 2" + v("α") },
+        { f: "Δ" + v("V") + " = " + v("γ") + " " + v("V") + "<sub>0</sub> " + DT + ", &nbsp;" + v("γ") + " ≈ 3" + v("α") }],
+    u: "α in °C<sup>−1</sup>. ΔL comes out in the same unit as L<sub>0</sub>.",
+    w: "Only for small changes, when αΔT is much smaller than 1 (for metals it is about 10<sup>−3</sup>). Then the squared terms are negligible, and β ≈ 2α, γ ≈ 3α.",
+    x: ["Liquids expand much more than solids: this is why a car has an expansion tank.", "Bridges have expansion joints; railway lines can buckle on very hot days."],
+    ex: [{ t: "The Golden Gate Bridge is 1275 m of steel (α = 1.2·10<sup>−5</sup> °C<sup>−1</sup>), and its temperature goes from −15 °C to 40 °C. By how much does it expand?",
+           s: ["ΔT = 40 − (−15) = 55 °C", "ΔL = 1.2·10<sup>−5</sup> · 1275 · 55 = 0.8415 m"], r: "ΔL ≈ 0.84 m: almost a metre, spread over the expansion joints." }] },
+
+  { id: "evap", kind: "phe", t: "Evaporation and boiling", en: "evaporation vs boiling", f: "the fastest particles escape", ang: 192,
+    d: "Evaporation happens at any temperature, only at the surface: the fastest particles have enough energy to escape. Boiling happens at one temperature, the boiling point, throughout the liquid, with bubbles of vapour.",
+    w: "Evaporation at any temperature; boiling only at the boiling point, which depends on the pressure.",
+    x: ["Evaporation cools the liquid left behind: the fastest particles leave, so the average kinetic energy of the others falls.",
+        "Evaporation is faster with a higher temperature, a larger surface area, and moving air that carries the vapour away."],
+    ex: [{ t: "Why does a puddle dry at 20 °C, if water boils at 100 °C?",
+           s: ["At 20 °C the average speed is low, but some particles are much faster than the average."], r: "The fastest particles at the surface escape: the puddle evaporates without boiling." }] },
+
+  { id: "heat", kind: "def", t: "Heat and internal energy", en: "heat, internal (thermal) energy", f: "heat = energy in transit", ang: 0,
+    d: "Internal energy is the total energy of the particles of a body. Heat is energy transferred from a hotter body to a colder one because of their difference in temperature. A body has internal energy; it does not have heat.",
+    u: "Joule, J.",
+    w: "Heat flows by itself only from the higher temperature to the lower one, until thermal equilibrium is reached.",
+    x: ["Temperature, heat and internal energy are three different things.",
+        "A body that receives heat may change its temperature, but it does not have to: during a change of state the temperature stays constant."] },
+
+  { id: "shc", kind: "law", t: "Specific heat capacity", en: "specific heat capacity, c", f: "Q = m c ΔT", ang: 320,
+    d: "The energy needed to raise the temperature of 1 kg of a material by 1 °C. The thermal capacity of a whole body, C = mc, is the energy needed to raise its temperature by 1 °C.",
+    q: [{ f: v("Q") + " = " + v("m") + " " + v("c") + " " + DT },
+        { c: "with a heater of power P and no losses", f: v("E") + " = " + v("P") + " " + v("t") + " &nbsp;⇒&nbsp; " + v("t") + " = " + fr(v("m") + " " + v("c") + " " + DT, v("P")) }],
+    u: "c in J/(kg °C), Q in J, m in kg. P in watts, W = J/s, and t in seconds.",
+    w: "Only while the temperature changes and the state does not.",
+    x: ["ΔT = final − initial.", "Water has a very large c: the sea warms slowly in summer and is still warm in October."],
+    ex: [{ t: "How much energy is needed to heat 0.50 kg of water from 20 °C to 80 °C? (c = 4200 J/(kg °C))",
+           s: ["ΔT = 80 − 20 = 60 °C", "Q = 0.50 · 4200 · 60"], r: "Q = 126 000 J = 126 kJ." }] },
+
+  { id: "latent", kind: "law", ext: 1, t: "Specific latent heat", en: "latent heat of fusion and of vaporisation, L", f: "Q = m L", ang: 25,
+    d: "The energy needed to change the state of 1 kg of a material at constant temperature. During melting and boiling the energy goes into separating the particles, not into making them faster.",
+    q: [{ f: v("Q") + " = " + v("m") + " " + v("L") }],
+    u: "L in J/kg. For water: L<sub>f</sub> = 3.3·10<sup>5</sup> J/kg (melting), L<sub>v</sub> = 2.3·10<sup>6</sup> J/kg (boiling).",
+    w: "Only while the state changes, at constant temperature.",
+    x: ["Boiling 1 kg of water costs about seven times as much as melting 1 kg of ice: in boiling the particles must be separated completely."],
+    ex: [{ t: "How much energy turns 200 g of ice at −10 °C into water at 30 °C? (c<sub>ice</sub> = 2100, c<sub>water</sub> = 4200 J/(kg °C))",
+           s: ["The ice warms to 0 °C: Q<sub>1</sub> = 0.20 · 2100 · 10 = 4200 J", "The ice melts: Q<sub>2</sub> = 0.20 · 3.3·10<sup>5</sup> = 66 000 J", "The water warms to 30 °C: Q<sub>3</sub> = 0.20 · 4200 · 30 = 25 200 J"],
+           r: "Q = 95 400 J ≈ 95 kJ. Melting is by far the largest term." }] },
+
+  { id: "heatcurve", kind: "rep", t: "Heating curve", en: "temperature against time", f: "slopes: m c ΔT · plateaus: m L", ang: 3,
+    d: "The temperature of a substance against time, while it is heated at constant power. Where the line rises, the particles are speeding up; where it is flat, on a plateau, the state is changing.",
+    x: ["Melting and boiling points are read on the temperature axis, not on the time axis.", "At constant power, the length of a plateau measures the latent heat: t = mL / P."] },
+
+  { id: "coolcurve", kind: "tbd", t: "Cooling curve", en: "", f: "", ang: 18,
+    d: "To be completed after the lesson of 27 October." },
+
+  { id: "mix", kind: "cas", ext: 1, t: "Mixtures", en: "two bodies in contact", f: "Σ Q = 0", ang: 300,
+    d: "Two bodies at different temperatures, put in contact, exchange energy until they reach the same equilibrium temperature. All the energy lost by one body is gained by the other.",
+    q: [{ f: v("Q") + "<sub>lost</sub> = " + v("Q") + "<sub>gained</sub>" },
+        { c: "one rule for every body, always final minus initial", f: v("Q") + " = " + v("m") + " " + v("c") + " (" + TEQ + " − " + v("T") + "<sub>initial</sub>), &nbsp;Σ" + v("Q") + " = 0" }],
+    howT: 1,
+    how: ["Write one term per body, with T<sub>eq</sub> as the final temperature of every body.", "Add the terms and set the sum to zero; solve for T<sub>eq</sub>.", "Check: T<sub>eq</sub> must lie between the starting temperatures."],
+    w: "Only if no energy escapes to the container or to the air.",
+    x: ["The minus sign is already inside (T<sub>eq</sub> − T<sub>initial</sub>): for the hot body it is negative, because it cools."],
+    ex: [{ t: "0.20 kg of water at 80 °C is poured into 0.30 kg of water at 20 °C. Find the equilibrium temperature.",
+           s: ["0.30 · 4200 (T<sub>eq</sub> − 20) + 0.20 · 4200 (T<sub>eq</sub> − 80) = 0", "c cancels: 0.50 T<sub>eq</sub> = 6 + 16 = 22"],
+           r: "T<sub>eq</sub> = 44 °C: between 20 °C and 80 °C, closer to 20 °C because there is more cold water." }] },
+
+  { id: "budget", kind: "met", ext: 1, t: "The ice budget", en: "ice in a mixture: three endings", f: "budget first, equation second", ang: 335,
+    d: "When one of the bodies is ice, we do not know in advance whether it melts completely, partly or not at all, and the melting term can be written only if melting has happened. So before writing ΣQ = 0 we compare the energies.",
+    q: [{ c: "the hot body can pay for everything", f: "all the ice melts, " + TEQ + " > 0 °C" },
+        { c: "it pays for the warming, not for all the melting", f: "part melts, " + TEQ + " = 0 °C" },
+        { c: "it cannot even bring the ice to 0 °C", f: "no ice melts, " + TEQ + " < 0 °C" }],
+    how: ["How much energy can the hot body give by cooling to 0 °C?", "How much does the ice need to reach 0 °C, and then to melt completely?", "Choose the ending, write ΣQ = 0 for that ending only, solve, and check T<sub>eq</sub>."],
+    ex: [{ t: "A drink of 0.20 kg at 27 °C gets four ice cubes, 80 g at −18 °C. Does all the ice melt?",
+           s: ["The drink can give 0.20 · 4200 · 27 = 22 680 J by cooling to 0 °C.", "The ice needs 0.080 · 2100 · 18 = 3024 J to reach 0 °C, and 0.080 · 3.3·10<sup>5</sup> = 26 400 J to melt: 29 424 J in all.", "Not enough. Left for melting: 22 680 − 3024 = 19 656 J, so the mass melted is 19 656 / 3.3·10<sup>5</sup> ≈ 0.060 kg."],
+           r: "About 60 g melt and 20 g survive; T<sub>eq</sub> = 0 °C." }] },
+
+  { id: "cond", kind: "phe", t: "Conduction", en: "thermal conduction", f: "particle to particle", ang: 80,
+    d: "Energy passes through a material from particle to particle, while the material itself does not move. In metals the free electrons carry energy too, so metals are good conductors.",
+    w: "Mainly in solids. Liquids and gases conduct very poorly.",
+    x: ["Plastic, wood and air are poor conductors, that is insulators. Trapped air is the secret of most insulating materials.", "At the same temperature metal feels colder than wood, because it takes energy from your hand faster."] },
+
+  { id: "conv", kind: "phe", t: "Convection", en: "convection currents", f: "hot fluid rises", ang: 102,
+    d: "In a liquid or a gas, the fluid near a heater warms, expands and becomes less dense, so it rises; colder, denser fluid sinks to take its place. The moving fluid carries the energy.",
+    w: "Only in fluids, liquids and gases. In solids the particles cannot flow.",
+    x: ["The element of a kettle is at the bottom; the freezer compartment of a fridge is at the top.", "Hot air rises: it does not travel sideways."] },
+
+  { id: "rad", kind: "phe", t: "Thermal radiation", en: "infrared radiation", f: "matt black: best emitter", ang: 58,
+    d: "Every object emits infrared radiation, and more of it the hotter it is. Radiation travels in straight lines and needs no material: it crosses a vacuum.",
+    w: "Always. It is the only one of the three mechanisms that works in a vacuum.",
+    x: ["Matt black surfaces are the best emitters and the best absorbers; shiny silver surfaces are the worst emitters and the best reflectors.",
+        "A vacuum flask: the vacuum stops conduction and convection, the silvered walls reduce radiation, the stopper stops convection and evaporation at the top."] },
+
+  { id: "vars", kind: "met", t: "Variables and errors", en: "Paper 6: planning and reading results", f: "independent · dependent · controlled", ang: 232,
+    d: "Every experiment changes one quantity, measures another and keeps everything else fixed. Then the readings are checked before any graph is drawn.",
+    x: ["Independent variable: the one you change. Dependent variable: the one you measure. Controlled variables: the ones you keep the same.",
+        "Read every instrument to half of its smallest division, and correct any zero error.",
+        "An anomalous reading lies far from the trend of the others: repeat it, or leave it out of the line, and say why.",
+        "Random errors scatter the points; a systematic error shifts all of them in the same way.",
+        "A good improvement names an instrument or a procedure. Be more careful is not an improvement."] },
+
+  { id: "graph", kind: "met", t: "Graph and gradient", en: "line of best fit, gradient, intercept", f: "gradient = Δy / Δx", ang: 222,
+    d: "Plot each point with a small cross, then draw one straight line with a ruler that balances the points on both sides. Never join the dots.",
+    q: [{ c: "gradient", f: "gradient = " + fr("Δ" + v("y"), "Δ" + v("x")) },
+        { c: "for an expansion graph, ΔL against ΔT", f: "Δ" + v("L") + " = (" + v("α") + " " + L0 + ") " + DT + " &nbsp;⇒&nbsp; gradient = " + v("α") + " " + L0 }],
+    how: ["Label both axes with the quantity and the unit, for example ΔL / mm.", "Draw the line of best fit, leaving out anomalous points.", "Draw a triangle as large as possible on the line and read Δy and Δx.", "Compare the gradient with the equation of the law, and watch the units."],
+    howT: 1 },
+
+  { id: "consts", kind: "qty", t: "Data and constants", en: "values used in the exercises", f: "c · L · α", ang: 280,
+    d: "The values used in class and in the exercises.",
+    q: [{ c: "specific heat capacity, J/(kg °C)", f: "water 4200 · ice 2100 · steam 2000 · aluminium 900" },
+        { c: "specific latent heat of water, J/kg", f: v("L") + "<sub>f</sub> = 3.3·10<sup>5</sup> · " + v("L") + "<sub>v</sub> = 2.3·10<sup>6</sup>" },
+        { c: "linear expansion coefficient, °C<sup>−1</sup>", f: "steel 1.2·10<sup>−5</sup> · copper 1.7·10<sup>−5</sup>" },
+        { f: "brass 1.9·10<sup>−5</sup> · aluminium 2.3·10<sup>−5</sup>" }],
+    qt: "Values",
+    u: "1 g = 10<sup>−3</sup> kg. 1 mm = 10<sup>−3</sup> m. 1 kW = 1000 W. 1 min = 60 s.",
+    ex: [{ t: "Convert 250 g, 3.68 mm and 1.5 kW to SI units.", s: ["250 g = 0.250 kg", "3.68 mm = 0.00368 m", "1.5 kW = 1500 W"], r: "Always convert before calculating." }] },
+
+  { id: "errors", kind: "err", t: "Common mistakes", en: "the traps that cost the most marks", f: "8 traps", ang: 125,
+    d: "The eight traps that cost the most marks.",
+    x: ["A body does not contain heat: it has internal energy, and a temperature.",
+        "ΔT is final minus initial, never just the final temperature.",
+        "Grams, millimetres and kilowatts must be converted before calculating.",
+        "Melting and boiling points are temperatures, read on the vertical axis, not times.",
+        "Particles do not expand when heated: they move faster and further apart.",
+        "A person beside a fire is warmed by radiation, not by convection: hot air rises.",
+        "Never join the dots, and do not let an anomalous point pull the line of best fit.",
+        "With ice, do the budget before writing the melting term."] }
+];
+
+/* Links read as propositions: [from] -- label --> [to]. x = cross-link between different branches. */
+var EDGES = [
+  { a: "thermal", b: "particle", l: "describes matter with the" },
+  { a: "thermal", b: "temp", l: "compares bodies by their" },
+  { a: "particle", b: "temp", l: "gives a meaning to", x: 1 },
+  { a: "temp", b: "scales", l: "is measured with" },
+  { a: "particle", b: "expansion", l: "explains" },
+  { a: "particle", b: "evap", l: "explains" },
+  { a: "thermal", b: "heat", l: "follows energy as" },
+  { a: "heat", b: "shc", l: "when T changes is given by" },
+  { a: "heat", b: "latent", l: "when the state changes is given by" },
+  { a: "heat", b: "cond", l: "moves through solids by" },
+  { a: "heat", b: "conv", l: "moves through fluids by" },
+  { a: "heat", b: "rad", l: "crosses a vacuum by" },
+  { a: "shc", b: "heatcurve", l: "gives the slopes of the" },
+  { a: "latent", b: "heatcurve", l: "gives the plateaus of the" },
+  { a: "heatcurve", b: "coolcurve", l: "read in reverse becomes the" },
+  { a: "shc", b: "mix", l: "for two bodies in contact gives" },
+  { a: "mix", b: "budget", l: "with ice needs" },
+  { a: "thermal", b: "vars", l: "is tested in the lab with" },
+  { a: "vars", b: "graph", l: "are plotted on a" },
+  { a: "errors", b: "thermal", l: "warns about" },
+  { a: "temp", b: "heat", l: "a difference in it drives", x: 1 },
+  { a: "expansion", b: "conv", l: "makes hot fluid less dense in", x: 1 },
+  { a: "latent", b: "budget", l: "decides the ending in", x: 1 },
+  { a: "consts", b: "shc", l: "gives c to", x: 1 },
+  { a: "scales", b: "graph", l: "is calibrated with a", x: 1 },
+  { a: "expansion", b: "graph", l: "gives the data for a", x: 1 }
+];
+
+var BRANCHES = [
+  { id: "b1", name: "Temperature", css: "--b1", ang: 196, span: 26, items: ["temp", "scales"] },
+  { id: "b2", name: "Particles", css: "--b2", ang: 145, span: 44, items: ["expansion", "particle", "evap"] },
+  { id: "b3", name: "Energy transfer", css: "--b4", ang: 88, span: 40, items: ["cond", "conv", "rad"] },
+  { id: "b4", name: "One body", css: "--b3", ang: 15, span: 84, items: ["heat", "shc", "latent", "heatcurve", "coolcurve"] },
+  { id: "b5", name: "Two bodies", css: "--b5", ang: 302, span: 26, items: ["mix", "budget"] },
+  { id: "b6", name: "Exam toolkit", css: "--b6", ang: 244, span: 54, items: ["vars", "graph", "consts", "errors"] }
+];
+
+var BYID = {}; NODES.forEach(function (n) { BYID[n.id] = n; });
+var ADJ = {}; NODES.forEach(function (n) { ADJ[n.id] = []; });
+EDGES.forEach(function (e, i) { e.i = i; ADJ[e.a].push(e); ADJ[e.b].push(e); });
+/* ring = minimum number of links from the hub (used only to place nodes) */
+(function () {
+  BYID[HUB].ring = 0; var q = [HUB];
+  while (q.length) { var c = q.shift(); ADJ[c].forEach(function (e) { var o = e.a === c ? e.b : e.a; if (BYID[o].ring == null) { BYID[o].ring = BYID[c].ring + 1; q.push(o); } }); }
+})();
+/* ===== exercise layer: questions with hidden answers (qz) and exercises with hidden solutions (mex) =====
+   Taken from the lessons of 8 September to 23 October and from the October test, presented as ordinary exercises.
+   Every number recomputed in Python. qf = figure or table shown with the question. */
+
+var N1 = function (n) { return (Math.round(n * 10) / 10).toString(); };
+function arrow(x1, y1, x2, y2, cls) {
+  var dx = x2 - x1, dy = y2 - y1, L = Math.hypot(dx, dy) || 1, ux = dx / L, uy = dy / L, s = 7, w = 3.4, bx = x2 - ux * s, by = y2 - uy * s;
+  return '<line class="l ' + (cls || "") + '" x1="' + N1(x1) + '" y1="' + N1(y1) + '" x2="' + N1(bx) + '" y2="' + N1(by) + '"/>' +
+    '<polygon class="h ' + (cls || "") + '" points="' + N1(x2) + "," + N1(y2) + " " + N1(bx - uy * w) + "," + N1(by + ux * w) + " " + N1(bx + uy * w) + "," + N1(by - ux * w) + '"/>';
+}
+function tx(x, y, s, anchor, cls) { return '<text class="tx ' + (cls || "") + '" x="' + N1(x) + '" y="' + N1(y) + '" text-anchor="' + (anchor || "middle") + '">' + s + "</text>"; }
+function ln(x1, y1, x2, y2, cls) { return '<line class="l ' + (cls || "") + '" x1="' + N1(x1) + '" y1="' + N1(y1) + '" x2="' + N1(x2) + '" y2="' + N1(y2) + '"/>'; }
+function poly(pts, cls) { return '<polyline class="l ' + (cls || "") + '" points="' + pts.map(function (p) { return N1(p[0]) + "," + N1(p[1]); }).join(" ") + '"/>'; }
+function figure(w, h, inner, cap) {
+  return '<figure class="fig"><svg viewBox="0 0 ' + w + " " + h + '" role="img" aria-label="' + cap + '">' + inner + "</svg><figcaption>" + cap + "</figcaption></figure>";
+}
+function table(head, rows) {
+  return '<table class="dt"><thead><tr>' + head.map(function (h) { return "<th>" + h + "</th>"; }).join("") + "</tr></thead><tbody>" +
+    rows.map(function (r) { return "<tr>" + r.map(function (c) { return "<td>" + c + "</td>"; }).join("") + "</tr>"; }).join("") + "</tbody></table>";
+}
+/* axes with ticks: X(t), Y(T) map data to pixels */
+function axes(x0, y0, x1, y1, xt, yt, X, Y, xl, yl) {
+  var o = arrow(x0, y0, x1 + 8, y0, "") + arrow(x0, y0, x0, y1 - 8, "");
+  xt.forEach(function (t) { o += ln(X(t), y0, X(t), y0 + 4) + tx(X(t), y0 + 16, String(t)); });
+  yt.forEach(function (t) { o += ln(x0 - 4, Y(t), x0, Y(t)) + tx(x0 - 7, Y(t) + 4, String(t), "end"); });
+  return o + tx(x1 + 8, y0 + 30, xl, "end") + tx(x0 + 10, y1 + 4, yl, "start");
+}
+
+/* particle arrangement in the three states */
+function figStates() {
+  var o = "", R = 7;
+  function c(x, y) { return '<circle class="l acc" cx="' + N1(x) + '" cy="' + N1(y) + '" r="' + R + '"/>'; }
+  [0, 105, 210].forEach(function (dx, k) { o += '<rect class="l" x="' + (dx + 5) + '" y="5" width="90" height="80"/>' + tx(dx + 50, 102, ["solid", "liquid", "gas"][k]); });
+  for (var i = 0; i < 4; i++) for (var j = 0; j < 3; j++) o += c(29 + 14 * i, 50 + 14 * j);
+  [[119, 77], [133, 77], [147, 78], [161, 77], [175, 77], [124, 63], [139, 64], [154, 64], [168, 64], [184, 66], [131, 50], [161, 51]].forEach(function (p) { o += c(p[0], p[1]); });
+  [[230, 22], [282, 30], [250, 55], [296, 66], [228, 74], [268, 78]].forEach(function (p) { o += c(p[0], p[1]); });
+  return figure(310, 110, o, "Solid: regular, touching. Liquid: touching, disordered. Gas: far apart, at random.");
+}
+
+/* heating curve P Q R S T (lesson of 6 October) */
+function figHeatCurve() {
+  var X = function (t) { return 46 + t * 9.4; }, Y = function (T) { return 140 - T * 0.5; };
+  var D = [[0, 20], [3, 80], [8, 80], [14, 200], [22, 200], [26, 240]], o = axes(46, 140, 296, 12, [0, 5, 10, 15, 20, 25], [0, 50, 100, 150, 200, 250], X, Y, "time / min", "temperature / °C");
+  o += poly(D.map(function (p) { return [X(p[0]), Y(p[1])]; }), "acc thick");
+  [["P", 1.5, 50, -8, 0], ["Q", 5.5, 80, 0, -8], ["R", 11, 140, -10, 0], ["S", 18, 200, 0, -8], ["T", 24, 220, -10, 0]].forEach(function (a) { o += tx(X(a[1]) + a[3], Y(a[2]) + a[4], a[0]); });
+  return figure(320, 176, o, "A solid is heated at constant power.");
+}
+
+/* ice at −20 °C heated at 1000 W: 21 s, 186 s, 396 s, 1546 s */
+function figIce() {
+  var X = function (t) { return 46 + t * 0.155; }, Y = function (T) { return 126 - (T + 20) * 0.8; };
+  var D = [[0, -20], [21, 0], [186, 0], [396, 100], [1546, 100]], o = axes(46, Y(-20), 296, 6, [0, 500, 1000, 1500], [-20, 0, 50, 100], X, Y, "time / s", "temperature / °C");
+  o += poly(D.map(function (p) { return [X(p[0]), Y(p[1])]; }), "acc thick");
+  o += arrow(118, Y(0), 80, Y(0), "") + tx(122, Y(0) + 4, "melting, 165 s", "start") + tx(X(970), Y(100) + 16, "boiling, 1150 s");
+  return figure(320, 166, o, "Two plateaus: the boiling one is about seven times longer than the melting one.");
+}
+
+/* expansion graph of the copper rod: anomalous point at 45 °C, line through the origin, gradient 0.0137 mm/°C */
+function figExp() {
+  var X = function (t) { return 46 + t * 3.5; }, Y = function (l) { return 166 - l * 170; };
+  var o = axes(46, 166, 296, 12, [0, 10, 20, 30, 40, 50, 60, 70], [0, 0.2, 0.4, 0.6, 0.8], X, Y, "ΔT / °C", "ΔL / mm");
+  o += ln(X(0), Y(0), X(66), Y(0.0137 * 66), "acc");
+  o += ln(X(10), Y(0.137), X(60), Y(0.137), "dash") + ln(X(60), Y(0.137), X(60), Y(0.823), "dash");
+  o += tx(X(35), Y(0.137) + 15, "ΔT = 50 °C") + tx(X(60) - 6, Y(0.30), "ΔL = 0.686 mm", "end");
+  [[0, 0], [15, 0.20], [30, 0.42], [45, 0.73], [60, 0.82]].forEach(function (p) {
+    var x = X(p[0]), y = Y(p[1]); o += ln(x - 4, y - 4, x + 4, y + 4) + ln(x - 4, y + 4, x + 4, y - 4);
+  });
+  o += '<circle class="l dash" cx="' + N1(X(45)) + '" cy="' + N1(Y(0.73)) + '" r="9"/>' + tx(X(45) - 12, Y(0.73) - 4, "anomalous", "end");
+  return figure(320, 200, o, "One ruled line through the origin and the four consistent points; the triangle gives the gradient.");
+}
+
+var EXPDATA = table(["ΔT / °C", "ΔL / mm"], [["0", "0.00"], ["15", "0.20"], ["30", "0.42"], ["45", "0.73"], ["60", "0.82"]]);
+var EXPTEXT = "A copper rod of length L<sub>0</sub> = 0.800 m is heated by hot water flowing through a jacket around it. A dial gauge, reading to 0.01 mm, measures the increase in length ΔL for each temperature rise ΔT.";
+
+var MID = {
+  heat: {
+    qz: [{ q: "Regarding heat and temperature, we can say that:", o: ["they are equivalent concepts", "a body receiving energy as heat must change its temperature", "a body receiving energy as heat may change its temperature", "temperature tells how much heat a body contains", "none of the above"], a: 2,
+           w: "May, not must: during a change of state a body absorbs energy at constant temperature. D is the old idea of heat as a substance that a body contains." }]
+  },
+  errors: {
+    qz: [{ q: "A student says: the metal spoon has a lot of heat, which is why it feels hot. Explain what is wrong, using the words temperature, heat and energy.",
+           a: "Heat is energy transferred because of a temperature difference: a body does not have heat.",
+           w: "The spoon feels hot because its temperature is high: its particles have a high average kinetic energy, so it has a lot of internal energy, and energy flows as heat from the spoon to your hand." }]
+  },
+  scales: {
+    qz: [{ q: "Two liquid-in-glass thermometers are identical, except that thermometer P has a narrower tube than thermometer Q. Which statement is correct?",
+           o: ["P is more sensitive: its liquid column moves further for each degree.", "Q is more sensitive, because its liquid expands more.", "They have the same sensitivity, because the liquid is the same.", "P has a larger range than Q."], a: 0,
+           w: "The same volume of liquid expands into a narrower tube, so the column moves further for each degree. A narrower tube actually gives a smaller range, not a larger one." }],
+    mex: [{ t: "A thermometer built with Arduino and a thermistor was calibrated in four water baths. The line of best fit gives T = (N − 201.3) / 8.10, where N is the Arduino reading and T is in °C. In a test bath the reading is N = 444, and a reference thermometer reads 30.5 °C. The brief asks for an accuracy of ±1 °C. Does the thermometer pass?",
+            s: ["T = (444 − 201.3) / 8.10 = 242.7 / 8.10", "T ≈ 30.0 °C", "Difference from the reference: 30.5 − 30.0 = 0.5 °C"],
+            r: "It passes: 0.5 °C is inside ±1 °C. One single reading in the test bath is a weakness: repeat it and take the mean." }]
+  },
+  particle: {
+    mex: [{ t: "Draw the arrangement of the particles in a solid, in a liquid and in a gas, about twelve particles in each box. Then explain why a gas fills its container but a solid does not.",
+            s: ["In a gas the particles are far apart and move freely and fast, with almost no forces between them, so they spread out to fill the container.", "In a solid strong forces hold the particles in fixed positions, about which they only vibrate."],
+            r: "In the liquid the particles still touch: the most common mistake is to draw them far apart.", fig: figStates() }]
+  },
+  expansion: {
+    qz: [{ q: "A metal plate has a round hole in it. The plate is heated. Does the hole get smaller or bigger?", a: "Bigger.",
+           w: "The hole expands as if it were made of the same metal as the plate: an enlarged photograph of the plate would enlarge the hole too. Shrink fitting uses exactly this to mount rings on shafts." }],
+    mex: [{ t: "A copper bar is 2.00 m long at 15 °C and is heated to 65 °C. For copper α = 1.7·10<sup>−5</sup> °C<sup>−1</sup>. Write the equation for linear expansion, then calculate the increase in length in millimetres.",
+            s: ["ΔL = α L<sub>0</sub> ΔT", "ΔT = 65 − 15 = 50 °C", "ΔL = 1.7·10<sup>−5</sup> · 2.00 · 50 = 1.7·10<sup>−3</sup> m"],
+            r: "ΔL = 1.7 mm. Using 65 °C as ΔT would give 2.2 mm." }]
+  },
+  evap: {
+    qz: [{ q: "On a hot day a fan makes us feel cooler, but it does not lower the temperature of the air. Why?",
+           a: "It makes the sweat on our skin evaporate faster.",
+           w: "Moving air carries away the vapour and the humid air near the skin, so evaporation is faster, and so is the loss of energy from the skin. What we feel is the rate at which we lose energy, not the temperature of the air." }]
+  },
+  shc: {
+    mex: [{ t: "An electric heater of power 1.5 kW heats 2.0 kg of water from 15 °C to 45 °C, with no energy lost. Write the two equations you need, combine them into an expression for the time t, and calculate t.",
+            s: ["Q = m c ΔT and E = P t", "With no losses E = Q, so P t = m c ΔT and t = m c ΔT / P", "ΔT = 45 − 15 = 30 °C; t = 2.0 · 4200 · 30 / 1500 = 252 000 / 1500"],
+            r: "t = 168 s, about 2.8 minutes. With 1.5 used in place of 1500 W the answer would be 168 000 s." }]
+  },
+  latent: {
+    mex: [{ t: "10 g of steam at 100 °C lands on your skin and cools to 34 °C. Compare the energy it releases with that released by 10 g of boiling water at 100 °C, cooling to the same temperature.",
+            s: ["Steam condenses: 0.010 · 2.3·10<sup>6</sup> = 23 000 J", "Then the water cools: 0.010 · 4200 · 66 = 2772 J", "Steam: 23 000 + 2772 = 25 772 J. Boiling water: only 2772 J."],
+            r: "The steam releases about 9.3 times as much energy: a steam burn is far worse." }]
+  },
+  heatcurve: {
+    qz: [{ q: "The graph shows a solid heated at constant power. State the melting point and the boiling point, and explain why the temperature does not change in section Q.", qf: figHeatCurve(),
+           a: "Melting point 80 °C, boiling point 200 °C.",
+           w: "They are temperatures, read on the vertical axis, not times. In Q the substance is melting: the energy separates the particles from their fixed pattern, their average kinetic energy does not change, so neither does the temperature. In T the substance is a gas." }],
+    mex: [{ t: "A 1000 W heater warms 0.50 kg of ice from −20 °C, with no losses. How long until the ice reaches 0 °C, until it has all melted, until the water reaches 100 °C, and until it has all boiled away? Sketch the temperature against time.",
+            s: ["Warming the ice: 0.50 · 2100 · 20 = 21 000 J, so 21 s", "Melting: 0.50 · 3.3·10<sup>5</sup> = 165 000 J, so 165 s more: total 186 s", "Warming the water: 0.50 · 4200 · 100 = 210 000 J, so 210 s more: total 396 s", "Boiling: 0.50 · 2.3·10<sup>6</sup> = 1 150 000 J, so 1150 s more: total 1546 s"],
+            r: "21 s, 186 s, 396 s, 1546 s (about 26 minutes).", fig: figIce() }]
+  },
+  mix: {
+    mex: [{ t: "A block of metal of mass 0.30 kg at 100 °C is dropped into 0.50 kg of water at 20 °C. The equilibrium temperature is 25 °C. Find the specific heat capacity of the metal. Which metal might it be?",
+            s: ["ΣQ = 0: 0.30 c (25 − 100) + 0.50 · 4200 (25 − 20) = 0", "−22.5 c + 10 500 = 0", "c = 10 500 / 22.5"],
+            r: "c ≈ 467 J/(kg °C): iron or steel. We assumed no energy is lost to the container or to the air." }]
+  },
+  budget: {
+    mex: [{ t: "0.20 kg of tea at 80 °C. Compare adding 50 g of ice at 0 °C with adding 50 g of water at 0 °C: what is the equilibrium temperature in each case?",
+            s: ["With water: 0.20 · 4200 (T<sub>eq</sub> − 80) + 0.050 · 4200 T<sub>eq</sub> = 0, so 0.25 T<sub>eq</sub> = 16 and T<sub>eq</sub> = 64 °C", "With ice, budget first: the tea can give 0.20 · 4200 · 80 = 67 200 J; melting needs 0.050 · 3.3·10<sup>5</sup> = 16 500 J. All the ice melts.", "0.20 · 4200 (T<sub>eq</sub> − 80) + 16 500 + 0.050 · 4200 T<sub>eq</sub> = 0, so 1050 T<sub>eq</sub> = 50 700"],
+            r: "64 °C with water, about 48.3 °C with ice: the difference is the latent heat." }]
+  },
+  cond: {
+    qz: [{ q: "Explain why metals conduct thermal energy better than plastics.",
+           a: "Metals have free electrons.",
+           w: "The free electrons move through the metal and carry energy quickly, in addition to the vibrations passed from particle to particle. In plastics there are no free electrons: energy passes only through the vibrations, which is much slower." }]
+  },
+  conv: {
+    qz: [{ q: "A pan of soup is on the hob, with a metal spoon left in it. For each situation give the main mechanism of energy transfer: (a) the handle of the spoon becomes hot; (b) the soup at the bottom heats the soup at the surface; (c) a person standing beside the pan feels their face warming.",
+           a: "(a) conduction, (b) convection, (c) radiation.",
+           w: "(a) Energy passes along the metal, which does not move. (b) The soup at the bottom warms, expands, becomes less dense and rises. (c) Hot air rises and does not travel sideways, and air conducts very poorly: what is left is the infrared from the hot pan." }]
+  },
+  rad: {
+    qz: [{ q: "A Leslie cube is filled with boiling water. Its four faces are matt black, shiny black, matt white and shiny silver. An infrared detector, always at the same distance, measures the radiation from each face. Which face gives the highest reading, and which the lowest?",
+           a: "Highest: matt black. Lowest: shiny silver.",
+           w: "All the faces are at the same temperature, so the differences depend only on the surface. The distance is a controlled variable: the reading also depends on how far the detector is." }],
+    mex: [{ t: "Two cans, one matt black and one shiny silver, start at 90 °C. After the same time their temperatures are shown in the table. Calculate the fall in temperature in each case, say which can lost the least energy, and explain why the shiny can cools much more in air than in a vacuum.",
+            qf: table(["can", "in air / °C", "in vacuum / °C"], [["black", "37", "54"], ["shiny", "52", "85"]]),
+            s: ["Falls: black in air 53 °C, black in vacuum 36 °C, shiny in air 38 °C, shiny in vacuum 5 °C.", "In air the can also loses energy by conduction and convection, which do not depend on the surface. In a vacuum only radiation is left, and a shiny surface is a poor emitter."],
+            r: "The shiny can in a vacuum lost the least energy. This is the idea of the vacuum flask." }]
+  },
+  vars: {
+    qz: [{ q: EXPTEXT + " State the independent and the dependent variable, and the value of ΔT of the anomalous reading. Give a reason for your choice.", qf: EXPDATA,
+           a: "Independent: ΔT. Dependent: ΔL. Anomalous reading: at ΔT = 45 °C.",
+           w: "The other points follow about 0.0137 mm per °C, which would give about 0.62 mm at 45 °C, not 0.73 mm; and the next reading, 0.82 mm at 60 °C, is only a little larger." }]
+  },
+  graph: {
+    mex: [{ t: EXPTEXT + " Plot ΔL against ΔT, draw the line of best fit, and determine its gradient. The gradient equals αL<sub>0</sub>: calculate α and identify the metal (steel 1.2, copper 1.7, brass 1.9, aluminium 2.3, all ·10<sup>−5</sup> °C<sup>−1</sup>).", qf: EXPDATA,
+            s: ["Leave out the reading at 45 °C. Triangle on the line: ΔL = 0.823 − 0.137 = 0.686 mm for ΔT = 60 − 10 = 50 °C.", "Gradient = 0.686 / 50 = 0.0137 mm/°C = 1.37·10<sup>−5</sup> m/°C", "α = gradient / L<sub>0</sub> = 1.37·10<sup>−5</sup> / 0.800"],
+            r: "α ≈ 1.7·10<sup>−5</sup> °C<sup>−1</sup>: copper. Forgetting to convert millimetres gives 0.017; including the anomalous point points wrongly to brass.", fig: figExp() }]
+  }
+};
+
+(function () {
+  for (var id in MID) { var n = BYID[id], m = MID[id]; n.qz = m.qz; n.mex = m.mex; }
+})();
+/* ===== core: svg helpers, pan/zoom viewport, shared selection, panel, tabs ===== */
+var NS = "http://www.w3.org/2000/svg";
+function $(s, r) { return (r || document).querySelector(s); }
+function se(tag, attrs, parent) {
+  var e = document.createElementNS(NS, tag);
+  if (attrs) for (var k in attrs) e.setAttribute(k, attrs[k]);
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function addGrid(svg, W, H) {
+  var d = se("defs", null, svg);
+  d.innerHTML = '<pattern id="mm-pat-' + svg.id + '" width="100" height="100" patternUnits="userSpaceOnUse">' +
+    '<path d="M20 0V100M40 0V100M60 0V100M80 0V100M0 20H100M0 40H100M0 60H100M0 80H100" stroke="var(--mm-minor)" stroke-width="1" fill="none"/>' +
+    '<path d="M0 0V100M0 0H100" stroke="var(--mm-major)" stroke-width="1.4" fill="none"/></pattern>' +
+    '<marker id="ah-' + svg.id + '" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path d="M0 0L10 5L0 10z" class="mk"/></marker>';
+  se("rect", { x: -4000, y: -4000, width: 9000, height: 9000, "class": "mmgrid", fill: "url(#mm-pat-" + svg.id + ")" }, svg);
+}
+function reduced() { return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches; }
+
+function Viewport(svg, W, H) {
+  var self = this;
+  this.svg = svg; this.W = W; this.H = H; this.X0 = 0; this.Y0 = 0; this.touched = false; this.moved = 0;
+  this.vb = { x: 0, y: 0, w: W, h: H };
+  var ptrs = {}, last = null;
+  function rect() { return svg.getBoundingClientRect(); }
+  this.apply = function () { svg.setAttribute("viewBox", self.vb.x + " " + self.vb.y + " " + self.vb.w + " " + self.vb.h); };
+  this.fit = function (full) {
+    var r = rect(); if (!r.width || !r.height) return;
+    var a = r.width / r.height, w, h, CW = self.W, CH = self.H;
+    if (a > CW / CH) { h = CH; w = h * a; } else { w = CW; h = w / a; }
+    self.fitW = w;
+    var x = self.X0 + (CW - w) / 2, y = self.Y0 + (CH - h) / 2;
+    if (!full && r.width < 700 && self.focus) { w /= 2.6; h /= 2.6; x = self.focus.x - w / 2; y = self.focus.y - h / 2; }
+    self.vb = { x: x, y: y, w: w, h: h }; self.apply();
+  };
+  this.zoomAt = function (f, sx, sy) {
+    var r = rect(), nw = self.vb.w / f;
+    if (nw > self.fitW * 2.2 || nw < self.fitW / 6) return;
+    var nh = self.vb.h / f, px = sx == null ? r.width / 2 : sx, py = sy == null ? r.height / 2 : sy;
+    var wx = self.vb.x + self.vb.w * px / r.width, wy = self.vb.y + self.vb.h * py / r.height;
+    self.vb = { x: wx - nw * px / r.width, y: wy - nh * py / r.height, w: nw, h: nh }; self.touched = true; self.apply();
+  };
+  this.centerOn = function (x, y) {
+    self.vb.x = x - self.vb.w / 2; self.vb.y = y - self.vb.h / 2; self.apply();
+  };
+  svg.addEventListener("wheel", function (ev) {
+    ev.preventDefault(); var r = rect();
+    self.zoomAt(Math.exp(-ev.deltaY * 0.0015), ev.clientX - r.left, ev.clientY - r.top);
+  }, { passive: false });
+  svg.addEventListener("pointerdown", function (ev) {
+    ptrs[ev.pointerId] = { x: ev.clientX, y: ev.clientY }; self.moved = 0; last = null;
+    if (Object.keys(ptrs).length === 1) { last = { x: ev.clientX, y: ev.clientY }; }
+  });
+  svg.addEventListener("pointermove", function (ev) {
+    if (!ptrs[ev.pointerId]) return;
+    var ids = Object.keys(ptrs), r = rect();
+    if (ids.length === 2) {
+      var a = ptrs[ids[0]], b = ptrs[ids[1]], d0 = Math.hypot(a.x - b.x, a.y - b.y);
+      ptrs[ev.pointerId] = { x: ev.clientX, y: ev.clientY };
+      var a2 = ptrs[ids[0]], b2 = ptrs[ids[1]], d1 = Math.hypot(a2.x - b2.x, a2.y - b2.y);
+      if (d0 > 0 && d1 > 0) self.zoomAt(d1 / d0, (a2.x + b2.x) / 2 - r.left, (a2.y + b2.y) / 2 - r.top);
+      self.moved += 10; return;
+    }
+    if (!last) return;
+    var dx = ev.clientX - last.x, dy = ev.clientY - last.y; self.moved += Math.abs(dx) + Math.abs(dy);
+    ptrs[ev.pointerId] = { x: ev.clientX, y: ev.clientY };
+    if (self.moved > 5) {
+      if (self.dragNode && self.dragNode(ev, dx * self.vb.w / r.width, dy * self.vb.h / r.height)) { }
+      else { self.vb.x -= dx * self.vb.w / r.width; self.vb.y -= dy * self.vb.h / r.height; self.touched = true; self.apply(); svg.classList.add("drag"); }
+    }
+    last = { x: ev.clientX, y: ev.clientY };
+  });
+  function up(ev) { delete ptrs[ev.pointerId]; svg.classList.remove("drag"); last = null; if (self.endDrag) self.endDrag(); setTimeout(function () { self.moved = 0; }, 0); }
+  svg.addEventListener("pointerup", up); svg.addEventListener("pointercancel", up); svg.addEventListener("pointerleave", function (ev) { if (ev.pointerType === "mouse") up(ev); });
+}
+
+/* ===== app state ===== */
+var App = { sel: null, view: "concettuale", views: {} };
+var panelBody, panelEl;
+
+function propLine(id, e) {
+  var me = BYID[id], other = BYID[e.a === id ? e.b : e.a];
+  var s = e.a === id ? me.t + " " + e.l + " <u>" + other.t + "</u>" : "<u>" + other.t + "</u> " + e.l + " " + me.t;
+  return '<button class="prop" data-go="' + other.id + '">' + s + "</button>";
+}
+function blk(label, inner) { return '<section class="blk"><h3>' + label + "</h3>" + inner + "</section>"; }
+function paras(list, cls) { return list.map(function (t) { return '<p class="' + (cls || "") + '">' + t + "</p>"; }).join(""); }
+/* ----- questions and exercises with hidden answers ----- */
+function plain(t) { return String(t).replace(/<\/?em>/g, ""); }
+function revealBlock(label, inner) { return '<details class="rev"><summary>' + label + '</summary><div class="revb">' + inner + "</div></details>"; }
+function qzBlock(n) {
+  if (!n.qz) return "";
+  var items = n.qz.map(function (q) {
+    var vf = q.o && q.o[0] === "T", L = vf ? ["T", "F"] : ["A", "B", "C", "D", "E"], T = vf ? ["true", "false"] : q.o, opts = "", ans;
+    if (q.o) opts = '<div class="opts">' + T.map(function (t, i) { return '<p class="opt"><span class="ol">' + L[i] + "</span><span>" + t + "</span></p>"; }).join("") + "</div>";
+    ans = q.o ? "Answer " + L[q.a] + (vf ? "." : ". " + T[q.a]) : q.a;
+    return '<div class="qi"><p class="exq">' + plain(q.q) + "</p>" + (q.qf || "") + opts +
+      revealBlock("Show the answer", '<p class="exr">' + ans + '</p><p class="exs">' + q.w + "</p>") + "</div>";
+  }).join("");
+  return blk(n.qz.length > 1 ? "Questions" : "Question", items);
+}
+function mexBlocks(n) {
+  if (!n.mex) return "";
+  return n.mex.map(function (e, i) {
+    var inner = (e.fig || "") + (e.s ? paras(e.s, "exs") : "") + '<p class="exr">' + e.r + "</p>";
+    return blk(n.mex.length > 1 ? "Try it " + (i + 1) : "Try it", '<p class="exq">' + plain(e.t) + "</p>" + (e.qf || "") + revealBlock(e.fig ? "Show the solution" : "Show the working", inner));
+  }).join("");
+}
+function renderPanel(id) {
+  if (!id) { panelBody.innerHTML = ""; return; }
+  var n = BYID[id], k = KIND[n.kind], lab = n.kind === "hub" ? "Central idea" : k.lab;
+  var h = '<header class="ph"><span class="pk ' + k.cls + '"><span aria-hidden="true">' + k.glyph + "</span>" + lab + "</span><h2>" + n.t + '</h2>' + (n.en ? '<p class="en">' + n.en + "</p>" : "") + (n.ext ? '<p class="ext">Extension: beyond the 0653 syllabus, done in class.</p>' : "") + "</header>";
+  if (n.d) h += blk("What it is", paras([n.d]));
+  if (n.q && n.q.length) h += blk(n.kind === "met" ? "Which tool" : n.qt ? n.qt : n.q.length > 1 ? "Formulas" : "Formula", n.q.map(function (x) {
+    return '<div class="fq">' + (x.c ? '<span class="cap">' + x.c + "</span>" : "") + '<div class="fm2">' + x.f + "</div></div>";
+  }).join(""));
+  if (n.u) h += blk("Units", paras([n.u]));
+  if (n.how) h += blk(n.kind === "met" || n.howT ? "How to proceed" : "Steps", n.how.map(function (t, i) { return '<p class="st"><span class="sn" aria-hidden="true">' + (i + 1) + "</span><span>" + t + "</span></p>"; }).join(""));
+  if (n.w) h += blk("When it holds", paras([n.w]));
+  if (n.x) h += blk(n.kind === "err" ? "The traps" : "Remember", paras(n.x));
+  if (n.ex) n.ex.forEach(function (e, i) {
+    h += blk(n.ex.length > 1 ? "Example " + (i + 1) : "Example", '<p class="exq">' + e.t + "</p>" + (e.s ? paras(e.s, "exs") : "") + '<p class="exr">' + e.r + "</p>");
+  });
+  h += qzBlock(n) + mexBlocks(n);
+  if (ADJ[id].length) h += blk("Links", ADJ[id].map(function (e) { return propLine(id, e); }).join(""));
+  panelBody.innerHTML = h;
+}
+App.select = function (id, opts) {
+  App.sel = id; renderPanel(id);
+  for (var k in App.views) if (App.views[k].onSelect) App.views[k].onSelect(id, opts || {});
+  if (panelEl) {
+    if (id) {
+      panelEl.classList.add("open");
+      var vw0 = App.views[App.view], wp = vw0 && vw0.where ? vw0.where(id) : null, fx = 0.3;
+      if (wp) fx = (wp.x - vw0.vp.vb.x) / vw0.vp.vb.w;
+      panelEl.classList.toggle("left", fx > 0.55); panelEl.classList.toggle("right", fx <= 0.55);
+      panelEl.scrollTop = 0;
+    } else panelEl.classList.remove("open");
+  }
+  var vw = App.views[App.view]; if (id && vw && vw.reveal) vw.reveal(id);
+};
+
+function boot() {
+  try { document.documentElement.lang = "en"; } catch (e) {}
+  panelBody = $("#panel-body"); panelEl = $("#panel");
+  panelBody.addEventListener("click", function (ev) {
+    var b = ev.target.closest("[data-go]"); if (b) App.select(b.getAttribute("data-go"), { jump: true });
+  });
+  $("#b-close").addEventListener("click", function () { App.select(null); });
+  $("#foot").innerHTML = "The two maps have the same content and differ only in shape. The concept map follows Novak and Cañas (phrases on the arrows, dashed arrows between different branches); the mind map follows Buzan (one colour per branch, keyword on the line, phrases on the dashed arrows of the chosen concept). The Revision button hides the formulas: try to recall them, then tap to check.";
+
+  var order = ["concettuale", "mentale"];
+  function show(name) {
+    if (order.indexOf(name) < 0) name = "concettuale";
+    App.view = name;
+    order.forEach(function (n) {
+      var on = n === name;
+      $("#v-" + n).toggleAttribute("hidden", !on);
+      $("#tab-" + n).setAttribute("aria-selected", on ? "true" : "false");
+      $("#tab-" + n).tabIndex = on ? 0 : -1;
+    });
+    var vw = App.views[name];
+    if (vw) { if (vw.onShow) vw.onShow(); if (!vw.vp.touched) vw.vp.fit(); if (App.sel && vw.reveal) vw.reveal(App.sel); }
+    try { if (location.hash.slice(1) !== name) history.replaceState(null, "", "#" + name); } catch (e) {}
+  }
+  order.forEach(function (n) {
+    var t = $("#tab-" + n);
+    t.addEventListener("click", function () { show(n); });
+    t.addEventListener("keydown", function (ev) {
+      var i = order.indexOf(n), j = ev.key === "ArrowRight" ? i + 1 : ev.key === "ArrowLeft" ? i - 1 : -1;
+      if (j >= 0 && j < order.length) { ev.preventDefault(); show(order[j]); $("#tab-" + order[j]).focus(); }
+    });
+  });
+  $("#b-in").addEventListener("click", function () { App.views[App.view].vp.zoomAt(1.3); });
+  $("#b-out").addEventListener("click", function () { App.views[App.view].vp.zoomAt(1 / 1.3); });
+  $("#b-fit").addEventListener("click", function () { var vp = App.views[App.view].vp; vp.touched = false; vp.fit(true); });
+  $("#b-ripasso").addEventListener("click", function () {
+    var on = this.getAttribute("aria-pressed") !== "true";
+    this.setAttribute("aria-pressed", on ? "true" : "false");
+    ["concettuale", "mentale"].forEach(function (n) { $("#v-" + n).classList.toggle("ripasso", on); });
+    Array.prototype.forEach.call(document.querySelectorAll(".view .node"), function (g) { g.classList.remove("show"); });
+    if (App.sel) { App.views.concettuale.onSelect(App.sel, {}); App.views.mentale.onSelect(App.sel, {}); }
+  });
+  document.addEventListener("keydown", function (ev) { if (ev.key === "Escape" && App.sel) App.select(null); });
+
+  buildConcept(); buildMind();
+  var h = ""; try { h = location.hash.slice(1); } catch (e) {}
+  show(h);
+  var rt; var ro = window.ResizeObserver ? new ResizeObserver(function () {
+    clearTimeout(rt); rt = setTimeout(function () { var vw = App.views[App.view]; if (vw && !vw.vp.touched) vw.vp.fit(); }, 60);
+  }) : null;
+  if (ro) ro.observe($("#stage"));
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { for (var k in App.views) if (App.views[k].relayout) App.views[k].relayout(); });
+}
+/* ===== view 1: concept map (Novak & Cañas): the proposition runs along each arc ===== */
+function buildConcept() {
+  var svg = $("#v-concettuale"), W = 2600, H = 1700, CX = W / 2, CY = H / 2;
+  addGrid(svg, W, H);
+  var RING = [null, [520, 330], [860, 540], [1060, 680], [1130, 740]];   /* only used to place the nodes */
+  var gD = se("defs", null, svg), gE = se("g", null, svg), gN = se("g", null, svg);
+  var pos = {}, els = {}, edgeEls = [];
+
+  function size(n) {
+    if (n.kind === "hub") return { w: 430, h: 150, hub: true };
+    var L = n.f ? n.f.split("\n") : [], tw = n.t.length * 11.3 + 24, fw = 0;
+    L.forEach(function (s) { fw = Math.max(fw, s.length * 9.2); });
+    return { w: Math.max(tw, fw) + 36, h: L.length ? 48 + 24 * L.length : 52, L: L };
+  }
+  NODES.forEach(function (n) {
+    var rr = n.ring, a = (n.ang || 0) * Math.PI / 180;
+    pos[n.id] = rr === 0 ? { x: CX, y: CY } : { x: CX + RING[rr][0] * Math.cos(a), y: CY + RING[rr][1] * Math.sin(a) };
+    var s = size(n), k = KIND[n.kind];
+    var g = se("g", { "class": "node " + k.cls, tabindex: 0, role: "button", "data-id": n.id,
+      "aria-label": n.t + ", " + (n.kind === "hub" ? "central idea" : k.lab.toLowerCase()) + (n.f ? ". " + n.f.replace("\n", ", ") : "") }, gN);
+    var p = pos[n.id];
+    g.setAttribute("transform", "translate(" + p.x.toFixed(1) + "," + p.y.toFixed(1) + ")");
+    if (s.hub) {
+      se("ellipse", { "class": "box", rx: s.w / 2, ry: s.h / 2 }, g);
+      var t1 = se("text", { "class": "t", y: -18, "text-anchor": "middle" }, g); t1.textContent = n.t; t1.style.fontSize = "28px";
+      var t2 = se("text", { "class": "f", y: 28, "text-anchor": "middle" }, g); t2.textContent = n.f; t2.style.fontSize = "23px"; t2.style.fontStyle = "normal"; t2.setAttribute("y", 24);
+    } else {
+      se("rect", { "class": "box", x: -s.w / 2, y: -s.h / 2, width: s.w, height: s.h, rx: n.kind === "met" ? 6 : 12 }, g);
+      var ty = s.L.length ? -s.h / 2 + 31 : 7;
+      var t = se("text", { "class": "t", x: 0, y: ty, "text-anchor": "middle" }, g);
+      var gs = se("tspan", { "class": "g" }, t); gs.textContent = k.glyph + " "; gs.setAttribute("aria-hidden", "true");
+      var tt = se("tspan", null, t); tt.textContent = n.t;
+      s.L.forEach(function (ln, i) { var f = se("text", { "class": "f", x: 0, y: ty + 27 + i * 24, "text-anchor": "middle" }, g); f.textContent = ln; });
+      var q = se("text", { "class": "f qmark", x: 0, y: ty + 27, "text-anchor": "middle" }, g); q.textContent = "?";
+    }
+    g.__s = s; els[n.id] = g;
+    g.addEventListener("click", function () { if (App.views.concettuale.vp.moved > 5) return; App.select(App.sel === n.id ? null : n.id); });
+    g.addEventListener("keydown", function (ev) { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); App.select(n.id); } });
+    g.addEventListener("mouseenter", function () { focusOn(n.id); });
+    g.addEventListener("mouseleave", function () { focusOn(App.sel); });
+    g.addEventListener("focus", function () { focusOn(n.id); });
+    g.addEventListener("blur", function () { focusOn(App.sel); });
+  });
+
+  function edge(p, s, q) {   /* point on the boundary of node p heading toward q */
+    var dx = q.x - p.x, dy = q.y - p.y, t;
+    if (s.hub) t = 1 / Math.sqrt(Math.pow(dx / (s.w / 2), 2) + Math.pow(dy / (s.h / 2), 2));
+    else t = 1 / Math.max(Math.abs(dx) / (s.w / 2), Math.abs(dy) / (s.h / 2));
+    return { x: p.x + dx * t, y: p.y + dy * t };
+  }
+  function split(txt) {
+    var mid = txt.length / 2, best = -1, bd = 1e9;
+    for (var i = 0; i < txt.length; i++) if (txt[i] === " " && Math.abs(i - mid) < bd) { bd = Math.abs(i - mid); best = i; }
+    return best < 0 ? [txt] : [txt.slice(0, best), txt.slice(best + 1)];
+  }
+  EDGES.forEach(function (e, i) {
+    var pa = pos[e.a], pb = pos[e.b], sa = els[e.a].__s, sb = els[e.b].__s;
+    var dx = pb.x - pa.x, dy = pb.y - pa.y, len = Math.hypot(dx, dy), bend = (e.bend != null ? e.bend : e.x ? 0.2 : 0.07) * len;
+    var nx = -dy / len, ny = dx / len, c = { x: (pa.x + pb.x) / 2 + nx * bend, y: (pa.y + pb.y) / 2 + ny * bend };
+    var p0 = edge(pa, sa, c), p1 = edge(pb, sb, c);
+    var ux = p1.x - c.x, uy = p1.y - c.y, ul = Math.hypot(ux, uy); ux /= ul; uy /= ul;
+    var tip = { x: p1.x + ux * 3, y: p1.y + uy * 3 }, bx = tip.x - ux * 13, by = tip.y - uy * 13;
+    var f1 = function (n) { return n.toFixed(1); };
+    var g = se("g", { "class": "edge" + (e.x ? " cross" : ""), "data-a": e.a, "data-b": e.b }, gE);
+    se("path", { d: "M" + f1(p0.x) + "," + f1(p0.y) + " Q" + f1(c.x) + "," + f1(c.y) + " " + f1(bx) + "," + f1(by) }, g);
+    se("polygon", { "class": "head", points: f1(tip.x) + "," + f1(tip.y) + " " + f1(bx - uy * 5.5) + "," + f1(by + ux * 5.5) + " " + f1(bx + uy * 5.5) + "," + f1(by - ux * 5.5) }, g);
+    /* the label runs on a copy of the curve that always reads left to right */
+    var ltr = p0.x <= bx, id = "lp-" + i;
+    se("path", { id: id, d: ltr ? "M" + f1(p0.x) + "," + f1(p0.y) + " Q" + f1(c.x) + "," + f1(c.y) + " " + f1(bx) + "," + f1(by) : "M" + f1(bx) + "," + f1(by) + " Q" + f1(c.x) + "," + f1(c.y) + " " + f1(p0.x) + "," + f1(p0.y) }, gD);
+    var near0 = e.b === HUB ? 0.4 : e.a === HUB ? 0.6 : 0.5;     /* hub edges: label nearer the outer node */
+    var at = e.at != null ? e.at : (ltr ? near0 : 1 - near0);
+    if (e.b === HUB || e.a === HUB) { if (!ltr && e.at == null) at = 1 - near0; }
+    var o = { g: g, e: e, id: id, at: at, texts: [] };
+    for (var j = 0; j < 2; j++) {
+      var t = se("text", { "class": "elab" }, g), tp = se("textPath", { href: "#" + id, startOffset: (at * 100).toFixed(0) + "%", "text-anchor": "middle" }, t);
+      o.texts.push({ t: t, tp: tp });
+    }
+    edgeEls.push(o);
+  });
+  function fitLabels() {
+    edgeEls.forEach(function (o) {
+      var lp = document.getElementById(o.id), len = lp.getTotalLength(), avail = len * 0.8, txt = o.e.l;
+      var T = o.texts; T[1].t.style.display = "none"; T[0].t.style.display = "";
+      function set(lines, fs, dy) {
+        T[0].t.style.fontSize = T[1].t.style.fontSize = fs + "px";
+        T[0].tp.textContent = lines[0]; T[0].t.setAttribute("dy", dy[0]);
+        if (lines[1]) { T[1].t.style.display = ""; T[1].tp.textContent = lines[1]; T[1].t.setAttribute("dy", dy[1]); } else T[1].t.style.display = "none";
+        var w = T[0].tp.getComputedTextLength(); if (lines[1]) w = Math.max(w, T[1].tp.getComputedTextLength()); return w;
+      }
+      var fs = 16.5, w = set([txt], fs, [-7]);
+      if (w > avail) { var ls = split(txt); w = set(ls, fs, [-7, 14]); }
+      while (w > avail && fs > 13.5) { fs -= 0.5; w = set(split(txt), fs, [-7, 14]); }
+    });
+  }
+  fitLabels();
+
+  function focusOn(id) {
+    svg.classList.toggle("has-focus", !!id);
+    var near = {}; if (id) { near[id] = 1; ADJ[id].forEach(function (e) { near[e.a] = 1; near[e.b] = 1; }); }
+    for (var k in els) els[k].classList.toggle("near", !!near[k]);
+    edgeEls.forEach(function (o) { o.g.classList.toggle("on", !!id && (o.e.a === id || o.e.b === id)); });
+  }
+  var vw = App.views.concettuale = {
+    vp: new Viewport(svg, W, H),
+    where: function (id) { return pos[id]; },
+    relayout: fitLabels,
+    onSelect: function (id) {
+      focusOn(id);
+      for (var k in els) els[k].classList.toggle("sel", k === id);
+      if (id && svg.classList.contains("ripasso")) els[id].classList.add("show");
+    },
+    reveal: function (id) {
+      var vp = vw.vp, p = pos[id], r = svg.getBoundingClientRect(); if (!r.width) return;
+      var m = 0.12;
+      if (p.x < vp.vb.x + vp.vb.w * m || p.x > vp.vb.x + vp.vb.w * (1 - m) || p.y < vp.vb.y + vp.vb.h * m || p.y > vp.vb.y + vp.vb.h * (1 - m)) { vp.centerOn(p.x, p.y); vp.touched = true; }
+    }
+  };
+  svg.addEventListener("click", function (ev) { if (ev.target === svg || ev.target.classList.contains("mmgrid")) { if (vw.vp.moved <= 5) App.select(null); } });
+  vw.pos = pos; vw.vp.focus = { x: CX, y: CY };
+  (function () {
+    var x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+    NODES.forEach(function (n) { var p = pos[n.id], sz = els[n.id].__s; x0 = Math.min(x0, p.x - sz.w / 2); x1 = Math.max(x1, p.x + sz.w / 2); y0 = Math.min(y0, p.y - sz.h / 2); y1 = Math.max(y1, p.y + sz.h / 2); });
+    vw.vp.X0 = x0 - 50; vw.vp.Y0 = y0 - 40; vw.vp.W = x1 - x0 + 100; vw.vp.H = y1 - y0 + 90;
+  })();
+}
+/* ===== view 2: mind map (Buzan): central image, one colour per branch, keyword sits on its line ===== */
+function buildMind() {
+  var svg = $("#v-mentale"), W = 2400, H = 1500, CX = W / 2, CY = H / 2;
+  addGrid(svg, W, H);
+  var gB = se("g", null, svg), gA = se("g", null, svg), gK = se("g", null, svg), gL = se("g", null, svg), gC = se("g", null, svg);
+  var kws = {}, anchor = {}, bb = { x0: 1e9, y0: 1e9, x1: -1e9, y1: -1e9 };
+  function grow(x, y) { bb.x0 = Math.min(bb.x0, x); bb.x1 = Math.max(bb.x1, x); bb.y0 = Math.min(bb.y0, y); bb.y1 = Math.max(bb.y1, y); }
+
+  function pol(rx, ry, deg) { var a = deg * Math.PI / 180; return { x: CX + rx * Math.cos(a), y: CY + ry * Math.sin(a) }; }
+  function taper(p0, c, p1, w0, w1) {
+    var L = [], R = [], N = 24;
+    for (var i = 0; i <= N; i++) {
+      var t = i / N, x = (1 - t) * (1 - t) * p0.x + 2 * (1 - t) * t * c.x + t * t * p1.x, y = (1 - t) * (1 - t) * p0.y + 2 * (1 - t) * t * c.y + t * t * p1.y;
+      var dx = 2 * (1 - t) * (c.x - p0.x) + 2 * t * (p1.x - c.x), dy = 2 * (1 - t) * (c.y - p0.y) + 2 * t * (p1.y - c.y), d = Math.hypot(dx, dy) || 1, w = (w0 + (w1 - w0) * t) / 2;
+      L.push((x - dy / d * w).toFixed(1) + "," + (y + dx / d * w).toFixed(1)); R.push((x + dy / d * w).toFixed(1) + "," + (y - dx / d * w).toFixed(1));
+    }
+    return "M" + L.join("L") + "L" + R.reverse().join("L") + "Z";
+  }
+
+  /* central image: a warm disc with short wavy lines of energy leaving it */
+  var cg = se("g", { "class": "mm-centre" }, gC);
+  for (var i = 0; i < 20; i++) {
+    var a = i * 18 * Math.PI / 180, x0 = CX + 108 * Math.cos(a), y0 = CY + 108 * Math.sin(a), x1 = CX + 142 * Math.cos(a), y1 = CY + 142 * Math.sin(a);
+    var mx = (x0 + x1) / 2 - 5 * Math.sin(a), my = (y0 + y1) / 2 + 5 * Math.cos(a);
+    se("path", { d: "M" + x0.toFixed(1) + "," + y0.toFixed(1) + " Q" + mx.toFixed(1) + "," + my.toFixed(1) + " " + x1.toFixed(1) + "," + y1.toFixed(1), fill: "none", stroke: "var(--hub)", "stroke-width": 3, "stroke-linecap": "round" }, cg);
+    se("polygon", { points: (x1 + 8 * Math.cos(a)).toFixed(1) + "," + (y1 + 8 * Math.sin(a)).toFixed(1) + " " + (x1 - 4 * Math.sin(a)).toFixed(1) + "," + (y1 + 4 * Math.cos(a)).toFixed(1) + " " + (x1 + 4 * Math.sin(a)).toFixed(1) + "," + (y1 - 4 * Math.cos(a)).toFixed(1), fill: "var(--hub)" }, cg);
+  }
+  var hub = se("g", { "class": "node k-hub", tabindex: 0, role: "button", "data-id": HUB, "aria-label": BYID[HUB].t + ", central idea. " + BYID[HUB].f }, gC);
+  hub.setAttribute("transform", "translate(" + CX + "," + CY + ")");
+  se("circle", { "class": "box", r: 96 }, hub);
+  var h1 = se("text", { "class": "t", y: -17, "text-anchor": "middle" }, hub); h1.textContent = HUBL[0]; h1.style.fontSize = "26px";
+  var h2 = se("text", { "class": "t", y: 11, "text-anchor": "middle" }, hub); h2.textContent = HUBL[1]; h2.style.fontSize = "26px";
+  var h3 = se("text", { "class": "f", y: 46, "text-anchor": "middle" }, hub); h3.textContent = HUBL[2]; h3.style.fontSize = "19px";
+  kws[HUB] = hub; anchor[HUB] = { x: CX, y: CY };
+  hub.addEventListener("click", function () { if (vw0.vp.moved > 5) return; App.select(App.sel === HUB ? null : HUB); });
+  hub.addEventListener("keydown", function (ev) { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); App.select(HUB); } });
+
+  BRANCHES.forEach(function (b, bi) {
+    var col = "var(" + b.css + ")", a = b.ang * Math.PI / 180;
+    var p0 = pol(80, 80, b.ang), p1 = pol(470, 320, b.ang);
+    var bend = (bi % 2 ? -1 : 1) * 40, c = { x: (p0.x + p1.x) / 2 - Math.sin(a) * bend, y: (p0.y + p1.y) / 2 + Math.cos(a) * bend };
+    se("path", { d: taper(p0, c, p1, 34, 12), fill: col }, gB);
+    /* main label as a pill at the end of the main branch */
+    var lw = b.name.length * 13 + 38, lg = se("g", { "class": "mainlab", transform: "translate(" + p1.x.toFixed(1) + "," + p1.y.toFixed(1) + ")" }, gL);
+    se("rect", { x: -lw / 2, y: -23, width: lw, height: 46, rx: 23, fill: col }, lg);
+    var lt = se("text", { y: 8, "text-anchor": "middle", "class": "mltxt" }, lg); lt.textContent = b.name;
+    /* sub-branches */
+    var n = b.items.length, span = Math.min(b.span || 70, 26 * (n - 1)), half = span / 2;
+    b.items.forEach(function (id, i) {
+      var node = BYID[id], k = KIND[node.kind];
+      var ang = n === 1 ? b.ang : b.ang - half + span * i / (n - 1);
+      var s = pol(i % 2 ? 850 : 950, i % 2 ? 560 : 630, ang);
+      var right = Math.cos(ang * Math.PI / 180) >= 0;
+      var FL = node.f ? node.f.split("\n") : [], fw = 0; FL.forEach(function (l) { fw = Math.max(fw, l.length * 9.4); });
+      var tw = Math.max(node.t.length * 13.2 + 34, fw + 26), x2 = right ? s.x + tw : s.x - tw;
+      var cc = { x: (p1.x + s.x) / 2 + (s.y - p1.y) * 0.12, y: (p1.y + s.y) / 2 - (s.x - p1.x) * 0.12 };
+      var g = se("g", { "class": "kw node " + k.cls, tabindex: 0, role: "button", "data-id": id, "aria-label": node.t + ", " + (k.lab || "").toLowerCase() }, gK);
+      se("path", { d: taper(p1, cc, s, 9, 4.5), fill: col, "class": "sub" }, gK);
+      var line = se("line", { x1: s.x, y1: s.y, x2: x2, y2: s.y, stroke: col, "stroke-width": 4.5, "stroke-linecap": "round", "class": "ul" }, g);
+      if (node.kind === "cas") line.setAttribute("stroke-dasharray", "9 6");
+      if (node.kind === "tbd") line.setAttribute("stroke-dasharray", "2 8");
+      se("rect", { "class": "hit", x: Math.min(s.x, x2) - 6, y: s.y - 36, width: tw + 12, height: 54 + 26 * Math.max(FL.length, 0), rx: 8 }, g);
+      var tx = se("text", { x: right ? s.x + 9 : s.x - 9, y: s.y - 11, "text-anchor": right ? "start" : "end", "class": "kwt" }, g);
+      var gs = se("tspan", { "class": "kwg" }, tx); gs.textContent = k.glyph + " "; gs.setAttribute("aria-hidden", "true");
+      var ts = se("tspan", null, tx); ts.textContent = node.t;
+      FL.forEach(function (ln, li) {
+        var ft = se("text", { "class": "f", x: right ? s.x + 9 : s.x - 9, y: s.y + 29 + li * 26, "text-anchor": right ? "start" : "end" }, g); ft.textContent = ln;
+      });
+      var qm = se("text", { "class": "f qmark", x: right ? s.x + 9 : s.x - 9, y: s.y + 29, "text-anchor": right ? "start" : "end" }, g); qm.textContent = "?";
+      grow(s.x, s.y - 34); grow(x2, s.y + 14 + 26 * FL.length); kws[id] = g; anchor[id] = { x: right ? s.x + tw / 2 : s.x - tw / 2, y: s.y - 12 };
+      g.addEventListener("click", function () { if (vw0.vp.moved > 5) return; App.select(App.sel === id ? null : id); });
+      g.addEventListener("keydown", function (ev) { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); App.select(id); } });
+      g.addEventListener("mouseenter", function () { focusOn(id); });
+      g.addEventListener("mouseleave", function () { focusOn(App.sel); });
+      g.addEventListener("focus", function () { focusOn(id); });
+      g.addEventListener("blur", function () { focusOn(App.sel); });
+    });
+  });
+  hub.addEventListener("mouseenter", function () { focusOn(HUB); });
+  hub.addEventListener("mouseleave", function () { focusOn(App.sel); });
+
+  /* associations: dashed arrows drawn only for the focused keyword (Buzan's "arrows between related ideas") */
+  function focusOn(id) {
+    svg.classList.toggle("has-focus", !!id);
+    while (gA.firstChild) gA.removeChild(gA.firstChild);
+    var near = {}; if (id) { near[id] = 1; ADJ[id].forEach(function (e) { near[e.a] = 1; near[e.b] = 1; }); }
+    for (var k in kws) kws[k].classList.toggle("near", !!near[k]);
+    if (!id) return;
+    ADJ[id].forEach(function (e) {
+      var o = e.a === id ? e.b : e.a, p = anchor[e.a], q = anchor[e.b];
+      var dx = q.x - p.x, dy = q.y - p.y, d = Math.hypot(dx, dy), c = { x: (p.x + q.x) / 2 - dy * 0.18, y: (p.y + q.y) / 2 + dx * 0.18 };
+      var sh = function (pt, to, r) { var ux = to.x - pt.x, uy = to.y - pt.y, l = Math.hypot(ux, uy) || 1; return { x: pt.x + ux / l * r, y: pt.y + uy / l * r }; };
+      var s0 = sh(p, c, e.a === HUB ? 100 : 30), s1 = sh(q, c, e.b === HUB ? 100 : 30);
+      var ux = s1.x - c.x, uy = s1.y - c.y, ul = Math.hypot(ux, uy) || 1; ux /= ul; uy /= ul;
+      var bx = s1.x - ux * 12, by = s1.y - uy * 12;
+      se("path", { d: "M" + s0.x.toFixed(1) + "," + s0.y.toFixed(1) + " Q" + c.x.toFixed(1) + "," + c.y.toFixed(1) + " " + bx.toFixed(1) + "," + by.toFixed(1), "class": "assoc" }, gA);
+      se("polygon", { "class": "assoc-h", points: s1.x.toFixed(1) + "," + s1.y.toFixed(1) + " " + (bx - uy * 5).toFixed(1) + "," + (by + ux * 5).toFixed(1) + " " + (bx + uy * 5).toFixed(1) + "," + (by - ux * 5).toFixed(1) }, gA);
+      var lt2 = se("text", { "class": "assoc-l", x: ((p.x + 2 * c.x + q.x) / 4).toFixed(1), y: ((p.y + 2 * c.y + q.y) / 4 - 6).toFixed(1), "text-anchor": "middle" }, gA);
+      lt2.textContent = e.l;
+    });
+  }
+  var vw0 = App.views.mentale = {
+    vp: new Viewport(svg, W, H),
+    where: function (id) { return anchor[id]; },
+    onSelect: function (id) { focusOn(id); for (var k in kws) { kws[k].classList.toggle("sel", k === id); if (k === id && svg.classList.contains("ripasso") && k !== HUB) kws[k].classList.add("show"); } },
+    reveal: function (id) {
+      var p = anchor[id], vp = vw0.vp, m = 0.1; if (!p) return;
+      if (p.x < vp.vb.x + vp.vb.w * m || p.x > vp.vb.x + vp.vb.w * (1 - m) || p.y < vp.vb.y + vp.vb.h * m || p.y > vp.vb.y + vp.vb.h * (1 - m)) { vp.centerOn(p.x, p.y); vp.touched = true; }
+    }
+  };
+  vw0.vp.focus = { x: CX, y: CY };
+  vwBounds();
+  function vwBounds() { vw0.vp.X0 = bb.x0 - 40; vw0.vp.Y0 = bb.y0 - 30; vw0.vp.W = bb.x1 - bb.x0 + 80; vw0.vp.H = bb.y1 - bb.y0 + 110; }
+  svg.addEventListener("click", function (ev) { if (ev.target === svg || ev.target.classList.contains("mmgrid")) { if (vw0.vp.moved <= 5) App.select(null); } });
+}
+
+boot();
+</script>
+
+</body></html>

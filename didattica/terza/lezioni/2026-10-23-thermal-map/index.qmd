@@ -1,0 +1,18 @@
+---
+title: "Thermal physics conceptual & mind map"
+subtitle: "From particles and temperature to mixtures and the ice budget, in one map"
+date: 2026-10-23
+tipo: "Mappa"
+categories: [Fisica]
+page-layout: full
+---
+
+::: {.callout-note appearance="simple" icon=false}
+Tutto parte dalla **fisica termica**: particelle, energia e temperatura. Tocca un concetto per leggere la definizione, la formula, le unità di misura e un esempio svolto. In ogni riquadro trovi anche domande ed esercizi da provare: prova a rispondere prima di toccare *Show the answer*.
+
+**Come usarla:** scegli la mappa concettuale (con le frasi sulle frecce) o la mappa mentale (a rami) · il pulsante *Revision* nasconde le formule: prova a ricordarle prima di controllare · sul telefono è più comoda a schermo intero.
+:::
+
+[Apri la mappa a schermo intero ↗](mappa.html){target="_blank" .btn .btn-primary}
+
+<iframe src="mappa.html" title="Thermal physics conceptual and mind map" style="width:100%; height:85vh; min-height:560px; border:0; display:block; margin-top:1rem;" loading="lazy" allowfullscreen></iframe>
