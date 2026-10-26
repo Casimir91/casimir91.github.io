@@ -1,0 +1,25 @@
+---
+title: "Il dipolo magnetico"
+subtitle: "Esiste una bussola che punta a sud?"
+date: 2026-10-26
+tipo: "Lecture"
+categories: [Fisica]
+---
+
+::: {.callout-note appearance="simple" icon=false}
+Un ago magnetico in un campo non si limita a orientarsi: ruota, ha un'energia, può restare in equilibrio instabile. Si ricava il momento torcente e l'energia di un dipolo, e si usano per capire la levitazione magnetica.
+
+**Percorso:** linee di campo e loro chiusura · momento magnetico e campo $\vec B$ · momento torcente · energia $U(\varphi)$ ed equilibri · levitazione.
+:::
+
+## Slide della lezione
+
+::: {style="position: relative; padding-top: 56.25%;"}
+<iframe src="slides.html" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allowfullscreen></iframe>
+:::
+
+[Apri le slide a schermo intero ↗](slides.html){target="_blank" .btn .btn-primary}
+
+## Materiali e indicazioni per lo studio
+
+[Copione della lezione in italiano (PDF) ↗](copione_it.pdf){target="_blank" .btn .btn-outline-primary}
