@@ -1,0 +1,27 @@
+---
+title: "Teorema di Gauss del campo magnetico"
+subtitle: "Una sfera racchiude il polo nord di una calamita: il flusso di B che ne esce è positivo, nullo o dipende dal raggio?"
+date: 2026-10-28
+tipo: "Lecture"
+categories: [Fisica]
+---
+
+::: {.callout-note appearance="simple" icon=false}
+Il flusso di $\vec B$ attraverso una superficie chiusa è sempre nullo: le linee del campo magnetico non hanno inizio né fine. Si parte da una calamita e da una sfera, si arriva al teorema di Gauss per $\vec B$ e al confronto con il campo elettrico, poi si esercita tutto alla lavagna.
+
+**Percorso:** flusso di $\vec B$ e inclinazione · superficie chiusa e normale uscente · teorema di Gauss per $\vec B$ e assenza di monopoli · il parallelo fra $\vec E$ e $\vec B$ · esercizi su flusso, cubo e dipolo in campo.
+:::
+
+## Slide della lezione
+
+::: {style="position: relative; padding-top: 56.25%;"}
+<iframe src="slides.html" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allowfullscreen></iframe>
+:::
+
+[Apri le slide a schermo intero ↗](slides.html){target="_blank" .btn .btn-primary}
+
+## Materiali e indicazioni per lo studio
+
+[Esercizi con soluzioni, in classe e per casa (PDF) ↗](esercizi.pdf){target="_blank" .btn .btn-outline-primary}
+
+[Copione della lezione in italiano (PDF) ↗](copione_it.pdf){target="_blank" .btn .btn-outline-primary}
