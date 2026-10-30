@@ -1,0 +1,12 @@
+---
+title: "Examination practice"
+subtitle: "Speed, distance-time graphs, conservation of energy, work, power, efficiency, energy resources"
+date: 2026-10-30
+tipo: "Practice"
+categories: [Fisica]
+---
+
+## Materiali e indicazioni per lo studio
+
+[Foglio di esercizi (PDF) ↗](exam-practice.pdf){target="_blank" .btn .btn-outline-primary}
+[Soluzioni (PDF) ↗](exam-practice-solutions.pdf){target="_blank" .btn .btn-outline-primary}
