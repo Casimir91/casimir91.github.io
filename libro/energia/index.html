@@ -1,0 +1,1652 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="it" xml:lang="it"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="Da un’auto che frena a una legge della natura.">
+
+<title>Energia – Prof.&nbsp;Rosi</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-de60624a5cb141114e0ea2b9bc293073.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-52a1f3633cf0215026c8c874589d56c0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-de60624a5cb141114e0ea2b9bc293073.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Nessun risultato",
+    "search-matching-documents-text": "documenti trovati",
+    "search-copy-link-title": "Copiare il link nella ricerca",
+    "search-hide-matches-text": "Nascondere i risultati aggiuntivi",
+    "search-more-match-text": "ci sono altri risultati in questo documento",
+    "search-more-matches-text": "ulteriori risultati in questo documento",
+    "search-clear-button-title": "Pulire",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancellare",
+    "search-submit-button-title": "Inviare",
+    "search-label": "Ricerca"
+  }
+}</script>
+<style>
+/* ===== Libro: stile componenti (quiz e widget) ===== */
+.mcq-set{margin:1.2rem 0;counter-reset:mcq}
+.mcq{counter-increment:mcq;border:1px solid var(--bs-border-color,#ccc);border-radius:.5rem;padding:.9rem 1rem;margin:.9rem 0}
+.mcq>p:first-child::before{content:counter(mcq) ". ";font-weight:700}
+.mcq ul{list-style:none;padding:0;margin:.6rem 0 0}
+.mcq li{border:1px solid var(--bs-border-color,#ccc);border-radius:.4rem;padding:.45rem .7rem;margin:.35rem 0;cursor:pointer}
+.mcq li:hover{background:rgba(127,127,127,.12)}
+.mcq li.sel{outline:2px solid #2a7f62}
+.mcq li.ok{background:rgba(42,127,98,.22);border-color:#2a7f62}
+.mcq li.no{background:rgba(200,70,60,.2);border-color:#c8463c}
+.mcq.done li{cursor:default}
+.mcq .sol{display:none;margin-top:.7rem;padding:.6rem .8rem;border-left:4px solid #2a7f62;background:rgba(42,127,98,.08)}
+.mcq.done .sol,.mcq-set.revealed .sol{display:block}
+.mcq-btn,.lw button{border:1px solid #2a7f62;background:transparent;color:inherit;border-radius:.4rem;padding:.35rem .8rem;cursor:pointer;font:inherit}
+.mcq-btn:hover,.lw button:hover{background:rgba(42,127,98,.18)}
+.lw button.on{background:rgba(42,127,98,.3);font-weight:600}
+.lw{border:1px solid var(--bs-border-color,#ccc);border-radius:.6rem;padding:.8rem;margin:1.2rem 0}
+.lw canvas{width:100%;display:block;border-radius:.4rem}
+.lw .ctl{display:flex;flex-wrap:wrap;gap:.4rem 1.2rem;align-items:center;margin-top:.6rem}
+.lw .ctl label{display:flex;flex-direction:column;font-size:.85rem;min-width:9rem;flex:1}
+.lw .ctl input[type=range]{width:100%}
+.lw .out{font-size:.9rem;margin-top:.5rem;line-height:1.5}
+.lw .btns{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.6rem}
+.lw .cap{font-size:.8rem;opacity:.75;margin-top:.4rem}
+</style>
+<script>
+(function(){
+"use strict";
+/* ---------- utilità ---------- */
+function el(tag,attrs,kids){var e=document.createElement(tag);for(var k in (attrs||{})){if(k==="text")e.textContent=attrs[k];else if(k==="html")e.innerHTML=attrs[k];else e.setAttribute(k,attrs[k]);}(kids||[]).forEach(function(c){e.appendChild(c)});return e;}
+function fmt(x,d){return Number(x).toLocaleString("it-IT",{minimumFractionDigits:d,maximumFractionDigits:d});}
+function fmtJ(x){if(x<0.0005)return "0";return fmt(x,x>=100?0:(x>=1?1:3));}
+function fg(){return getComputedStyle(document.body).color;}
+function prepCanvas(c,h){var dpr=window.devicePixelRatio||1;var w=c.parentNode.clientWidth-16;if(w<200)w=200;c.style.height=h+"px";c.width=Math.round(w*dpr);c.height=Math.round(h*dpr);var x=c.getContext("2d");x.setTransform(dpr,0,0,dpr,0,0);x.clearRect(0,0,w,h);return {ctx:x,w:w,h:h};}
+function slider(lab,min,max,step,val,unit,dec,onch){
+  var inp=el("input",{type:"range",min:min,max:max,step:step,value:val});
+  var v=el("b",{});var l=el("label",{},[el("span",{html:lab+": "}),inp]);l.firstChild.appendChild(v);
+  function upd(){v.textContent=fmt(inp.value,dec)+" "+unit;}
+  inp.addEventListener("input",function(){upd();onch(+inp.value);});upd();
+  return {box:l,inp:inp,set:function(x){inp.value=x;upd();}};
+}
+/* cursore logaritmico per la massa (kg) */
+function massSlider(min,max,val,onch){
+  var inp=el("input",{type:"range",min:0,max:1000,step:1,value:Math.round(1000*Math.log(val/min)/Math.log(max/min))});
+  var v=el("b",{});var l=el("label",{},[el("span",{html:"Massa: "}),inp]);l.firstChild.appendChild(v);
+  function mval(){return min*Math.pow(max/min,inp.value/1000);}
+  function upd(){var m=mval();v.textContent=m<1?fmt(m*1000,m<0.1?0:0)+" g":fmt(m,m>=100?0:1)+" kg";}
+  inp.addEventListener("input",function(){upd();onch(mval());});upd();
+  return {box:l,set:function(m){inp.value=Math.round(1000*Math.log(m/min)/Math.log(max/min));upd();}};
+}
+function raf(fn){var id;var t0=null;function step(t){if(t0===null)t0=t;var go=fn((t-t0)/1000);if(go)id=requestAnimationFrame(step);}id=requestAnimationFrame(step);return function(){cancelAnimationFrame(id);};}
+var G=10;
+var COL={cin:"#2a7f62",pot:"#d98a1c",ter:"#c8463c",lav:"#3b6fb6",ela:"#8e5bb5",chi:"#3b8fb6",nuc:"#b59a1e"};
+
+/* ---------- disegno: serbatoi, frecce, omino ---------- */
+function fitText(c,t,x,y,maxw){
+  var s=11;c.font=s+"px sans-serif";
+  if(c.measureText(t).width>maxw&&t.indexOf(" ")>0){var i=t.indexOf(" ");fitText(c,t.slice(0,i),x,y,maxw);fitText(c,t.slice(i+1),x,y+12,maxw);return;}
+  while(c.measureText(t).width>maxw&&s>7){s--;c.font=s+"px sans-serif";}
+  c.fillText(t,x,y);
+}
+function tanks(c,items,x,y,w,h,max){
+  var n=items.length,gap=Math.min(12,w*0.04),bw=(w-gap*(n-1))/n;
+  items.forEach(function(it,i){
+    var bx=x+i*(bw+gap),fh=h*Math.max(0,Math.min(1,it.val/max));
+    c.fillStyle="rgba(127,127,127,.15)";c.fillRect(bx,y,bw,h);
+    c.fillStyle=it.col;c.fillRect(bx,y+h-fh,bw,fh);
+    c.strokeStyle=fg();c.lineWidth=1;c.strokeRect(bx,y,bw,h);
+    c.fillStyle=fg();c.textAlign="center";c.font="bold 11px sans-serif";
+    c.fillText(fmtJ(it.val)+" "+(it.unit||"J"),bx+bw/2,y-5);
+    c.font="11px sans-serif";fitText(c,it.lab,bx+bw/2,y+h+13,bw+gap-3);
+  });
+}
+function arrow(c,x1,y1,x2,y2,col,lw){
+  c.strokeStyle=col;c.fillStyle=col;c.lineWidth=lw||2.5;c.beginPath();c.moveTo(x1,y1);c.lineTo(x2,y2);c.stroke();
+  var a=Math.atan2(y2-y1,x2-x1),s=8;c.beginPath();c.moveTo(x2,y2);c.lineTo(x2-s*Math.cos(a-0.4),y2-s*Math.sin(a-0.4));c.lineTo(x2-s*Math.cos(a+0.4),y2-s*Math.sin(a+0.4));c.closePath();c.fill();
+}
+/* omino: piedi in (x,y); pose "push" o "lift" (handY = altezza mani) o "stand" */
+function figure(c,x,y,s,pose,handY){
+  c.strokeStyle=fg();c.fillStyle=fg();c.lineWidth=2;
+  var lean=pose==="push"?9*s:0,hip=[x,y-22*s],sh=[x+lean,y-40*s];
+  c.beginPath();c.arc(sh[0]+lean*0.2,y-47*s,5.5*s,0,7);c.stroke();
+  c.beginPath();c.moveTo(sh[0],sh[1]);c.lineTo(hip[0],hip[1]);c.lineTo(x-8*s,y);c.moveTo(hip[0],hip[1]);c.lineTo(x+8*s,y);c.stroke();
+  var hand=pose==="push"?[x+30*s,y-34*s]:pose==="lift"?[x+16*s,handY]:[x+12*s,y-24*s];
+  c.beginPath();c.moveTo(sh[0],sh[1]+2*s);c.lineTo(hand[0],hand[1]);c.stroke();
+}
+
+/* ---------- quiz a scelta multipla ---------- */
+function initMcq(){
+  document.querySelectorAll(".mcq").forEach(function(q){
+    var lis=q.querySelectorAll("ul>li");
+    lis.forEach(function(li){
+      var w=document.createTreeWalker(li,NodeFilter.SHOW_TEXT,null);var n=w.nextNode();
+      if(n&&/^\s*✓\s*/.test(n.nodeValue)){li.dataset.ok="1";n.nodeValue=n.nodeValue.replace(/^\s*✓\s*/,"");}
+    });
+    var set=q.closest(".mcq-set");var pre=set&&set.dataset.mode==="pretest";
+    lis.forEach(function(li){li.addEventListener("click",function(){
+      if(q.classList.contains("done")||(set&&set.classList.contains("revealed")))return;
+      lis.forEach(function(x){x.classList.remove("sel")});li.classList.add("sel");
+      if(!pre){q.classList.add("done");lis.forEach(function(x){if(x.dataset.ok)x.classList.add("ok");});if(!li.dataset.ok)li.classList.add("no");}
+    });});
+  });
+  document.querySelectorAll(".mcq-set[data-mode=pretest]").forEach(function(set){
+    var b=el("button",{"class":"mcq-btn",type:"button",text:"Controlla le risposte (meglio dopo aver letto la pagina)"});
+    b.addEventListener("click",function(){set.classList.add("revealed");set.querySelectorAll(".mcq").forEach(function(q){q.classList.add("done");q.querySelectorAll("li").forEach(function(x){if(x.dataset.ok)x.classList.add("ok");else if(x.classList.contains("sel"))x.classList.add("no");});});b.remove();});
+    set.appendChild(b);
+  });
+}
+
+/* ---------- widget: i quattro trasferimenti ---------- */
+function wTrasf(root){
+  var names=["Con una forza","Con una corrente","Riscaldando","Con onde (luce)"];
+  var cur=0,p=0,t=0,stop=null;
+  var cv=el("canvas",{"aria-label":"Quattro modi di trasferire energia, con serbatoi"});var out=el("div",{"class":"out"});
+  var tabs=el("div",{"class":"btns"});var bts=[];
+  names.forEach(function(n,i){var b=el("button",{type:"button",text:n});b.onclick=function(){cur=i;reset();};bts.push(b);tabs.appendChild(b);});
+  var play=el("button",{type:"button",text:"▶ Avvia"});play.onclick=function(){if(stop)stop();p=0;stop=raf(function(sec){t=sec;p=Math.min(1,sec/4.5);draw();return p<1;});};
+  root.appendChild(cv);root.appendChild(tabs);root.appendChild(el("div",{"class":"btns"},[play]));root.appendChild(out);
+  root.appendChild(el("div",{"class":"cap",text:"Numeri di fantasia (100 J all'inizio) per vedere l'energia passare da un serbatoio all'altro: il totale resta sempre lo stesso."}));
+  function reset(){if(stop)stop();stop=null;p=0;t=0;draw();}
+  var GY=118;
+  function ground(c,W){c.strokeStyle=fg();c.lineWidth=1.5;c.beginPath();c.moveTo(6,GY);c.lineTo(W-6,GY);c.stroke();}
+  function s0(c,W){ground(c,W);var x0=W*0.38,x1=W*0.7,cx=x0+(x1-x0)*p;
+    c.fillStyle="#9aa5b1";c.fillRect(cx,GY-40,56,24);c.fillStyle=fg();c.beginPath();c.arc(cx+13,GY-8,8,0,7);c.arc(cx+43,GY-8,8,0,7);c.fill();
+    figure(c,cx-34,GY,0.95,"push");arrow(c,cx-30,GY-66,cx+6,GY-66,COL.lav);c.fillStyle=fg();c.textAlign="center";c.font="12px sans-serif";c.fillText("forza",cx-12,GY-72);}
+  function s1(c,W){var bx=W*0.14,lx=W*0.72;
+    c.strokeStyle=fg();c.lineWidth=2;c.fillStyle="#9aa5b1";c.fillRect(bx-14,56,28,38);c.strokeRect(bx-14,56,28,38);c.fillStyle=fg();c.font="12px sans-serif";c.textAlign="center";c.fillText("+",bx,72);c.fillText("batteria",bx,110);
+    var pts=[[bx,56],[bx,20],[lx,20],[lx,48],[lx,92],[lx,116],[bx,116],[bx,94]];
+    c.beginPath();c.moveTo(pts[0][0],pts[0][1]);for(var i=1;i<pts.length;i++){if(i===4){c.moveTo(pts[i][0],pts[i][1]);}else c.lineTo(pts[i][0],pts[i][1]);}c.stroke();
+    var glow=Math.min(1,p*5)*(p<1?(0.75+0.25*Math.sin(t*10)):0.35);
+    c.fillStyle="rgba(255,220,60,"+(0.2+0.8*glow)+")";c.beginPath();c.arc(lx,70,22,0,7);c.fill();c.strokeStyle=fg();c.stroke();
+    if(glow>0.1){c.strokeStyle="rgba(255,210,40,"+glow+")";for(var a=0;a<8;a++){var an=a*Math.PI/4;c.beginPath();c.moveTo(lx+27*Math.cos(an),70+27*Math.sin(an));c.lineTo(lx+36*Math.cos(an),70+36*Math.sin(an));c.stroke();}}
+    if(p>0&&p<1){c.fillStyle=COL.lav;var path=[[bx,56],[bx,20],[lx,20],[lx,48],[lx,92],[lx,116],[bx,116],[bx,94]];for(var d=0;d<10;d++){var s=((t*0.4+d/10)%1)*0.999;var L=[],tot=0,k;
+      var seg=[[0,1],[1,2],[2,3],[4,5],[5,6],[6,7]];seg.forEach(function(q){var l=Math.hypot(path[q[1]][0]-path[q[0]][0],path[q[1]][1]-path[q[0]][1]);L.push(l);tot+=l;});
+      var dist=s*tot;for(k=0;k<seg.length;k++){if(dist<=L[k]){var f=dist/L[k],a0=path[seg[k][0]],a1=path[seg[k][1]];c.beginPath();c.arc(a0[0]+(a1[0]-a0[0])*f,a0[1]+(a1[1]-a0[1])*f,3,0,7);c.fill();break;}dist-=L[k];}}}
+  }
+  function s2(c,W){var cx=W*0.5;ground(c,W);
+    c.fillStyle="rgba(80,150,220,"+(0.35+0.15*p)+")";c.beginPath();c.moveTo(cx-34,GY-62);c.lineTo(cx+34,GY-62);c.lineTo(cx+28,GY-22);c.lineTo(cx-28,GY-22);c.closePath();c.fill();c.strokeStyle=fg();c.lineWidth=2;c.stroke();
+    if(p>0.35&&p<1){c.fillStyle="rgba(255,255,255,.8)";for(var k=0;k<6;k++){var yy=GY-26-((t*18+k*11)%34);c.beginPath();c.arc(cx-20+k*8,yy,2.2,0,7);c.fill();}}
+    if(p>0&&p<1){for(k=0;k<5;k++){var h=10+6*Math.sin(t*14+k*2);c.fillStyle=k%2?"#f0a020":"#e8561c";c.beginPath();c.moveTo(cx-26+k*13-5,GY-1);c.lineTo(cx-26+k*13,GY-1-h-6);c.lineTo(cx-26+k*13+5,GY-1);c.fill();}
+      c.strokeStyle="rgba(127,127,127,.6)";c.lineWidth=1.5;for(k=0;k<3;k++){c.beginPath();c.moveTo(cx-14+k*14,GY-70);c.quadraticCurveTo(cx-20+k*14,GY-82-((t*10+k*5)%10),cx-14+k*14,GY-94);c.stroke();}}
+    c.fillStyle=fg();c.textAlign="center";c.font="12px sans-serif";c.fillText("gas",cx,GY+14);}
+  function s3(c,W){var sx=W*0.14,ox=W*0.72;
+    c.fillStyle="#f2c21b";c.beginPath();c.arc(sx,60,24,0,7);c.fill();c.strokeStyle="#f2c21b";c.lineWidth=2;for(var a=0;a<12;a++){var an=a*Math.PI/6;c.beginPath();c.moveTo(sx+28*Math.cos(an),60+28*Math.sin(an));c.lineTo(sx+38*Math.cos(an),60+38*Math.sin(an));c.stroke();}
+    c.strokeStyle="#e8b300";c.lineWidth=2;for(var r=0;r<3;r++){var y0=38+r*22;c.beginPath();for(var x=sx+44;x<=ox-10;x+=3){var ph=(x-sx)*0.14-t*8;var yy=y0+4*Math.sin(ph);if(x===sx+44)c.moveTo(x,yy);else c.lineTo(x,yy);}c.stroke();}
+    var heat=p;c.fillStyle="rgb("+Math.round(60+150*heat)+","+Math.round(60-20*heat)+",60)";c.fillRect(ox,34,40,60);c.strokeStyle=fg();c.lineWidth=1.5;c.strokeRect(ox,34,40,60);
+    c.fillStyle=fg();c.font="12px sans-serif";c.textAlign="center";c.fillText("Sole",sx,104);c.fillText("oggetto scuro",ox+20,110);}
+  var DATA=[
+   function(){return {tk:[{lab:"chimica persona",val:100-55*p,col:COL.chi},{lab:"cinetica carrello",val:40*p,col:COL.cin},{lab:"termica corpo",val:15*p,col:COL.ter}],txt:"Una forza (le braccia) sposta energia dalla riserva chimica della persona alla riserva cinetica del carrello; una parte si disperde nel corpo come calore."};},
+   function(){return {tk:[{lab:"chimica batteria",val:100-70*p,col:COL.chi},{lab:"termica lampadina e aria",val:70*p,col:COL.ter}],txt:"La corrente elettrica sposta energia dalla batteria alla lampadina, che la restituisce come luce e calore."};},
+   function(){return {tk:[{lab:"chimica gas",val:100-60*p,col:COL.chi},{lab:"termica acqua",val:45*p,col:COL.ter},{lab:"termica aria",val:15*p,col:"#e08a6c"}],txt:"Il riscaldamento sposta energia dalla fiamma all'acqua; una parte scalda l'aria intorno."};},
+   function(){return {tk:[{lab:"nucleare Sole",val:100-30*p,col:COL.nuc},{lab:"termica oggetto",val:30*p,col:COL.ter}],txt:"La luce è un'onda: sposta energia dal Sole all'oggetto, che si scalda."};}
+  ];
+  var SC=[s0,s1,s2,s3];
+  function draw(){
+    var P=prepCanvas(cv,262),c=P.ctx,W=P.w;
+    bts.forEach(function(b,i){b.className=i===cur?"on":"";});
+    SC[cur](c,W);
+    var d=DATA[cur]();var tot=d.tk.reduce(function(s,x){return s+x.val;},0);
+    tanks(c,d.tk,10,168,W-20,56,100);
+    c.fillStyle=fg();c.textAlign="right";c.font="bold 12px sans-serif";c.fillText("Totale: "+fmt(tot,0)+" J",W-8,14);
+    out.textContent=d.txt;
+  }
+  reset();window.addEventListener("resize",draw);
+}
+
+/* ---------- widget: l'auto che frena (senza numeri sullo spazio) ---------- */
+function wFreno(root){
+  var E0=139,p=0,stop=null;var cv=el("canvas",{"aria-label":"Auto che frena: l'energia cinetica diventa calore nei freni"});var out=el("div",{"class":"out"});
+  var go=el("button",{type:"button",text:"▶ Frena"}),rs=el("button",{type:"button",text:"↺ Ricomincia"});
+  go.onclick=function(){if(stop)stop();p=0;stop=raf(function(sec){p=Math.min(1,sec/4);draw();return p<1;});};
+  rs.onclick=function(){if(stop)stop();stop=null;p=0;draw();};
+  root.appendChild(cv);root.appendChild(el("div",{"class":"btns"},[go,rs]));root.appendChild(out);
+  root.appendChild(el("div",{"class":"cap",text:"I freni compiono lavoro: è il trasferimento che porta via l'energia cinetica e la lascia come energia termica."}));
+  function draw(){
+    var P=prepCanvas(cv,262),c=P.ctx,W=P.w,GY=112,v=60*(1-p),Ek=E0*(1-p)*(1-p),Q=E0-Ek;
+    c.strokeStyle=fg();c.lineWidth=2;c.beginPath();c.moveTo(0,GY);c.lineTo(W,GY);c.stroke();
+    var s=60*4*(p-p*p/2);c.lineWidth=3;for(var i=-1;i<12;i++){var x=((i*70-s*1.6)%(W+70)+W+70)%(W+70)-35;c.beginPath();c.moveTo(x,GY+10);c.lineTo(x+30,GY+10);c.stroke();}
+    var cx=W*0.36;c.fillStyle=COL.cin;c.fillRect(cx,GY-42,120,24);c.beginPath();c.moveTo(cx+28,GY-42);c.lineTo(cx+42,GY-62);c.lineTo(cx+86,GY-62);c.lineTo(cx+100,GY-42);c.closePath();c.fill();
+    c.fillStyle="rgba(255,255,255,.75)";c.fillRect(cx+46,GY-58,16,13);c.fillRect(cx+66,GY-58,16,13);
+    [cx+24,cx+96].forEach(function(wx,k){c.fillStyle=fg();c.beginPath();c.arc(wx,GY-12,12,0,7);c.fill();var f=Q/E0;c.fillStyle="rgba(255,"+Math.round(80-60*f)+",20,"+(0.25+0.75*f)+")";c.beginPath();c.arc(wx,GY-12,7,0,7);c.fill();if(f>0.1){c.strokeStyle="rgba(232,86,28,"+f+")";c.lineWidth=1.5;for(var q=0;q<3;q++){c.beginPath();c.moveTo(wx-8+q*8,GY-30);c.quadraticCurveTo(wx-12+q*8,GY-38,wx-8+q*8,GY-46);c.stroke();}}});
+    c.fillStyle=fg();c.textAlign="left";c.font="bold 13px sans-serif";c.fillText("velocità: "+fmt(v,0)+" km/h",8,18);
+    c.textAlign="right";c.fillText("lavoro dei freni: "+fmt(Q,0)+" kJ",W-8,18);
+    tanks(c,[{lab:"energia cinetica (auto)",val:Ek,col:COL.cin,unit:"kJ"},{lab:"energia termica (freni, aria…)",val:Q,col:COL.ter,unit:"kJ"}],W*0.2,162,W*0.6,56,E0);
+    out.innerHTML=p===0?"Premi «Frena». Guarda la velocità scendere e i freni scaldarsi.":(p<1?"L'energia cinetica passa ai freni, che la trasferiscono come calore.":"Auto ferma: tutta l'energia cinetica è diventata energia termica (<b>"+fmt(E0,0)+" kJ</b>).");
+  }
+  draw();window.addEventListener("resize",draw);
+}
+
+/* ---------- widget: palla che rimbalza (ideale / reale) ---------- */
+function wRimbalzo(root){
+  var m=0.5,k=4000,H0=2,E0=m*G*H0,real=false,y,v,done,stop=null,Th=0;
+  var cv=el("canvas",{"aria-label":"Palla che cade e rimbalza con serbatoi di energia"});var out=el("div",{"class":"out"});
+  var bI=el("button",{type:"button",text:"Rimbalzo perfetto (ideale)"}),bR=el("button",{type:"button",text:"Rimbalzo reale"});
+  var go=el("button",{type:"button",text:"▶ Lascia cadere"});
+  function setMode(r){real=r;bI.className=r?"":"on";bR.className=r?"on":"";reset();}
+  bI.onclick=function(){setMode(false);};bR.onclick=function(){setMode(true);};go.onclick=function(){run();};
+  root.appendChild(cv);root.appendChild(el("div",{"class":"btns"},[bI,bR]));root.appendChild(el("div",{"class":"btns"},[go]));root.appendChild(out);
+  root.appendChild(el("div",{"class":"cap",text:"Palla da 0,5 kg lasciata da 2 m. Il momento dell'urto è rallentato molto, per vedere la palla schiacciarsi."}));
+  function reset(){if(stop)stop();stop=null;y=H0;v=0;done=false;Th=0;draw();}
+  function C(){return real?2*0.09*Math.sqrt(k*m):0;}
+  function run(){reset();var c0=C(),last=null;
+    stop=raf(function(sec){var dtr=last===null?0.016:Math.min(0.05,sec-last);last=sec;var budget=dtr,guard=0;
+      while(budget>0&&!done&&guard++<400){var contact=y<0,rate=contact?0.05:0.8,st=contact?0.0002:0.001;
+        var a=-G+(contact?(-k*y-c0*v)/m:0);v+=a*st;y+=v*st;budget-=st/rate;
+        if(real&&y>=0&&v>0){var me=m*G*y+0.5*m*v*v;if(me<0.015*E0){done=true;y=0;v=0;}}}
+      draw();return !done||false;});
+  }
+  function draw(){
+    var P=prepCanvas(cv,250),c=P.ctx,W=P.w,sw=Math.min(120,W*0.3),GY=232,sc=52,r=9;
+    var contact=y<0,Ek=0.5*m*v*v,Ep=Math.max(0,m*G*y),El=contact?0.5*k*y*y:0;
+    if(real){Th=done?E0:Math.max(0,E0-(m*G*y+Ek+El));}else{Th=0;}
+    if(done){Ek=0;Ep=0;El=0;}
+    c.strokeStyle=fg();c.lineWidth=2;c.beginPath();c.moveTo(6,GY);c.lineTo(sw+4,GY);c.stroke();
+    c.lineWidth=1;c.setLineDash([3,4]);c.beginPath();c.moveTo(sw/2,GY);c.lineTo(sw/2,GY-H0*sc-2*r);c.stroke();c.setLineDash([]);
+    var sq=contact?Math.min(0.55,-y/0.0707*0.5):0,bx=sw/2,by=GY-r*(1-sq)-Math.max(0,y)*sc;
+    c.fillStyle=COL.pot;c.beginPath();c.ellipse(bx,by,r*(1+sq*0.9),r*(1-sq),0,0,7);c.fill();c.strokeStyle=fg();c.stroke();
+    c.fillStyle=fg();c.textAlign="left";c.font="11px sans-serif";c.fillText("2 m",sw/2+8,GY-H0*sc-4);
+    tanks(c,[{lab:"di quota (gravitaz.)",val:Ep,col:COL.pot},{lab:"di movimento (cinetica)",val:Ek,col:COL.cin},{lab:"elastica",val:El,col:COL.ela},{lab:"termica",val:Th,col:COL.ter}],sw+14,34,W-sw-20,150,E0);
+    c.fillStyle=fg();c.textAlign="right";c.font="bold 12px sans-serif";c.fillText("Totale: "+fmt(E0,1)+" J",W-6,14);
+    var ph=done?"La palla si ferma: tutta l'energia è diventata <b>termica</b> (e un po' di suono).":(y===H0&&v===0)?"Scegli il tipo di rimbalzo e premi «Lascia cadere».":contact?"<b>Urto</b>: la palla si schiaccia, l'energia di movimento diventa <b>elastica</b>"+(real?" (e un po' si disperde in calore).":"."):v<0?"<b>Caduta</b>: l'energia di quota diventa energia di movimento.":"<b>Risalita</b>: l'energia elastica torna di movimento, poi di quota.";
+    out.innerHTML=ph;
+  }
+  setMode(false);window.addEventListener("resize",draw);
+}
+
+/* ---------- widget: il lavoro (carrello, peso, caduta) ---------- */
+function hbar(c,x,y,w,h,val,max,col,lab){
+  c.fillStyle="rgba(127,127,127,.2)";c.fillRect(x,y,w,h);c.fillStyle=col;c.fillRect(x,y,w*Math.max(0,Math.min(1,val/max)),h);
+  c.strokeStyle=fg();c.lineWidth=1;c.strokeRect(x,y,w,h);c.fillStyle=fg();c.textAlign="left";c.font="12px sans-serif";c.fillText(lab+": "+fmtJ(val)+" J",x+6,y+h-5);
+}
+function wLavoro(root){
+  var cur=0,p=0,stop=null,F=80,M=5,Mb=1;
+  var cv=el("canvas",{"aria-label":"Il lavoro: una forza che sposta un oggetto"});var out=el("div",{"class":"out"});
+  var names=["Carrello spinto","Peso sollevato","Palla che cade"],bts=[];var tabs=el("div",{"class":"btns"});
+  names.forEach(function(n,i){var b=el("button",{type:"button",text:n});b.onclick=function(){cur=i;sel();reset();};bts.push(b);tabs.appendChild(b);});
+  var sF=slider("Forza",20,200,10,F,"N",0,function(x){F=x;draw();});
+  var sM=slider("Massa del peso",1,20,1,M,"kg",0,function(x){M=x;draw();});
+  var sB=slider("Massa della palla",0.5,5,0.5,Mb,"kg",1,function(x){Mb=x;draw();});
+  var ctl=el("div",{"class":"ctl"},[sF.box,sM.box,sB.box]);
+  var go=el("button",{type:"button",text:"▶ Avvia"});go.onclick=function(){if(stop)stop();p=0;stop=raf(function(sec){p=Math.min(1,sec/3.5);draw();return p<1;});};
+  root.appendChild(cv);root.appendChild(tabs);root.appendChild(ctl);root.appendChild(el("div",{"class":"btns"},[go]));root.appendChild(out);
+  root.appendChild(el("div",{"class":"cap",html:"Il lavoro è l'energia trasferita da una forza: <i>W = F · d</i>, con d misurata nella direzione della forza."}));
+  function sel(){bts.forEach(function(b,i){b.className=i===cur?"on":"";});sF.box.style.display=cur===0?"":"none";sM.box.style.display=cur===1?"":"none";sB.box.style.display=cur===2?"":"none";}
+  function reset(){if(stop)stop();stop=null;p=0;draw();}
+  function draw(){
+    var P=prepCanvas(cv,262),c=P.ctx,W=P.w,GY=150,fgc=fg();
+    c.strokeStyle=fgc;c.lineWidth=2;c.beginPath();c.moveTo(6,GY);c.lineTo(W-6,GY);c.stroke();
+    var Wk,dest=null,dtot,Fv,d;c.font="12px sans-serif";
+    if(cur===0){dtot=5;d=dtot*p;Fv=F;var x0=W*0.22,x1=W*0.74,px=(x1-x0)/dtot,cx=x0+d*px;
+      c.fillStyle="#9aa5b1";c.fillRect(cx,GY-44,60,26);c.fillStyle=fgc;c.beginPath();c.arc(cx+14,GY-9,8,0,7);c.arc(cx+46,GY-9,8,0,7);c.fill();
+      figure(c,cx-38,GY,1.1,"push");arrow(c,cx-34,GY-78,cx-34+Fv*0.3,GY-78,COL.lav,3);c.fillStyle=fgc;c.textAlign="left";c.fillText("F = "+Fv+" N",cx-34,GY-84);
+      c.lineWidth=1;c.strokeStyle=fgc;c.beginPath();c.moveTo(x0,GY+14);c.lineTo(x1,GY+14);c.stroke();for(var i=0;i<=dtot;i++){c.beginPath();c.moveTo(x0+i*px,GY+10);c.lineTo(x0+i*px,GY+18);c.stroke();}
+      c.strokeStyle=COL.lav;c.lineWidth=3;c.beginPath();c.moveTo(x0,GY+14);c.lineTo(x0+d*px,GY+14);c.stroke();c.fillStyle=fgc;c.textAlign="center";c.fillText("d = "+fmt(d,2)+" m",x0+d*px/2+1,GY+34);}
+    else if(cur===1){dtot=1.2;d=dtot*p;Fv=M*G;var px2=50,wx=W*0.5,wy=GY-d*px2;
+      c.fillStyle="#9aa5b1";c.fillRect(wx-18,wy-30,36,30);c.strokeStyle=fgc;c.lineWidth=1.5;c.strokeRect(wx-18,wy-30,36,30);c.fillStyle=fgc;c.textAlign="center";c.fillText(M+" kg",wx,wy-10);
+      figure(c,wx-56,GY,1.1,"lift",wy-20);arrow(c,wx+30,wy-15,wx+30,wy-15-Math.min(50,Fv*0.3),COL.lav,3);c.textAlign="left";c.fillText("F = "+Fv+" N",wx+38,wy-24);
+      c.lineWidth=1;c.strokeStyle=fgc;c.setLineDash([3,3]);c.beginPath();c.moveTo(wx+80,GY);c.lineTo(wx+80,GY-dtot*px2);c.stroke();c.setLineDash([]);c.strokeStyle=COL.lav;c.lineWidth=3;c.beginPath();c.moveTo(wx+80,GY);c.lineTo(wx+80,GY-d*px2);c.stroke();c.fillStyle=fgc;c.textAlign="left";c.fillText("d = "+fmt(d,2)+" m",wx+88,GY-d*px2/2+4);dest={lab:"energia di quota",col:COL.pot};}
+    else{dtot=2;var tt=p*Math.sqrt(2*dtot/G);d=0.5*G*tt*tt;Fv=Mb*G;var px3=48,bx=W*0.5,by=GY-9-(dtot-d)*px3;
+      c.fillStyle=COL.pot;c.beginPath();c.arc(bx,by,9,0,7);c.fill();c.strokeStyle=fgc;c.stroke();arrow(c,bx+24,by,bx+24,by+Math.min(50,Fv*0.9),COL.lav,3);c.fillStyle=fgc;c.textAlign="left";c.fillText("peso = "+fmt(Fv,0)+" N",bx+32,by+6);c.fillText("nessuno la spinge",bx+32,20);
+      c.setLineDash([3,3]);c.lineWidth=1;c.beginPath();c.moveTo(bx-40,GY-9-dtot*px3);c.lineTo(bx-40,GY-9);c.stroke();c.setLineDash([]);c.strokeStyle=COL.lav;c.lineWidth=3;c.beginPath();c.moveTo(bx-40,GY-9-dtot*px3);c.lineTo(bx-40,GY-9-(dtot-d)*px3);c.stroke();c.fillStyle=fgc;c.textAlign="right";c.fillText("d = "+fmt(d,2)+" m",bx-46,GY-9-(dtot-d/2)*px3+4);dest={lab:"energia di movimento",col:COL.cin};}
+    Wk=Fv*d;var tot=Fv*dtot;
+    hbar(c,10,196,W-20,20,Wk,tot,COL.lav,"lavoro W compiuto");
+    if(dest)hbar(c,10,224,W-20,20,Wk,tot,dest.col,dest.lab+" guadagnata");
+    out.innerHTML="<b>W = F · d</b> = "+fmt(Fv,0)+" N × "+fmt(d,2)+" m = <b>"+fmt(Wk,1)+" J</b>"+(cur===1?" &nbsp;→ l'energia trasferita si ritrova nella riserva di quota.":cur===2?" &nbsp;→ è la forza di gravità a compiere il lavoro: l'energia di quota diventa energia di movimento.":"");
+  }
+  sel();draw();window.addEventListener("resize",draw);
+}
+
+/* ---------- widget: caduta (la massa non conta) ---------- */
+function wCaduta(root){
+  var h=1,m=0.005,t=null,stop=null;var cv=el("canvas",{"aria-label":"Corpo che cade: energia potenziale e cinetica"});var out=el("div",{"class":"out"});
+  var sh=slider("Altezza di caduta",0.5,5,0.5,h,"m",1,function(v){h=v;t=null;draw();});
+  var sm=massSlider(0.005,500,m,function(v){m=v;draw();});
+  var go=el("button",{type:"button",text:"▶ Lascia cadere"});
+  go.onclick=function(){if(stop)stop();var T=Math.sqrt(2*h/G),slow=3;stop=raf(function(sec){t=Math.min(T,sec/slow);draw();return t<T;});};
+  function pre(mm,lab){var b=el("button",{type:"button",text:lab});b.onclick=function(){m=mm;sm.set(mm);t=null;draw();};return b;}
+  root.appendChild(cv);root.appendChild(el("div",{"class":"btns"},[pre(0.005,"Piuma (5 g)"),pre(0.2,"Palla (200 g)"),pre(400,"Pianoforte (400 kg)")]));
+  root.appendChild(el("div",{"class":"ctl"},[sh.box,sm.box]));root.appendChild(el("div",{"class":"btns"},[go]));root.appendChild(out);
+  root.appendChild(el("div",{"class":"cap",text:"Senza resistenza dell'aria, rallentato di 3 volte. Cambia la massa: la velocità finale non cambia."}));
+  function draw(){
+    var P=prepCanvas(cv,230),c=P.ctx,W=P.w,H=230;c.font="12px sans-serif";
+    var tt=t===null?0:t,y=h-0.5*G*tt*tt,v=G*tt,Ep=m*G*y,Ek=0.5*m*v*v,Em=m*G*h;
+    var top=24,bot=H-34,sc=(bot-top)/5.2;c.strokeStyle=fg();c.lineWidth=2;c.beginPath();c.moveTo(20,bot);c.lineTo(110,bot);c.stroke();
+    c.lineWidth=1;c.setLineDash([3,4]);c.beginPath();c.moveTo(65,bot);c.lineTo(65,bot-h*sc);c.stroke();c.setLineDash([]);
+    c.fillStyle=COL.pot;c.beginPath();c.arc(65,bot-y*sc-8,8,0,7);c.fill();c.strokeStyle=fg();c.stroke();c.fillStyle=fg();c.textAlign="left";c.fillText("h = "+fmt(h,1)+" m",22,Math.max(14,bot-h*sc-8));
+    var bx=Math.max(125,W*0.3);
+    tanks(c,[{lab:"di quota",val:Ep,col:COL.pot},{lab:"di movimento",val:Ek,col:COL.cin},{lab:"somma",val:Ep+Ek,col:COL.lav}],bx,24,W-bx-8,bot-24,Em);
+    var vf=Math.sqrt(2*G*h);
+    out.innerHTML="Ora: v = <b>"+fmt(v,1)+" m/s</b>. All'arrivo: mgh = <b>"+fmtJ(Em)+" J</b> e v = <b>"+fmt(vf,1)+" m/s</b> ("+fmt(vf*3.6,0)+" km/h), qualunque sia la massa.";
+  }
+  draw();window.addEventListener("resize",draw);
+}
+
+/* ---------- widget: frenata completa (F, spazio, massa) ---------- */
+function wFrenata(root){
+  var v0=50,F=7,m=1000,hist=[],stop=null,x=0,vnow=0,running=false;
+  var cv=el("canvas",{"aria-label":"Auto che frena: forza, spazio e lavoro dei freni"});var out=el("div",{"class":"out"});
+  var sv=slider("Velocità iniziale",20,130,5,v0,"km/h",0,function(v){v0=v;resetRun();});
+  var sf=slider("Forza frenante",2,10,0.5,F,"kN",1,function(v){F=v;resetRun();});
+  var sm=slider("Massa",500,2000,100,m,"kg",0,function(v){m=v;resetRun();});
+  var go=el("button",{type:"button",text:"▶ Frena"});
+  var b50=el("button",{type:"button",text:"50 km/h"}),b100=el("button",{type:"button",text:"100 km/h"}),bw=el("button",{type:"button",text:"100 km/h, strada bagnata"}),bc=el("button",{type:"button",text:"Cancella i confronti"});
+  function preset(v,f){v0=v;F=f;sv.set(v);sf.set(f);resetRun();}
+  b50.onclick=function(){preset(50,7)};b100.onclick=function(){preset(100,7)};bw.onclick=function(){preset(100,3.5)};bc.onclick=function(){hist=[];resetRun();};
+  root.appendChild(cv);root.appendChild(el("div",{"class":"ctl"},[sv.box,sf.box,sm.box]));
+  root.appendChild(el("div",{"class":"btns"},[go,b50,b100,bw,bc]));root.appendChild(out);
+  root.appendChild(el("div",{"class":"cap",html:"Per fermarsi, tutta l'energia cinetica deve diventare lavoro dei freni: F·d = E<sub>k</sub>. A parità di energia, meno spazio vuol dire più forza."}));
+  if(root.dataset.prefill){root.dataset.prefill.split(",").forEach(function(s){var q=s.split(":");hist.push({v:+q[0],F:+q[1]||7,m:1000});});}
+  function Ek0(){return 0.5*m*Math.pow(v0/3.6,2);}
+  function dstop(){return Ek0()/(F*1000);}
+  function resetRun(){if(stop){stop();stop=null;}running=false;x=0;vnow=v0/3.6;draw();}
+  go.onclick=function(){
+    if(stop)stop();x=0;running=true;var tst=m*(v0/3.6)/(F*1000),speed=tst/3,a=F*1000/m,v00=v0/3.6,d=dstop();
+    stop=raf(function(sec){var t=Math.min(tst,sec*speed);x=v00*t-0.5*a*t*t;vnow=Math.max(0,v00-a*t);draw();if(t>=tst){running=false;hist.push({v:v0,F:F,m:m});if(hist.length>4)hist.shift();x=d;vnow=0;draw();return false;}return true;});
+  };
+  function draw(){
+    var P=prepCanvas(cv,235),c=P.ctx,W=P.w,H=235;c.fillStyle=fg();c.strokeStyle=fg();c.font="12px sans-serif";
+    var dmax=dstop();hist.forEach(function(h){dmax=Math.max(dmax,0.5*h.m*Math.pow(h.v/3.6,2)/(h.F*1000));});
+    var L=20,R=W-30,S=(R-L)/(dmax*1.12),road=105;
+    c.beginPath();c.moveTo(L,road);c.lineTo(R+10,road);c.stroke();
+    var step=dmax>300?100:dmax>120?50:dmax>60?20:10;c.textAlign="center";
+    for(var k=0;k<=dmax*1.12;k+=step){c.beginPath();c.moveTo(L+k*S,road);c.lineTo(L+k*S,road+5);c.stroke();c.fillText(k+" m",L+k*S,road+18);}
+    hist.forEach(function(h,i){var d=0.5*h.m*Math.pow(h.v/3.6,2)/(h.F*1000);var xx=L+d*S;c.strokeStyle=COL.lav;c.setLineDash([4,3]);c.beginPath();c.moveTo(xx,road-48);c.lineTo(xx,road+24);c.stroke();c.setLineDash([]);c.fillStyle=COL.lav;c.textAlign="center";c.fillText(h.v+" km/h: "+fmt(d,0)+" m",xx,road+38+(i%2)*14);});
+    c.strokeStyle=fg();c.fillStyle=COL.cin;var cx=L+x*S;c.fillRect(cx-22,road-24,22,18);c.fillStyle=fg();c.beginPath();c.arc(cx-16,road-4,4,0,7);c.arc(cx-5,road-4,4,0,7);c.fill();
+    if(running){c.fillStyle=COL.ter;c.font="bold 11px sans-serif";c.textAlign="left";c.fillText("v = "+fmt(vnow*3.6,0)+" km/h",Math.min(cx+4,R-70),road-34);}
+    var e0=Ek0(),W_=Math.min(e0,F*1000*x),Ek=e0-W_,bx=L,by=165,bw_=R-L,bh=16;
+    function hbar(y,val,col,lab){c.fillStyle="rgba(127,127,127,.25)";c.fillRect(bx,y,bw_,bh);c.fillStyle=col;c.fillRect(bx,y,bw_*val/e0,bh);c.fillStyle=fg();c.textAlign="left";c.font="12px sans-serif";c.fillText(lab+" "+fmt(val/1000,1)+" kJ",bx+4,y+12);}
+    hbar(by-14,Ek,COL.cin,"Energia cinetica rimasta");hbar(by+10,W_,COL.lav,"Lavoro dei freni W = F·x");
+    out.innerHTML="Energia cinetica iniziale: <b>"+fmt(e0/1000,1)+" kJ</b>. Per fermarla: d = E<sub>k</sub>/F = <b>"+fmt(dstop(),1)+" m</b>."+(hist.length?" Le linee blu segnano gli arresti già provati.":"");
+  }
+  resetRun();window.addEventListener("resize",draw);
+}
+
+var W={trasferimenti:wTrasf,freno:wFreno,rimbalzo:wRimbalzo,lavoro:wLavoro,caduta:wCaduta,frenata:wFrenata};
+function boot(){initMcq();document.querySelectorAll(".lw[data-widget]").forEach(function(r){var f=W[r.dataset.widget];if(f&&!r.dataset.ready){r.dataset.ready="1";f(r);}});}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot);else boot();
+})();
+</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="Energia – Prof.&nbsp;Rosi">
+<meta property="og:description" content="Da un’auto che frena a una legge della natura.">
+<meta property="og:site_name" content="Prof.&nbsp;Rosi">
+<meta name="twitter:title" content="Energia – Prof.&nbsp;Rosi">
+<meta name="twitter:description" content="Da un’auto che frena a una legge della natura.">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const queryPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const darkModeDefault = queryPrefersDark.matches;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    queryPrefersDark.addEventListener("change", e => {
+      if(window.localStorage.getItem("quarto-color-scheme") !== null)
+        return;
+      const alternate = e.matches
+      toggleColorMode(alternate);
+      localAlternateSentinel = e.matches ? 'alternate' : 'default'; // this is used alongside local storage!
+      toggleGiscusIfUsed(alternate, darkModeDefault);
+    });
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Prof.&nbsp;Rosi</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Ricerca"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Attiva/disattiva la navigazione" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../didattica/index.html"> 
+<span class="menu-text">Didattica</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../libro/index.html"> 
+<span class="menu-text">Libro</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../edtech/index.html"> 
+<span class="menu-text">EdTech</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../toolbox/index.html"> 
+<span class="menu-text">Toolbox</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../stories/index.html"> 
+<span class="menu-text">Stories</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../chi-sono.html"> 
+<span class="menu-text">Chi sono</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/ermes-f-rosi/"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Attiva/disattiva la modalità oscura"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">In questo capitolo</h2>
+   
+  <ul>
+  <li><a href="#che-cosè-lenergia" id="toc-che-cosè-lenergia" class="nav-link active" data-scroll-target="#che-cosè-lenergia">Che cos’è l’energia</a></li>
+  <li><a href="#quiz-di-benvenuto" id="toc-quiz-di-benvenuto" class="nav-link" data-scroll-target="#quiz-di-benvenuto">Quiz di benvenuto</a></li>
+  <li><a href="#dove-sta-lenergia-e-come-si-sposta" id="toc-dove-sta-lenergia-e-come-si-sposta" class="nav-link" data-scroll-target="#dove-sta-lenergia-e-come-si-sposta">Dove sta l’energia e come si sposta</a></li>
+  <li><a href="#dalle-animazioni-ai-conti" id="toc-dalle-animazioni-ai-conti" class="nav-link" data-scroll-target="#dalle-animazioni-ai-conti">Dalle animazioni ai conti</a>
+  <ul class="collapse">
+  <li><a href="#lenergia-della-quota" id="toc-lenergia-della-quota" class="nav-link" data-scroll-target="#lenergia-della-quota">L’energia della quota</a></li>
+  <li><a href="#lenergia-del-movimento" id="toc-lenergia-del-movimento" class="nav-link" data-scroll-target="#lenergia-del-movimento">L’energia del movimento</a></li>
+  <li><a href="#un-esempio-la-piuma-che-cade-da-un-metro" id="toc-un-esempio-la-piuma-che-cade-da-un-metro" class="nav-link" data-scroll-target="#un-esempio-la-piuma-che-cade-da-un-metro">Un esempio: la piuma che cade da un metro</a></li>
+  </ul></li>
+  <li><a href="#il-lavoro" id="toc-il-lavoro" class="nav-link" data-scroll-target="#il-lavoro">Il lavoro</a>
+  <ul class="collapse">
+  <li><a href="#il-lavoro-dei-freni" id="toc-il-lavoro-dei-freni" class="nav-link" data-scroll-target="#il-lavoro-dei-freni">Il lavoro dei freni</a></li>
+  </ul></li>
+  <li><a href="#torniamo-allauto" id="toc-torniamo-allauto" class="nav-link" data-scroll-target="#torniamo-allauto">Torniamo all’auto</a></li>
+  <li><a href="#mettiti-alla-prova" id="toc-mettiti-alla-prova" class="nav-link" data-scroll-target="#mettiti-alla-prova">Mettiti alla prova</a></li>
+  <li><a href="#per-chi-vuole-fare-i-conti" id="toc-per-chi-vuole-fare-i-conti" class="nav-link" data-scroll-target="#per-chi-vuole-fare-i-conti">Per chi vuole fare i conti</a>
+  <ul class="collapse">
+  <li><a href="#un-esempio-svolto-una-palla-che-cade" id="toc-un-esempio-svolto-una-palla-che-cade" class="nav-link" data-scroll-target="#un-esempio-svolto-una-palla-che-cade">Un esempio svolto: una palla che cade</a></li>
+  <li><a href="#esercizi-per-te" id="toc-esercizi-per-te" class="nav-link" data-scroll-target="#esercizi-per-te">Esercizi per te</a></li>
+  <li><a href="#la-scheda-di-esercizi" id="toc-la-scheda-di-esercizi" class="nav-link" data-scroll-target="#la-scheda-di-esercizi">La scheda di esercizi</a></li>
+  <li><a href="#come-ci-accorgiamo-che-un-risultato-è-sbagliato" id="toc-come-ci-accorgiamo-che-un-risultato-è-sbagliato" class="nav-link" data-scroll-target="#come-ci-accorgiamo-che-un-risultato-è-sbagliato">Come ci accorgiamo che un risultato è sbagliato</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Energia</h1>
+<p class="subtitle lead">Nulla si crea, nulla si distrugge, tutto si trasforma</p>
+</div>
+
+<div>
+  <div class="description">
+    Da un’auto che frena a una legge della natura.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="che-cosè-lenergia" class="level2">
+<h2 class="anchored" data-anchor-id="che-cosè-lenergia">Che cos’è l’energia</h2>
+<p>L’energia è la grandezza fisica che misura la capacità di un oggetto (un sistema fisico) di compiere lavoro. È legata a una legge di natura molto importante, la <strong>legge di conservazione dell’energia</strong>: l’energia non si crea e non si distrugge, ma si trasforma da una forma a un’altra. Sembra la celebre frase attribuita a Lavoisier, «nulla si crea, nulla si distrugge, tutto si trasforma», che però parlava della materia: per l’energia la legge fu formulata a metà dell’Ottocento, da Mayer, Joule e Helmholtz.</p>
+<p>Se contiamo tutta l’energia, quella totale si conserva sempre tra lo stato iniziale e lo stato finale. Questo vuol dire che se conosciamo solo lo stato iniziale (una palla tenuta a una certa altezza dal suolo) possiamo calcolare facilmente la sua velocità d’impatto quando la lasciamo cadere (stato finale). Per farlo basta contare l’energia «di quota» e quella «di movimento», a patto di trascurare gli elementi <em>dissipativi</em>, come l’attrito tra la palla e l’aria, che trasformano una parte dell’energia in calore. Trascurare l’attrito con l’aria è comune a tutti (o quasi) i problemi di fisica generale, nelle scuole superiori e all’università. Rende la legge di conservazione uno strumento potente e semplice da usare, ma questa e altre «idealizzazioni» possono portare a conseguenze controintuitive. Vediamone qualcuna.</p>
+</section>
+<section id="quiz-di-benvenuto" class="level2">
+<h2 class="anchored" data-anchor-id="quiz-di-benvenuto">Quiz di benvenuto</h2>
+<p>Rispondi d’istinto, senza fare conti e senza preoccuparti di sbagliare: queste domande riguardano ciò che incontreremo nel capitolo, e provare a rispondere <em>prima</em> di aver studiato rende lo studio più efficace. In ogni domanda trascura l’attrito dell’aria.</p>
+<div class="mcq-set" data-mode="pretest">
+<div class="mcq">
+<p>Una piuma e un pianoforte a coda precipitano da un’altezza di <span class="math inline">\(100\ \text{m}\)</span>. Chi arriva prima?</p>
+<ul>
+<li>il pianoforte</li>
+<li>il pianoforte, ma di poco</li>
+<li>✓ arrivano insieme al suolo</li>
+</ul>
+<div class="sol">
+<p>Se si trascura l’aria, la velocità con cui un corpo arriva a terra dipende solo dall’altezza da cui cade, non dalla sua massa: lo dimostriamo tra poco. Nella realtà la piuma arriva molto dopo, ma per colpa dell’aria, che qui abbiamo deciso di ignorare.</p>
+</div>
+</div>
+<div class="mcq">
+<p>Un’auto che viaggia a <span class="math inline">\(50\ \text{km/h}\)</span> impiega <span class="math inline">\(14\ \text{m}\)</span> per fermarsi. Se la stessa auto viaggia a <span class="math inline">\(100\ \text{km/h}\)</span>, quanti metri impiega per fermarsi?</p>
+<ul>
+<li><span class="math inline">\(14\ \text{m}\)</span></li>
+<li><span class="math inline">\(28\ \text{m}\)</span></li>
+<li>✓ <span class="math inline">\(56\ \text{m}\)</span></li>
+</ul>
+<div class="sol">
+<p>Raddoppiando la velocità l’energia cinetica da portare via diventa quattro volte più grande, e con la stessa forza frenante serve quattro volte lo spazio: <span class="math inline">\(4 \times 14 = 56\ \text{m}\)</span> (i dati dello Highway Code indicano <span class="math inline">\(55\ \text{m}\)</span>). Lo vediamo in dettaglio alla fine del capitolo.</p>
+</div>
+</div>
+<div class="mcq">
+<p>Dalla finestra di un palazzo lancio due palline identiche con la stessa velocità: una verso il basso e una verso l’alto. Quale delle due arriva al suolo con la velocità maggiore?</p>
+<ul>
+<li>quella lanciata verso il basso</li>
+<li>quella lanciata verso l’alto</li>
+<li>✓ arrivano con la stessa velocità</li>
+</ul>
+<div class="sol">
+<p>Le due palline partono dalla stessa quota e con la stessa velocità in modulo: hanno la stessa energia iniziale, quindi la stessa energia finale, quindi la stessa velocità d’impatto. La direzione del lancio non conta; conta solo il tempo, che per la palla lanciata verso l’alto è più lungo.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="dove-sta-lenergia-e-come-si-sposta" class="level2">
+<h2 class="anchored" data-anchor-id="dove-sta-lenergia-e-come-si-sposta">Dove sta l’energia e come si sposta</h2>
+<p>Per seguire l’energia di un’auto che frena uso due parole della terminologia di Cambridge IGCSE. Una <strong>riserva</strong> (<em>store</em>) è un posto dove l’energia si trova immagazzinata; un <strong>trasferimento</strong> (<em>transfer</em>) è il modo in cui l’energia passa da una riserva a un’altra. Le riserve sono nomi, i trasferimenti sono verbi.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Riserve di energia (nomi)</th>
+<th>Esempio quotidiano</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>cinetica (<em>kinetic</em>)</td>
+<td>un’auto in movimento</td>
+</tr>
+<tr class="even">
+<td>potenziale gravitazionale (<em>gravitational potential</em>)</td>
+<td>un libro su una mensola</td>
+</tr>
+<tr class="odd">
+<td>elastica (<em>elastic</em>)</td>
+<td>un elastico teso</td>
+</tr>
+<tr class="even">
+<td>chimica (<em>chemical</em>)</td>
+<td>carburante, cibo, una batteria</td>
+</tr>
+<tr class="odd">
+<td>termica (<em>thermal</em>, o energia interna)</td>
+<td>una tazza calda</td>
+</tr>
+<tr class="even">
+<td>nucleare (<em>nuclear</em>)</td>
+<td>il Sole</td>
+</tr>
+</tbody>
+</table>
+<p>L’energia si sposta in quattro modi: meccanicamente, per mezzo di una forza; elettricamente, per mezzo di una corrente; per riscaldamento; per mezzo di onde, come luce e suono. Scegli un modo, premi «Avvia» e guarda i serbatoi.</p>
+<div class="lw" data-widget="trasferimenti"></div>
+<p>Ora l’auto che frena. Il carburante ha dato all’auto la sua energia cinetica, e adesso i freni devono portarla via tutta. Premi «Frena» e guarda dove va.</p>
+<div class="lw" data-widget="freno"></div>
+<p>L’energia cinetica non è «consumata»: diventa energia termica. I dischi dei freni sono caldi dopo una frenata forte perché l’energia è finita nella riserva termica di dischi, pastiglie, pneumatici, strada e aria. Il trasferimento che l’ha portata via dall’auto è il <strong>lavoro</strong> dei freni: tra poco vedremo che cos’è, con la sua formula. E la regola vale per ogni macchina, non solo per l’auto. Guarda una palla che cade e rimbalza.</p>
+<div class="lw" data-widget="rimbalzo"></div>
+<p>Dall’alto la palla ha energia «di quota», cadendo la trasforma in energia «di movimento»; all’urto si schiaccia come una molla e l’energia di movimento diventa <strong>elastica</strong>, che subito la restituisce rimettendo la palla in moto, e poi di nuovo in quota. Con il rimbalzo perfetto la palla risale per sempre alla stessa altezza. Nella realtà no: a ogni urto una parte dell’energia finisce nella riserva termica (e nel suono), e la palla risale sempre meno, fino a fermarsi. Premi «Rimbalzo reale» e confronta.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Importante</span>Conservazione dell’energia
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>L’energia non può essere creata né distrutta: può solo essere trasferita da una riserva a un’altra.</p>
+<p><span class="math display">\[\text{energia totale prima} = \text{energia totale dopo}\]</span></p>
+</div>
+</div>
+<p>L’energia «sprecata» non è sparita: sta nella riserva termica dell’ambiente, dispersa e difficile da riutilizzare. «Persa» è la parola sbagliata; «sprecata», cioè non utile, è quella giusta. L’energia si misura in <strong>joule</strong> (J).</p>
+</section>
+<section id="dalle-animazioni-ai-conti" class="level2">
+<h2 class="anchored" data-anchor-id="dalle-animazioni-ai-conti">Dalle animazioni ai conti</h2>
+<p>Le animazioni mostrano <em>che cosa</em> succede. Le formule servono solo per fare i conti: dicono <em>quanta</em> energia c’è in ogni serbatoio.</p>
+<section id="lenergia-della-quota" class="level3">
+<h3 class="anchored" data-anchor-id="lenergia-della-quota">L’energia della quota</h3>
+<p>Un oggetto sollevato guadagna energia nel campo gravitazionale della Terra. Quanta?</p>
+<p><span id="eq-ep"><span class="math display">\[\Delta E_p = m\, g\, \Delta h  \tag{1}\]</span></span></p>
+<p><span class="math inline">\(\Delta E_p\)</span> è la variazione di <strong>energia potenziale gravitazionale</strong> (<em>gravitational potential energy</em>), in joule; <span class="math inline">\(m\)</span> è la massa in kg; <span class="math inline">\(g\)</span> è l’intensità del campo gravitazionale, <span class="math inline">\(10\ \text{N/kg}\)</span> sulla Terra; <span class="math inline">\(\Delta h\)</span> è la <em>variazione</em> di quota, in metri.</p>
+<p>Un libro da <span class="math inline">\(2{,}0\ \text{kg}\)</span> passa dal tavolo, a <span class="math inline">\(0{,}75\ \text{m}\)</span> dal pavimento, a una mensola a <span class="math inline">\(1{,}95\ \text{m}\)</span>. La variazione di quota è <span class="math inline">\(\Delta h = 1{,}95 - 0{,}75 = 1{,}20\ \text{m}\)</span>, quindi <span class="math inline">\(\Delta E_p = 2{,}0 \times 10 \times 1{,}20 = 24\ \text{J}\)</span>. Non <span class="math inline">\(2{,}0 \times 10 \times 1{,}95 = 39\ \text{J}\)</span>: il pavimento non è il punto da cui il libro è partito. La <em>differenza</em> di energia non dipende da dove poniamo lo zero, e nemmeno dal percorso: in verticale o lungo una rampa, lo stesso <span class="math inline">\(\Delta h\)</span> dà lo stesso <span class="math inline">\(\Delta E_p\)</span>.</p>
+</section>
+<section id="lenergia-del-movimento" class="level3">
+<h3 class="anchored" data-anchor-id="lenergia-del-movimento">L’energia del movimento</h3>
+<p>Da che cosa dovrebbe dipendere l’energia di un oggetto che si muove? Dalla sua massa e dalla sua velocità. La formula dice <em>come</em>:</p>
+<p><span id="eq-ek"><span class="math display">\[E_k = \tfrac{1}{2}\, m\, v^2  \tag{2}\]</span></span></p>
+<p>Qui <span class="math inline">\(E_k\)</span> è l’<strong>energia cinetica</strong> (<em>kinetic energy</em>), in joule; <span class="math inline">\(m\)</span> è la massa dell’oggetto, in chilogrammi; <span class="math inline">\(v\)</span> è la sua velocità in metri al secondo, <strong>elevata al quadrato</strong>. Attenzione alle unità: <span class="math inline">\(v\)</span> va in <span class="math inline">\(\text{m/s}\)</span>, non in <span class="math inline">\(\text{km/h}\)</span>. Per convertire si divide per <span class="math inline">\(3{,}6\)</span>, perché <span class="math inline">\(1\ \text{m/s} = 3{,}6\ \text{km/h}\)</span>: <span class="math inline">\(50\ \text{km/h}\)</span> sono <span class="math inline">\(50 \div 3{,}6 = 13{,}9\ \text{m/s}\)</span>. E non confondere massa e peso: il peso è una forza, <span class="math inline">\(W = mg\)</span>, in newton; in questo corso <span class="math inline">\(g = 10\ \text{N/kg}\)</span>, il valore dei paper IGCSE. Una massa di <span class="math inline">\(2\ \text{kg}\)</span> pesa <span class="math inline">\(20\ \text{N}\)</span>.</p>
+<p>Il dettaglio che cambia le intuizioni è il quadrato: se la velocità raddoppia, l’energia non raddoppia, quadruplica. Ce ne servirà alla fine, con l’auto.</p>
+</section>
+<section id="un-esempio-la-piuma-che-cade-da-un-metro" class="level3">
+<h3 class="anchored" data-anchor-id="un-esempio-la-piuma-che-cade-da-un-metro">Un esempio: la piuma che cade da un metro</h3>
+<p>Una piuma da <span class="math inline">\(5\ \text{g}\)</span> viene lasciata cadere da <span class="math inline">\(h = 1\ \text{m}\)</span>. Con quale velocità tocca terra, trascurando l’aria? All’inizio è ferma, quindi ha solo energia di quota, <span class="math inline">\(mgh\)</span> (prendo come zero la quota del suolo). Alla fine è a terra, quindi ha solo energia di movimento, <span class="math inline">\(\tfrac12 mv^2\)</span>. La conservazione dice che le due quantità sono uguali, e da qui si semplifica passo per passo:</p>
+<p><span id="eq-vcaduta"><span class="math display">\[\begin{aligned}
+m g h &amp;= \tfrac12 m v^2 &amp;&amp; \text{(energia iniziale = energia finale)}\\
+g h &amp;= \tfrac12 v^2 &amp;&amp; \text{(divido per } m \text{)}\\
+v^2 &amp;= 2 g h &amp;&amp; \text{(moltiplico per 2)}\\
+v &amp;= \sqrt{2 g h} &amp;&amp; \text{(radice quadrata)}
+\end{aligned} \tag{3}\]</span></span></p>
+<p>Con <span class="math inline">\(h = 1\ \text{m}\)</span> e <span class="math inline">\(g = 10\ \text{N/kg}\)</span>: <span class="math inline">\(v = \sqrt{2 \times 10 \times 1} = \sqrt{20} \approx 4{,}5\ \text{m/s}\)</span>, circa <span class="math inline">\(16\ \text{km/h}\)</span>.</p>
+<p>Guarda che cosa è successo: la massa <span class="math inline">\(m\)</span> è sparita dal risultato. Per questo un pianoforte a coda lasciato cadere dalla stessa altezza toccherebbe terra con la stessa velocità della piuma. Da <span class="math inline">\(100\ \text{m}\)</span> la <a href="#eq-vcaduta" class="quarto-xref">Equazione&nbsp;3</a> dà <span class="math inline">\(v = \sqrt{2 \times 10 \times 100} = \sqrt{2000} \approx 45\ \text{m/s}\)</span>, circa <span class="math inline">\(160\ \text{km/h}\)</span>, per tutti e due: è la risposta al primo quiz. Nel mondo reale la piuma arriverebbe molto dopo, ma per colpa dell’aria, che nel conto abbiamo trascurato: è proprio una di quelle idealizzazioni di cui parlavamo all’inizio. Provalo tu.</p>
+<div class="lw" data-widget="caduta"></div>
+</section>
+</section>
+<section id="il-lavoro" class="level2">
+<h2 class="anchored" data-anchor-id="il-lavoro">Il lavoro</h2>
+<p>Nelle animazioni l’energia si sposta con un trasferimento. Quando a spostarla è una <strong>forza</strong> che muove un oggetto, quel trasferimento si chiama <strong>lavoro</strong> (<em>work</em>), ed è la forza per lo spostamento:</p>
+<p><span id="eq-lavoro"><span class="math display">\[W = F\, d  \tag{4}\]</span></span></p>
+<p><span class="math inline">\(W\)</span> è il lavoro compiuto, uguale all’energia trasferita, in joule (<span class="math inline">\(1\ \text{J} = 1\ \text{N} \times 1\ \text{m}\)</span>); <span class="math inline">\(F\)</span> è la forza, in newton; <span class="math inline">\(d\)</span> è la distanza percorsa <strong>nella direzione della forza</strong>, in metri. Il lavoro non è una riserva: è il nome del trasferimento di energia da parte di una forza. Prova i tre casi.</p>
+<div class="lw" data-widget="lavoro"></div>
+<p>Nel primo caso qualcuno spinge un carrello in orizzontale: più forte spinge, più energia trasferisce, a parità di distanza. Nel secondo qualcuno solleva un peso in verticale, lentamente: a velocità costante le forze si equilibrano, quindi la forza di sollevamento è uguale al peso, <span class="math inline">\(F = mg\)</span>, e il lavoro <span class="math inline">\(Fd = mg\,\Delta h\)</span> è esattamente la <a href="#eq-ep" class="quarto-xref">Equazione&nbsp;1</a>: la formula dell’energia della quota era già una formula del lavoro. Per il libro da <span class="math inline">\(2{,}0\ \text{kg}\)</span> sollevato di <span class="math inline">\(1{,}20\ \text{m}\)</span> si ottiene <span class="math inline">\(F = 20\ \text{N}\)</span> e <span class="math inline">\(W = 20 \times 1{,}20 = 24\ \text{J}\)</span>, lo stesso numero di prima.</p>
+<p>Nel terzo caso nessuno spinge: la palla cade da sola. Eppure c’è una forza, il peso, e la palla si sposta nella direzione di quella forza: è la <strong>forza di gravità a compiere il lavoro</strong>, e l’energia di quota diventa energia di movimento. Ma attenzione alla parola «direzione»: se porti una borsa pesante in orizzontale, la tua forza è verso l’alto e lo spostamento è orizzontale, quindi non c’è distanza percorsa nella direzione della forza e il lavoro sulla borsa è nullo. I muscoli si stancano lo stesso, ma non è lavoro compiuto sulla borsa.</p>
+<section id="il-lavoro-dei-freni" class="level3">
+<h3 class="anchored" data-anchor-id="il-lavoro-dei-freni">Il lavoro dei freni</h3>
+<p>Torniamo all’auto con questo strumento. L’auto ha una certa energia cinetica. Per fermarsi, tutta quell’energia deve trasferirsi, sotto forma di lavoro, dai freni: la forza frenante, per lo spazio percorso mentre agisce, deve valere esattamente l’energia cinetica da portare via.</p>
+<p><span id="eq-frenata"><span class="math display">\[F\, d = E_k \quad\Longrightarrow\quad d = \frac{E_k}{F}  \tag{5}\]</span></span></p>
+<p>La forza e lo spazio sono legati: a parità di energia da portare via, se vuoi fermarti in meno spazio ti serve più forza, e se la forza è piccola ti serve più strada. Lo mettiamo alla prova con i numeri alla fine del capitolo.</p>
+</section>
+</section>
+<section id="torniamo-allauto" class="level2">
+<h2 class="anchored" data-anchor-id="torniamo-allauto">Torniamo all’auto</h2>
+<p>Nel quiz di benvenuto ti avevo chiesto: se a <span class="math inline">\(50\ \text{km/h}\)</span> un’auto si ferma in <span class="math inline">\(14\ \text{m}\)</span>, quanto spazio serve a <span class="math inline">\(100\ \text{km/h}\)</span>? Ora abbiamo gli strumenti per rispondere. Costruiamo la risposta a passi. (Lo spazio di frenata è quello dei freni soltanto: il tempo di reazione di chi guida non è incluso. I dati di riferimento sono quelli tipici dello Highway Code britannico, che usa le miglia orarie: <span class="math inline">\(30\ \text{mph}\)</span> e <span class="math inline">\(14\ \text{m}\)</span>.)</p>
+<p><strong>Passo 1: l’energia da portare via.</strong> Un’auto di <span class="math inline">\(1000\ \text{kg}\)</span> a <span class="math inline">\(50\ \text{km/h}\)</span> (<span class="math inline">\(13{,}9\ \text{m/s}\)</span>) ha, per la <a href="#eq-ek" class="quarto-xref">Equazione&nbsp;2</a>, <span class="math inline">\(E_{k1} = \tfrac12 \times 1000 \times 13{,}9^2 \approx 96\,600\ \text{J}\)</span>, cioè circa <span class="math inline">\(97\ \text{kJ}\)</span>. A <span class="math inline">\(100\ \text{km/h}\)</span> (<span class="math inline">\(27{,}8\ \text{m/s}\)</span>) ha <span class="math inline">\(E_{k2} = \tfrac12 \times 1000 \times 27{,}8^2 \approx 386\,000\ \text{J}\)</span>, circa <span class="math inline">\(386\ \text{kJ}\)</span>. Il rapporto è <span class="math inline">\(E_{k2}/E_{k1} \approx 4\)</span>: a velocità doppia i freni devono portare via <em>quattro volte</em> l’energia.</p>
+<p><strong>Passo 2: quanto spazio serve.</strong> I freni esercitano una forza media di circa <span class="math inline">\(7000\ \text{N}\)</span> (strada asciutta, buoni pneumatici). Per la <a href="#eq-frenata" class="quarto-xref">Equazione&nbsp;5</a>, <span class="math inline">\(d = E_k/F\)</span>. A <span class="math inline">\(50\ \text{km/h}\)</span>: <span class="math inline">\(d = 96\,600/7000 \approx 14\ \text{m}\)</span>. A <span class="math inline">\(100\ \text{km/h}\)</span>: <span class="math inline">\(d = 386\,000/7000 \approx 55\ \text{m}\)</span>. Stessa forza, quattro volte l’energia da portare via: <strong>quattro volte lo spazio</strong>.</p>
+<p><strong>Passo 3: il confronto.</strong> Il valore osservato per il secondo caso è circa <span class="math inline">\(55\ \text{m}\)</span>, cioè la risposta c) del quiz (circa <span class="math inline">\(56\ \text{m}\)</span>, quattro volte <span class="math inline">\(14\ \text{m}\)</span>), non i <span class="math inline">\(28\ \text{m}\)</span> dell’intuizione lineare. Qui puoi vederlo nel simulatore, già impostato con i due arresti: premi «Frena» per ripercorrerli.</p>
+<div class="lw" data-widget="frenata" data-prefill="50:7,100:7"></div>
+<p><strong>Lo scarto, e che cosa significa.</strong> I valori calcolati (<span class="math inline">\(13{,}8\ \text{m}\)</span> e <span class="math inline">\(55{,}1\ \text{m}\)</span>) concordano con quelli osservati (<span class="math inline">\(14\ \text{m}\)</span> e <span class="math inline">\(55\ \text{m}\)</span>). Ma sono onesto su un punto: la forza di <span class="math inline">\(7000\ \text{N}\)</span> (circa <span class="math inline">\(0{,}7\)</span> volte il peso dell’auto, che è <span class="math inline">\(10\,000\ \text{N}\)</span>) è un dato scelto per corrispondere a una strada asciutta, non qualcosa che sappiamo calcolare; e l’ho supposta costante, mentre in una frenata vera varia un po’. Quindi il confronto a <span class="math inline">\(50\ \text{km/h}\)</span> serve a fissare la forza, e quello a <span class="math inline">\(100\ \text{km/h}\)</span> mette alla prova davvero il capitolo: quello che predice la <a href="#eq-ek" class="quarto-xref">Equazione&nbsp;2</a> è il <em>fattore</em> quattro, a parità di forza, ed è confermato. Una frenata reale comprende poi anche lo spazio percorso durante il tempo di reazione, che qui non è incluso: nello Highway Code raddoppia, da <span class="math inline">\(9\ \text{m}\)</span> a <span class="math inline">\(18\ \text{m}\)</span>, mentre lo spazio di frenata quadruplica.</p>
+<p>Se la strada diventa bagnata, nella <a href="#eq-frenata" class="quarto-xref">Equazione&nbsp;5</a> cambia <span class="math inline">\(F\)</span>: diventa più piccola, e <span class="math inline">\(d\)</span> più grande. Con metà forza (<span class="math inline">\(3500\ \text{N}\)</span>) a <span class="math inline">\(100\ \text{km/h}\)</span> lo spazio diventa circa <span class="math inline">\(110\ \text{m}\)</span>, il doppio. Prova il pulsante «strada bagnata» nel simulatore: lo spazio di frenata cresce con il quadrato della velocità per lo stesso motivo per cui lo fa <span class="math inline">\(E_k\)</span>.</p>
+<p>L’intuizione «velocità doppia, spazio doppio» non era sciocca: è ciò che direbbe un modello a linea retta. È la fisica dell’energia a dire altro, e a dirlo con un numero.</p>
+</section>
+<section id="mettiti-alla-prova" class="level2">
+<h2 class="anchored" data-anchor-id="mettiti-alla-prova">Mettiti alla prova</h2>
+<p>Sei domande, una alla volta: scegli una risposta e vedrai subito se è giusta, con la soluzione ragionata. Le risposte sbagliate sono costruite sugli errori più comuni.</p>
+<div class="mcq-set">
+<div class="mcq">
+<p>La velocità di un ciclista passa da <span class="math inline">\(4\ \text{m/s}\)</span> a <span class="math inline">\(12\ \text{m/s}\)</span>, a parità di massa. La sua energia cinetica diventa:</p>
+<ul>
+<li>3 volte più grande</li>
+<li>6 volte più grande</li>
+<li>✓ 9 volte più grande</li>
+<li>12 volte più grande</li>
+</ul>
+<div class="sol">
+<p>La velocità è moltiplicata per <span class="math inline">\(3\)</span>, quindi l’energia per <span class="math inline">\(3^2 = 9\)</span>. Verifica: a <span class="math inline">\(4\ \text{m/s}\)</span>, <span class="math inline">\(E_k = \tfrac12 m \times 16 = 8m\)</span>; a <span class="math inline">\(12\ \text{m/s}\)</span>, <span class="math inline">\(E_k = \tfrac12 m \times 144 = 72m\)</span>; e <span class="math inline">\(72/8 = 9\)</span>.</p>
+</div>
+</div>
+<div class="mcq">
+<p>Una scatola di <span class="math inline">\(3{,}0\ \text{kg}\)</span> passa da uno scaffale a <span class="math inline">\(0{,}50\ \text{m}\)</span> dal pavimento a uno a <span class="math inline">\(1{,}50\ \text{m}\)</span>. La variazione di energia potenziale gravitazionale è:</p>
+<ul>
+<li><span class="math inline">\(15\ \text{J}\)</span></li>
+<li>✓ <span class="math inline">\(30\ \text{J}\)</span></li>
+<li><span class="math inline">\(45\ \text{J}\)</span></li>
+<li><span class="math inline">\(450\ \text{J}\)</span></li>
+</ul>
+<div class="sol">
+<p><span class="math inline">\(\Delta h = 1{,}50 - 0{,}50 = 1{,}00\ \text{m}\)</span> e <span class="math inline">\(\Delta E_p = 3{,}0 \times 10 \times 1{,}00 = 30\ \text{J}\)</span>. Il <span class="math inline">\(45\ \text{J}\)</span> viene dal misurare la quota di arrivo dal pavimento; il <span class="math inline">\(15\ \text{J}\)</span> da quella di partenza.</p>
+</div>
+</div>
+<div class="mcq">
+<p>Lo stesso libro viene portato sulla mensola con una rampa lunga <span class="math inline">\(3\ \text{m}\)</span> invece che sollevato in verticale di <span class="math inline">\(1{,}2\ \text{m}\)</span>. La variazione di energia potenziale gravitazionale è:</p>
+<ul>
+<li>maggiore, perché il percorso è più lungo</li>
+<li>minore, perché la rampa è meno ripida</li>
+<li>✓ la stessa, <span class="math inline">\(24\ \text{J}\)</span></li>
+<li><span class="math inline">\(0\ \text{J}\)</span>, perché il libro è appoggiato</li>
+</ul>
+<div class="sol">
+<p><span class="math inline">\(\Delta E_p = mg\,\Delta h\)</span> dipende solo dalla variazione di quota, non dal percorso. Cambia il lavoro che serve fare per l’attrito, non l’energia immagazzinata.</p>
+</div>
+</div>
+<div class="mcq">
+<p>Spingi una cassa con una forza di <span class="math inline">\(120\ \text{N}\)</span> per <span class="math inline">\(5{,}0\ \text{m}\)</span>. Il lavoro compiuto è:</p>
+<ul>
+<li><span class="math inline">\(24\ \text{J}\)</span></li>
+<li><span class="math inline">\(125\ \text{J}\)</span></li>
+<li>✓ <span class="math inline">\(600\ \text{J}\)</span></li>
+<li><span class="math inline">\(4800\ \text{J}\)</span></li>
+</ul>
+<div class="sol">
+<p><span class="math inline">\(W = Fd = 120 \times 5{,}0 = 600\ \text{J}\)</span>. Il <span class="math inline">\(24\)</span> viene dal dividere <span class="math inline">\(120\)</span> per <span class="math inline">\(5\)</span>; il <span class="math inline">\(4800\)</span> dal moltiplicare per una massa di <span class="math inline">\(40\ \text{kg}\)</span> che nel conto non entra.</p>
+</div>
+</div>
+<div class="mcq">
+<p>Con la stessa forza frenante, la velocità iniziale di un’auto raddoppia. Lo spazio di frenata diventa:</p>
+<ul>
+<li>la metà</li>
+<li>il doppio</li>
+<li>✓ il quadruplo</li>
+<li>uguale</li>
+</ul>
+<div class="sol">
+<p><span class="math inline">\(d = E_k/F\)</span>. A parità di <span class="math inline">\(F\)</span>, <span class="math inline">\(d\)</span> è proporzionale a <span class="math inline">\(E_k\)</span>, e <span class="math inline">\(E_k\)</span> a <span class="math inline">\(v^2\)</span>: velocità doppia, energia quadrupla, spazio quadruplo.</p>
+</div>
+</div>
+<div class="mcq">
+<p>La velocità iniziale è la stessa, ma la strada bagnata dimezza la forza frenante. Lo spazio di frenata diventa:</p>
+<ul>
+<li>la metà</li>
+<li>uguale</li>
+<li>✓ il doppio</li>
+<li>il quadruplo</li>
+</ul>
+<div class="sol">
+<p><span class="math inline">\(d = E_k/F\)</span> con <span class="math inline">\(E_k\)</span> invariata: se <span class="math inline">\(F\)</span> si dimezza, <span class="math inline">\(d\)</span> raddoppia. Il quadruplo è la risposta a un’altra domanda, quella in cui raddoppia la velocità.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="per-chi-vuole-fare-i-conti" class="level2">
+<h2 class="anchored" data-anchor-id="per-chi-vuole-fare-i-conti">Per chi vuole fare i conti</h2>
+<p>Questa parte è per chi vuole esercitarsi: un esempio svolto passo per passo, esercizi con soluzione, una scheda completa nello stile degli esami IGCSE e qualche controllo per accorgersi quando un risultato non può essere giusto.</p>
+<section id="un-esempio-svolto-una-palla-che-cade" class="level3">
+<h3 class="anchored" data-anchor-id="un-esempio-svolto-una-palla-che-cade">Un esempio svolto: una palla che cade</h3>
+<p>Una palla di massa <span class="math inline">\(0{,}20\ \text{kg}\)</span> viene lasciata cadere da <span class="math inline">\(1{,}8\ \text{m}\)</span>. A che velocità arriva a terra, trascurando la resistenza dell’aria? Segui il metodo: dati, bilancio di energia, equazione, controllo.</p>
+<p><strong>Dati.</strong> <span class="math inline">\(m = 0{,}20\ \text{kg}\)</span>, <span class="math inline">\(\Delta h = 1{,}8\ \text{m}\)</span>, <span class="math inline">\(g = 10\ \text{N/kg}\)</span>. Si cerca <span class="math inline">\(v\)</span>.</p>
+<p><strong>Bilancio.</strong> La riserva gravitazionale scende, la riserva cinetica sale della stessa quantità: la <a href="#eq-ep" class="quarto-xref">Equazione&nbsp;1</a> dà <span class="math inline">\(\Delta E_p = 0{,}20 \times 10 \times 1{,}8 = 3{,}6\ \text{J}\)</span>, e per la conservazione <span class="math inline">\(E_k = 3{,}6\ \text{J}\)</span>.</p>
+<p><strong>Equazione.</strong> Dalla <a href="#eq-ek" class="quarto-xref">Equazione&nbsp;2</a>: <span class="math inline">\(\tfrac12 \times 0{,}20 \times v^2 = 3{,}6\)</span>, da cui <span class="math inline">\(v^2 = 36\)</span> e <span class="math inline">\(v = 6{,}0\ \text{m/s}\)</span>, circa <span class="math inline">\(22\ \text{km/h}\)</span>.</p>
+<p><strong>Controllo.</strong> Unità: joule a sinistra e a destra, velocità in m/s. Ordine di grandezza: <span class="math inline">\(6\ \text{m/s}\)</span> è la velocità di una corsa veloce, plausibile per una caduta di meno di due metri.</p>
+<p>Una palla più pesante sarebbe più veloce? No: in <span class="math inline">\(mg\,\Delta h = \tfrac12 mv^2\)</span> la massa si semplifica, come nell’esempio della piuma. Non abbiamo usato l’accelerazione, soltanto la conservazione e due formule.</p>
+</section>
+<section id="esercizi-per-te" class="level3">
+<h3 class="anchored" data-anchor-id="esercizi-per-te">Esercizi per te</h3>
+<p>Per ogni esercizio scrivi: dati, conversione delle unità, formula, sostituzione, risultato con l’unità. Le soluzioni sono nei riquadri.</p>
+<p><strong>1.</strong> Una palla di massa <span class="math inline">\(0{,}50\ \text{kg}\)</span> si muove a <span class="math inline">\(8{,}0\ \text{m/s}\)</span>. (a) Calcola la sua energia cinetica. (b) Viene ora lanciata a <span class="math inline">\(16\ \text{m/s}\)</span>: qual è la sua energia cinetica, e come si confronta con (a)? (c) Un ciclista con la bici, massa totale <span class="math inline">\(75\ \text{kg}\)</span>, viaggia a <span class="math inline">\(36\ \text{km/h}\)</span>: calcola la sua energia cinetica.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Consiglio</span>Soluzione
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="a">
+<li><span class="math inline">\(E_k = \tfrac12 \times 0{,}50 \times 8{,}0^2 = 16\ \text{J}\)</span>. (b) <span class="math inline">\(E_k = \tfrac12 \times 0{,}50 \times 16^2 = 64\ \text{J}\)</span>: quattro volte quella di (a), perché la velocità è raddoppiata. (c) <span class="math inline">\(36\ \text{km/h} = 36 \div 3{,}6 = 10\ \text{m/s}\)</span>, quindi <span class="math inline">\(E_k = \tfrac12 \times 75 \times 10^2 = 3750\ \text{J} = 3{,}75\ \text{kJ}\)</span>.</li>
+</ol>
+</div>
+</div>
+</div>
+<p><strong>2.</strong> (a) Un’alpinista di massa <span class="math inline">\(60\ \text{kg}\)</span> sale lungo un sentiero e guadagna <span class="math inline">\(200\ \text{m}\)</span> di quota: calcola l’aumento della sua energia potenziale gravitazionale. (b) Un sasso da <span class="math inline">\(0{,}10\ \text{kg}\)</span> viene lanciato verso l’alto a <span class="math inline">\(12\ \text{m/s}\)</span>: a che altezza sopra la mano arriva? Trascura l’aria.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Consiglio</span>Soluzione
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="a">
+<li><span class="math inline">\(\Delta E_p = mg\,\Delta h = 60 \times 10 \times 200 = 120\,000\ \text{J} = 120\ \text{kJ}\)</span>. (b) L’energia cinetica iniziale è <span class="math inline">\(\tfrac12 \times 0{,}10 \times 12^2 = 7{,}2\ \text{J}\)</span>. In cima è tutta nella riserva gravitazionale: <span class="math inline">\(7{,}2 = 0{,}10 \times 10 \times \Delta h\)</span>, quindi <span class="math inline">\(\Delta h = 7{,}2\ \text{m}\)</span>. È la palla che cade al contrario.</li>
+</ol>
+</div>
+</div>
+</div>
+<p><strong>3.</strong> (a) Una cassa di massa <span class="math inline">\(40\ \text{kg}\)</span> viene spinta per <span class="math inline">\(5{,}0\ \text{m}\)</span> sul pavimento da una forza orizzontale di <span class="math inline">\(120\ \text{N}\)</span>: quanto lavoro compie la forza? (b) Porti una borsa da <span class="math inline">\(20\ \text{kg}\)</span> in orizzontale per <span class="math inline">\(10\ \text{m}\)</span> a velocità costante: quanto lavoro compie la tua forza verso l’alto sulla borsa? (c) Un ciclista con la bici, massa totale <span class="math inline">\(80\ \text{kg}\)</span>, viaggia a <span class="math inline">\(6{,}0\ \text{m/s}\)</span> e si ferma con una forza frenante di <span class="math inline">\(120\ \text{N}\)</span>: quale distanza serve? E se andasse a <span class="math inline">\(12\ \text{m/s}\)</span>?</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Consiglio</span>Soluzione
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="a">
+<li><span class="math inline">\(W = Fd = 120 \times 5{,}0 = 600\ \text{J}\)</span>; la massa non serve. (b) <span class="math inline">\(W = 0\ \text{J}\)</span>: la forza verso l’alto è perpendicolare allo spostamento. I muscoli consumano comunque energia, ma non è lavoro compiuto sulla borsa. (c) A <span class="math inline">\(6{,}0\ \text{m/s}\)</span>: <span class="math inline">\(E_k = \tfrac12 \times 80 \times 6{,}0^2 = 1440\ \text{J}\)</span> e <span class="math inline">\(d = E_k/F = 1440/120 = 12\ \text{m}\)</span>. A <span class="math inline">\(12\ \text{m/s}\)</span>: <span class="math inline">\(E_k = 5760\ \text{J}\)</span> e <span class="math inline">\(d = 48\ \text{m}\)</span>: di nuovo quattro volte.</li>
+</ol>
+</div>
+</div>
+</div>
+</section>
+<section id="la-scheda-di-esercizi" class="level3">
+<h3 class="anchored" data-anchor-id="la-scheda-di-esercizi">La scheda di esercizi</h3>
+<p>Una scheda completa nello stile degli esami IGCSE. Usa <span class="math inline">\(g = 10\ \text{N/kg}\)</span>, mostra ogni passaggio e scrivi l’unità in ogni risposta; dove serve, dai le risposte con tre cifre significative. Totale: 33 punti.</p>
+<p><strong>Esercizio 1 · Energia cinetica (4 punti).</strong> Una ciclista e la sua bicicletta hanno massa totale <span class="math inline">\(80\ \text{kg}\)</span> e viaggiano a velocità costante di <span class="math inline">\(36\ \text{km/h}\)</span>. (a) Converti <span class="math inline">\(36\ \text{km/h}\)</span> in <span class="math inline">\(\text{m/s}\)</span>. (b) Calcola l’energia cinetica di ciclista e bicicletta. (c) La ciclista accelera fino a viaggiare al doppio della velocità: di quale fattore aumenta la sua energia cinetica?</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Consiglio</span>Soluzione
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="a">
+<li><span class="math inline">\(36 \div 3{,}6 = 10\ \text{m/s}\)</span>. (b) <span class="math inline">\(E_k = \tfrac12 \times 80 \times 10^2 = 4000\ \text{J}\)</span> (<span class="math inline">\(4{,}0\ \text{kJ}\)</span>). (c) Fattore <span class="math inline">\(4\)</span>, perché <span class="math inline">\(E_k \propto v^2\)</span> e <span class="math inline">\(2^2 = 4\)</span>: la nuova energia è <span class="math inline">\(16\,000\ \text{J}\)</span>. Attenzione agli errori tipici: usare <span class="math inline">\(36\)</span> al posto di <span class="math inline">\(10\)</span> dà <span class="math inline">\(51\,840\ \text{J}\)</span>; dimenticare il quadrato dà <span class="math inline">\(400\ \text{J}\)</span>; dimenticare il <span class="math inline">\(\tfrac12\)</span> dà <span class="math inline">\(8000\ \text{J}\)</span>; dire «raddoppia» in (c) è l’errore dell’intuizione lineare.</li>
+</ol>
+</div>
+</div>
+</div>
+<p><strong>Esercizio 2 · Energia potenziale gravitazionale (3 punti).</strong> Un libro di massa <span class="math inline">\(1{,}5\ \text{kg}\)</span> viene sollevato dal pavimento a una mensola alta <span class="math inline">\(2{,}0\ \text{m}\)</span>. (a) Calcola la variazione di energia potenziale gravitazionale. (b) Il libro viene poi spinto per <span class="math inline">\(3{,}0\ \text{m}\)</span> lungo la mensola: quanto vale la variazione di energia potenziale in questo tratto? Spiega.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Consiglio</span>Soluzione
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="a">
+<li><span class="math inline">\(\Delta E_p = mg\,\Delta h = 1{,}5 \times 10 \times 2{,}0 = 30\ \text{J}\)</span>. (b) <span class="math inline">\(0\ \text{J}\)</span>: la quota non cambia (<span class="math inline">\(\Delta h = 0\)</span>). Il fatto che una forza compia lavoro non basta: l’energia di spinta va in energia termica per attrito, non nella riserva gravitazionale.</li>
+</ol>
+</div>
+</div>
+</div>
+<p><strong>Esercizio 3 · Velocità ed energia cinetica (4 punti).</strong> Un’auto di massa <span class="math inline">\(1200\ \text{kg}\)</span> percorre <span class="math inline">\(90\ \text{km}\)</span> a velocità costante di <span class="math inline">\(72\ \text{km/h}\)</span>. (a) Calcola il tempo impiegato, in minuti. (b) Calcola l’energia cinetica dell’auto.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Consiglio</span>Soluzione
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="a">
+<li><span class="math inline">\(t = s/v = 90/72 = 1{,}25\ \text{h} = 75\ \text{min}\)</span>: occhio alla conversione in minuti. (b) <span class="math inline">\(v = 72 \div 3{,}6 = 20\ \text{m/s}\)</span>, quindi <span class="math inline">\(E_k = \tfrac12 \times 1200 \times 20^2 = 240\,000\ \text{J}\)</span> (<span class="math inline">\(2{,}4 \times 10^5\ \text{J}\)</span>). Usare <span class="math inline">\(72\)</span> al posto di <span class="math inline">\(20\)</span> darebbe più di tre milioni di joule.</li>
+</ol>
+</div>
+</div>
+</div>
+<p><strong>Esercizio 4 · Cambi di energia su una montagna russa (5 punti).</strong> Un carrello di massa <span class="math inline">\(400\ \text{kg}\)</span> parte da fermo dal punto A, a <span class="math inline">\(20\ \text{m}\)</span> da terra. Il punto B è a <span class="math inline">\(5\ \text{m}\)</span> da terra e il punto C è a livello del suolo. Trascura attriti e resistenza dell’aria. (a) Calcola l’energia potenziale gravitazionale persa dal carrello tra A e B. (b) Indica l’energia cinetica in B e calcola la velocità in B. (c) Calcola la velocità in C.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Consiglio</span>Soluzione
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="a">
+<li><span class="math inline">\(\Delta E_p = mg\,\Delta h = 400 \times 10 \times (20 - 5) = 60\,000\ \text{J}\)</span>. (b) L’energia si conserva e il carrello parte da fermo, quindi <span class="math inline">\(E_k = 60\,000\ \text{J}\)</span>; da <span class="math inline">\(E_k = \tfrac12 mv^2\)</span> si ricava <span class="math inline">\(v = \sqrt{2E_k/m} = \sqrt{2 \times 60\,000/400} = \sqrt{300} = 17{,}3\ \text{m/s}\)</span>. (c) In C la quota persa dall’inizio è <span class="math inline">\(20\ \text{m}\)</span>: <span class="math inline">\(E_k = 400 \times 10 \times 20 = 80\,000\ \text{J}\)</span> e <span class="math inline">\(v = \sqrt{2 \times 80\,000/400} = \sqrt{400} = 20\ \text{m/s}\)</span>. Non calcolare solo il tratto da B a C: l’energia già acquisita da A a B conta ancora, e le velocità non si sommano, si sommano le energie. La massa si semplifica: <span class="math inline">\(v = \sqrt{2gh} = \sqrt{2 \times 10 \times 20} = 20\ \text{m/s}\)</span>.</li>
+</ol>
+</div>
+</div>
+</div>
+<p><strong>Esercizio 5 · Lavoro compiuto (4 punti).</strong> Una studentessa spinge una scatola di massa <span class="math inline">\(25\ \text{kg}\)</span> lungo un pavimento orizzontale con una forza orizzontale costante di <span class="math inline">\(60\ \text{N}\)</span>. La scatola si sposta di <span class="math inline">\(8{,}0\ \text{m}\)</span> a velocità costante. (a) Calcola il lavoro compiuto dalla studentessa. (b) Indica il valore della forza di attrito sulla scatola e spiega. (c) La scatola non guadagna energia cinetica: dove va l’energia trasferita dalla studentessa?</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Consiglio</span>Soluzione
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="a">
+<li><span class="math inline">\(W = Fd = 60 \times 8{,}0 = 480\ \text{J}\)</span>. Non usare la massa: <span class="math inline">\(25 \times 8\)</span> confonde massa e forza. (b) <span class="math inline">\(60\ \text{N}\)</span>: la velocità è costante, quindi le forze sono bilanciate (forza risultante nulla) e l’attrito è uguale alla spinta. (c) Va nella riserva termica della scatola e del pavimento (riscaldamento per attrito), e poi si disperde nell’ambiente. Non è «persa»: è diventata energia termica.</li>
+</ol>
+</div>
+</div>
+</div>
+<p><strong>Esercizio 6 · La rampa (4 punti).</strong> Un operaio spinge una cassa di massa <span class="math inline">\(50\ \text{kg}\)</span> su per una rampa lunga <span class="math inline">\(4{,}0\ \text{m}\)</span> con una forza di <span class="math inline">\(150\ \text{N}\)</span> parallela al piano. La cassa sale di <span class="math inline">\(1{,}0\ \text{m}\)</span>. (a) Calcola il lavoro compiuto dall’operaio. (b) Calcola l’aumento di energia potenziale gravitazionale della cassa. (c) Calcola quanta parte del lavoro non è immagazzinata come energia potenziale e dì che fine fa.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Consiglio</span>Soluzione
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-10" class="callout-10-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="a">
+<li><span class="math inline">\(W = Fd = 150 \times 4{,}0 = 600\ \text{J}\)</span>: la distanza è quella lungo la rampa, non l’altezza. (b) <span class="math inline">\(\Delta E_p = mg\,\Delta h = 50 \times 10 \times 1{,}0 = 500\ \text{J}\)</span>: qui conta la quota, non la lunghezza della rampa. (c) <span class="math inline">\(600 - 500 = 100\ \text{J}\)</span>, trasferiti per attrito tra cassa e rampa alla riserva termica.</li>
+</ol>
+</div>
+</div>
+</div>
+<p><strong>Esercizio 7 · Fermare un camion (5 punti).</strong> Un camion di massa <span class="math inline">\(8000\ \text{kg}\)</span> viaggia a <span class="math inline">\(54\ \text{km/h}\)</span>. L’autista frena con una forza frenante costante di <span class="math inline">\(30\,000\ \text{N}\)</span>. (a) Calcola l’energia cinetica del camion prima di frenare. (b) Tutta questa energia viene portata via dalla forza frenante: calcola la distanza percorsa mentre il camion si ferma. (c) Il camion viaggia ora al doppio della velocità: senza fare il calcolo completo, indica la distanza di arresto e spiega.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Consiglio</span>Soluzione
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-11" class="callout-11-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="a">
+<li><span class="math inline">\(v = 54 \div 3{,}6 = 15\ \text{m/s}\)</span> e <span class="math inline">\(E_k = \tfrac12 \times 8000 \times 15^2 = 900\,000\ \text{J}\)</span> (<span class="math inline">\(9{,}0 \times 10^5\ \text{J}\)</span>). (b) <span class="math inline">\(W = Fd = E_k\)</span>, quindi <span class="math inline">\(d = 900\,000/30\,000 = 30\ \text{m}\)</span>. (c) Quattro volte più lunga, <span class="math inline">\(120\ \text{m}\)</span>: <span class="math inline">\(E_k\)</span> è proporzionale a <span class="math inline">\(v^2\)</span> e <span class="math inline">\(d\)</span> è proporzionale a <span class="math inline">\(E_k\)</span> (a parità di forza frenante). Il punto è il fattore <span class="math inline">\(4\)</span>, non <span class="math inline">\(2\)</span>.</li>
+</ol>
+</div>
+</div>
+</div>
+<p><strong>Esercizio 8 · Una palla che cade (4 punti).</strong> Una palla di massa <span class="math inline">\(0{,}50\ \text{kg}\)</span> viene lasciata cadere da ferma da un’altezza di <span class="math inline">\(45\ \text{m}\)</span>. Trascura la resistenza dell’aria. (a) Calcola la perdita di energia potenziale gravitazionale mentre cade fino a terra. (b) Indica l’energia cinetica della palla un istante prima di toccare il suolo. (c) Calcola la velocità subito prima dell’urto, in <span class="math inline">\(\text{m/s}\)</span> e in <span class="math inline">\(\text{km/h}\)</span>.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-12-contents" aria-controls="callout-12" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Consiglio</span>Soluzione
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-12" class="callout-12-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="a">
+<li><span class="math inline">\(\Delta E_p = mg\,\Delta h = 0{,}50 \times 10 \times 45 = 225\ \text{J}\)</span>. (b) <span class="math inline">\(225\ \text{J}\)</span>: tutta l’energia potenziale persa è diventata cinetica, senza resistenza dell’aria. (c) <span class="math inline">\(v = \sqrt{2E_k/m} = \sqrt{2 \times 225/0{,}50} = \sqrt{900} = 30\ \text{m/s}\)</span>, e in <span class="math inline">\(\text{km/h}\)</span> si moltiplica per <span class="math inline">\(3{,}6\)</span>: <span class="math inline">\(30 \times 3{,}6 = 108\ \text{km/h}\)</span>. Attenzione: dividere per <span class="math inline">\(3{,}6\)</span> invece di moltiplicare darebbe un valore assurdo.</li>
+</ol>
+</div>
+</div>
+</div>
+</section>
+<section id="come-ci-accorgiamo-che-un-risultato-è-sbagliato" class="level3">
+<h3 class="anchored" data-anchor-id="come-ci-accorgiamo-che-un-risultato-è-sbagliato">Come ci accorgiamo che un risultato è sbagliato</h3>
+<p>I conti di energia sono insidiosi perché un errore di unità o di formula produce quasi sempre un numero dall’aspetto ragionevole. Prendiamo l’auto di <span class="math inline">\(1000\ \text{kg}\)</span> a <span class="math inline">\(50\ \text{km/h}\)</span>, che sappiamo valere circa <span class="math inline">\(97\ \text{kJ}\)</span>, e sbagliamo una cosa alla volta.</p>
+<p>Se inserisco la velocità in <span class="math inline">\(\text{km/h}\)</span>, ottengo <span class="math inline">\(\tfrac12 \times 1000 \times 50^2 = 1\,250\,000\ \text{J}\)</span>: circa tredici volte troppo, e a occhio sembra un numero «da energia». Se dimentico il quadrato, ottengo <span class="math inline">\(\tfrac12 \times 1000 \times 13{,}9 = 6950\ \text{J}\)</span>: l’energia cresce solo in proporzione a <span class="math inline">\(v\)</span>, non a <span class="math inline">\(v^2\)</span>. Se dimentico il mezzo, ottengo <span class="math inline">\(1000 \times 13{,}9^2 \approx 193\,000\ \text{J}\)</span>: esattamente il doppio della risposta giusta.</p>
+<p>Tre controlli che bastano quasi sempre. Il primo sono le <strong>unità</strong>: il risultato è in joule, e la velocità è in <span class="math inline">\(\text{m/s}\)</span>? Il secondo è l’<strong>ordine di grandezza</strong>: se il numero è plausibile solo perché è grande, non è una conferma; confrontalo con un caso noto, per esempio i <span class="math inline">\(97\ \text{kJ}\)</span> dell’auto a <span class="math inline">\(50\ \text{km/h}\)</span>. Il terzo è il <strong>rapporto</strong>: se la velocità raddoppia, l’energia deve quadruplicare; se il tuo calcolo non lo fa, c’è un errore. È lo stesso controllo che smaschera il camion della scheda che, senza il quadrato, si fermerebbe in <span class="math inline">\(2\ \text{m}\)</span>: un valore irrealistico che dice subito che qualcosa non va.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copiato!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copiato!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/casimir91\.github\.io");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
