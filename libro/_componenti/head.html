@@ -1,0 +1,340 @@
+<style>
+/* ===== Libro: stile componenti (quiz e widget) ===== */
+.mcq-set{margin:1.2rem 0;counter-reset:mcq}
+.mcq{counter-increment:mcq;border:1px solid var(--bs-border-color,#ccc);border-radius:.5rem;padding:.9rem 1rem;margin:.9rem 0}
+.mcq>p:first-child::before{content:counter(mcq) ". ";font-weight:700}
+.mcq ul{list-style:none;padding:0;margin:.6rem 0 0}
+.mcq li{border:1px solid var(--bs-border-color,#ccc);border-radius:.4rem;padding:.45rem .7rem;margin:.35rem 0;cursor:pointer}
+.mcq li:hover{background:rgba(127,127,127,.12)}
+.mcq li.sel{outline:2px solid #2a7f62}
+.mcq li.ok{background:rgba(42,127,98,.22);border-color:#2a7f62}
+.mcq li.no{background:rgba(200,70,60,.2);border-color:#c8463c}
+.mcq.done li{cursor:default}
+.mcq .sol{display:none;margin-top:.7rem;padding:.6rem .8rem;border-left:4px solid #2a7f62;background:rgba(42,127,98,.08)}
+.mcq.done .sol,.mcq-set.revealed .sol{display:block}
+.mcq-btn,.lw button{border:1px solid #2a7f62;background:transparent;color:inherit;border-radius:.4rem;padding:.35rem .8rem;cursor:pointer;font:inherit}
+.mcq-btn:hover,.lw button:hover{background:rgba(42,127,98,.18)}
+.lw button.on{background:rgba(42,127,98,.3);font-weight:600}
+.lw{border:1px solid var(--bs-border-color,#ccc);border-radius:.6rem;padding:.8rem;margin:1.2rem 0}
+.lw canvas{width:100%;display:block;border-radius:.4rem}
+.lw .ctl{display:flex;flex-wrap:wrap;gap:.4rem 1.2rem;align-items:center;margin-top:.6rem}
+.lw .ctl label{display:flex;flex-direction:column;font-size:.85rem;min-width:9rem;flex:1}
+.lw .ctl input[type=range]{width:100%}
+.lw .out{font-size:.9rem;margin-top:.5rem;line-height:1.5}
+.lw .btns{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.6rem}
+.lw .cap{font-size:.8rem;opacity:.75;margin-top:.4rem}
+</style>
+<script>
+(function(){
+"use strict";
+/* ---------- utilità ---------- */
+function el(tag,attrs,kids){var e=document.createElement(tag);for(var k in (attrs||{})){if(k==="text")e.textContent=attrs[k];else if(k==="html")e.innerHTML=attrs[k];else e.setAttribute(k,attrs[k]);}(kids||[]).forEach(function(c){e.appendChild(c)});return e;}
+function fmt(x,d){return Number(x).toLocaleString("it-IT",{minimumFractionDigits:d,maximumFractionDigits:d});}
+function fmtJ(x){if(x<0.0005)return "0";return fmt(x,x>=100?0:(x>=1?1:3));}
+function fg(){return getComputedStyle(document.body).color;}
+function prepCanvas(c,h){var dpr=window.devicePixelRatio||1;var w=c.parentNode.clientWidth-16;if(w<200)w=200;c.style.height=h+"px";c.width=Math.round(w*dpr);c.height=Math.round(h*dpr);var x=c.getContext("2d");x.setTransform(dpr,0,0,dpr,0,0);x.clearRect(0,0,w,h);return {ctx:x,w:w,h:h};}
+function slider(lab,min,max,step,val,unit,dec,onch){
+  var inp=el("input",{type:"range",min:min,max:max,step:step,value:val});
+  var v=el("b",{});var l=el("label",{},[el("span",{html:lab+": "}),inp]);l.firstChild.appendChild(v);
+  function upd(){v.textContent=fmt(inp.value,dec)+" "+unit;}
+  inp.addEventListener("input",function(){upd();onch(+inp.value);});upd();
+  return {box:l,inp:inp,set:function(x){inp.value=x;upd();}};
+}
+/* cursore logaritmico per la massa (kg) */
+function massSlider(min,max,val,onch){
+  var inp=el("input",{type:"range",min:0,max:1000,step:1,value:Math.round(1000*Math.log(val/min)/Math.log(max/min))});
+  var v=el("b",{});var l=el("label",{},[el("span",{html:"Massa: "}),inp]);l.firstChild.appendChild(v);
+  function mval(){return min*Math.pow(max/min,inp.value/1000);}
+  function upd(){var m=mval();v.textContent=m<1?fmt(m*1000,m<0.1?0:0)+" g":fmt(m,m>=100?0:1)+" kg";}
+  inp.addEventListener("input",function(){upd();onch(mval());});upd();
+  return {box:l,set:function(m){inp.value=Math.round(1000*Math.log(m/min)/Math.log(max/min));upd();}};
+}
+function raf(fn){var id;var t0=null;function step(t){if(t0===null)t0=t;var go=fn((t-t0)/1000);if(go)id=requestAnimationFrame(step);}id=requestAnimationFrame(step);return function(){cancelAnimationFrame(id);};}
+var G=10;
+var COL={cin:"#2a7f62",pot:"#d98a1c",ter:"#c8463c",lav:"#3b6fb6",ela:"#8e5bb5",chi:"#3b8fb6",nuc:"#b59a1e"};
+
+/* ---------- disegno: serbatoi, frecce, omino ---------- */
+function fitText(c,t,x,y,maxw){
+  var s=11;c.font=s+"px sans-serif";
+  if(c.measureText(t).width>maxw&&t.indexOf(" ")>0){var i=t.indexOf(" ");fitText(c,t.slice(0,i),x,y,maxw);fitText(c,t.slice(i+1),x,y+12,maxw);return;}
+  while(c.measureText(t).width>maxw&&s>7){s--;c.font=s+"px sans-serif";}
+  c.fillText(t,x,y);
+}
+function tanks(c,items,x,y,w,h,max){
+  var n=items.length,gap=Math.min(12,w*0.04),bw=(w-gap*(n-1))/n;
+  items.forEach(function(it,i){
+    var bx=x+i*(bw+gap),fh=h*Math.max(0,Math.min(1,it.val/max));
+    c.fillStyle="rgba(127,127,127,.15)";c.fillRect(bx,y,bw,h);
+    c.fillStyle=it.col;c.fillRect(bx,y+h-fh,bw,fh);
+    c.strokeStyle=fg();c.lineWidth=1;c.strokeRect(bx,y,bw,h);
+    c.fillStyle=fg();c.textAlign="center";c.font="bold 11px sans-serif";
+    c.fillText(fmtJ(it.val)+" "+(it.unit||"J"),bx+bw/2,y-5);
+    c.font="11px sans-serif";fitText(c,it.lab,bx+bw/2,y+h+13,bw+gap-3);
+  });
+}
+function arrow(c,x1,y1,x2,y2,col,lw){
+  c.strokeStyle=col;c.fillStyle=col;c.lineWidth=lw||2.5;c.beginPath();c.moveTo(x1,y1);c.lineTo(x2,y2);c.stroke();
+  var a=Math.atan2(y2-y1,x2-x1),s=8;c.beginPath();c.moveTo(x2,y2);c.lineTo(x2-s*Math.cos(a-0.4),y2-s*Math.sin(a-0.4));c.lineTo(x2-s*Math.cos(a+0.4),y2-s*Math.sin(a+0.4));c.closePath();c.fill();
+}
+/* omino: piedi in (x,y); pose "push" o "lift" (handY = altezza mani) o "stand" */
+function figure(c,x,y,s,pose,handY){
+  c.strokeStyle=fg();c.fillStyle=fg();c.lineWidth=2;
+  var lean=pose==="push"?9*s:0,hip=[x,y-22*s],sh=[x+lean,y-40*s];
+  c.beginPath();c.arc(sh[0]+lean*0.2,y-47*s,5.5*s,0,7);c.stroke();
+  c.beginPath();c.moveTo(sh[0],sh[1]);c.lineTo(hip[0],hip[1]);c.lineTo(x-8*s,y);c.moveTo(hip[0],hip[1]);c.lineTo(x+8*s,y);c.stroke();
+  var hand=pose==="push"?[x+30*s,y-34*s]:pose==="lift"?[x+16*s,handY]:[x+12*s,y-24*s];
+  c.beginPath();c.moveTo(sh[0],sh[1]+2*s);c.lineTo(hand[0],hand[1]);c.stroke();
+}
+
+/* ---------- quiz a scelta multipla ---------- */
+function initMcq(){
+  document.querySelectorAll(".mcq").forEach(function(q){
+    var lis=q.querySelectorAll("ul>li");
+    lis.forEach(function(li){
+      var w=document.createTreeWalker(li,NodeFilter.SHOW_TEXT,null);var n=w.nextNode();
+      if(n&&/^\s*✓\s*/.test(n.nodeValue)){li.dataset.ok="1";n.nodeValue=n.nodeValue.replace(/^\s*✓\s*/,"");}
+    });
+    var set=q.closest(".mcq-set");var pre=set&&set.dataset.mode==="pretest";
+    lis.forEach(function(li){li.addEventListener("click",function(){
+      if(q.classList.contains("done")||(set&&set.classList.contains("revealed")))return;
+      lis.forEach(function(x){x.classList.remove("sel")});li.classList.add("sel");
+      if(!pre){q.classList.add("done");lis.forEach(function(x){if(x.dataset.ok)x.classList.add("ok");});if(!li.dataset.ok)li.classList.add("no");}
+    });});
+  });
+  document.querySelectorAll(".mcq-set[data-mode=pretest]").forEach(function(set){
+    var b=el("button",{"class":"mcq-btn",type:"button",text:"Controlla le risposte (meglio dopo aver letto la pagina)"});
+    b.addEventListener("click",function(){set.classList.add("revealed");set.querySelectorAll(".mcq").forEach(function(q){q.classList.add("done");q.querySelectorAll("li").forEach(function(x){if(x.dataset.ok)x.classList.add("ok");else if(x.classList.contains("sel"))x.classList.add("no");});});b.remove();});
+    set.appendChild(b);
+  });
+}
+
+/* ---------- widget: i quattro trasferimenti ---------- */
+function wTrasf(root){
+  var names=["Con una forza","Con una corrente","Riscaldando","Con onde (luce)"];
+  var cur=0,p=0,t=0,stop=null;
+  var cv=el("canvas",{"aria-label":"Quattro modi di trasferire energia, con serbatoi"});var out=el("div",{"class":"out"});
+  var tabs=el("div",{"class":"btns"});var bts=[];
+  names.forEach(function(n,i){var b=el("button",{type:"button",text:n});b.onclick=function(){cur=i;reset();};bts.push(b);tabs.appendChild(b);});
+  var play=el("button",{type:"button",text:"▶ Avvia"});play.onclick=function(){if(stop)stop();p=0;stop=raf(function(sec){t=sec;p=Math.min(1,sec/4.5);draw();return p<1;});};
+  root.appendChild(cv);root.appendChild(tabs);root.appendChild(el("div",{"class":"btns"},[play]));root.appendChild(out);
+  root.appendChild(el("div",{"class":"cap",text:"Numeri di fantasia (100 J all'inizio) per vedere l'energia passare da un serbatoio all'altro: il totale resta sempre lo stesso."}));
+  function reset(){if(stop)stop();stop=null;p=0;t=0;draw();}
+  var GY=118;
+  function ground(c,W){c.strokeStyle=fg();c.lineWidth=1.5;c.beginPath();c.moveTo(6,GY);c.lineTo(W-6,GY);c.stroke();}
+  function s0(c,W){ground(c,W);var x0=W*0.38,x1=W*0.7,cx=x0+(x1-x0)*p;
+    c.fillStyle="#9aa5b1";c.fillRect(cx,GY-40,56,24);c.fillStyle=fg();c.beginPath();c.arc(cx+13,GY-8,8,0,7);c.arc(cx+43,GY-8,8,0,7);c.fill();
+    figure(c,cx-34,GY,0.95,"push");arrow(c,cx-30,GY-66,cx+6,GY-66,COL.lav);c.fillStyle=fg();c.textAlign="center";c.font="12px sans-serif";c.fillText("forza",cx-12,GY-72);}
+  function s1(c,W){var bx=W*0.14,lx=W*0.72;
+    c.strokeStyle=fg();c.lineWidth=2;c.fillStyle="#9aa5b1";c.fillRect(bx-14,56,28,38);c.strokeRect(bx-14,56,28,38);c.fillStyle=fg();c.font="12px sans-serif";c.textAlign="center";c.fillText("+",bx,72);c.fillText("batteria",bx,110);
+    var pts=[[bx,56],[bx,20],[lx,20],[lx,48],[lx,92],[lx,116],[bx,116],[bx,94]];
+    c.beginPath();c.moveTo(pts[0][0],pts[0][1]);for(var i=1;i<pts.length;i++){if(i===4){c.moveTo(pts[i][0],pts[i][1]);}else c.lineTo(pts[i][0],pts[i][1]);}c.stroke();
+    var glow=Math.min(1,p*5)*(p<1?(0.75+0.25*Math.sin(t*10)):0.35);
+    c.fillStyle="rgba(255,220,60,"+(0.2+0.8*glow)+")";c.beginPath();c.arc(lx,70,22,0,7);c.fill();c.strokeStyle=fg();c.stroke();
+    if(glow>0.1){c.strokeStyle="rgba(255,210,40,"+glow+")";for(var a=0;a<8;a++){var an=a*Math.PI/4;c.beginPath();c.moveTo(lx+27*Math.cos(an),70+27*Math.sin(an));c.lineTo(lx+36*Math.cos(an),70+36*Math.sin(an));c.stroke();}}
+    if(p>0&&p<1){c.fillStyle=COL.lav;var path=[[bx,56],[bx,20],[lx,20],[lx,48],[lx,92],[lx,116],[bx,116],[bx,94]];for(var d=0;d<10;d++){var s=((t*0.4+d/10)%1)*0.999;var L=[],tot=0,k;
+      var seg=[[0,1],[1,2],[2,3],[4,5],[5,6],[6,7]];seg.forEach(function(q){var l=Math.hypot(path[q[1]][0]-path[q[0]][0],path[q[1]][1]-path[q[0]][1]);L.push(l);tot+=l;});
+      var dist=s*tot;for(k=0;k<seg.length;k++){if(dist<=L[k]){var f=dist/L[k],a0=path[seg[k][0]],a1=path[seg[k][1]];c.beginPath();c.arc(a0[0]+(a1[0]-a0[0])*f,a0[1]+(a1[1]-a0[1])*f,3,0,7);c.fill();break;}dist-=L[k];}}}
+  }
+  function s2(c,W){var cx=W*0.5;ground(c,W);
+    c.fillStyle="rgba(80,150,220,"+(0.35+0.15*p)+")";c.beginPath();c.moveTo(cx-34,GY-62);c.lineTo(cx+34,GY-62);c.lineTo(cx+28,GY-22);c.lineTo(cx-28,GY-22);c.closePath();c.fill();c.strokeStyle=fg();c.lineWidth=2;c.stroke();
+    if(p>0.35&&p<1){c.fillStyle="rgba(255,255,255,.8)";for(var k=0;k<6;k++){var yy=GY-26-((t*18+k*11)%34);c.beginPath();c.arc(cx-20+k*8,yy,2.2,0,7);c.fill();}}
+    if(p>0&&p<1){for(k=0;k<5;k++){var h=10+6*Math.sin(t*14+k*2);c.fillStyle=k%2?"#f0a020":"#e8561c";c.beginPath();c.moveTo(cx-26+k*13-5,GY-1);c.lineTo(cx-26+k*13,GY-1-h-6);c.lineTo(cx-26+k*13+5,GY-1);c.fill();}
+      c.strokeStyle="rgba(127,127,127,.6)";c.lineWidth=1.5;for(k=0;k<3;k++){c.beginPath();c.moveTo(cx-14+k*14,GY-70);c.quadraticCurveTo(cx-20+k*14,GY-82-((t*10+k*5)%10),cx-14+k*14,GY-94);c.stroke();}}
+    c.fillStyle=fg();c.textAlign="center";c.font="12px sans-serif";c.fillText("gas",cx,GY+14);}
+  function s3(c,W){var sx=W*0.14,ox=W*0.72;
+    c.fillStyle="#f2c21b";c.beginPath();c.arc(sx,60,24,0,7);c.fill();c.strokeStyle="#f2c21b";c.lineWidth=2;for(var a=0;a<12;a++){var an=a*Math.PI/6;c.beginPath();c.moveTo(sx+28*Math.cos(an),60+28*Math.sin(an));c.lineTo(sx+38*Math.cos(an),60+38*Math.sin(an));c.stroke();}
+    c.strokeStyle="#e8b300";c.lineWidth=2;for(var r=0;r<3;r++){var y0=38+r*22;c.beginPath();for(var x=sx+44;x<=ox-10;x+=3){var ph=(x-sx)*0.14-t*8;var yy=y0+4*Math.sin(ph);if(x===sx+44)c.moveTo(x,yy);else c.lineTo(x,yy);}c.stroke();}
+    var heat=p;c.fillStyle="rgb("+Math.round(60+150*heat)+","+Math.round(60-20*heat)+",60)";c.fillRect(ox,34,40,60);c.strokeStyle=fg();c.lineWidth=1.5;c.strokeRect(ox,34,40,60);
+    c.fillStyle=fg();c.font="12px sans-serif";c.textAlign="center";c.fillText("Sole",sx,104);c.fillText("oggetto scuro",ox+20,110);}
+  var DATA=[
+   function(){return {tk:[{lab:"chimica persona",val:100-55*p,col:COL.chi},{lab:"cinetica carrello",val:40*p,col:COL.cin},{lab:"termica corpo",val:15*p,col:COL.ter}],txt:"Una forza (le braccia) sposta energia dalla riserva chimica della persona alla riserva cinetica del carrello; una parte si disperde nel corpo come calore."};},
+   function(){return {tk:[{lab:"chimica batteria",val:100-70*p,col:COL.chi},{lab:"termica lampadina e aria",val:70*p,col:COL.ter}],txt:"La corrente elettrica sposta energia dalla batteria alla lampadina, che la restituisce come luce e calore."};},
+   function(){return {tk:[{lab:"chimica gas",val:100-60*p,col:COL.chi},{lab:"termica acqua",val:45*p,col:COL.ter},{lab:"termica aria",val:15*p,col:"#e08a6c"}],txt:"Il riscaldamento sposta energia dalla fiamma all'acqua; una parte scalda l'aria intorno."};},
+   function(){return {tk:[{lab:"nucleare Sole",val:100-30*p,col:COL.nuc},{lab:"termica oggetto",val:30*p,col:COL.ter}],txt:"La luce è un'onda: sposta energia dal Sole all'oggetto, che si scalda."};}
+  ];
+  var SC=[s0,s1,s2,s3];
+  function draw(){
+    var P=prepCanvas(cv,262),c=P.ctx,W=P.w;
+    bts.forEach(function(b,i){b.className=i===cur?"on":"";});
+    SC[cur](c,W);
+    var d=DATA[cur]();var tot=d.tk.reduce(function(s,x){return s+x.val;},0);
+    tanks(c,d.tk,10,168,W-20,56,100);
+    c.fillStyle=fg();c.textAlign="right";c.font="bold 12px sans-serif";c.fillText("Totale: "+fmt(tot,0)+" J",W-8,14);
+    out.textContent=d.txt;
+  }
+  reset();window.addEventListener("resize",draw);
+}
+
+/* ---------- widget: l'auto che frena (senza numeri sullo spazio) ---------- */
+function wFreno(root){
+  var E0=139,p=0,stop=null;var cv=el("canvas",{"aria-label":"Auto che frena: l'energia cinetica diventa calore nei freni"});var out=el("div",{"class":"out"});
+  var go=el("button",{type:"button",text:"▶ Frena"}),rs=el("button",{type:"button",text:"↺ Ricomincia"});
+  go.onclick=function(){if(stop)stop();p=0;stop=raf(function(sec){p=Math.min(1,sec/4);draw();return p<1;});};
+  rs.onclick=function(){if(stop)stop();stop=null;p=0;draw();};
+  root.appendChild(cv);root.appendChild(el("div",{"class":"btns"},[go,rs]));root.appendChild(out);
+  root.appendChild(el("div",{"class":"cap",text:"I freni compiono lavoro: è il trasferimento che porta via l'energia cinetica e la lascia come energia termica."}));
+  function draw(){
+    var P=prepCanvas(cv,262),c=P.ctx,W=P.w,GY=112,v=60*(1-p),Ek=E0*(1-p)*(1-p),Q=E0-Ek;
+    c.strokeStyle=fg();c.lineWidth=2;c.beginPath();c.moveTo(0,GY);c.lineTo(W,GY);c.stroke();
+    var s=60*4*(p-p*p/2);c.lineWidth=3;for(var i=-1;i<12;i++){var x=((i*70-s*1.6)%(W+70)+W+70)%(W+70)-35;c.beginPath();c.moveTo(x,GY+10);c.lineTo(x+30,GY+10);c.stroke();}
+    var cx=W*0.36;c.fillStyle=COL.cin;c.fillRect(cx,GY-42,120,24);c.beginPath();c.moveTo(cx+28,GY-42);c.lineTo(cx+42,GY-62);c.lineTo(cx+86,GY-62);c.lineTo(cx+100,GY-42);c.closePath();c.fill();
+    c.fillStyle="rgba(255,255,255,.75)";c.fillRect(cx+46,GY-58,16,13);c.fillRect(cx+66,GY-58,16,13);
+    [cx+24,cx+96].forEach(function(wx,k){c.fillStyle=fg();c.beginPath();c.arc(wx,GY-12,12,0,7);c.fill();var f=Q/E0;c.fillStyle="rgba(255,"+Math.round(80-60*f)+",20,"+(0.25+0.75*f)+")";c.beginPath();c.arc(wx,GY-12,7,0,7);c.fill();if(f>0.1){c.strokeStyle="rgba(232,86,28,"+f+")";c.lineWidth=1.5;for(var q=0;q<3;q++){c.beginPath();c.moveTo(wx-8+q*8,GY-30);c.quadraticCurveTo(wx-12+q*8,GY-38,wx-8+q*8,GY-46);c.stroke();}}});
+    c.fillStyle=fg();c.textAlign="left";c.font="bold 13px sans-serif";c.fillText("velocità: "+fmt(v,0)+" km/h",8,18);
+    c.textAlign="right";c.fillText("lavoro dei freni: "+fmt(Q,0)+" kJ",W-8,18);
+    tanks(c,[{lab:"energia cinetica (auto)",val:Ek,col:COL.cin,unit:"kJ"},{lab:"energia termica (freni, aria…)",val:Q,col:COL.ter,unit:"kJ"}],W*0.2,162,W*0.6,56,E0);
+    out.innerHTML=p===0?"Premi «Frena». Guarda la velocità scendere e i freni scaldarsi.":(p<1?"L'energia cinetica passa ai freni, che la trasferiscono come calore.":"Auto ferma: tutta l'energia cinetica è diventata energia termica (<b>"+fmt(E0,0)+" kJ</b>).");
+  }
+  draw();window.addEventListener("resize",draw);
+}
+
+/* ---------- widget: palla che rimbalza (ideale / reale) ---------- */
+function wRimbalzo(root){
+  var m=0.5,k=4000,H0=2,E0=m*G*H0,real=false,y,v,done,stop=null,Th=0;
+  var cv=el("canvas",{"aria-label":"Palla che cade e rimbalza con serbatoi di energia"});var out=el("div",{"class":"out"});
+  var bI=el("button",{type:"button",text:"Rimbalzo perfetto (ideale)"}),bR=el("button",{type:"button",text:"Rimbalzo reale"});
+  var go=el("button",{type:"button",text:"▶ Lascia cadere"});
+  function setMode(r){real=r;bI.className=r?"":"on";bR.className=r?"on":"";reset();}
+  bI.onclick=function(){setMode(false);};bR.onclick=function(){setMode(true);};go.onclick=function(){run();};
+  root.appendChild(cv);root.appendChild(el("div",{"class":"btns"},[bI,bR]));root.appendChild(el("div",{"class":"btns"},[go]));root.appendChild(out);
+  root.appendChild(el("div",{"class":"cap",text:"Palla da 0,5 kg lasciata da 2 m. Il momento dell'urto è rallentato molto, per vedere la palla schiacciarsi."}));
+  function reset(){if(stop)stop();stop=null;y=H0;v=0;done=false;Th=0;draw();}
+  function C(){return real?2*0.09*Math.sqrt(k*m):0;}
+  function run(){reset();var c0=C(),last=null;
+    stop=raf(function(sec){var dtr=last===null?0.016:Math.min(0.05,sec-last);last=sec;var budget=dtr,guard=0;
+      while(budget>0&&!done&&guard++<400){var contact=y<0,rate=contact?0.05:0.8,st=contact?0.0002:0.001;
+        var a=-G+(contact?(-k*y-c0*v)/m:0);v+=a*st;y+=v*st;budget-=st/rate;
+        if(real&&y>=0&&v>0){var me=m*G*y+0.5*m*v*v;if(me<0.015*E0){done=true;y=0;v=0;}}}
+      draw();return !done||false;});
+  }
+  function draw(){
+    var P=prepCanvas(cv,250),c=P.ctx,W=P.w,sw=Math.min(120,W*0.3),GY=232,sc=52,r=9;
+    var contact=y<0,Ek=0.5*m*v*v,Ep=Math.max(0,m*G*y),El=contact?0.5*k*y*y:0;
+    if(real){Th=done?E0:Math.max(0,E0-(m*G*y+Ek+El));}else{Th=0;}
+    if(done){Ek=0;Ep=0;El=0;}
+    c.strokeStyle=fg();c.lineWidth=2;c.beginPath();c.moveTo(6,GY);c.lineTo(sw+4,GY);c.stroke();
+    c.lineWidth=1;c.setLineDash([3,4]);c.beginPath();c.moveTo(sw/2,GY);c.lineTo(sw/2,GY-H0*sc-2*r);c.stroke();c.setLineDash([]);
+    var sq=contact?Math.min(0.55,-y/0.0707*0.5):0,bx=sw/2,by=GY-r*(1-sq)-Math.max(0,y)*sc;
+    c.fillStyle=COL.pot;c.beginPath();c.ellipse(bx,by,r*(1+sq*0.9),r*(1-sq),0,0,7);c.fill();c.strokeStyle=fg();c.stroke();
+    c.fillStyle=fg();c.textAlign="left";c.font="11px sans-serif";c.fillText("2 m",sw/2+8,GY-H0*sc-4);
+    tanks(c,[{lab:"di quota (gravitaz.)",val:Ep,col:COL.pot},{lab:"di movimento (cinetica)",val:Ek,col:COL.cin},{lab:"elastica",val:El,col:COL.ela},{lab:"termica",val:Th,col:COL.ter}],sw+14,34,W-sw-20,150,E0);
+    c.fillStyle=fg();c.textAlign="right";c.font="bold 12px sans-serif";c.fillText("Totale: "+fmt(E0,1)+" J",W-6,14);
+    var ph=done?"La palla si ferma: tutta l'energia è diventata <b>termica</b> (e un po' di suono).":(y===H0&&v===0)?"Scegli il tipo di rimbalzo e premi «Lascia cadere».":contact?"<b>Urto</b>: la palla si schiaccia, l'energia di movimento diventa <b>elastica</b>"+(real?" (e un po' si disperde in calore).":"."):v<0?"<b>Caduta</b>: l'energia di quota diventa energia di movimento.":"<b>Risalita</b>: l'energia elastica torna di movimento, poi di quota.";
+    out.innerHTML=ph;
+  }
+  setMode(false);window.addEventListener("resize",draw);
+}
+
+/* ---------- widget: il lavoro (carrello, peso, caduta) ---------- */
+function hbar(c,x,y,w,h,val,max,col,lab){
+  c.fillStyle="rgba(127,127,127,.2)";c.fillRect(x,y,w,h);c.fillStyle=col;c.fillRect(x,y,w*Math.max(0,Math.min(1,val/max)),h);
+  c.strokeStyle=fg();c.lineWidth=1;c.strokeRect(x,y,w,h);c.fillStyle=fg();c.textAlign="left";c.font="12px sans-serif";c.fillText(lab+": "+fmtJ(val)+" J",x+6,y+h-5);
+}
+function wLavoro(root){
+  var cur=0,p=0,stop=null,F=80,M=5,Mb=1;
+  var cv=el("canvas",{"aria-label":"Il lavoro: una forza che sposta un oggetto"});var out=el("div",{"class":"out"});
+  var names=["Carrello spinto","Peso sollevato","Palla che cade"],bts=[];var tabs=el("div",{"class":"btns"});
+  names.forEach(function(n,i){var b=el("button",{type:"button",text:n});b.onclick=function(){cur=i;sel();reset();};bts.push(b);tabs.appendChild(b);});
+  var sF=slider("Forza",20,200,10,F,"N",0,function(x){F=x;draw();});
+  var sM=slider("Massa del peso",1,20,1,M,"kg",0,function(x){M=x;draw();});
+  var sB=slider("Massa della palla",0.5,5,0.5,Mb,"kg",1,function(x){Mb=x;draw();});
+  var ctl=el("div",{"class":"ctl"},[sF.box,sM.box,sB.box]);
+  var go=el("button",{type:"button",text:"▶ Avvia"});go.onclick=function(){if(stop)stop();p=0;stop=raf(function(sec){p=Math.min(1,sec/3.5);draw();return p<1;});};
+  root.appendChild(cv);root.appendChild(tabs);root.appendChild(ctl);root.appendChild(el("div",{"class":"btns"},[go]));root.appendChild(out);
+  root.appendChild(el("div",{"class":"cap",html:"Il lavoro è l'energia trasferita da una forza: <i>W = F · d</i>, con d misurata nella direzione della forza."}));
+  function sel(){bts.forEach(function(b,i){b.className=i===cur?"on":"";});sF.box.style.display=cur===0?"":"none";sM.box.style.display=cur===1?"":"none";sB.box.style.display=cur===2?"":"none";}
+  function reset(){if(stop)stop();stop=null;p=0;draw();}
+  function draw(){
+    var P=prepCanvas(cv,262),c=P.ctx,W=P.w,GY=150,fgc=fg();
+    c.strokeStyle=fgc;c.lineWidth=2;c.beginPath();c.moveTo(6,GY);c.lineTo(W-6,GY);c.stroke();
+    var Wk,dest=null,dtot,Fv,d;c.font="12px sans-serif";
+    if(cur===0){dtot=5;d=dtot*p;Fv=F;var x0=W*0.22,x1=W*0.74,px=(x1-x0)/dtot,cx=x0+d*px;
+      c.fillStyle="#9aa5b1";c.fillRect(cx,GY-44,60,26);c.fillStyle=fgc;c.beginPath();c.arc(cx+14,GY-9,8,0,7);c.arc(cx+46,GY-9,8,0,7);c.fill();
+      figure(c,cx-38,GY,1.1,"push");arrow(c,cx-34,GY-78,cx-34+Fv*0.3,GY-78,COL.lav,3);c.fillStyle=fgc;c.textAlign="left";c.fillText("F = "+Fv+" N",cx-34,GY-84);
+      c.lineWidth=1;c.strokeStyle=fgc;c.beginPath();c.moveTo(x0,GY+14);c.lineTo(x1,GY+14);c.stroke();for(var i=0;i<=dtot;i++){c.beginPath();c.moveTo(x0+i*px,GY+10);c.lineTo(x0+i*px,GY+18);c.stroke();}
+      c.strokeStyle=COL.lav;c.lineWidth=3;c.beginPath();c.moveTo(x0,GY+14);c.lineTo(x0+d*px,GY+14);c.stroke();c.fillStyle=fgc;c.textAlign="center";c.fillText("d = "+fmt(d,2)+" m",x0+d*px/2+1,GY+34);}
+    else if(cur===1){dtot=1.2;d=dtot*p;Fv=M*G;var px2=50,wx=W*0.5,wy=GY-d*px2;
+      c.fillStyle="#9aa5b1";c.fillRect(wx-18,wy-30,36,30);c.strokeStyle=fgc;c.lineWidth=1.5;c.strokeRect(wx-18,wy-30,36,30);c.fillStyle=fgc;c.textAlign="center";c.fillText(M+" kg",wx,wy-10);
+      figure(c,wx-56,GY,1.1,"lift",wy-20);arrow(c,wx+30,wy-15,wx+30,wy-15-Math.min(50,Fv*0.3),COL.lav,3);c.textAlign="left";c.fillText("F = "+Fv+" N",wx+38,wy-24);
+      c.lineWidth=1;c.strokeStyle=fgc;c.setLineDash([3,3]);c.beginPath();c.moveTo(wx+80,GY);c.lineTo(wx+80,GY-dtot*px2);c.stroke();c.setLineDash([]);c.strokeStyle=COL.lav;c.lineWidth=3;c.beginPath();c.moveTo(wx+80,GY);c.lineTo(wx+80,GY-d*px2);c.stroke();c.fillStyle=fgc;c.textAlign="left";c.fillText("d = "+fmt(d,2)+" m",wx+88,GY-d*px2/2+4);dest={lab:"energia di quota",col:COL.pot};}
+    else{dtot=2;var tt=p*Math.sqrt(2*dtot/G);d=0.5*G*tt*tt;Fv=Mb*G;var px3=48,bx=W*0.5,by=GY-9-(dtot-d)*px3;
+      c.fillStyle=COL.pot;c.beginPath();c.arc(bx,by,9,0,7);c.fill();c.strokeStyle=fgc;c.stroke();arrow(c,bx+24,by,bx+24,by+Math.min(50,Fv*0.9),COL.lav,3);c.fillStyle=fgc;c.textAlign="left";c.fillText("peso = "+fmt(Fv,0)+" N",bx+32,by+6);c.fillText("nessuno la spinge",bx+32,20);
+      c.setLineDash([3,3]);c.lineWidth=1;c.beginPath();c.moveTo(bx-40,GY-9-dtot*px3);c.lineTo(bx-40,GY-9);c.stroke();c.setLineDash([]);c.strokeStyle=COL.lav;c.lineWidth=3;c.beginPath();c.moveTo(bx-40,GY-9-dtot*px3);c.lineTo(bx-40,GY-9-(dtot-d)*px3);c.stroke();c.fillStyle=fgc;c.textAlign="right";c.fillText("d = "+fmt(d,2)+" m",bx-46,GY-9-(dtot-d/2)*px3+4);dest={lab:"energia di movimento",col:COL.cin};}
+    Wk=Fv*d;var tot=Fv*dtot;
+    hbar(c,10,196,W-20,20,Wk,tot,COL.lav,"lavoro W compiuto");
+    if(dest)hbar(c,10,224,W-20,20,Wk,tot,dest.col,dest.lab+" guadagnata");
+    out.innerHTML="<b>W = F · d</b> = "+fmt(Fv,0)+" N × "+fmt(d,2)+" m = <b>"+fmt(Wk,1)+" J</b>"+(cur===1?" &nbsp;→ l'energia trasferita si ritrova nella riserva di quota.":cur===2?" &nbsp;→ è la forza di gravità a compiere il lavoro: l'energia di quota diventa energia di movimento.":"");
+  }
+  sel();draw();window.addEventListener("resize",draw);
+}
+
+/* ---------- widget: caduta (la massa non conta) ---------- */
+function wCaduta(root){
+  var h=1,m=0.005,t=null,stop=null;var cv=el("canvas",{"aria-label":"Corpo che cade: energia potenziale e cinetica"});var out=el("div",{"class":"out"});
+  var sh=slider("Altezza di caduta",0.5,5,0.5,h,"m",1,function(v){h=v;t=null;draw();});
+  var sm=massSlider(0.005,500,m,function(v){m=v;draw();});
+  var go=el("button",{type:"button",text:"▶ Lascia cadere"});
+  go.onclick=function(){if(stop)stop();var T=Math.sqrt(2*h/G),slow=3;stop=raf(function(sec){t=Math.min(T,sec/slow);draw();return t<T;});};
+  function pre(mm,lab){var b=el("button",{type:"button",text:lab});b.onclick=function(){m=mm;sm.set(mm);t=null;draw();};return b;}
+  root.appendChild(cv);root.appendChild(el("div",{"class":"btns"},[pre(0.005,"Piuma (5 g)"),pre(0.2,"Palla (200 g)"),pre(400,"Pianoforte (400 kg)")]));
+  root.appendChild(el("div",{"class":"ctl"},[sh.box,sm.box]));root.appendChild(el("div",{"class":"btns"},[go]));root.appendChild(out);
+  root.appendChild(el("div",{"class":"cap",text:"Senza resistenza dell'aria, rallentato di 3 volte. Cambia la massa: la velocità finale non cambia."}));
+  function draw(){
+    var P=prepCanvas(cv,230),c=P.ctx,W=P.w,H=230;c.font="12px sans-serif";
+    var tt=t===null?0:t,y=h-0.5*G*tt*tt,v=G*tt,Ep=m*G*y,Ek=0.5*m*v*v,Em=m*G*h;
+    var top=24,bot=H-34,sc=(bot-top)/5.2;c.strokeStyle=fg();c.lineWidth=2;c.beginPath();c.moveTo(20,bot);c.lineTo(110,bot);c.stroke();
+    c.lineWidth=1;c.setLineDash([3,4]);c.beginPath();c.moveTo(65,bot);c.lineTo(65,bot-h*sc);c.stroke();c.setLineDash([]);
+    c.fillStyle=COL.pot;c.beginPath();c.arc(65,bot-y*sc-8,8,0,7);c.fill();c.strokeStyle=fg();c.stroke();c.fillStyle=fg();c.textAlign="left";c.fillText("h = "+fmt(h,1)+" m",22,Math.max(14,bot-h*sc-8));
+    var bx=Math.max(125,W*0.3);
+    tanks(c,[{lab:"di quota",val:Ep,col:COL.pot},{lab:"di movimento",val:Ek,col:COL.cin},{lab:"somma",val:Ep+Ek,col:COL.lav}],bx,24,W-bx-8,bot-24,Em);
+    var vf=Math.sqrt(2*G*h);
+    out.innerHTML="Ora: v = <b>"+fmt(v,1)+" m/s</b>. All'arrivo: mgh = <b>"+fmtJ(Em)+" J</b> e v = <b>"+fmt(vf,1)+" m/s</b> ("+fmt(vf*3.6,0)+" km/h), qualunque sia la massa.";
+  }
+  draw();window.addEventListener("resize",draw);
+}
+
+/* ---------- widget: frenata completa (F, spazio, massa) ---------- */
+function wFrenata(root){
+  var v0=50,F=7,m=1000,hist=[],stop=null,x=0,vnow=0,running=false;
+  var cv=el("canvas",{"aria-label":"Auto che frena: forza, spazio e lavoro dei freni"});var out=el("div",{"class":"out"});
+  var sv=slider("Velocità iniziale",20,130,5,v0,"km/h",0,function(v){v0=v;resetRun();});
+  var sf=slider("Forza frenante",2,10,0.5,F,"kN",1,function(v){F=v;resetRun();});
+  var sm=slider("Massa",500,2000,100,m,"kg",0,function(v){m=v;resetRun();});
+  var go=el("button",{type:"button",text:"▶ Frena"});
+  var b50=el("button",{type:"button",text:"50 km/h"}),b100=el("button",{type:"button",text:"100 km/h"}),bw=el("button",{type:"button",text:"100 km/h, strada bagnata"}),bc=el("button",{type:"button",text:"Cancella i confronti"});
+  function preset(v,f){v0=v;F=f;sv.set(v);sf.set(f);resetRun();}
+  b50.onclick=function(){preset(50,7)};b100.onclick=function(){preset(100,7)};bw.onclick=function(){preset(100,3.5)};bc.onclick=function(){hist=[];resetRun();};
+  root.appendChild(cv);root.appendChild(el("div",{"class":"ctl"},[sv.box,sf.box,sm.box]));
+  root.appendChild(el("div",{"class":"btns"},[go,b50,b100,bw,bc]));root.appendChild(out);
+  root.appendChild(el("div",{"class":"cap",html:"Per fermarsi, tutta l'energia cinetica deve diventare lavoro dei freni: F·d = E<sub>k</sub>. A parità di energia, meno spazio vuol dire più forza."}));
+  if(root.dataset.prefill){root.dataset.prefill.split(",").forEach(function(s){var q=s.split(":");hist.push({v:+q[0],F:+q[1]||7,m:1000});});}
+  function Ek0(){return 0.5*m*Math.pow(v0/3.6,2);}
+  function dstop(){return Ek0()/(F*1000);}
+  function resetRun(){if(stop){stop();stop=null;}running=false;x=0;vnow=v0/3.6;draw();}
+  go.onclick=function(){
+    if(stop)stop();x=0;running=true;var tst=m*(v0/3.6)/(F*1000),speed=tst/3,a=F*1000/m,v00=v0/3.6,d=dstop();
+    stop=raf(function(sec){var t=Math.min(tst,sec*speed);x=v00*t-0.5*a*t*t;vnow=Math.max(0,v00-a*t);draw();if(t>=tst){running=false;hist.push({v:v0,F:F,m:m});if(hist.length>4)hist.shift();x=d;vnow=0;draw();return false;}return true;});
+  };
+  function draw(){
+    var P=prepCanvas(cv,235),c=P.ctx,W=P.w,H=235;c.fillStyle=fg();c.strokeStyle=fg();c.font="12px sans-serif";
+    var dmax=dstop();hist.forEach(function(h){dmax=Math.max(dmax,0.5*h.m*Math.pow(h.v/3.6,2)/(h.F*1000));});
+    var L=20,R=W-30,S=(R-L)/(dmax*1.12),road=105;
+    c.beginPath();c.moveTo(L,road);c.lineTo(R+10,road);c.stroke();
+    var step=dmax>300?100:dmax>120?50:dmax>60?20:10;c.textAlign="center";
+    for(var k=0;k<=dmax*1.12;k+=step){c.beginPath();c.moveTo(L+k*S,road);c.lineTo(L+k*S,road+5);c.stroke();c.fillText(k+" m",L+k*S,road+18);}
+    hist.forEach(function(h,i){var d=0.5*h.m*Math.pow(h.v/3.6,2)/(h.F*1000);var xx=L+d*S;c.strokeStyle=COL.lav;c.setLineDash([4,3]);c.beginPath();c.moveTo(xx,road-48);c.lineTo(xx,road+24);c.stroke();c.setLineDash([]);c.fillStyle=COL.lav;c.textAlign="center";c.fillText(h.v+" km/h: "+fmt(d,0)+" m",xx,road+38+(i%2)*14);});
+    c.strokeStyle=fg();c.fillStyle=COL.cin;var cx=L+x*S;c.fillRect(cx-22,road-24,22,18);c.fillStyle=fg();c.beginPath();c.arc(cx-16,road-4,4,0,7);c.arc(cx-5,road-4,4,0,7);c.fill();
+    if(running){c.fillStyle=COL.ter;c.font="bold 11px sans-serif";c.textAlign="left";c.fillText("v = "+fmt(vnow*3.6,0)+" km/h",Math.min(cx+4,R-70),road-34);}
+    var e0=Ek0(),W_=Math.min(e0,F*1000*x),Ek=e0-W_,bx=L,by=165,bw_=R-L,bh=16;
+    function hbar(y,val,col,lab){c.fillStyle="rgba(127,127,127,.25)";c.fillRect(bx,y,bw_,bh);c.fillStyle=col;c.fillRect(bx,y,bw_*val/e0,bh);c.fillStyle=fg();c.textAlign="left";c.font="12px sans-serif";c.fillText(lab+" "+fmt(val/1000,1)+" kJ",bx+4,y+12);}
+    hbar(by-14,Ek,COL.cin,"Energia cinetica rimasta");hbar(by+10,W_,COL.lav,"Lavoro dei freni W = F·x");
+    out.innerHTML="Energia cinetica iniziale: <b>"+fmt(e0/1000,1)+" kJ</b>. Per fermarla: d = E<sub>k</sub>/F = <b>"+fmt(dstop(),1)+" m</b>."+(hist.length?" Le linee blu segnano gli arresti già provati.":"");
+  }
+  resetRun();window.addEventListener("resize",draw);
+}
+
+var W={trasferimenti:wTrasf,freno:wFreno,rimbalzo:wRimbalzo,lavoro:wLavoro,caduta:wCaduta,frenata:wFrenata};
+function boot(){initMcq();document.querySelectorAll(".lw[data-widget]").forEach(function(r){var f=W[r.dataset.widget];if(f&&!r.dataset.ready){r.dataset.ready="1";f(r);}});}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot);else boot();
+})();
+</script>

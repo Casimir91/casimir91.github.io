@@ -120,21 +120,21 @@ Se sei un mio studente, è casa tua. Se sei qui perché ti sono rimaste domande 
 
 ## Cosa
 
-Il sito ha quattro sezioni.
+Il sito ha cinque sezioni.
 
 **Didattica.** I materiali dei corsi che insegno a scuola: slide, spiegazioni, esercizi con soluzioni, template, laboratori.
 
-**Lab.** Domande semplici, risposte con simulazioni.
+**Libro.** Il manuale di fisica: teoria, formule, widget interattivi ed esercizi, capitolo per capitolo.
 
 **EdTech.** Strumenti e metodi per chi insegna.
 
-**Stories.** Brevi riflessioni sulla scienza.
+**Stories.** Domande semplici con simulazioni e brevi riflessioni sulla scienza.
 
 ## Come
 
-Sei uno studente → [**Didattica**](didattica/index.qmd)
+Sei uno studente → [**Didattica**](didattica/index.qmd) e [**Libro**](libro/index.qmd)
 
-Hai una curiosità → [**Lab**](lab/index.qmd) e [**Stories**](stories/index.qmd)
+Hai una curiosità → [**Stories**](stories/index.qmd)
 
 Insegni anche tu → [**EdTech**](edtech/index.qmd) e [**Toolbox**](toolbox/index.qmd)
 

@@ -1,0 +1,11 @@
+---
+title: "Libro"
+subtitle: "Il manuale di fisica: teoria, formule, widget ed esercizi"
+toc: false
+listing:
+  contents: "*/index.qmd"
+  type: grid
+  fields: [title, description]
+  sort-ui: false
+  filter-ui: false
+---

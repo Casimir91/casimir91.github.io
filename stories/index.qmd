@@ -1,10 +1,14 @@
 ---
 title: "Stories"
-subtitle: "Riflessioni sul mondo e sulla natura"
+subtitle: "Domande semplici, simulazioni e riflessioni sul mondo e sulla natura"
+toc: false
 listing:
   contents: "*.qmd"
-  type: default
+  type: grid
   sort: "date desc"
   categories: true
-  fields: [image, date, title, description, categories]
+  fields: [image, title, description, date, categories]
+  image-height: 200px
+  sort-ui: false
+  filter-ui: false
 ---

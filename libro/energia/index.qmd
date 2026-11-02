@@ -1,0 +1,386 @@
+---
+title: "Energia"
+subtitle: "Nulla si crea, nulla si distrugge, tutto si trasforma"
+description: "Da un'auto che frena a una legge della natura."
+toc: true
+toc-title: "In questo capitolo"
+format:
+  html:
+    include-in-header: ../_componenti/head.html
+---
+
+## Che cos'è l'energia
+
+L'energia è la grandezza fisica che misura la capacità di un oggetto (un sistema fisico) di compiere lavoro. È legata a una legge di natura molto importante, la **legge di conservazione dell'energia**: l'energia non si crea e non si distrugge, ma si trasforma da una forma a un'altra. Sembra la celebre frase attribuita a Lavoisier, «nulla si crea, nulla si distrugge, tutto si trasforma», che però parlava della materia: per l'energia la legge fu formulata a metà dell'Ottocento, da Mayer, Joule e Helmholtz.
+
+Se contiamo tutta l'energia, quella totale si conserva sempre tra lo stato iniziale e lo stato finale. Questo vuol dire che se conosciamo solo lo stato iniziale (una palla tenuta a una certa altezza dal suolo) possiamo calcolare facilmente la sua velocità d'impatto quando la lasciamo cadere (stato finale). Per farlo basta contare l'energia «di quota» e quella «di movimento», a patto di trascurare gli elementi *dissipativi*, come l'attrito tra la palla e l'aria, che trasformano una parte dell'energia in calore. Trascurare l'attrito con l'aria è comune a tutti (o quasi) i problemi di fisica generale, nelle scuole superiori e all'università. Rende la legge di conservazione uno strumento potente e semplice da usare, ma questa e altre «idealizzazioni» possono portare a conseguenze controintuitive. Vediamone qualcuna.
+
+## Quiz di benvenuto
+
+Rispondi d'istinto, senza fare conti e senza preoccuparti di sbagliare: queste domande riguardano ciò che incontreremo nel capitolo, e provare a rispondere *prima* di aver studiato rende lo studio più efficace. In ogni domanda trascura l'attrito dell'aria.
+
+::: {.mcq-set data-mode="pretest"}
+
+::: {.mcq}
+Una piuma e un pianoforte a coda precipitano da un'altezza di $100\ \text{m}$. Chi arriva prima?
+
+- il pianoforte
+- il pianoforte, ma di poco
+- ✓ arrivano insieme al suolo
+
+::: {.sol}
+Se si trascura l'aria, la velocità con cui un corpo arriva a terra dipende solo dall'altezza da cui cade, non dalla sua massa: lo dimostriamo tra poco. Nella realtà la piuma arriva molto dopo, ma per colpa dell'aria, che qui abbiamo deciso di ignorare.
+:::
+:::
+
+::: {.mcq}
+Un'auto che viaggia a $50\ \text{km/h}$ impiega $14\ \text{m}$ per fermarsi. Se la stessa auto viaggia a $100\ \text{km/h}$, quanti metri impiega per fermarsi?
+
+- $14\ \text{m}$
+- $28\ \text{m}$
+- ✓ $56\ \text{m}$
+
+::: {.sol}
+Raddoppiando la velocità l'energia cinetica da portare via diventa quattro volte più grande, e con la stessa forza frenante serve quattro volte lo spazio: $4 \times 14 = 56\ \text{m}$ (i dati dello Highway Code indicano $55\ \text{m}$). Lo vediamo in dettaglio alla fine del capitolo.
+:::
+:::
+
+::: {.mcq}
+Dalla finestra di un palazzo lancio due palline identiche con la stessa velocità: una verso il basso e una verso l'alto. Quale delle due arriva al suolo con la velocità maggiore?
+
+- quella lanciata verso il basso
+- quella lanciata verso l'alto
+- ✓ arrivano con la stessa velocità
+
+::: {.sol}
+Le due palline partono dalla stessa quota e con la stessa velocità in modulo: hanno la stessa energia iniziale, quindi la stessa energia finale, quindi la stessa velocità d'impatto. La direzione del lancio non conta; conta solo il tempo, che per la palla lanciata verso l'alto è più lungo.
+:::
+:::
+
+:::
+
+## Dove sta l'energia e come si sposta
+
+Per seguire l'energia di un'auto che frena uso due parole della terminologia di Cambridge IGCSE. Una **riserva** (*store*) è un posto dove l'energia si trova immagazzinata; un **trasferimento** (*transfer*) è il modo in cui l'energia passa da una riserva a un'altra. Le riserve sono nomi, i trasferimenti sono verbi.
+
+| Riserve di energia (nomi) | Esempio quotidiano |
+|---|---|
+| cinetica (*kinetic*) | un'auto in movimento |
+| potenziale gravitazionale (*gravitational potential*) | un libro su una mensola |
+| elastica (*elastic*) | un elastico teso |
+| chimica (*chemical*) | carburante, cibo, una batteria |
+| termica (*thermal*, o energia interna) | una tazza calda |
+| nucleare (*nuclear*) | il Sole |
+
+L'energia si sposta in quattro modi: meccanicamente, per mezzo di una forza; elettricamente, per mezzo di una corrente; per riscaldamento; per mezzo di onde, come luce e suono. Scegli un modo, premi «Avvia» e guarda i serbatoi.
+
+```{=html}
+<div class="lw" data-widget="trasferimenti"></div>
+```
+
+Ora l'auto che frena. Il carburante ha dato all'auto la sua energia cinetica, e adesso i freni devono portarla via tutta. Premi «Frena» e guarda dove va.
+
+```{=html}
+<div class="lw" data-widget="freno"></div>
+```
+
+L'energia cinetica non è «consumata»: diventa energia termica. I dischi dei freni sono caldi dopo una frenata forte perché l'energia è finita nella riserva termica di dischi, pastiglie, pneumatici, strada e aria. Il trasferimento che l'ha portata via dall'auto è il **lavoro** dei freni: tra poco vedremo che cos'è, con la sua formula. E la regola vale per ogni macchina, non solo per l'auto. Guarda una palla che cade e rimbalza.
+
+```{=html}
+<div class="lw" data-widget="rimbalzo"></div>
+```
+
+Dall'alto la palla ha energia «di quota», cadendo la trasforma in energia «di movimento»; all'urto si schiaccia come una molla e l'energia di movimento diventa **elastica**, che subito la restituisce rimettendo la palla in moto, e poi di nuovo in quota. Con il rimbalzo perfetto la palla risale per sempre alla stessa altezza. Nella realtà no: a ogni urto una parte dell'energia finisce nella riserva termica (e nel suono), e la palla risale sempre meno, fino a fermarsi. Premi «Rimbalzo reale» e confronta.
+
+::: {.callout-important}
+## Conservazione dell'energia
+L'energia non può essere creata né distrutta: può solo essere trasferita da una riserva a un'altra.
+
+$$\text{energia totale prima} = \text{energia totale dopo}$$
+:::
+
+L'energia «sprecata» non è sparita: sta nella riserva termica dell'ambiente, dispersa e difficile da riutilizzare. «Persa» è la parola sbagliata; «sprecata», cioè non utile, è quella giusta. L'energia si misura in **joule** (J).
+
+## Dalle animazioni ai conti
+
+Le animazioni mostrano *che cosa* succede. Le formule servono solo per fare i conti: dicono *quanta* energia c'è in ogni serbatoio.
+
+### L'energia della quota
+
+Un oggetto sollevato guadagna energia nel campo gravitazionale della Terra. Quanta?
+
+$$\Delta E_p = m\, g\, \Delta h $$ {#eq-ep}
+
+$\Delta E_p$ è la variazione di **energia potenziale gravitazionale** (*gravitational potential energy*), in joule; $m$ è la massa in kg; $g$ è l'intensità del campo gravitazionale, $10\ \text{N/kg}$ sulla Terra; $\Delta h$ è la *variazione* di quota, in metri.
+
+Un libro da $2{,}0\ \text{kg}$ passa dal tavolo, a $0{,}75\ \text{m}$ dal pavimento, a una mensola a $1{,}95\ \text{m}$. La variazione di quota è $\Delta h = 1{,}95 - 0{,}75 = 1{,}20\ \text{m}$, quindi $\Delta E_p = 2{,}0 \times 10 \times 1{,}20 = 24\ \text{J}$. Non $2{,}0 \times 10 \times 1{,}95 = 39\ \text{J}$: il pavimento non è il punto da cui il libro è partito. La *differenza* di energia non dipende da dove poniamo lo zero, e nemmeno dal percorso: in verticale o lungo una rampa, lo stesso $\Delta h$ dà lo stesso $\Delta E_p$.
+
+### L'energia del movimento
+
+Da che cosa dovrebbe dipendere l'energia di un oggetto che si muove? Dalla sua massa e dalla sua velocità. La formula dice *come*:
+
+$$E_k = \tfrac{1}{2}\, m\, v^2 $$ {#eq-ek}
+
+Qui $E_k$ è l'**energia cinetica** (*kinetic energy*), in joule; $m$ è la massa dell'oggetto, in chilogrammi; $v$ è la sua velocità in metri al secondo, **elevata al quadrato**. Attenzione alle unità: $v$ va in $\text{m/s}$, non in $\text{km/h}$. Per convertire si divide per $3{,}6$, perché $1\ \text{m/s} = 3{,}6\ \text{km/h}$: $50\ \text{km/h}$ sono $50 \div 3{,}6 = 13{,}9\ \text{m/s}$. E non confondere massa e peso: il peso è una forza, $W = mg$, in newton; in questo corso $g = 10\ \text{N/kg}$, il valore dei paper IGCSE. Una massa di $2\ \text{kg}$ pesa $20\ \text{N}$.
+
+Il dettaglio che cambia le intuizioni è il quadrato: se la velocità raddoppia, l'energia non raddoppia, quadruplica. Ce ne servirà alla fine, con l'auto.
+
+### Un esempio: la piuma che cade da un metro
+
+Una piuma da $5\ \text{g}$ viene lasciata cadere da $h = 1\ \text{m}$. Con quale velocità tocca terra, trascurando l'aria? All'inizio è ferma, quindi ha solo energia di quota, $mgh$ (prendo come zero la quota del suolo). Alla fine è a terra, quindi ha solo energia di movimento, $\tfrac12 mv^2$. La conservazione dice che le due quantità sono uguali, e da qui si semplifica passo per passo:
+
+$$\begin{aligned}
+m g h &= \tfrac12 m v^2 && \text{(energia iniziale = energia finale)}\\
+g h &= \tfrac12 v^2 && \text{(divido per } m \text{)}\\
+v^2 &= 2 g h && \text{(moltiplico per 2)}\\
+v &= \sqrt{2 g h} && \text{(radice quadrata)}
+\end{aligned}$$ {#eq-vcaduta}
+
+Con $h = 1\ \text{m}$ e $g = 10\ \text{N/kg}$: $v = \sqrt{2 \times 10 \times 1} = \sqrt{20} \approx 4{,}5\ \text{m/s}$, circa $16\ \text{km/h}$.
+
+Guarda che cosa è successo: la massa $m$ è sparita dal risultato. Per questo un pianoforte a coda lasciato cadere dalla stessa altezza toccherebbe terra con la stessa velocità della piuma. Da $100\ \text{m}$ la @eq-vcaduta dà $v = \sqrt{2 \times 10 \times 100} = \sqrt{2000} \approx 45\ \text{m/s}$, circa $160\ \text{km/h}$, per tutti e due: è la risposta al primo quiz. Nel mondo reale la piuma arriverebbe molto dopo, ma per colpa dell'aria, che nel conto abbiamo trascurato: è proprio una di quelle idealizzazioni di cui parlavamo all'inizio. Provalo tu.
+
+```{=html}
+<div class="lw" data-widget="caduta"></div>
+```
+
+## Il lavoro
+
+Nelle animazioni l'energia si sposta con un trasferimento. Quando a spostarla è una **forza** che muove un oggetto, quel trasferimento si chiama **lavoro** (*work*), ed è la forza per lo spostamento:
+
+$$W = F\, d $$ {#eq-lavoro}
+
+$W$ è il lavoro compiuto, uguale all'energia trasferita, in joule ($1\ \text{J} = 1\ \text{N} \times 1\ \text{m}$); $F$ è la forza, in newton; $d$ è la distanza percorsa **nella direzione della forza**, in metri. Il lavoro non è una riserva: è il nome del trasferimento di energia da parte di una forza. Prova i tre casi.
+
+```{=html}
+<div class="lw" data-widget="lavoro"></div>
+```
+
+Nel primo caso qualcuno spinge un carrello in orizzontale: più forte spinge, più energia trasferisce, a parità di distanza. Nel secondo qualcuno solleva un peso in verticale, lentamente: a velocità costante le forze si equilibrano, quindi la forza di sollevamento è uguale al peso, $F = mg$, e il lavoro $Fd = mg\,\Delta h$ è esattamente la @eq-ep: la formula dell'energia della quota era già una formula del lavoro. Per il libro da $2{,}0\ \text{kg}$ sollevato di $1{,}20\ \text{m}$ si ottiene $F = 20\ \text{N}$ e $W = 20 \times 1{,}20 = 24\ \text{J}$, lo stesso numero di prima.
+
+Nel terzo caso nessuno spinge: la palla cade da sola. Eppure c'è una forza, il peso, e la palla si sposta nella direzione di quella forza: è la **forza di gravità a compiere il lavoro**, e l'energia di quota diventa energia di movimento. Ma attenzione alla parola «direzione»: se porti una borsa pesante in orizzontale, la tua forza è verso l'alto e lo spostamento è orizzontale, quindi non c'è distanza percorsa nella direzione della forza e il lavoro sulla borsa è nullo. I muscoli si stancano lo stesso, ma non è lavoro compiuto sulla borsa.
+
+### Il lavoro dei freni
+
+Torniamo all'auto con questo strumento. L'auto ha una certa energia cinetica. Per fermarsi, tutta quell'energia deve trasferirsi, sotto forma di lavoro, dai freni: la forza frenante, per lo spazio percorso mentre agisce, deve valere esattamente l'energia cinetica da portare via.
+
+$$F\, d = E_k \quad\Longrightarrow\quad d = \frac{E_k}{F} $$ {#eq-frenata}
+
+La forza e lo spazio sono legati: a parità di energia da portare via, se vuoi fermarti in meno spazio ti serve più forza, e se la forza è piccola ti serve più strada. Lo mettiamo alla prova con i numeri alla fine del capitolo.
+
+## Torniamo all'auto
+
+Nel quiz di benvenuto ti avevo chiesto: se a $50\ \text{km/h}$ un'auto si ferma in $14\ \text{m}$, quanto spazio serve a $100\ \text{km/h}$? Ora abbiamo gli strumenti per rispondere. Costruiamo la risposta a passi. (Lo spazio di frenata è quello dei freni soltanto: il tempo di reazione di chi guida non è incluso. I dati di riferimento sono quelli tipici dello Highway Code britannico, che usa le miglia orarie: $30\ \text{mph}$ e $14\ \text{m}$.)
+
+**Passo 1: l'energia da portare via.** Un'auto di $1000\ \text{kg}$ a $50\ \text{km/h}$ ($13{,}9\ \text{m/s}$) ha, per la @eq-ek, $E_{k1} = \tfrac12 \times 1000 \times 13{,}9^2 \approx 96\,600\ \text{J}$, cioè circa $97\ \text{kJ}$. A $100\ \text{km/h}$ ($27{,}8\ \text{m/s}$) ha $E_{k2} = \tfrac12 \times 1000 \times 27{,}8^2 \approx 386\,000\ \text{J}$, circa $386\ \text{kJ}$. Il rapporto è $E_{k2}/E_{k1} \approx 4$: a velocità doppia i freni devono portare via *quattro volte* l'energia.
+
+**Passo 2: quanto spazio serve.** I freni esercitano una forza media di circa $7000\ \text{N}$ (strada asciutta, buoni pneumatici). Per la @eq-frenata, $d = E_k/F$. A $50\ \text{km/h}$: $d = 96\,600/7000 \approx 14\ \text{m}$. A $100\ \text{km/h}$: $d = 386\,000/7000 \approx 55\ \text{m}$. Stessa forza, quattro volte l'energia da portare via: **quattro volte lo spazio**.
+
+**Passo 3: il confronto.** Il valore osservato per il secondo caso è circa $55\ \text{m}$, cioè la risposta c) del quiz (circa $56\ \text{m}$, quattro volte $14\ \text{m}$), non i $28\ \text{m}$ dell'intuizione lineare. Qui puoi vederlo nel simulatore, già impostato con i due arresti: premi «Frena» per ripercorrerli.
+
+```{=html}
+<div class="lw" data-widget="frenata" data-prefill="50:7,100:7"></div>
+```
+
+**Lo scarto, e che cosa significa.** I valori calcolati ($13{,}8\ \text{m}$ e $55{,}1\ \text{m}$) concordano con quelli osservati ($14\ \text{m}$ e $55\ \text{m}$). Ma sono onesto su un punto: la forza di $7000\ \text{N}$ (circa $0{,}7$ volte il peso dell'auto, che è $10\,000\ \text{N}$) è un dato scelto per corrispondere a una strada asciutta, non qualcosa che sappiamo calcolare; e l'ho supposta costante, mentre in una frenata vera varia un po'. Quindi il confronto a $50\ \text{km/h}$ serve a fissare la forza, e quello a $100\ \text{km/h}$ mette alla prova davvero il capitolo: quello che predice la @eq-ek è il *fattore* quattro, a parità di forza, ed è confermato. Una frenata reale comprende poi anche lo spazio percorso durante il tempo di reazione, che qui non è incluso: nello Highway Code raddoppia, da $9\ \text{m}$ a $18\ \text{m}$, mentre lo spazio di frenata quadruplica.
+
+Se la strada diventa bagnata, nella @eq-frenata cambia $F$: diventa più piccola, e $d$ più grande. Con metà forza ($3500\ \text{N}$) a $100\ \text{km/h}$ lo spazio diventa circa $110\ \text{m}$, il doppio. Prova il pulsante «strada bagnata» nel simulatore: lo spazio di frenata cresce con il quadrato della velocità per lo stesso motivo per cui lo fa $E_k$.
+
+L'intuizione «velocità doppia, spazio doppio» non era sciocca: è ciò che direbbe un modello a linea retta. È la fisica dell'energia a dire altro, e a dirlo con un numero.
+
+## Mettiti alla prova
+
+Sei domande, una alla volta: scegli una risposta e vedrai subito se è giusta, con la soluzione ragionata. Le risposte sbagliate sono costruite sugli errori più comuni.
+
+::: {.mcq-set}
+
+::: {.mcq}
+La velocità di un ciclista passa da $4\ \text{m/s}$ a $12\ \text{m/s}$, a parità di massa. La sua energia cinetica diventa:
+
+- 3 volte più grande
+- 6 volte più grande
+- ✓ 9 volte più grande
+- 12 volte più grande
+
+::: {.sol}
+La velocità è moltiplicata per $3$, quindi l'energia per $3^2 = 9$. Verifica: a $4\ \text{m/s}$, $E_k = \tfrac12 m \times 16 = 8m$; a $12\ \text{m/s}$, $E_k = \tfrac12 m \times 144 = 72m$; e $72/8 = 9$.
+:::
+:::
+
+::: {.mcq}
+Una scatola di $3{,}0\ \text{kg}$ passa da uno scaffale a $0{,}50\ \text{m}$ dal pavimento a uno a $1{,}50\ \text{m}$. La variazione di energia potenziale gravitazionale è:
+
+- $15\ \text{J}$
+- ✓ $30\ \text{J}$
+- $45\ \text{J}$
+- $450\ \text{J}$
+
+::: {.sol}
+$\Delta h = 1{,}50 - 0{,}50 = 1{,}00\ \text{m}$ e $\Delta E_p = 3{,}0 \times 10 \times 1{,}00 = 30\ \text{J}$. Il $45\ \text{J}$ viene dal misurare la quota di arrivo dal pavimento; il $15\ \text{J}$ da quella di partenza.
+:::
+:::
+
+::: {.mcq}
+Lo stesso libro viene portato sulla mensola con una rampa lunga $3\ \text{m}$ invece che sollevato in verticale di $1{,}2\ \text{m}$. La variazione di energia potenziale gravitazionale è:
+
+- maggiore, perché il percorso è più lungo
+- minore, perché la rampa è meno ripida
+- ✓ la stessa, $24\ \text{J}$
+- $0\ \text{J}$, perché il libro è appoggiato
+
+::: {.sol}
+$\Delta E_p = mg\,\Delta h$ dipende solo dalla variazione di quota, non dal percorso. Cambia il lavoro che serve fare per l'attrito, non l'energia immagazzinata.
+:::
+:::
+
+::: {.mcq}
+Spingi una cassa con una forza di $120\ \text{N}$ per $5{,}0\ \text{m}$. Il lavoro compiuto è:
+
+- $24\ \text{J}$
+- $125\ \text{J}$
+- ✓ $600\ \text{J}$
+- $4800\ \text{J}$
+
+::: {.sol}
+$W = Fd = 120 \times 5{,}0 = 600\ \text{J}$. Il $24$ viene dal dividere $120$ per $5$; il $4800$ dal moltiplicare per una massa di $40\ \text{kg}$ che nel conto non entra.
+:::
+:::
+
+::: {.mcq}
+Con la stessa forza frenante, la velocità iniziale di un'auto raddoppia. Lo spazio di frenata diventa:
+
+- la metà
+- il doppio
+- ✓ il quadruplo
+- uguale
+
+::: {.sol}
+$d = E_k/F$. A parità di $F$, $d$ è proporzionale a $E_k$, e $E_k$ a $v^2$: velocità doppia, energia quadrupla, spazio quadruplo.
+:::
+:::
+
+::: {.mcq}
+La velocità iniziale è la stessa, ma la strada bagnata dimezza la forza frenante. Lo spazio di frenata diventa:
+
+- la metà
+- uguale
+- ✓ il doppio
+- il quadruplo
+
+::: {.sol}
+$d = E_k/F$ con $E_k$ invariata: se $F$ si dimezza, $d$ raddoppia. Il quadruplo è la risposta a un'altra domanda, quella in cui raddoppia la velocità.
+:::
+:::
+
+:::
+
+## Per chi vuole fare i conti
+
+Questa parte è per chi vuole esercitarsi: un esempio svolto passo per passo, esercizi con soluzione, una scheda completa nello stile degli esami IGCSE e qualche controllo per accorgersi quando un risultato non può essere giusto.
+
+### Un esempio svolto: una palla che cade
+
+Una palla di massa $0{,}20\ \text{kg}$ viene lasciata cadere da $1{,}8\ \text{m}$. A che velocità arriva a terra, trascurando la resistenza dell'aria? Segui il metodo: dati, bilancio di energia, equazione, controllo.
+
+**Dati.** $m = 0{,}20\ \text{kg}$, $\Delta h = 1{,}8\ \text{m}$, $g = 10\ \text{N/kg}$. Si cerca $v$.
+
+**Bilancio.** La riserva gravitazionale scende, la riserva cinetica sale della stessa quantità: la @eq-ep dà $\Delta E_p = 0{,}20 \times 10 \times 1{,}8 = 3{,}6\ \text{J}$, e per la conservazione $E_k = 3{,}6\ \text{J}$.
+
+**Equazione.** Dalla @eq-ek: $\tfrac12 \times 0{,}20 \times v^2 = 3{,}6$, da cui $v^2 = 36$ e $v = 6{,}0\ \text{m/s}$, circa $22\ \text{km/h}$.
+
+**Controllo.** Unità: joule a sinistra e a destra, velocità in m/s. Ordine di grandezza: $6\ \text{m/s}$ è la velocità di una corsa veloce, plausibile per una caduta di meno di due metri.
+
+Una palla più pesante sarebbe più veloce? No: in $mg\,\Delta h = \tfrac12 mv^2$ la massa si semplifica, come nell'esempio della piuma. Non abbiamo usato l'accelerazione, soltanto la conservazione e due formule.
+
+### Esercizi per te
+
+Per ogni esercizio scrivi: dati, conversione delle unità, formula, sostituzione, risultato con l'unità. Le soluzioni sono nei riquadri.
+
+**1.** Una palla di massa $0{,}50\ \text{kg}$ si muove a $8{,}0\ \text{m/s}$. (a) Calcola la sua energia cinetica. (b) Viene ora lanciata a $16\ \text{m/s}$: qual è la sua energia cinetica, e come si confronta con (a)? (c) Un ciclista con la bici, massa totale $75\ \text{kg}$, viaggia a $36\ \text{km/h}$: calcola la sua energia cinetica.
+
+::: {.callout-tip collapse="true"}
+## Soluzione
+(a) $E_k = \tfrac12 \times 0{,}50 \times 8{,}0^2 = 16\ \text{J}$. (b) $E_k = \tfrac12 \times 0{,}50 \times 16^2 = 64\ \text{J}$: quattro volte quella di (a), perché la velocità è raddoppiata. (c) $36\ \text{km/h} = 36 \div 3{,}6 = 10\ \text{m/s}$, quindi $E_k = \tfrac12 \times 75 \times 10^2 = 3750\ \text{J} = 3{,}75\ \text{kJ}$.
+:::
+
+**2.** (a) Un'alpinista di massa $60\ \text{kg}$ sale lungo un sentiero e guadagna $200\ \text{m}$ di quota: calcola l'aumento della sua energia potenziale gravitazionale. (b) Un sasso da $0{,}10\ \text{kg}$ viene lanciato verso l'alto a $12\ \text{m/s}$: a che altezza sopra la mano arriva? Trascura l'aria.
+
+::: {.callout-tip collapse="true"}
+## Soluzione
+(a) $\Delta E_p = mg\,\Delta h = 60 \times 10 \times 200 = 120\,000\ \text{J} = 120\ \text{kJ}$. (b) L'energia cinetica iniziale è $\tfrac12 \times 0{,}10 \times 12^2 = 7{,}2\ \text{J}$. In cima è tutta nella riserva gravitazionale: $7{,}2 = 0{,}10 \times 10 \times \Delta h$, quindi $\Delta h = 7{,}2\ \text{m}$. È la palla che cade al contrario.
+:::
+
+**3.** (a) Una cassa di massa $40\ \text{kg}$ viene spinta per $5{,}0\ \text{m}$ sul pavimento da una forza orizzontale di $120\ \text{N}$: quanto lavoro compie la forza? (b) Porti una borsa da $20\ \text{kg}$ in orizzontale per $10\ \text{m}$ a velocità costante: quanto lavoro compie la tua forza verso l'alto sulla borsa? (c) Un ciclista con la bici, massa totale $80\ \text{kg}$, viaggia a $6{,}0\ \text{m/s}$ e si ferma con una forza frenante di $120\ \text{N}$: quale distanza serve? E se andasse a $12\ \text{m/s}$?
+
+::: {.callout-tip collapse="true"}
+## Soluzione
+(a) $W = Fd = 120 \times 5{,}0 = 600\ \text{J}$; la massa non serve. (b) $W = 0\ \text{J}$: la forza verso l'alto è perpendicolare allo spostamento. I muscoli consumano comunque energia, ma non è lavoro compiuto sulla borsa. (c) A $6{,}0\ \text{m/s}$: $E_k = \tfrac12 \times 80 \times 6{,}0^2 = 1440\ \text{J}$ e $d = E_k/F = 1440/120 = 12\ \text{m}$. A $12\ \text{m/s}$: $E_k = 5760\ \text{J}$ e $d = 48\ \text{m}$: di nuovo quattro volte.
+:::
+
+### La scheda di esercizi
+
+Una scheda completa nello stile degli esami IGCSE. Usa $g = 10\ \text{N/kg}$, mostra ogni passaggio e scrivi l'unità in ogni risposta; dove serve, dai le risposte con tre cifre significative. Totale: 33 punti.
+
+**Esercizio 1 · Energia cinetica (4 punti).** Una ciclista e la sua bicicletta hanno massa totale $80\ \text{kg}$ e viaggiano a velocità costante di $36\ \text{km/h}$. (a) Converti $36\ \text{km/h}$ in $\text{m/s}$. (b) Calcola l'energia cinetica di ciclista e bicicletta. (c) La ciclista accelera fino a viaggiare al doppio della velocità: di quale fattore aumenta la sua energia cinetica?
+
+::: {.callout-tip collapse="true"}
+## Soluzione
+(a) $36 \div 3{,}6 = 10\ \text{m/s}$. (b) $E_k = \tfrac12 \times 80 \times 10^2 = 4000\ \text{J}$ ($4{,}0\ \text{kJ}$). (c) Fattore $4$, perché $E_k \propto v^2$ e $2^2 = 4$: la nuova energia è $16\,000\ \text{J}$. Attenzione agli errori tipici: usare $36$ al posto di $10$ dà $51\,840\ \text{J}$; dimenticare il quadrato dà $400\ \text{J}$; dimenticare il $\tfrac12$ dà $8000\ \text{J}$; dire «raddoppia» in (c) è l'errore dell'intuizione lineare.
+:::
+
+**Esercizio 2 · Energia potenziale gravitazionale (3 punti).** Un libro di massa $1{,}5\ \text{kg}$ viene sollevato dal pavimento a una mensola alta $2{,}0\ \text{m}$. (a) Calcola la variazione di energia potenziale gravitazionale. (b) Il libro viene poi spinto per $3{,}0\ \text{m}$ lungo la mensola: quanto vale la variazione di energia potenziale in questo tratto? Spiega.
+
+::: {.callout-tip collapse="true"}
+## Soluzione
+(a) $\Delta E_p = mg\,\Delta h = 1{,}5 \times 10 \times 2{,}0 = 30\ \text{J}$. (b) $0\ \text{J}$: la quota non cambia ($\Delta h = 0$). Il fatto che una forza compia lavoro non basta: l'energia di spinta va in energia termica per attrito, non nella riserva gravitazionale.
+:::
+
+**Esercizio 3 · Velocità ed energia cinetica (4 punti).** Un'auto di massa $1200\ \text{kg}$ percorre $90\ \text{km}$ a velocità costante di $72\ \text{km/h}$. (a) Calcola il tempo impiegato, in minuti. (b) Calcola l'energia cinetica dell'auto.
+
+::: {.callout-tip collapse="true"}
+## Soluzione
+(a) $t = s/v = 90/72 = 1{,}25\ \text{h} = 75\ \text{min}$: occhio alla conversione in minuti. (b) $v = 72 \div 3{,}6 = 20\ \text{m/s}$, quindi $E_k = \tfrac12 \times 1200 \times 20^2 = 240\,000\ \text{J}$ ($2{,}4 \times 10^5\ \text{J}$). Usare $72$ al posto di $20$ darebbe più di tre milioni di joule.
+:::
+
+**Esercizio 4 · Cambi di energia su una montagna russa (5 punti).** Un carrello di massa $400\ \text{kg}$ parte da fermo dal punto A, a $20\ \text{m}$ da terra. Il punto B è a $5\ \text{m}$ da terra e il punto C è a livello del suolo. Trascura attriti e resistenza dell'aria. (a) Calcola l'energia potenziale gravitazionale persa dal carrello tra A e B. (b) Indica l'energia cinetica in B e calcola la velocità in B. (c) Calcola la velocità in C.
+
+::: {.callout-tip collapse="true"}
+## Soluzione
+(a) $\Delta E_p = mg\,\Delta h = 400 \times 10 \times (20 - 5) = 60\,000\ \text{J}$. (b) L'energia si conserva e il carrello parte da fermo, quindi $E_k = 60\,000\ \text{J}$; da $E_k = \tfrac12 mv^2$ si ricava $v = \sqrt{2E_k/m} = \sqrt{2 \times 60\,000/400} = \sqrt{300} = 17{,}3\ \text{m/s}$. (c) In C la quota persa dall'inizio è $20\ \text{m}$: $E_k = 400 \times 10 \times 20 = 80\,000\ \text{J}$ e $v = \sqrt{2 \times 80\,000/400} = \sqrt{400} = 20\ \text{m/s}$. Non calcolare solo il tratto da B a C: l'energia già acquisita da A a B conta ancora, e le velocità non si sommano, si sommano le energie. La massa si semplifica: $v = \sqrt{2gh} = \sqrt{2 \times 10 \times 20} = 20\ \text{m/s}$.
+:::
+
+**Esercizio 5 · Lavoro compiuto (4 punti).** Una studentessa spinge una scatola di massa $25\ \text{kg}$ lungo un pavimento orizzontale con una forza orizzontale costante di $60\ \text{N}$. La scatola si sposta di $8{,}0\ \text{m}$ a velocità costante. (a) Calcola il lavoro compiuto dalla studentessa. (b) Indica il valore della forza di attrito sulla scatola e spiega. (c) La scatola non guadagna energia cinetica: dove va l'energia trasferita dalla studentessa?
+
+::: {.callout-tip collapse="true"}
+## Soluzione
+(a) $W = Fd = 60 \times 8{,}0 = 480\ \text{J}$. Non usare la massa: $25 \times 8$ confonde massa e forza. (b) $60\ \text{N}$: la velocità è costante, quindi le forze sono bilanciate (forza risultante nulla) e l'attrito è uguale alla spinta. (c) Va nella riserva termica della scatola e del pavimento (riscaldamento per attrito), e poi si disperde nell'ambiente. Non è «persa»: è diventata energia termica.
+:::
+
+**Esercizio 6 · La rampa (4 punti).** Un operaio spinge una cassa di massa $50\ \text{kg}$ su per una rampa lunga $4{,}0\ \text{m}$ con una forza di $150\ \text{N}$ parallela al piano. La cassa sale di $1{,}0\ \text{m}$. (a) Calcola il lavoro compiuto dall'operaio. (b) Calcola l'aumento di energia potenziale gravitazionale della cassa. (c) Calcola quanta parte del lavoro non è immagazzinata come energia potenziale e dì che fine fa.
+
+::: {.callout-tip collapse="true"}
+## Soluzione
+(a) $W = Fd = 150 \times 4{,}0 = 600\ \text{J}$: la distanza è quella lungo la rampa, non l'altezza. (b) $\Delta E_p = mg\,\Delta h = 50 \times 10 \times 1{,}0 = 500\ \text{J}$: qui conta la quota, non la lunghezza della rampa. (c) $600 - 500 = 100\ \text{J}$, trasferiti per attrito tra cassa e rampa alla riserva termica.
+:::
+
+**Esercizio 7 · Fermare un camion (5 punti).** Un camion di massa $8000\ \text{kg}$ viaggia a $54\ \text{km/h}$. L'autista frena con una forza frenante costante di $30\,000\ \text{N}$. (a) Calcola l'energia cinetica del camion prima di frenare. (b) Tutta questa energia viene portata via dalla forza frenante: calcola la distanza percorsa mentre il camion si ferma. (c) Il camion viaggia ora al doppio della velocità: senza fare il calcolo completo, indica la distanza di arresto e spiega.
+
+::: {.callout-tip collapse="true"}
+## Soluzione
+(a) $v = 54 \div 3{,}6 = 15\ \text{m/s}$ e $E_k = \tfrac12 \times 8000 \times 15^2 = 900\,000\ \text{J}$ ($9{,}0 \times 10^5\ \text{J}$). (b) $W = Fd = E_k$, quindi $d = 900\,000/30\,000 = 30\ \text{m}$. (c) Quattro volte più lunga, $120\ \text{m}$: $E_k$ è proporzionale a $v^2$ e $d$ è proporzionale a $E_k$ (a parità di forza frenante). Il punto è il fattore $4$, non $2$.
+:::
+
+**Esercizio 8 · Una palla che cade (4 punti).** Una palla di massa $0{,}50\ \text{kg}$ viene lasciata cadere da ferma da un'altezza di $45\ \text{m}$. Trascura la resistenza dell'aria. (a) Calcola la perdita di energia potenziale gravitazionale mentre cade fino a terra. (b) Indica l'energia cinetica della palla un istante prima di toccare il suolo. (c) Calcola la velocità subito prima dell'urto, in $\text{m/s}$ e in $\text{km/h}$.
+
+::: {.callout-tip collapse="true"}
+## Soluzione
+(a) $\Delta E_p = mg\,\Delta h = 0{,}50 \times 10 \times 45 = 225\ \text{J}$. (b) $225\ \text{J}$: tutta l'energia potenziale persa è diventata cinetica, senza resistenza dell'aria. (c) $v = \sqrt{2E_k/m} = \sqrt{2 \times 225/0{,}50} = \sqrt{900} = 30\ \text{m/s}$, e in $\text{km/h}$ si moltiplica per $3{,}6$: $30 \times 3{,}6 = 108\ \text{km/h}$. Attenzione: dividere per $3{,}6$ invece di moltiplicare darebbe un valore assurdo.
+:::
+
+### Come ci accorgiamo che un risultato è sbagliato
+
+I conti di energia sono insidiosi perché un errore di unità o di formula produce quasi sempre un numero dall'aspetto ragionevole. Prendiamo l'auto di $1000\ \text{kg}$ a $50\ \text{km/h}$, che sappiamo valere circa $97\ \text{kJ}$, e sbagliamo una cosa alla volta.
+
+Se inserisco la velocità in $\text{km/h}$, ottengo $\tfrac12 \times 1000 \times 50^2 = 1\,250\,000\ \text{J}$: circa tredici volte troppo, e a occhio sembra un numero «da energia». Se dimentico il quadrato, ottengo $\tfrac12 \times 1000 \times 13{,}9 = 6950\ \text{J}$: l'energia cresce solo in proporzione a $v$, non a $v^2$. Se dimentico il mezzo, ottengo $1000 \times 13{,}9^2 \approx 193\,000\ \text{J}$: esattamente il doppio della risposta giusta.
+
+Tre controlli che bastano quasi sempre. Il primo sono le **unità**: il risultato è in joule, e la velocità è in $\text{m/s}$? Il secondo è l'**ordine di grandezza**: se il numero è plausibile solo perché è grande, non è una conferma; confrontalo con un caso noto, per esempio i $97\ \text{kJ}$ dell'auto a $50\ \text{km/h}$. Il terzo è il **rapporto**: se la velocità raddoppia, l'energia deve quadruplicare; se il tuo calcolo non lo fa, c'è un errore. È lo stesso controllo che smaschera il camion della scheda che, senza il quadrato, si fermerebbe in $2\ \text{m}$: un valore irrealistico che dice subito che qualcosa non va.

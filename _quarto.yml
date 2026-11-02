@@ -17,8 +17,8 @@ website:
         text: Home
       - href: didattica/index.qmd
         text: Didattica
-      - href: lab/index.qmd
-        text: Lab
+      - href: libro/index.qmd
+        text: Libro
       - href: edtech/index.qmd
         text: EdTech
       - href: toolbox/index.qmd
@@ -32,6 +32,7 @@ website:
 
 format:
   html:
+    lang: it
     theme:
       light: sandstone
       dark: [darkly, custom-dark.scss]
