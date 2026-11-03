@@ -1,0 +1,14 @@
+---
+title: "Semi-logarithmic Graphs and Extrapolation"
+subtitle: "Se il logaritmo raddrizza la curva di raffreddamento, quanto possiamo fidarci della retta prolungata?"
+date: 2026-10-30
+tipo: "Practice"
+categories: [Fisica]
+---
+
+## Materiali e indicazioni per lo studio
+
+Esercizi sulla legge di raffreddamento di Newton: grafico di ln(T − T~amb~) in funzione di t, gradiente e costante k, estrapolazione della retta di miglior fit e due trappole tipiche (la scelta della grandezza da mettere in grafico e lo zero error del termometro).
+
+[Foglio di esercizi (PDF) ↗](exercises-semilog.pdf){target="_blank" .btn .btn-outline-primary}
+[Soluzioni (PDF) ↗](exercises-semilog-solutions.pdf){target="_blank" .btn .btn-outline-primary}
