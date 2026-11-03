@@ -1,0 +1,18 @@
+---
+title: "Hot Air, Cold Body: Newton's Law of Cooling"
+subtitle: "Una patata è uscita da un bagno caldo e nessuno ha guardato l'orologio: quanti minuti fa?"
+date: 2026-10-27
+categories: [Fisica]
+tipo: "Lab"
+---
+
+::: {.callout-note appearance="simple" icon=false}
+Nessuno ha segnato quando la patata è uscita dall'acqua calda. Hai solo il termistore, Arduino e venti minuti di raffreddamento: dai dati bisogna ricostruire che cosa è successo prima che iniziasse la misura, e dire onestamente quanto ci si può fidare del risultato.
+
+**Percorso:** il termistore come termometro · la curva di raffreddamento · ln(T − T~amb~) in funzione di t · la retta di miglior fit prolungata all'indietro fino alla temperatura del bagno.
+:::
+
+## Materiali e indicazioni per lo studio
+
+[Scheda di laboratorio in italiano (PDF) ↗](scheda-lab_it.pdf){target="_blank" .btn .btn-outline-primary}
+[Scheda di laboratorio in inglese (PDF) ↗](scheda-lab_en.pdf){target="_blank" .btn .btn-outline-primary}
