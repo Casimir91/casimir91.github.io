@@ -1,0 +1,13 @@
+---
+title: "Thermal Physics: Revision Exercises"
+subtitle: "Dalla temperatura alla calorimetria: 25 esercizi a difficoltà crescente"
+date: 2026-11-03
+tipo: "Practice"
+categories: [Fisica]
+---
+
+## Materiali e indicazioni per lo studio
+
+Venticinque esercizi su tutto il programma di fisica termica svolto finora, in tre livelli: **Foundations** (un'idea per domanda), **Standard problems** (due o tre passaggi, stile Paper 4 e Paper 2) e **Challenging problems** (idee combinate, con dati e grafici stile Paper 6). Prova a risolverli da solo prima di cercare aiuto, e traccia i grafici a mano, con righello e matita appuntita.
+
+[Foglio di esercizi (PDF) ↗](revision-exercises.pdf){target="_blank" .btn .btn-outline-primary}
