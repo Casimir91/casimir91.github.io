@@ -1,0 +1,17 @@
+---
+title: "Pendulum: Timing Many Swings"
+subtitle: "Per misurare il periodo di un pendolo si cronometrano venti oscillazioni e non una sola: perché?"
+date: 2026-10-28
+categories: [Fisica]
+tipo: "Lab"
+---
+
+::: {.callout-note appearance="simple" icon=false}
+Una singola oscillazione dura così poco che il tuo tempo di reazione pesa molto sul risultato. Se cronometri molte oscillazioni, l'errore di avvio e di arresto si divide sul totale: quanto conviene contarne? E come dipende il periodo T dalla lunghezza L del filo?
+
+**Percorso:** variabile indipendente, dipendente e controllate · lettura alla mezza divisione · ripetere la misura e riconoscere i risultati anomali · tabulare t, T = t/20 e la media.
+:::
+
+## Materiali e indicazioni per lo studio
+
+[Scheda di laboratorio, Lab 4 (PDF) ↗](lab4-pendulum-1A.pdf){target="_blank" .btn .btn-outline-primary}
