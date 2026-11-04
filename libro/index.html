@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Libro – Prof.&nbsp;Rosi</title>
+<title>Pagina in costruzione – Prof.&nbsp;Rosi</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -47,7 +47,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../site_libs/bootstrap/bootstrap-de60624a5cb141114e0ea2b9bc293073.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-52a1f3633cf0215026c8c874589d56c0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-dark-4c6c26ba1d6971a844ec2d3aff35c51e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <link href="../site_libs/bootstrap/bootstrap-de60624a5cb141114e0ea2b9bc293073.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
@@ -136,11 +136,11 @@ window.Quarto = {
 };
 </script>
 
-<meta property="og:title" content="Libro – Prof.&nbsp;Rosi">
-<meta property="og:description" content="Il manuale di fisica: teoria, formule, widget ed esercizi">
+<meta property="og:title" content="Pagina in costruzione – Prof.&nbsp;Rosi">
+<meta property="og:description" content="Sto scrivendo un piccolo libro digitale di fisica: aperto a tutti, interattivo e in un linguaggio accessibile. Qui sotto trovi i primi capitoli, ancora in lavorazione.">
 <meta property="og:site_name" content="Prof.&nbsp;Rosi">
-<meta name="twitter:title" content="Libro – Prof.&nbsp;Rosi">
-<meta name="twitter:description" content="Il manuale di fisica: teoria, formule, widget ed esercizi">
+<meta name="twitter:title" content="Pagina in costruzione – Prof.&nbsp;Rosi">
+<meta name="twitter:description" content="Sto scrivendo un piccolo libro digitale di fisica: aperto a tutti, interattivo e in un linguaggio accessibile. Qui sotto trovi i primi capitoli, ancora in lavorazione.">
 <meta name="twitter:card" content="summary">
 </head>
 
@@ -341,10 +341,6 @@ window.Quarto = {
 <span class="menu-text">Didattica</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../libro/index.html" aria-current="page"> 
-<span class="menu-text">Libro</span></a>
-  </li>  
-  <li class="nav-item">
     <a class="nav-link" href="../edtech/index.html"> 
 <span class="menu-text">EdTech</span></a>
   </li>  
@@ -386,8 +382,8 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Libro</h1>
-<p class="subtitle lead">Il manuale di fisica: teoria, formule, widget ed esercizi</p>
+<h1 class="title">Pagina in costruzione</h1>
+<p class="subtitle lead">Sto scrivendo un piccolo libro digitale di fisica: aperto a tutti, interattivo e in un linguaggio accessibile. Qui sotto trovi i primi capitoli, ancora in lavorazione.</p>
 </div>
 
 
@@ -410,7 +406,7 @@ window.Quarto = {
 
 <div class="quarto-listing quarto-listing-container-grid" id="listing-listing">
 <div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-listing-file-modified-sort="1793637026358" data-listing-reading-time-sort="24" data-listing-word-count-sort="4667">
+<div class="g-col-1" data-index="0" data-listing-file-modified-sort="1793751309395" data-listing-reading-time-sort="14" data-listing-word-count-sort="2709">
 <a href="../libro/energia/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -418,7 +414,7 @@ window.Quarto = {
 Energia
 </h5>
 <div class="card-text listing-description delink">
-<p>Da un’auto che frena a una legge della natura.</p>
+<p>Energia, per immagini: animazioni con etichette in inglese semplice.</p>
 </div>
 </div>
 </div></a>
@@ -426,6 +422,15 @@ Energia
 </div>
 <div class="listing-no-matching d-none">Nessun risultato</div>
 </div></main> <!-- /main -->
+<!-- Easter egg: il titolo "Prof. Rosi" nella navbar porta al Libro (sezione ancora in costruzione, non linkata nel menu) -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var meta = document.querySelector('meta[name="quarto:offset"]');
+  var offset = meta ? meta.getAttribute("content") : "";
+  var brand = document.querySelector(".navbar-brand");
+  if (brand) brand.setAttribute("href", offset + "libro/index.html");
+});
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right

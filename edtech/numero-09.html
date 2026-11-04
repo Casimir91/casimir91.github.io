@@ -46,7 +46,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../site_libs/bootstrap/bootstrap-de60624a5cb141114e0ea2b9bc293073.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-52a1f3633cf0215026c8c874589d56c0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-dark-4c6c26ba1d6971a844ec2d3aff35c51e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <link href="../site_libs/bootstrap/bootstrap-de60624a5cb141114e0ea2b9bc293073.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
@@ -79,10 +79,12 @@ ul.task-list li input[type="checkbox"] {
 
 <meta property="og:title" content="SnapClass – Prof.&nbsp;Rosi">
 <meta property="og:description" content="Un foglio Google pronto all’uso che trasforma i voti in istogramma e curva a campana interattiva: capisci com’è andata la verifica in 10 secondi, senza formule.">
+<meta property="og:image" content="https://casimir91.github.io/edtech/img/09-sassi-equilibrio.svg">
 <meta property="og:site_name" content="Prof.&nbsp;Rosi">
 <meta name="twitter:title" content="SnapClass – Prof.&nbsp;Rosi">
 <meta name="twitter:description" content="Un foglio Google pronto all’uso che trasforma i voti in istogramma e curva a campana interattiva: capisci com’è andata la verifica in 10 secondi, senza formule.">
-<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://casimir91.github.io/edtech/img/09-sassi-equilibrio.svg">
+<meta name="twitter:card" content="summary_large_image">
 </head>
 
 <body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
@@ -282,10 +284,6 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Didattica</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../libro/index.html"> 
-<span class="menu-text">Libro</span></a>
-  </li>  
-  <li class="nav-item">
     <a class="nav-link" href="../edtech/index.html"> 
 <span class="menu-text">EdTech</span></a>
   </li>  
@@ -354,12 +352,6 @@ ul.task-list li input[type="checkbox"] {
 <div class="quarto-title-meta">
 
     
-    <div>
-    <div class="quarto-title-meta-heading">Data di Pubblicazione</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">12 marzo 2026</p>
-    </div>
-  </div>
   
     
   </div>
@@ -420,6 +412,15 @@ ul.task-list li input[type="checkbox"] {
 </section>
 
 </main> <!-- /main -->
+<!-- Easter egg: il titolo "Prof. Rosi" nella navbar porta al Libro (sezione ancora in costruzione, non linkata nel menu) -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var meta = document.querySelector('meta[name="quarto:offset"]');
+  var offset = meta ? meta.getAttribute("content") : "";
+  var brand = document.querySelector(".navbar-brand");
+  if (brand) brand.setAttribute("href", offset + "libro/index.html");
+});
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right

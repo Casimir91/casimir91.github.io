@@ -47,7 +47,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../site_libs/bootstrap/bootstrap-de60624a5cb141114e0ea2b9bc293073.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-52a1f3633cf0215026c8c874589d56c0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-dark-4c6c26ba1d6971a844ec2d3aff35c51e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <link href="../site_libs/bootstrap/bootstrap-de60624a5cb141114e0ea2b9bc293073.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
@@ -79,20 +79,48 @@ ul.task-list li input[type="checkbox"] {
 <script>
 
   window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
+    const listingTargetEl = window.document.querySelector('#listing-guide-tutti .list');
     if (!listingTargetEl) {
       // No listing discovered, do not attach.
       return; 
     }
 
     const options = {
-      valueNames: ['listing-image','listing-date','listing-title','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      valueNames: ['listing-image','listing-title','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
       
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
+      searchColumns: ["listing-title","listing-author","listing-image","listing-description"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
+    window['quarto-listings']['listing-guide-tutti'] = new List('listing-guide-tutti', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-guide-scuola .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-image','listing-title','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      
+      searchColumns: ["listing-title","listing-author","listing-image","listing-description"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-guide-scuola'] = new List('listing-guide-scuola', options);
 
     if (window['quarto-listing-loaded']) {
       window['quarto-listing-loaded']();
@@ -137,11 +165,13 @@ window.Quarto = {
 </script>
 
 <meta property="og:title" content="EdTech – Prof.&nbsp;Rosi">
-<meta property="og:description" content="Strumenti per i professionisti della scuola digitale">
+<meta property="og:description" content="Guide passo passo sugli strumenti digitali">
+<meta property="og:image" content="https://casimir91.github.io/edtech/img/11-oasi.svg">
 <meta property="og:site_name" content="Prof.&nbsp;Rosi">
 <meta name="twitter:title" content="EdTech – Prof.&nbsp;Rosi">
-<meta name="twitter:description" content="Strumenti per i professionisti della scuola digitale">
-<meta name="twitter:card" content="summary">
+<meta name="twitter:description" content="Guide passo passo sugli strumenti digitali">
+<meta name="twitter:image" content="https://casimir91.github.io/edtech/img/11-oasi.svg">
+<meta name="twitter:card" content="summary_large_image">
 </head>
 
 <body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
@@ -341,10 +371,6 @@ window.Quarto = {
 <span class="menu-text">Didattica</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../libro/index.html"> 
-<span class="menu-text">Libro</span></a>
-  </li>  
-  <li class="nav-item">
     <a class="nav-link active" href="../edtech/index.html" aria-current="page"> 
 <span class="menu-text">EdTech</span></a>
   </li>  
@@ -380,8 +406,15 @@ window.Quarto = {
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categorie</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">Tutti <span class="quarto-category-count">(11)</span></div><div class="category" data-category="QUk=">AI <span class="quarto-category-count">(4)</span></div><div class="category" data-category="RGF0aQ==">Dati <span class="quarto-category-count">(1)</span></div><div class="category" data-category="R21haWw=">Gmail <span class="quarto-category-count">(1)</span></div><div class="category" data-category="R29vZ2xlJTIwQ2hyb21l">Google Chrome <span class="quarto-category-count">(2)</span></div><div class="category" data-category="R29vZ2xlJTIwQ2xhc3Nyb29t">Google Classroom <span class="quarto-category-count">(1)</span></div><div class="category" data-category="R29vZ2xlJTIwRHJpdmU=">Google Drive <span class="quarto-category-count">(1)</span></div><div class="category" data-category="R29vZ2xlJTIwRm9nbGk=">Google Fogli <span class="quarto-category-count">(1)</span></div><div class="category" data-category="R29vZ2xlJTIwTWVldA==">Google Meet <span class="quarto-category-count">(1)</span></div><div class="category" data-category="UHJvZHV0dGl2aXQlQzMlQTA=">Produttività <span class="quarto-category-count">(2)</span></div></div></div>
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">In questa pagina</h2>
+   
+  <ul>
+  <li><a href="#per-tutti" id="toc-per-tutti" class="nav-link active" data-scroll-target="#per-tutti">Per tutti</a></li>
+  <li><a href="#per-la-scuola" id="toc-per-la-scuola" class="nav-link" data-scroll-target="#per-la-scuola">Per la scuola</a></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
@@ -389,7 +422,7 @@ window.Quarto = {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">EdTech</h1>
-<p class="subtitle lead">Strumenti per i professionisti della scuola digitale</p>
+<p class="subtitle lead">Guide passo passo sugli strumenti digitali</p>
 </div>
 
 
@@ -406,242 +439,110 @@ window.Quarto = {
 </header>
 
 
-
-
-
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="QUklMkNEYXRp" data-listing-date-sort="1783288800000" data-listing-file-modified-sort="1784569862355" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="352">
-<div class="thumbnail"><a href="../edtech/numero-12.html" class="no-external">
-
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../edtech/numero-12.html" class="no-external">Claude.ai + Apify</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('QUk='); return false;">AI</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('RGF0aQ=='); return false;">Dati</div>
-
+<section id="per-tutti" class="level2">
+<h2 class="anchored" data-anchor-id="per-tutti">Per tutti</h2>
+<div id="listing-guide-tutti" class="quarto-listing quarto-listing-container-grid">
+<div class="listing-actions-group">
+    <div class="input-group input-group-sm quarto-listing-filter">
+      <span class="input-group-text"><i class="bi bi-search"></i></span>
+      <input type="text" class="search form-control" placeholder="Filtro">
+    </div>
 </div>
-<div class="delink listing-description"><a href="../edtech/numero-12.html" class="no-external">
-<p>Un setup gratuito in due step che trasforma una richiesta in italiano in dati strutturati pronti per Google Fogli: niente codice, niente copia-incolla.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../edtech/numero-12.html" class="no-external">
-<div class="listing-date">
-6 lug 2026
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="UHJvZHV0dGl2aXQlQzMlQTA=" data-listing-date-sort="1779314400000" data-listing-file-modified-sort="1784569470718" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="208">
-<div class="thumbnail"><a href="../edtech/numero-11.html" class="no-external">
-
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../edtech/numero-11.html" class="no-external">Notion</a>
-</h3>
+<div class="list grid quarto-listing-cols-3">
+<div class="g-col-1" data-index="0" data-categories="UHJvZHV0dGl2aXQlQzMlQTA=" data-listing-file-modified-sort="1793747683087" data-listing-reading-time-sort="2" data-listing-word-count-sort="208">
+<a href="../edtech/numero-11.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img loading="lazy" src="../edtech/img/11-oasi.svg" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Notion
+</h5>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('UHJvZHV0dGl2aXQlQzMlQTA='); return false;">Produttività</div>
 
 </div>
-<div class="delink listing-description"><a href="../edtech/numero-11.html" class="no-external">
+<div class="card-text listing-description delink">
 <p>Lo spazio di lavoro tutto-in-uno che raccoglie note, link, liste e tabelle in un solo posto: il tuo second brain, gratuito e sincronizzato ovunque.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../edtech/numero-11.html" class="no-external">
-<div class="listing-date">
-21 mag 2026
-</div>
-</a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="2" data-categories="UHJvZHV0dGl2aXQlQzMlQTA=" data-listing-date-sort="1775599200000" data-listing-file-modified-sort="1784569357258" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="128">
-<div class="thumbnail"><a href="../edtech/numero-10.html" class="no-external">
-
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../edtech/numero-10.html" class="no-external">Icone personalizzate per le cartelle</a>
-</h3>
+</div></a>
+</div>
+<div class="g-col-1" data-index="1" data-categories="UHJvZHV0dGl2aXQlQzMlQTA=" data-listing-file-modified-sort="1793747683086" data-listing-reading-time-sort="1" data-listing-word-count-sort="128">
+<a href="../edtech/numero-10.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img loading="lazy" src="../edtech/img/10-ciottoli.svg" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Icone personalizzate per le cartelle
+</h5>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('UHJvZHV0dGl2aXQlQzMlQTA='); return false;">Produttività</div>
 
 </div>
-<div class="delink listing-description"><a href="../edtech/numero-10.html" class="no-external">
+<div class="card-text listing-description delink">
 <p>Assegna a ogni cartella un’icona diversa e riconoscila a colpo d’occhio, senza leggere il nome: due minuti su Mac e su Windows.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../edtech/numero-10.html" class="no-external">
-<div class="listing-date">
-8 apr 2026
-</div>
-</a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="3" data-categories="R29vZ2xlJTIwRm9nbGk=" data-listing-date-sort="1773270000000" data-listing-file-modified-sort="1784569249229" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="333">
-<div class="thumbnail"><a href="../edtech/numero-09.html" class="no-external">
-
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../edtech/numero-09.html" class="no-external">SnapClass</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('R29vZ2xlJTIwRm9nbGk='); return false;">Google Fogli</div>
-
+</div></a>
 </div>
-<div class="delink listing-description"><a href="../edtech/numero-09.html" class="no-external">
-<p>Un foglio Google pronto all’uso che trasforma i voti in istogramma e curva a campana interattiva: capisci com’è andata la verifica in 10 secondi, senza formule.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../edtech/numero-09.html" class="no-external">
-<div class="listing-date">
-12 mar 2026
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="4" data-categories="R21haWw=" data-listing-date-sort="1771455600000" data-listing-file-modified-sort="1784569072491" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="186">
-<div class="thumbnail"><a href="../edtech/numero-08.html" class="no-external">
-
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../edtech/numero-08.html" class="no-external">Gestisci le iscrizioni in Gmail</a>
-</h3>
+<div class="g-col-1" data-index="2" data-categories="R21haWw=" data-listing-file-modified-sort="1793747683084" data-listing-reading-time-sort="1" data-listing-word-count-sort="186">
+<a href="../edtech/numero-08.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img loading="lazy" src="../edtech/img/08-barca.svg" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Gestisci le iscrizioni in Gmail
+</h5>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('R21haWw='); return false;">Gmail</div>
 
 </div>
-<div class="delink listing-description"><a href="../edtech/numero-08.html" class="no-external">
+<div class="card-text listing-description delink">
 <p>Una schermata unica con tutte le newsletter a cui sei iscritto e la disiscrizione in un clic: fai riemergere le email importanti dal rumore di fondo.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../edtech/numero-08.html" class="no-external">
-<div class="listing-date">
-19 feb 2026
-</div>
-</a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="5" data-categories="R29vZ2xlJTIwRHJpdmU=" data-listing-date-sort="1768431600000" data-listing-file-modified-sort="1784568726870" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="212">
-<div class="thumbnail"><a href="../edtech/numero-06.html" class="no-external">
-
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../edtech/numero-06.html" class="no-external">Scanner nascosto in Google Drive</a>
-</h3>
+</div></a>
+</div>
+<div class="g-col-1" data-index="3" data-categories="R29vZ2xlJTIwRHJpdmU=" data-listing-file-modified-sort="1793747683082" data-listing-reading-time-sort="2" data-listing-word-count-sort="212">
+<a href="../edtech/numero-06.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img loading="lazy" src="../edtech/img/06-cactus.svg" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Scanner nascosto in Google Drive
+</h5>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('R29vZ2xlJTIwRHJpdmU='); return false;">Google Drive</div>
 
 </div>
-<div class="delink listing-description"><a href="../edtech/numero-06.html" class="no-external">
+<div class="card-text listing-description delink">
 <p>L’app Drive ha uno scanner integrato che salva PDF già ritagliati e filtrati direttamente nelle cartelle giuste: niente più file sparsi o fotocopiatrici da decifrare.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../edtech/numero-06.html" class="no-external">
-<div class="listing-date">
-15 gen 2026
-</div>
-</a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="6" data-categories="QUk=" data-listing-date-sort="1761084000000" data-listing-file-modified-sort="1784568506571" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="337">
-<div class="thumbnail"><a href="../edtech/numero-05.html" class="no-external">
-
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../edtech/numero-05.html" class="no-external">NotebookLM per Flipped &amp; more</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('QUk='); return false;">AI</div>
-
+</div></a>
 </div>
-<div class="delink listing-description"><a href="../edtech/numero-05.html" class="no-external">
-<p>L’AI di Google che risponde solo sui materiali che carichi: guide di studio, quiz, mappe e audio overview per la flipped classroom, senza allucinazioni.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../edtech/numero-05.html" class="no-external">
-<div class="listing-date">
-22 ott 2025
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="7" data-categories="QUklMkNHb29nbGUlMjBDbGFzc3Jvb20=" data-listing-date-sort="1760047200000" data-listing-file-modified-sort="1784568045413" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="427">
-<div class="thumbnail"><a href="../edtech/numero-04.html" class="no-external">
-
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../edtech/numero-04.html" class="no-external">Gemini in Google Classroom</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('QUk='); return false;">AI</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('R29vZ2xlJTIwQ2xhc3Nyb29t'); return false;">Google Classroom</div>
-
-</div>
-<div class="delink listing-description"><a href="../edtech/numero-04.html" class="no-external">
-<p>Oltre 30 strumenti AI dentro Classroom per progettare lezioni, griglie, quiz e materiali differenziati in minuti invece che ore.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../edtech/numero-04.html" class="no-external">
-<div class="listing-date">
-10 ott 2025
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="8" data-categories="R29vZ2xlJTIwTWVldCUyQ0FJ" data-listing-date-sort="1759701600000" data-listing-file-modified-sort="1784567600132" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="129">
-<div class="thumbnail"><a href="../edtech/numero-03.html" class="no-external">
-
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../edtech/numero-03.html" class="no-external">Tactiq</a>
-</h3>
+<div class="g-col-1" data-index="4" data-categories="R29vZ2xlJTIwTWVldCUyQ0FJ" data-listing-file-modified-sort="1793747683079" data-listing-reading-time-sort="1" data-listing-word-count-sort="129">
+<a href="../edtech/numero-03.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img loading="lazy" src="../edtech/img/03-tramonto.svg" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Tactiq
+</h5>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('R29vZ2xlJTIwTWVldA=='); return false;">Google Meet</div>
@@ -649,75 +550,203 @@ window.Quarto = {
 <div class="listing-category" onclick="window.quartoListingCategory('QUk='); return false;">AI</div>
 
 </div>
-<div class="delink listing-description"><a href="../edtech/numero-03.html" class="no-external">
+<div class="card-text listing-description delink">
 <p>Trascrive in automatico le riunioni Google Meet in tempo reale: recuperi decisioni e accordi senza prendere un solo appunto a mano.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../edtech/numero-03.html" class="no-external">
-<div class="listing-date">
-6 ott 2025
-</div>
-</a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="9" data-categories="R29vZ2xlJTIwQ2hyb21l" data-listing-date-sort="1758664800000" data-listing-file-modified-sort="1784567052789" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="105">
-<div class="thumbnail"><a href="../edtech/numero-02.html" class="no-external">
-
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../edtech/numero-02.html" class="no-external">Tab Resize</a>
-</h3>
+</div></a>
+</div>
+<div class="g-col-1" data-index="5" data-categories="R29vZ2xlJTIwQ2hyb21l" data-listing-file-modified-sort="1793747683077" data-listing-reading-time-sort="1" data-listing-word-count-sort="105">
+<a href="../edtech/numero-02.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img loading="lazy" src="../edtech/img/02-onde.svg" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Tab Resize
+</h5>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('R29vZ2xlJTIwQ2hyb21l'); return false;">Google Chrome</div>
 
 </div>
-<div class="delink listing-description"><a href="../edtech/numero-02.html" class="no-external">
+<div class="card-text listing-description delink">
 <p>Sistema le finestre in layout predefiniti con un clic: mezzo schermo, quarti, terzi, per lavorare e confrontare senza trascinare a mano.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../edtech/numero-02.html" class="no-external">
-<div class="listing-date">
-24 set 2025
-</div>
-</a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="10" data-categories="R29vZ2xlJTIwQ2hyb21l" data-listing-date-sort="1756936800000" data-listing-file-modified-sort="1784565897891" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="307">
-<div class="thumbnail"><a href="../edtech/numero-01.html" class="no-external">
-
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../edtech/numero-01.html" class="no-external">Tab Group di Chrome</a>
-</h3>
+</div></a>
+</div>
+<div class="g-col-1" data-index="6" data-categories="R29vZ2xlJTIwQ2hyb21l" data-listing-file-modified-sort="1793747683076" data-listing-reading-time-sort="2" data-listing-word-count-sort="307">
+<a href="../edtech/numero-01.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img loading="lazy" src="../edtech/img/01-dune.svg" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Tab Group di Chrome
+</h5>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('R29vZ2xlJTIwQ2hyb21l'); return false;">Google Chrome</div>
 
 </div>
-<div class="delink listing-description"><a href="../edtech/numero-01.html" class="no-external">
+<div class="card-text listing-description delink">
 <p>Raggruppa le schede del browser in cluster con nome e colore: uno scaffale ordinato per ogni progetto.</p>
-</a></div>
 </div>
-<div class="metadata">
-<a href="../edtech/numero-01.html" class="no-external">
-<div class="listing-date">
-4 set 2025
 </div>
-</a>
-</div>
+</div></a>
 </div>
 </div>
 <div class="listing-no-matching d-none">Nessun risultato</div>
-</div></main> <!-- /main -->
+</div>
+</section>
+<section id="per-la-scuola" class="level2">
+<h2 class="anchored" data-anchor-id="per-la-scuola">Per la scuola</h2>
+<div id="listing-guide-scuola" class="quarto-listing quarto-listing-container-grid">
+<div class="listing-actions-group">
+    <div class="input-group input-group-sm quarto-listing-filter">
+      <span class="input-group-text"><i class="bi bi-search"></i></span>
+      <input type="text" class="search form-control" placeholder="Filtro">
+    </div>
+</div>
+<div class="list grid quarto-listing-cols-3">
+<div class="g-col-1" data-index="0" data-categories="QUklMkNEYXRp" data-listing-file-modified-sort="1793747683088" data-listing-reading-time-sort="2" data-listing-word-count-sort="352">
+<a href="../edtech/numero-12.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img loading="lazy" src="../edtech/img/12-bambu-chiaro.svg" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Claude.ai + Apify
+</h5>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('QUk='); return false;">AI</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('RGF0aQ=='); return false;">Dati</div>
+
+</div>
+<div class="card-text listing-description delink">
+<p>Un setup gratuito in due step che trasforma una richiesta in italiano in dati strutturati pronti per Google Fogli: niente codice, niente copia-incolla.</p>
+</div>
+</div>
+</div></a>
+</div>
+<div class="g-col-1" data-index="1" data-categories="R29vZ2xlJTIwRm9nbGk=" data-listing-file-modified-sort="1793747683085" data-listing-reading-time-sort="2" data-listing-word-count-sort="333">
+<a href="../edtech/numero-09.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img loading="lazy" src="../edtech/img/09-sassi-equilibrio.svg" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+SnapClass
+</h5>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('R29vZ2xlJTIwRm9nbGk='); return false;">Google Fogli</div>
+
+</div>
+<div class="card-text listing-description delink">
+<p>Un foglio Google pronto all’uso che trasforma i voti in istogramma e curva a campana interattiva: capisci com’è andata la verifica in 10 secondi, senza formule.</p>
+</div>
+</div>
+</div></a>
+</div>
+<div class="g-col-1" data-index="2" data-categories="QUk=" data-listing-file-modified-sort="1793747683081" data-listing-reading-time-sort="2" data-listing-word-count-sort="337">
+<a href="../edtech/numero-05.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img loading="lazy" src="../edtech/img/05-giardino-zen.svg" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+NotebookLM per Flipped &amp; more
+</h5>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('QUk='); return false;">AI</div>
+
+</div>
+<div class="card-text listing-description delink">
+<p>L’AI di Google che risponde solo sui materiali che carichi: guide di studio, quiz, mappe e audio overview per la flipped classroom, senza allucinazioni.</p>
+</div>
+</div>
+</div></a>
+</div>
+<div class="g-col-1" data-index="3" data-categories="QUklMkNHb29nbGUlMjBDbGFzc3Jvb20=" data-listing-file-modified-sort="1793747683080" data-listing-reading-time-sort="3" data-listing-word-count-sort="427">
+<a href="../edtech/numero-04.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img loading="lazy" src="../edtech/img/04-bambu-scuro.svg" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Gemini in Google Classroom
+</h5>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('QUk='); return false;">AI</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('R29vZ2xlJTIwQ2xhc3Nyb29t'); return false;">Google Classroom</div>
+
+</div>
+<div class="card-text listing-description delink">
+<p>Oltre 30 strumenti AI dentro Classroom per progettare lezioni, griglie, quiz e materiali differenziati in minuti invece che ore.</p>
+</div>
+</div>
+</div></a>
+</div>
+</div>
+<div class="listing-no-matching d-none">Nessun risultato</div>
+</div>
+
+
+
+</section>
+
+</main> <!-- /main -->
+<!-- Easter egg: il titolo "Prof. Rosi" nella navbar porta al Libro (sezione ancora in costruzione, non linkata nel menu) -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var meta = document.querySelector('meta[name="quarto:offset"]');
+  var offset = meta ? meta.getAttribute("content") : "";
+  var brand = document.querySelector(".navbar-brand");
+  if (brand) brand.setAttribute("href", offset + "libro/index.html");
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var inputs = document.querySelectorAll(".quarto-listing-filter input");
+  if (!inputs.length) return;
+  var set = {};
+  document.querySelectorAll(".listing-categories .listing-category").forEach(function (el) {
+    var t = el.textContent.trim();
+    if (t) set[t] = true;
+  });
+  var words = Object.keys(set).sort();
+  var prefix = "Cerca: ";
+  if (!words.length) { inputs.forEach(function (i) { i.placeholder = "Cerca una guida"; }); return; }
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    inputs.forEach(function (i) { i.placeholder = prefix + words.slice(0, 3).join(", ") + "…"; });
+    return;
+  }
+  var w = 0, c = 0, deleting = false;
+  function tick() {
+    var word = words[w];
+    c += deleting ? -1 : 1;
+    inputs.forEach(function (i) { i.placeholder = prefix + word.slice(0, c); });
+    var delay = deleting ? 40 : 90;
+    if (!deleting && c === word.length) { deleting = true; delay = 1400; }
+    else if (deleting && c === 0) { deleting = false; w = (w + 1) % words.length; delay = 350; }
+    setTimeout(tick, delay);
+  }
+  tick();
+});
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
