@@ -448,25 +448,18 @@
     "text": "Materiali e indicazioni per lo studio\nExam-style questions (PDF) ↗\nExam-style questions: soluzioni (PDF) ↗\nCopione della lezione in italiano (PDF) ↗ Copione della lezione in inglese (PDF) ↗"
   },
   {
-    "objectID": "didattica/prima/lezioni/2026-10-07-measure-density-lab2/index.html",
-    "href": "didattica/prima/lezioni/2026-10-07-measure-density-lab2/index.html",
-    "title": "Measuring Density by Water Displacement",
+    "objectID": "didattica/prima/lezioni/2026-11-04-lab4-pendulum-sheets/index.html",
+    "href": "didattica/prima/lezioni/2026-11-04-lab4-pendulum-sheets/index.html",
+    "title": "Pendulum: From Data to Graph with Google Sheets",
     "section": "",
-    "text": "Ogni misura ha la sua incertezza, e la densità, calcolata da due misure, la eredita. Fin dove un numero con il suo errore ti dice di che cosa è fatto un oggetto?\nPercorso: come l’errore passa da due misure a una densità · incertezza relativa · il confronto con la tabella dei materiali."
+    "text": "I dati del Lab 4 (t1, t2 e t3 per 20 oscillazioni, sette lunghezze) diventano una tabella con formule, un grafico a dispersione di T² contro L e una linea di tendenza. Un risultato anomalo sposta la linea e può nascondersi: per questo lo si cerca prima, con il rapporto T²/L.\nPercorso: tabella e formule in Fogli Google · grafico a dispersione · risultato anomalo · linea di tendenza e, come bonus, l’intercetta e l’errore sistematico.\nConsegna: anche se il lavoro è di gruppo, ognuno lavora sul proprio computer, salva il file come Lab4_cognome e lo consegna su Classroom."
   },
   {
-    "objectID": "didattica/prima/lezioni/2026-10-07-measure-density-lab2/index.html#slide-della-lezione",
-    "href": "didattica/prima/lezioni/2026-10-07-measure-density-lab2/index.html#slide-della-lezione",
-    "title": "Measuring Density by Water Displacement",
-    "section": "Slide della lezione",
-    "text": "Slide della lezione\n\n\n\n\nApri le slide a schermo intero ↗"
-  },
-  {
-    "objectID": "didattica/prima/lezioni/2026-10-07-measure-density-lab2/index.html#materiali-e-indicazioni-per-lo-studio",
-    "href": "didattica/prima/lezioni/2026-10-07-measure-density-lab2/index.html#materiali-e-indicazioni-per-lo-studio",
-    "title": "Measuring Density by Water Displacement",
+    "objectID": "didattica/prima/lezioni/2026-11-04-lab4-pendulum-sheets/index.html#materiali-e-indicazioni-per-lo-studio",
+    "href": "didattica/prima/lezioni/2026-11-04-lab4-pendulum-sheets/index.html#materiali-e-indicazioni-per-lo-studio",
+    "title": "Pendulum: From Data to Graph with Google Sheets",
     "section": "Materiali e indicazioni per lo studio",
-    "text": "Materiali e indicazioni per lo studio\nTemplate del lab report (PDF) ↗"
+    "text": "Materiali e indicazioni per lo studio\nGuida a Fogli Google, Lab 4 (PDF) ↗"
   },
   {
     "objectID": "didattica/prima/lezioni/2026-10-14-midterm-test/index.html",
@@ -1008,18 +1001,25 @@
     "text": "Materiali e indicazioni per lo studio\nScheda di laboratorio, Lab 4 (PDF) ↗"
   },
   {
-    "objectID": "didattica/prima/lezioni/2026-11-04-pendulum-lab4-sheets/index.html",
-    "href": "didattica/prima/lezioni/2026-11-04-pendulum-lab4-sheets/index.html",
-    "title": "Pendulum: From Data to Graph with Google Sheets",
+    "objectID": "didattica/prima/lezioni/2026-10-07-measure-density-lab2/index.html",
+    "href": "didattica/prima/lezioni/2026-10-07-measure-density-lab2/index.html",
+    "title": "Measuring Density by Water Displacement",
     "section": "",
-    "text": "I dati del Lab 4 (t1, t2 e t3 per 20 oscillazioni, sette lunghezze) diventano una tabella con formule, un grafico a dispersione di T² contro L e una linea di tendenza. Un risultato anomalo sposta la linea e può nascondersi: per questo lo si cerca prima, con il rapporto T²/L.\nPercorso: tabella e formule in Fogli Google · grafico a dispersione · risultato anomalo · linea di tendenza e, come bonus, l’intercetta e l’errore sistematico.\nConsegna: anche se il lavoro è di gruppo, ognuno lavora sul proprio computer, salva il file come Lab4_cognome e lo consegna su Classroom."
+    "text": "Ogni misura ha la sua incertezza, e la densità, calcolata da due misure, la eredita. Fin dove un numero con il suo errore ti dice di che cosa è fatto un oggetto?\nPercorso: come l’errore passa da due misure a una densità · incertezza relativa · il confronto con la tabella dei materiali."
   },
   {
-    "objectID": "didattica/prima/lezioni/2026-11-04-pendulum-lab4-sheets/index.html#materiali-e-indicazioni-per-lo-studio",
-    "href": "didattica/prima/lezioni/2026-11-04-pendulum-lab4-sheets/index.html#materiali-e-indicazioni-per-lo-studio",
-    "title": "Pendulum: From Data to Graph with Google Sheets",
+    "objectID": "didattica/prima/lezioni/2026-10-07-measure-density-lab2/index.html#slide-della-lezione",
+    "href": "didattica/prima/lezioni/2026-10-07-measure-density-lab2/index.html#slide-della-lezione",
+    "title": "Measuring Density by Water Displacement",
+    "section": "Slide della lezione",
+    "text": "Slide della lezione\n\n\n\n\nApri le slide a schermo intero ↗"
+  },
+  {
+    "objectID": "didattica/prima/lezioni/2026-10-07-measure-density-lab2/index.html#materiali-e-indicazioni-per-lo-studio",
+    "href": "didattica/prima/lezioni/2026-10-07-measure-density-lab2/index.html#materiali-e-indicazioni-per-lo-studio",
+    "title": "Measuring Density by Water Displacement",
     "section": "Materiali e indicazioni per lo studio",
-    "text": "Materiali e indicazioni per lo studio\nGuida a Fogli Google, Lab 4 (PDF) ↗"
+    "text": "Materiali e indicazioni per lo studio\nTemplate del lab report (PDF) ↗"
   },
   {
     "objectID": "didattica/prima/lezioni/2026-09-30-measure-density-lab1/index.html",
