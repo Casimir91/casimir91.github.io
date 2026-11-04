@@ -9,3 +9,4 @@ categories: [Fisica]
 ## Materiali e indicazioni per lo studio
 
 [Mock test (PDF) ↗](alfa_2026-11-04_mock-test.pdf){target="_blank" .btn .btn-outline-primary}
+[Soluzioni (PDF) ↗](alfa_2026-11-04_mock-test_soluzioni.pdf){target="_blank" .btn .btn-outline-primary}
