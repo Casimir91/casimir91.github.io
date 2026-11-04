@@ -102,7 +102,7 @@ function initMcq(){
     });});
   });
   document.querySelectorAll(".mcq-set[data-mode=pretest]").forEach(function(set){
-    var b=el("button",{"class":"mcq-btn",type:"button",text:"Controlla le risposte (meglio dopo aver letto la pagina)"});
+    var b=el("button",{"class":"mcq-btn",type:"button",text:"Check answers"});
     b.addEventListener("click",function(){set.classList.add("revealed");set.querySelectorAll(".mcq").forEach(function(q){q.classList.add("done");q.querySelectorAll("li").forEach(function(x){if(x.dataset.ok)x.classList.add("ok");else if(x.classList.contains("sel"))x.classList.add("no");});});b.remove();});
     set.appendChild(b);
   });

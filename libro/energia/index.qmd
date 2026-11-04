@@ -1,7 +1,7 @@
 ---
-title: "Energia"
-subtitle: "Versione di prova: poche parole, molte immagini"
-description: "Energia, per immagini: animazioni con etichette in inglese semplice."
+title: "Energy"
+subtitle: "Few words, loads of pictures. Let the pictures do the talkin'."
+description: "Energy in pictures. Chapter 1 of Physics in Pictures."
 toc: true
 toc-title: "On this page"
 format:
@@ -11,45 +11,47 @@ format:
       - ../_componenti/visual.html
 ---
 
+Energy in pictures. Chapter 1 of *Physics in Pictures*.
+
 ## Quick quiz
 
-Rispondi d'istinto, senza fare conti: tra poco ci torniamo.
+Answer by instinct. No air resistance.
 
 ::: {.mcq-set data-mode="pretest"}
 
 ::: {.mcq}
-Una piuma e un pianoforte a coda precipitano da un'altezza di $100\ \text{m}$. Chi arriva prima?
+A feather and a piano fall from $100\ \text{m}$. Which lands first?
 
-- il pianoforte
-- il pianoforte, ma di poco
-- ✓ arrivano insieme al suolo
+- the piano
+- the piano, by a little
+- ✓ same time
 
 ::: {.sol}
-Se si trascura l'aria, la velocità con cui un corpo arriva a terra dipende solo dall'altezza da cui cade, non dalla sua massa: lo dimostriamo tra poco. Nella realtà la piuma arriva molto dopo, ma per colpa dell'aria, che qui abbiamo deciso di ignorare.
+No air: landing speed depends on height, not on mass.
 :::
 :::
 
 ::: {.mcq}
-Un'auto che viaggia a $50\ \text{km/h}$ impiega $14\ \text{m}$ per fermarsi. Se la stessa auto viaggia a $100\ \text{km/h}$, quanti metri impiega per fermarsi?
+A car at $50\ \text{km/h}$ stops in $14\ \text{m}$. At $100\ \text{km/h}$, how many metres to stop?
 
 - $14\ \text{m}$
 - $28\ \text{m}$
 - ✓ $56\ \text{m}$
 
 ::: {.sol}
-Raddoppiando la velocità l'energia cinetica da portare via diventa quattro volte più grande, e con la stessa forza frenante serve quattro volte lo spazio: $4 \times 14 = 56\ \text{m}$ (i dati dello Highway Code indicano $55\ \text{m}$). Lo vediamo in dettaglio alla fine del capitolo.
+Energy × 4, so distance × 4.
 :::
 :::
 
 ::: {.mcq}
-Dalla finestra di un palazzo lancio due palline identiche con la stessa velocità: una verso il basso e una verso l'alto. Quale delle due arriva al suolo con la velocità maggiore?
+Two balls leave a window at the same speed: one down, one up. Which lands faster?
 
-- quella lanciata verso il basso
-- quella lanciata verso l'alto
-- ✓ arrivano con la stessa velocità
+- the one thrown down
+- the one thrown up
+- ✓ same speed
 
 ::: {.sol}
-Le due palline partono dalla stessa quota e con la stessa velocità in modulo: hanno la stessa energia iniziale, quindi la stessa energia finale, quindi la stessa velocità d'impatto. La direzione del lancio non conta; conta solo il tempo, che per la palla lanciata verso l'alto è più lungo.
+Same energy at the start, same energy at the end.
 :::
 :::
 
@@ -119,20 +121,20 @@ Le due palline partono dalla stessa quota e con la stessa velocità in modulo: h
 ::: {.mcq-set}
 
 ::: {.mcq}
-A cyclist's speed goes from $4\ \text{m/s}$ to $12\ \text{m/s}$. Kinetic energy becomes:
+Speed × 3. Kinetic energy:
 
-- 3 × bigger
-- 6 × bigger
-- ✓ 9 × bigger
-- 12 × bigger
+- × 3
+- × 6
+- ✓ × 9
+- × 12
 
 ::: {.sol}
-Speed × 3, so energy × $3^2 = 9$.
+$3^2 = 9$
 :::
 :::
 
 ::: {.mcq}
-A $3.0\ \text{kg}$ box moves from a shelf at $0.50\ \text{m}$ to one at $1.50\ \text{m}$. The change in potential energy is:
+Box of $3\ \text{kg}$, shelf from $0.5\ \text{m}$ to $1.5\ \text{m}$. Gain in potential energy:
 
 - $15\ \text{J}$
 - ✓ $30\ \text{J}$
@@ -140,25 +142,25 @@ A $3.0\ \text{kg}$ box moves from a shelf at $0.50\ \text{m}$ to one at $1.50\ \
 - $450\ \text{J}$
 
 ::: {.sol}
-$\Delta h = 1.00\ \text{m}$, so $\Delta E_p = 3.0 \times 10 \times 1.00 = 30\ \text{J}$. Use the change in height, not the final height.
+$m g \Delta h = 3 \times 10 \times 1 = 30\ \text{J}$
 :::
 :::
 
 ::: {.mcq}
-A $2.0\ \text{kg}$ book reaches a shelf $1.2\ \text{m}$ higher, straight up or along a $3\ \text{m}$ ramp. The change in potential energy is:
+Book of $2\ \text{kg}$ lifted $1.2\ \text{m}$: straight up, or along a ramp. Gain in potential energy:
 
 - bigger on the ramp
 - smaller on the ramp
-- ✓ the same, $24\ \text{J}$
+- ✓ the same: $24\ \text{J}$
 - $0\ \text{J}$
 
 ::: {.sol}
-$\Delta E_p = m g\,\Delta h$ depends only on the height change, not on the path.
+Only $\Delta h$ counts, not the path.
 :::
 :::
 
 ::: {.mcq}
-You push a crate with $120\ \text{N}$ for $5.0\ \text{m}$. The work done is:
+Push $120\ \text{N}$ over $5\ \text{m}$. Work:
 
 - $24\ \text{J}$
 - $125\ \text{J}$
@@ -166,33 +168,33 @@ You push a crate with $120\ \text{N}$ for $5.0\ \text{m}$. The work done is:
 - $4800\ \text{J}$
 
 ::: {.sol}
-$W = F d = 120 \times 5.0 = 600\ \text{J}$.
+$W = F d = 600\ \text{J}$
 :::
 :::
 
 ::: {.mcq}
-Same braking force, but the car's speed doubles. The stopping distance becomes:
+Speed × 2, same brakes. Stopping distance:
 
-- half
-- double
-- ✓ four times
-- the same
+- ÷ 2
+- × 2
+- ✓ × 4
+- same
 
 ::: {.sol}
-$d = E_k / F$ and $E_k \propto v^2$: speed × 2, energy × 4, distance × 4.
+$E_k$ × 4, so $d$ × 4.
 :::
 :::
 
 ::: {.mcq}
-Same speed, but a wet road halves the braking force. The stopping distance becomes:
+Wet road: half the braking force. Stopping distance:
 
-- half
-- the same
-- ✓ double
-- four times
+- ÷ 2
+- same
+- ✓ × 2
+- × 4
 
 ::: {.sol}
-$d = E_k / F$ with the same $E_k$: half the force, double the distance.
+$d = E_k / F$: half $F$, double $d$.
 :::
 :::
 
@@ -200,123 +202,109 @@ $d = E_k / F$ with the same $E_k$: half the force, double the distance.
 
 ## For those who want the numbers
 
-Questa parte è per chi vuole esercitarsi: formule, un esempio svolto, esercizi con soluzione, una scheda in stile IGCSE e controlli per accorgersi degli errori.
+Worked example, practice, and an exam-style sheet. Use $g = 10\ \text{N/kg}$.
 
-Le formule che servono ai conti (in joule, con $g = 10\ \text{N/kg}$).
+### Worked example
 
-$$\Delta E_p = m\, g\, \Delta h $$ {#eq-ep}
+A ball of $0.20\ \text{kg}$ is dropped from $1.8\ \text{m}$. Speed at the ground? No air.
 
-$$E_k = \tfrac{1}{2}\, m\, v^2 $$ {#eq-ek}
+**Data.** $m = 0.20\ \text{kg}$, $\Delta h = 1.8\ \text{m}$.
 
-$$v = \sqrt{2 g h} $$ {#eq-vcaduta}
+**Energy.** $\Delta E_p = m g \Delta h = 0.20 \times 10 \times 1.8 = 3.6\ \text{J}$. All of it becomes $E_k$.
 
-$$W = F\, d $$ {#eq-lavoro}
+**Speed.** $\tfrac12 \times 0.20 \times v^2 = 3.6$, so $v^2 = 36$ and $v = 6.0\ \text{m/s}$ (about $22\ \text{km/h}$).
 
-$$F\, d = E_k \quad\Longrightarrow\quad d = \frac{E_k}{F} $$ {#eq-frenata}
+**Check.** Units are J and m/s. $6\ \text{m/s}$ is a fast run: plausible. A heavier ball? Same speed: $m$ cancels in $m g \Delta h = \tfrac12 m v^2$.
 
-### Un esempio svolto: una palla che cade
+### Practice
 
-Una palla di massa $0{,}20\ \text{kg}$ viene lasciata cadere da $1{,}8\ \text{m}$. A che velocità arriva a terra, trascurando la resistenza dell'aria? Segui il metodo: dati, bilancio di energia, equazione, controllo.
-
-**Dati.** $m = 0{,}20\ \text{kg}$, $\Delta h = 1{,}8\ \text{m}$, $g = 10\ \text{N/kg}$. Si cerca $v$.
-
-**Bilancio.** La riserva gravitazionale scende, la riserva cinetica sale della stessa quantità: la @eq-ep dà $\Delta E_p = 0{,}20 \times 10 \times 1{,}8 = 3{,}6\ \text{J}$, e per la conservazione $E_k = 3{,}6\ \text{J}$.
-
-**Equazione.** Dalla @eq-ek: $\tfrac12 \times 0{,}20 \times v^2 = 3{,}6$, da cui $v^2 = 36$ e $v = 6{,}0\ \text{m/s}$, circa $22\ \text{km/h}$.
-
-**Controllo.** Unità: joule a sinistra e a destra, velocità in m/s. Ordine di grandezza: $6\ \text{m/s}$ è la velocità di una corsa veloce, plausibile per una caduta di meno di due metri.
-
-Una palla più pesante sarebbe più veloce? No: in $mg\,\Delta h = \tfrac12 mv^2$ la massa si semplifica, come nell'esempio della piuma. Non abbiamo usato l'accelerazione, soltanto la conservazione e due formule.
-
-### Esercizi per te
-
-Per ogni esercizio scrivi: dati, conversione delle unità, formula, sostituzione, risultato con l'unità. Le soluzioni sono nei riquadri.
-
-**1.** Una palla di massa $0{,}50\ \text{kg}$ si muove a $8{,}0\ \text{m/s}$. (a) Calcola la sua energia cinetica. (b) Viene ora lanciata a $16\ \text{m/s}$: qual è la sua energia cinetica, e come si confronta con (a)? (c) Un ciclista con la bici, massa totale $75\ \text{kg}$, viaggia a $36\ \text{km/h}$: calcola la sua energia cinetica.
+**1.** A ball of $0.50\ \text{kg}$ moves at $8.0\ \text{m/s}$. (a) Kinetic energy? (b) Thrown at $16\ \text{m/s}$: kinetic energy, and compared with (a)? (c) Cyclist and bike, $75\ \text{kg}$, at $36\ \text{km/h}$: kinetic energy?
 
 ::: {.callout-tip collapse="true"}
-## Soluzione
-(a) $E_k = \tfrac12 \times 0{,}50 \times 8{,}0^2 = 16\ \text{J}$. (b) $E_k = \tfrac12 \times 0{,}50 \times 16^2 = 64\ \text{J}$: quattro volte quella di (a), perché la velocità è raddoppiata. (c) $36\ \text{km/h} = 36 \div 3{,}6 = 10\ \text{m/s}$, quindi $E_k = \tfrac12 \times 75 \times 10^2 = 3750\ \text{J} = 3{,}75\ \text{kJ}$.
+## Solution
+(a) $\tfrac12 \times 0.50 \times 8.0^2 = 16\ \text{J}$. (b) $\tfrac12 \times 0.50 \times 16^2 = 64\ \text{J}$: 4 × more, since speed doubled. (c) $36 \div 3.6 = 10\ \text{m/s}$, so $E_k = \tfrac12 \times 75 \times 10^2 = 3750\ \text{J}$.
 :::
 
-**2.** (a) Un'alpinista di massa $60\ \text{kg}$ sale lungo un sentiero e guadagna $200\ \text{m}$ di quota: calcola l'aumento della sua energia potenziale gravitazionale. (b) Un sasso da $0{,}10\ \text{kg}$ viene lanciato verso l'alto a $12\ \text{m/s}$: a che altezza sopra la mano arriva? Trascura l'aria.
+**2.** (a) A climber of $60\ \text{kg}$ gains $200\ \text{m}$ of height: gain in potential energy? (b) A stone of $0.10\ \text{kg}$ is thrown up at $12\ \text{m/s}$: how high above the hand? No air.
 
 ::: {.callout-tip collapse="true"}
-## Soluzione
-(a) $\Delta E_p = mg\,\Delta h = 60 \times 10 \times 200 = 120\,000\ \text{J} = 120\ \text{kJ}$. (b) L'energia cinetica iniziale è $\tfrac12 \times 0{,}10 \times 12^2 = 7{,}2\ \text{J}$. In cima è tutta nella riserva gravitazionale: $7{,}2 = 0{,}10 \times 10 \times \Delta h$, quindi $\Delta h = 7{,}2\ \text{m}$. È la palla che cade al contrario.
+## Solution
+(a) $60 \times 10 \times 200 = 120\,000\ \text{J} = 120\ \text{kJ}$. (b) $E_k = \tfrac12 \times 0.10 \times 12^2 = 7.2\ \text{J}$. At the top it is all $E_p$: $7.2 = 0.10 \times 10 \times \Delta h$, so $\Delta h = 7.2\ \text{m}$.
 :::
 
-**3.** (a) Una cassa di massa $40\ \text{kg}$ viene spinta per $5{,}0\ \text{m}$ sul pavimento da una forza orizzontale di $120\ \text{N}$: quanto lavoro compie la forza? (b) Porti una borsa da $20\ \text{kg}$ in orizzontale per $10\ \text{m}$ a velocità costante: quanto lavoro compie la tua forza verso l'alto sulla borsa? (c) Un ciclista con la bici, massa totale $80\ \text{kg}$, viaggia a $6{,}0\ \text{m/s}$ e si ferma con una forza frenante di $120\ \text{N}$: quale distanza serve? E se andasse a $12\ \text{m/s}$?
+**3.** (a) A crate of $40\ \text{kg}$ is pushed $5.0\ \text{m}$ with $120\ \text{N}$: work done? (b) You carry a bag of $20\ \text{kg}$ for $10\ \text{m}$ at constant speed, level: work done by your upward force? (c) Cyclist and bike, $80\ \text{kg}$, at $6.0\ \text{m/s}$, brake with $120\ \text{N}$: stopping distance? And at $12\ \text{m/s}$?
 
 ::: {.callout-tip collapse="true"}
-## Soluzione
-(a) $W = Fd = 120 \times 5{,}0 = 600\ \text{J}$; la massa non serve. (b) $W = 0\ \text{J}$: la forza verso l'alto è perpendicolare allo spostamento. I muscoli consumano comunque energia, ma non è lavoro compiuto sulla borsa. (c) A $6{,}0\ \text{m/s}$: $E_k = \tfrac12 \times 80 \times 6{,}0^2 = 1440\ \text{J}$ e $d = E_k/F = 1440/120 = 12\ \text{m}$. A $12\ \text{m/s}$: $E_k = 5760\ \text{J}$ e $d = 48\ \text{m}$: di nuovo quattro volte.
+## Solution
+(a) $W = F d = 600\ \text{J}$. Mass not needed. (b) $0\ \text{J}$: the force is up, the motion is sideways. (c) $E_k = \tfrac12 \times 80 \times 6.0^2 = 1440\ \text{J}$, so $d = 1440 / 120 = 12\ \text{m}$. At $12\ \text{m/s}$: $E_k = 5760\ \text{J}$, $d = 48\ \text{m}$: 4 × more.
 :::
 
-### La scheda di esercizi
+### Exam-style sheet
 
-Una scheda completa nello stile degli esami IGCSE. Usa $g = 10\ \text{N/kg}$, mostra ogni passaggio e scrivi l'unità in ogni risposta; dove serve, dai le risposte con tre cifre significative. Totale: 33 punti.
+$g = 10\ \text{N/kg}$. Show every step, give units. Total: 33 marks.
 
-**Esercizio 1 · Energia cinetica (4 punti).** Una ciclista e la sua bicicletta hanno massa totale $80\ \text{kg}$ e viaggiano a velocità costante di $36\ \text{km/h}$. (a) Converti $36\ \text{km/h}$ in $\text{m/s}$. (b) Calcola l'energia cinetica di ciclista e bicicletta. (c) La ciclista accelera fino a viaggiare al doppio della velocità: di quale fattore aumenta la sua energia cinetica?
+**1 · Kinetic energy (4).** Cyclist and bike, $80\ \text{kg}$, at $36\ \text{km/h}$. (a) Speed in $\text{m/s}$. (b) Kinetic energy. (c) Speed doubles: $E_k$ changes by what factor?
 
 ::: {.callout-tip collapse="true"}
-## Soluzione
-(a) $36 \div 3{,}6 = 10\ \text{m/s}$. (b) $E_k = \tfrac12 \times 80 \times 10^2 = 4000\ \text{J}$ ($4{,}0\ \text{kJ}$). (c) Fattore $4$, perché $E_k \propto v^2$ e $2^2 = 4$: la nuova energia è $16\,000\ \text{J}$. Attenzione agli errori tipici: usare $36$ al posto di $10$ dà $51\,840\ \text{J}$; dimenticare il quadrato dà $400\ \text{J}$; dimenticare il $\tfrac12$ dà $8000\ \text{J}$; dire «raddoppia» in (c) è l'errore dell'intuizione lineare.
+## Solution
+(a) $10\ \text{m/s}$. (b) $\tfrac12 \times 80 \times 10^2 = 4000\ \text{J}$. (c) × 4 ($16\,000\ \text{J}$). Common slips: $36$ instead of $10$ (51 840 J), no square (400 J), no $\tfrac12$ (8000 J).
 :::
 
-**Esercizio 2 · Energia potenziale gravitazionale (3 punti).** Un libro di massa $1{,}5\ \text{kg}$ viene sollevato dal pavimento a una mensola alta $2{,}0\ \text{m}$. (a) Calcola la variazione di energia potenziale gravitazionale. (b) Il libro viene poi spinto per $3{,}0\ \text{m}$ lungo la mensola: quanto vale la variazione di energia potenziale in questo tratto? Spiega.
+**2 · Potential energy (3).** A book of $1.5\ \text{kg}$ is lifted from the floor to a shelf $2.0\ \text{m}$ high. (a) Gain in potential energy. (b) It is then pushed $3.0\ \text{m}$ along the shelf: change in $E_p$? Explain.
 
 ::: {.callout-tip collapse="true"}
-## Soluzione
-(a) $\Delta E_p = mg\,\Delta h = 1{,}5 \times 10 \times 2{,}0 = 30\ \text{J}$. (b) $0\ \text{J}$: la quota non cambia ($\Delta h = 0$). Il fatto che una forza compia lavoro non basta: l'energia di spinta va in energia termica per attrito, non nella riserva gravitazionale.
+## Solution
+(a) $1.5 \times 10 \times 2.0 = 30\ \text{J}$. (b) $0\ \text{J}$: $\Delta h = 0$. The push ends up as thermal energy (friction).
 :::
 
-**Esercizio 3 · Velocità ed energia cinetica (4 punti).** Un'auto di massa $1200\ \text{kg}$ percorre $90\ \text{km}$ a velocità costante di $72\ \text{km/h}$. (a) Calcola il tempo impiegato, in minuti. (b) Calcola l'energia cinetica dell'auto.
+**3 · Speed and energy (4).** A car of $1200\ \text{kg}$ drives $90\ \text{km}$ at $72\ \text{km/h}$. (a) Time in minutes. (b) Kinetic energy.
 
 ::: {.callout-tip collapse="true"}
-## Soluzione
-(a) $t = s/v = 90/72 = 1{,}25\ \text{h} = 75\ \text{min}$: occhio alla conversione in minuti. (b) $v = 72 \div 3{,}6 = 20\ \text{m/s}$, quindi $E_k = \tfrac12 \times 1200 \times 20^2 = 240\,000\ \text{J}$ ($2{,}4 \times 10^5\ \text{J}$). Usare $72$ al posto di $20$ darebbe più di tre milioni di joule.
+## Solution
+(a) $90 / 72 = 1.25\ \text{h} = 75\ \text{min}$. (b) $72 \div 3.6 = 20\ \text{m/s}$, so $E_k = \tfrac12 \times 1200 \times 20^2 = 240\,000\ \text{J}$.
 :::
 
-**Esercizio 4 · Cambi di energia su una montagna russa (5 punti).** Un carrello di massa $400\ \text{kg}$ parte da fermo dal punto A, a $20\ \text{m}$ da terra. Il punto B è a $5\ \text{m}$ da terra e il punto C è a livello del suolo. Trascura attriti e resistenza dell'aria. (a) Calcola l'energia potenziale gravitazionale persa dal carrello tra A e B. (b) Indica l'energia cinetica in B e calcola la velocità in B. (c) Calcola la velocità in C.
+**4 · Roller coaster (5).** A trolley of $400\ \text{kg}$ starts at rest at A, $20\ \text{m}$ high. B is $5\ \text{m}$ high, C is at ground level. No friction. (a) $E_p$ lost from A to B. (b) $E_k$ and speed at B. (c) Speed at C.
 
 ::: {.callout-tip collapse="true"}
-## Soluzione
-(a) $\Delta E_p = mg\,\Delta h = 400 \times 10 \times (20 - 5) = 60\,000\ \text{J}$. (b) L'energia si conserva e il carrello parte da fermo, quindi $E_k = 60\,000\ \text{J}$; da $E_k = \tfrac12 mv^2$ si ricava $v = \sqrt{2E_k/m} = \sqrt{2 \times 60\,000/400} = \sqrt{300} = 17{,}3\ \text{m/s}$. (c) In C la quota persa dall'inizio è $20\ \text{m}$: $E_k = 400 \times 10 \times 20 = 80\,000\ \text{J}$ e $v = \sqrt{2 \times 80\,000/400} = \sqrt{400} = 20\ \text{m/s}$. Non calcolare solo il tratto da B a C: l'energia già acquisita da A a B conta ancora, e le velocità non si sommano, si sommano le energie. La massa si semplifica: $v = \sqrt{2gh} = \sqrt{2 \times 10 \times 20} = 20\ \text{m/s}$.
+## Solution
+(a) $400 \times 10 \times 15 = 60\,000\ \text{J}$. (b) $E_k = 60\,000\ \text{J}$, so $v = \sqrt{2 \times 60\,000 / 400} = \sqrt{300} = 17.3\ \text{m/s}$. (c) $E_k = 400 \times 10 \times 20 = 80\,000\ \text{J}$, so $v = \sqrt{400} = 20\ \text{m/s}$. Energies add up from A, speeds do not.
 :::
 
-**Esercizio 5 · Lavoro compiuto (4 punti).** Una studentessa spinge una scatola di massa $25\ \text{kg}$ lungo un pavimento orizzontale con una forza orizzontale costante di $60\ \text{N}$. La scatola si sposta di $8{,}0\ \text{m}$ a velocità costante. (a) Calcola il lavoro compiuto dalla studentessa. (b) Indica il valore della forza di attrito sulla scatola e spiega. (c) La scatola non guadagna energia cinetica: dove va l'energia trasferita dalla studentessa?
+**5 · Work (4).** A student pushes a box of $25\ \text{kg}$ along a level floor with a constant horizontal force of $60\ \text{N}$. It moves $8.0\ \text{m}$ at constant speed. (a) Work done by the student. (b) Friction force, and why. (c) The box gains no kinetic energy: where does the energy go?
 
 ::: {.callout-tip collapse="true"}
-## Soluzione
-(a) $W = Fd = 60 \times 8{,}0 = 480\ \text{J}$. Non usare la massa: $25 \times 8$ confonde massa e forza. (b) $60\ \text{N}$: la velocità è costante, quindi le forze sono bilanciate (forza risultante nulla) e l'attrito è uguale alla spinta. (c) Va nella riserva termica della scatola e del pavimento (riscaldamento per attrito), e poi si disperde nell'ambiente. Non è «persa»: è diventata energia termica.
+## Solution
+(a) $60 \times 8.0 = 480\ \text{J}$. Mass not needed. (b) $60\ \text{N}$: constant speed, so the forces balance. (c) Into the thermal store of box and floor (friction), then it spreads out.
 :::
 
-**Esercizio 6 · La rampa (4 punti).** Un operaio spinge una cassa di massa $50\ \text{kg}$ su per una rampa lunga $4{,}0\ \text{m}$ con una forza di $150\ \text{N}$ parallela al piano. La cassa sale di $1{,}0\ \text{m}$. (a) Calcola il lavoro compiuto dall'operaio. (b) Calcola l'aumento di energia potenziale gravitazionale della cassa. (c) Calcola quanta parte del lavoro non è immagazzinata come energia potenziale e dì che fine fa.
+**6 · The ramp (4).** A crate of $50\ \text{kg}$ is pushed up a $4.0\ \text{m}$ ramp with $150\ \text{N}$ parallel to the ramp. It rises $1.0\ \text{m}$. (a) Work done. (b) Gain in potential energy. (c) How much work is not stored as $E_p$, and where does it go?
 
 ::: {.callout-tip collapse="true"}
-## Soluzione
-(a) $W = Fd = 150 \times 4{,}0 = 600\ \text{J}$: la distanza è quella lungo la rampa, non l'altezza. (b) $\Delta E_p = mg\,\Delta h = 50 \times 10 \times 1{,}0 = 500\ \text{J}$: qui conta la quota, non la lunghezza della rampa. (c) $600 - 500 = 100\ \text{J}$, trasferiti per attrito tra cassa e rampa alla riserva termica.
+## Solution
+(a) $150 \times 4.0 = 600\ \text{J}$ (distance along the ramp). (b) $50 \times 10 \times 1.0 = 500\ \text{J}$ (height counts). (c) $100\ \text{J}$, to the thermal store by friction.
 :::
 
-**Esercizio 7 · Fermare un camion (5 punti).** Un camion di massa $8000\ \text{kg}$ viaggia a $54\ \text{km/h}$. L'autista frena con una forza frenante costante di $30\,000\ \text{N}$. (a) Calcola l'energia cinetica del camion prima di frenare. (b) Tutta questa energia viene portata via dalla forza frenante: calcola la distanza percorsa mentre il camion si ferma. (c) Il camion viaggia ora al doppio della velocità: senza fare il calcolo completo, indica la distanza di arresto e spiega.
+**7 · Stopping a truck (5).** A truck of $8000\ \text{kg}$ at $54\ \text{km/h}$ brakes with a constant $30\,000\ \text{N}$. (a) Kinetic energy. (b) Stopping distance. (c) At twice the speed: distance? Explain, no full calculation.
 
 ::: {.callout-tip collapse="true"}
-## Soluzione
-(a) $v = 54 \div 3{,}6 = 15\ \text{m/s}$ e $E_k = \tfrac12 \times 8000 \times 15^2 = 900\,000\ \text{J}$ ($9{,}0 \times 10^5\ \text{J}$). (b) $W = Fd = E_k$, quindi $d = 900\,000/30\,000 = 30\ \text{m}$. (c) Quattro volte più lunga, $120\ \text{m}$: $E_k$ è proporzionale a $v^2$ e $d$ è proporzionale a $E_k$ (a parità di forza frenante). Il punto è il fattore $4$, non $2$.
+## Solution
+(a) $54 \div 3.6 = 15\ \text{m/s}$, so $E_k = \tfrac12 \times 8000 \times 15^2 = 900\,000\ \text{J}$. (b) $d = 900\,000 / 30\,000 = 30\ \text{m}$. (c) $120\ \text{m}$: $E_k \propto v^2$ and $d \propto E_k$, so × 4, not × 2.
 :::
 
-**Esercizio 8 · Una palla che cade (4 punti).** Una palla di massa $0{,}50\ \text{kg}$ viene lasciata cadere da ferma da un'altezza di $45\ \text{m}$. Trascura la resistenza dell'aria. (a) Calcola la perdita di energia potenziale gravitazionale mentre cade fino a terra. (b) Indica l'energia cinetica della palla un istante prima di toccare il suolo. (c) Calcola la velocità subito prima dell'urto, in $\text{m/s}$ e in $\text{km/h}$.
+**8 · A falling ball (4).** A ball of $0.50\ \text{kg}$ is dropped from $45\ \text{m}$. No air. (a) $E_p$ lost. (b) $E_k$ just before landing. (c) Speed in $\text{m/s}$ and in $\text{km/h}$.
 
 ::: {.callout-tip collapse="true"}
-## Soluzione
-(a) $\Delta E_p = mg\,\Delta h = 0{,}50 \times 10 \times 45 = 225\ \text{J}$. (b) $225\ \text{J}$: tutta l'energia potenziale persa è diventata cinetica, senza resistenza dell'aria. (c) $v = \sqrt{2E_k/m} = \sqrt{2 \times 225/0{,}50} = \sqrt{900} = 30\ \text{m/s}$, e in $\text{km/h}$ si moltiplica per $3{,}6$: $30 \times 3{,}6 = 108\ \text{km/h}$. Attenzione: dividere per $3{,}6$ invece di moltiplicare darebbe un valore assurdo.
+## Solution
+(a) $0.50 \times 10 \times 45 = 225\ \text{J}$. (b) $225\ \text{J}$. (c) $v = \sqrt{2 \times 225 / 0.50} = \sqrt{900} = 30\ \text{m/s}$, and $30 \times 3.6 = 108\ \text{km/h}$.
 :::
 
-### Come ci accorgiamo che un risultato è sbagliato
+### Spot the mistake
 
-I conti di energia sono insidiosi perché un errore di unità o di formula produce quasi sempre un numero dall'aspetto ragionevole. Prendiamo l'auto di $1000\ \text{kg}$ a $50\ \text{km/h}$, che sappiamo valere circa $97\ \text{kJ}$, e sbagliamo una cosa alla volta.
+A car of $1000\ \text{kg}$ at $50\ \text{km/h}$ has $E_k \approx 97\ \text{kJ}$. Three slips that still give a number that looks fine:
 
-Se inserisco la velocità in $\text{km/h}$, ottengo $\tfrac12 \times 1000 \times 50^2 = 1\,250\,000\ \text{J}$: circa tredici volte troppo, e a occhio sembra un numero «da energia». Se dimentico il quadrato, ottengo $\tfrac12 \times 1000 \times 13{,}9 = 6950\ \text{J}$: l'energia cresce solo in proporzione a $v$, non a $v^2$. Se dimentico il mezzo, ottengo $1000 \times 13{,}9^2 \approx 193\,000\ \text{J}$: esattamente il doppio della risposta giusta.
+- Speed in $\text{km/h}$: $1\,250\,000\ \text{J}$, about 13 × too big.
+- No square: $6950\ \text{J}$.
+- No $\tfrac12$: $193\,000\ \text{J}$, double.
 
-Tre controlli che bastano quasi sempre. Il primo sono le **unità**: il risultato è in joule, e la velocità è in $\text{m/s}$? Il secondo è l'**ordine di grandezza**: se il numero è plausibile solo perché è grande, non è una conferma; confrontalo con un caso noto, per esempio i $97\ \text{kJ}$ dell'auto a $50\ \text{km/h}$. Il terzo è il **rapporto**: se la velocità raddoppia, l'energia deve quadruplicare; se il tuo calcolo non lo fa, c'è un errore. È lo stesso controllo che smaschera il camion della scheda che, senza il quadrato, si fermerebbe in $2\ \text{m}$: un valore irrealistico che dice subito che qualcosa non va.
+Three checks: **units** (J, m/s), **size** (compare with a known case, like the 97 kJ), **ratio** (speed × 2 means energy × 4).
