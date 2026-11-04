@@ -469,39 +469,53 @@
     "text": "Materiali e indicazioni per lo studio\nTemplate del lab report (PDF) ↗"
   },
   {
-    "objectID": "didattica/prima/lezioni/2026-10-28-pendulum-lab4/index.html",
-    "href": "didattica/prima/lezioni/2026-10-28-pendulum-lab4/index.html",
-    "title": "Pendulum: Timing Many Swings",
+    "objectID": "didattica/prima/lezioni/2026-10-14-midterm-test/index.html",
+    "href": "didattica/prima/lezioni/2026-10-14-midterm-test/index.html",
+    "title": "Midterm Test",
     "section": "",
-    "text": "Una singola oscillazione dura così poco che il tuo tempo di reazione pesa molto sul risultato. Se cronometri molte oscillazioni, l’errore di avvio e di arresto si divide sul totale: quanto conviene contarne? E come dipende il periodo T dalla lunghezza L del filo?\nPercorso: variabile indipendente, dipendente e controllate · lettura alla mezza divisione · ripetere la misura e riconoscere i risultati anomali · tabulare t, T = t/20 e la media."
+    "text": "Test Versione A (PDF) ↗ Test Versione B (PDF) ↗ Test Versione C (PDF) ↗ Soluzioni Versione A (PDF) ↗ Soluzioni Versione B (PDF) ↗ Soluzioni Versione C (PDF) ↗"
   },
   {
-    "objectID": "didattica/prima/lezioni/2026-10-28-pendulum-lab4/index.html#materiali-e-indicazioni-per-lo-studio",
-    "href": "didattica/prima/lezioni/2026-10-28-pendulum-lab4/index.html#materiali-e-indicazioni-per-lo-studio",
-    "title": "Pendulum: Timing Many Swings",
+    "objectID": "didattica/prima/lezioni/2026-10-14-midterm-test/index.html#materiali-e-indicazioni-per-lo-studio",
+    "href": "didattica/prima/lezioni/2026-10-14-midterm-test/index.html#materiali-e-indicazioni-per-lo-studio",
+    "title": "Midterm Test",
+    "section": "",
+    "text": "Test Versione A (PDF) ↗ Test Versione B (PDF) ↗ Test Versione C (PDF) ↗ Soluzioni Versione A (PDF) ↗ Soluzioni Versione B (PDF) ↗ Soluzioni Versione C (PDF) ↗"
+  },
+  {
+    "objectID": "didattica/prima/lezioni/2026-09-16-measure-standardform/index.html",
+    "href": "didattica/prima/lezioni/2026-09-16-measure-standardform/index.html",
+    "title": "Measuring like a scientist",
+    "section": "",
+    "text": "Più decimali non significano più precisione. Per sapere quante cifre di un risultato sono vere bisogna partire da dove nasce l’incertezza.\nPercorso: unità SI e prefissi · notazione scientifica · cifre significative · il tempo di reazione umano."
+  },
+  {
+    "objectID": "didattica/prima/lezioni/2026-09-16-measure-standardform/index.html#slide-della-lezione",
+    "href": "didattica/prima/lezioni/2026-09-16-measure-standardform/index.html#slide-della-lezione",
+    "title": "Measuring like a scientist",
+    "section": "Slide della lezione",
+    "text": "Slide della lezione\n\n\n\n\nApri le slide a schermo intero ↗"
+  },
+  {
+    "objectID": "didattica/prima/lezioni/2026-09-16-measure-standardform/index.html#materiali-e-indicazioni-per-lo-studio",
+    "href": "didattica/prima/lezioni/2026-09-16-measure-standardform/index.html#materiali-e-indicazioni-per-lo-studio",
+    "title": "Measuring like a scientist",
     "section": "Materiali e indicazioni per lo studio",
-    "text": "Materiali e indicazioni per lo studio\nScheda di laboratorio, Lab 4 (PDF) ↗"
+    "text": "Materiali e indicazioni per lo studio\nEsercizi — versione studenti (PDF) ↗\nEsercizi — versione docente con soluzioni (PDF) ↗\nCopione della lezione in italiano (PDF) ↗ Copione della lezione in inglese (PDF) ↗"
   },
   {
-    "objectID": "didattica/prima/lezioni/2026-09-09-measure-intro/index.html",
-    "href": "didattica/prima/lezioni/2026-09-09-measure-intro/index.html",
-    "title": "Our agreement for the year",
+    "objectID": "didattica/prima/lezioni/2026-11-04-mock-test/index.html",
+    "href": "didattica/prima/lezioni/2026-11-04-mock-test/index.html",
+    "title": "Mock Test: Measurement and Laboratory Skills",
     "section": "",
-    "text": "Apri le slide a schermo intero ↗"
+    "text": "Mock test (PDF) ↗"
   },
   {
-    "objectID": "didattica/prima/lezioni/2026-09-09-measure-intro/index.html#slide-della-lezione",
-    "href": "didattica/prima/lezioni/2026-09-09-measure-intro/index.html#slide-della-lezione",
-    "title": "Our agreement for the year",
+    "objectID": "didattica/prima/lezioni/2026-11-04-mock-test/index.html#materiali-e-indicazioni-per-lo-studio",
+    "href": "didattica/prima/lezioni/2026-11-04-mock-test/index.html#materiali-e-indicazioni-per-lo-studio",
+    "title": "Mock Test: Measurement and Laboratory Skills",
     "section": "",
-    "text": "Apri le slide a schermo intero ↗"
-  },
-  {
-    "objectID": "didattica/prima/lezioni/2026-09-09-measure-intro/index.html#materiali-e-indicazioni-per-lo-studio",
-    "href": "didattica/prima/lezioni/2026-09-09-measure-intro/index.html#materiali-e-indicazioni-per-lo-studio",
-    "title": "Our agreement for the year",
-    "section": "Materiali e indicazioni per lo studio",
-    "text": "Materiali e indicazioni per lo studio\nEstimate, then measure (PDF) ↗\nCopione della lezione in italiano (PDF) ↗ Copione della lezione in inglese (PDF) ↗"
+    "text": "Mock test (PDF) ↗"
   },
   {
     "objectID": "didattica/prima/fisica/index.html",
@@ -956,42 +970,56 @@
     "href": "didattica/prima/index.html",
     "title": "Classe Prima",
     "section": "",
-    "text": "Data\n\n\n\nType\n\n\n\nTitolo\n\n\n\nDriving question\n\n\n\n\n\n\n\n\n9 set 2026\n\n\nLecture\n\n\nOur agreement for the year\n\n\nExpectations, assessment, and a first taste of measuring\n\n\n\n\n\n\n16 set 2026\n\n\nLecture\n\n\nMeasuring like a scientist\n\n\nIl cronometro del telefono segna 11,3748 s sui 100 metri: perché Sherlock Holmes non ci crede?\n\n\n\n\n\n\n23 set 2026\n\n\nLecture\n\n\nRandom & Systematic Error\n\n\nIl cronometro segna i centesimi di secondo: la tua misura è precisa al centesimo?\n\n\n\n\n\n\n30 set 2026\n\n\nLab\n\n\nHow big is it? Volume and density\n\n\nCome si misura il volume di un sasso, che non ha spigoli né formule?\n\n\n\n\n\n\n7 ott 2026\n\n\nLab\n\n\nMeasuring Density by Water Displacement\n\n\nMisuri la densità di un oggetto di metallo: puoi dire con certezza di che materiale è?\n\n\n\n\n\n\n14 ott 2026\n\n\nTest\n\n\nMidterm Test\n\n\nTest e soluzioni\n\n\n\n\n\n\n28 ott 2026\n\n\nLab\n\n\nPendulum: Timing Many Swings\n\n\nPer misurare il periodo di un pendolo si cronometrano venti oscillazioni e non una sola: perché?\n\n\n\n\n\n\nNessun risultato"
+    "text": "Data\n\n\n\nType\n\n\n\nTitolo\n\n\n\nDriving question\n\n\n\n\n\n\n\n\n9 set 2026\n\n\nLecture\n\n\nOur agreement for the year\n\n\nExpectations, assessment, and a first taste of measuring\n\n\n\n\n\n\n16 set 2026\n\n\nLecture\n\n\nMeasuring like a scientist\n\n\nIl cronometro del telefono segna 11,3748 s sui 100 metri: perché Sherlock Holmes non ci crede?\n\n\n\n\n\n\n23 set 2026\n\n\nLecture\n\n\nRandom & Systematic Error\n\n\nIl cronometro segna i centesimi di secondo: la tua misura è precisa al centesimo?\n\n\n\n\n\n\n30 set 2026\n\n\nLab\n\n\nHow big is it? Volume and density\n\n\nCome si misura il volume di un sasso, che non ha spigoli né formule?\n\n\n\n\n\n\n7 ott 2026\n\n\nLab\n\n\nMeasuring Density by Water Displacement\n\n\nMisuri la densità di un oggetto di metallo: puoi dire con certezza di che materiale è?\n\n\n\n\n\n\n14 ott 2026\n\n\nTest\n\n\nMidterm Test\n\n\nTest e soluzioni\n\n\n\n\n\n\n28 ott 2026\n\n\nLab\n\n\nPendulum: Timing Many Swings\n\n\nPer misurare il periodo di un pendolo si cronometrano venti oscillazioni e non una sola: perché?\n\n\n\n\n\n\n4 nov 2026\n\n\nPractice\n\n\nMock Test: Measurement and Laboratory Skills\n\n\nProva formativa di 45 minuti, a risposta multipla, in vista dell’examination week: grandezze, unità, notazione scientifica, cifre significative, errori e risultati anomali\n\n\n\n\n\n\n4 nov 2026\n\n\nLab\n\n\nPendulum: From Data to Graph with Google Sheets\n\n\nCome fare analisi dati con Google Fogli per la prima volta\n\n\n\n\n\n\nNessun risultato"
   },
   {
-    "objectID": "didattica/prima/lezioni/2026-09-16-measure-standardform/index.html",
-    "href": "didattica/prima/lezioni/2026-09-16-measure-standardform/index.html",
-    "title": "Measuring like a scientist",
+    "objectID": "didattica/prima/lezioni/2026-09-09-measure-intro/index.html",
+    "href": "didattica/prima/lezioni/2026-09-09-measure-intro/index.html",
+    "title": "Our agreement for the year",
     "section": "",
-    "text": "Più decimali non significano più precisione. Per sapere quante cifre di un risultato sono vere bisogna partire da dove nasce l’incertezza.\nPercorso: unità SI e prefissi · notazione scientifica · cifre significative · il tempo di reazione umano."
+    "text": "Apri le slide a schermo intero ↗"
   },
   {
-    "objectID": "didattica/prima/lezioni/2026-09-16-measure-standardform/index.html#slide-della-lezione",
-    "href": "didattica/prima/lezioni/2026-09-16-measure-standardform/index.html#slide-della-lezione",
-    "title": "Measuring like a scientist",
-    "section": "Slide della lezione",
-    "text": "Slide della lezione\n\n\n\n\nApri le slide a schermo intero ↗"
+    "objectID": "didattica/prima/lezioni/2026-09-09-measure-intro/index.html#slide-della-lezione",
+    "href": "didattica/prima/lezioni/2026-09-09-measure-intro/index.html#slide-della-lezione",
+    "title": "Our agreement for the year",
+    "section": "",
+    "text": "Apri le slide a schermo intero ↗"
   },
   {
-    "objectID": "didattica/prima/lezioni/2026-09-16-measure-standardform/index.html#materiali-e-indicazioni-per-lo-studio",
-    "href": "didattica/prima/lezioni/2026-09-16-measure-standardform/index.html#materiali-e-indicazioni-per-lo-studio",
-    "title": "Measuring like a scientist",
+    "objectID": "didattica/prima/lezioni/2026-09-09-measure-intro/index.html#materiali-e-indicazioni-per-lo-studio",
+    "href": "didattica/prima/lezioni/2026-09-09-measure-intro/index.html#materiali-e-indicazioni-per-lo-studio",
+    "title": "Our agreement for the year",
     "section": "Materiali e indicazioni per lo studio",
-    "text": "Materiali e indicazioni per lo studio\nEsercizi — versione studenti (PDF) ↗\nEsercizi — versione docente con soluzioni (PDF) ↗\nCopione della lezione in italiano (PDF) ↗ Copione della lezione in inglese (PDF) ↗"
+    "text": "Materiali e indicazioni per lo studio\nEstimate, then measure (PDF) ↗\nCopione della lezione in italiano (PDF) ↗ Copione della lezione in inglese (PDF) ↗"
   },
   {
-    "objectID": "didattica/prima/lezioni/2026-10-14-midterm-test/index.html",
-    "href": "didattica/prima/lezioni/2026-10-14-midterm-test/index.html",
-    "title": "Midterm Test",
+    "objectID": "didattica/prima/lezioni/2026-10-28-pendulum-lab4/index.html",
+    "href": "didattica/prima/lezioni/2026-10-28-pendulum-lab4/index.html",
+    "title": "Pendulum: Timing Many Swings",
     "section": "",
-    "text": "Test Versione A (PDF) ↗ Test Versione B (PDF) ↗ Test Versione C (PDF) ↗ Soluzioni Versione A (PDF) ↗ Soluzioni Versione B (PDF) ↗ Soluzioni Versione C (PDF) ↗"
+    "text": "Una singola oscillazione dura così poco che il tuo tempo di reazione pesa molto sul risultato. Se cronometri molte oscillazioni, l’errore di avvio e di arresto si divide sul totale: quanto conviene contarne? E come dipende il periodo T dalla lunghezza L del filo?\nPercorso: variabile indipendente, dipendente e controllate · lettura alla mezza divisione · ripetere la misura e riconoscere i risultati anomali · tabulare t, T = t/20 e la media."
   },
   {
-    "objectID": "didattica/prima/lezioni/2026-10-14-midterm-test/index.html#materiali-e-indicazioni-per-lo-studio",
-    "href": "didattica/prima/lezioni/2026-10-14-midterm-test/index.html#materiali-e-indicazioni-per-lo-studio",
-    "title": "Midterm Test",
+    "objectID": "didattica/prima/lezioni/2026-10-28-pendulum-lab4/index.html#materiali-e-indicazioni-per-lo-studio",
+    "href": "didattica/prima/lezioni/2026-10-28-pendulum-lab4/index.html#materiali-e-indicazioni-per-lo-studio",
+    "title": "Pendulum: Timing Many Swings",
+    "section": "Materiali e indicazioni per lo studio",
+    "text": "Materiali e indicazioni per lo studio\nScheda di laboratorio, Lab 4 (PDF) ↗"
+  },
+  {
+    "objectID": "didattica/prima/lezioni/2026-11-04-pendulum-lab4-sheets/index.html",
+    "href": "didattica/prima/lezioni/2026-11-04-pendulum-lab4-sheets/index.html",
+    "title": "Pendulum: From Data to Graph with Google Sheets",
     "section": "",
-    "text": "Test Versione A (PDF) ↗ Test Versione B (PDF) ↗ Test Versione C (PDF) ↗ Soluzioni Versione A (PDF) ↗ Soluzioni Versione B (PDF) ↗ Soluzioni Versione C (PDF) ↗"
+    "text": "I dati del Lab 4 (t1, t2 e t3 per 20 oscillazioni, sette lunghezze) diventano una tabella con formule, un grafico a dispersione di T² contro L e una linea di tendenza. Un risultato anomalo sposta la linea e può nascondersi: per questo lo si cerca prima, con il rapporto T²/L.\nPercorso: tabella e formule in Fogli Google · grafico a dispersione · risultato anomalo · linea di tendenza e, come bonus, l’intercetta e l’errore sistematico.\nConsegna: anche se il lavoro è di gruppo, ognuno lavora sul proprio computer, salva il file come Lab4_cognome e lo consegna su Classroom."
+  },
+  {
+    "objectID": "didattica/prima/lezioni/2026-11-04-pendulum-lab4-sheets/index.html#materiali-e-indicazioni-per-lo-studio",
+    "href": "didattica/prima/lezioni/2026-11-04-pendulum-lab4-sheets/index.html#materiali-e-indicazioni-per-lo-studio",
+    "title": "Pendulum: From Data to Graph with Google Sheets",
+    "section": "Materiali e indicazioni per lo studio",
+    "text": "Materiali e indicazioni per lo studio\nGuida a Fogli Google, Lab 4 (PDF) ↗"
   },
   {
     "objectID": "didattica/prima/lezioni/2026-09-30-measure-density-lab1/index.html",
