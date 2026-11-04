@@ -1,0 +1,19 @@
+---
+title: "Pendulum: From Data to Graph with Google Sheets"
+subtitle: "Come fare analisi dati con Google Fogli per la prima volta"
+date: 2026-11-04
+categories: [Fisica]
+tipo: "Lab"
+---
+
+::: {.callout-note appearance="simple" icon=false}
+I dati del Lab 4 (t1, t2 e t3 per 20 oscillazioni, sette lunghezze) diventano una tabella con formule, un grafico a dispersione di T² contro L e una linea di tendenza. Un risultato anomalo sposta la linea e può nascondersi: per questo lo si cerca prima, con il rapporto T²/L.
+
+**Percorso:** tabella e formule in Fogli Google · grafico a dispersione · risultato anomalo · linea di tendenza e, come bonus, l'intercetta e l'errore sistematico.
+
+**Consegna:** anche se il lavoro è di gruppo, ognuno lavora sul proprio computer, salva il file come `Lab4_cognome` e lo consegna su Classroom.
+:::
+
+## Materiali e indicazioni per lo studio
+
+[Guida a Fogli Google, Lab 4 (PDF) ↗](guida_sheets_lab4_1A.pdf){target="_blank" .btn .btn-outline-primary}
