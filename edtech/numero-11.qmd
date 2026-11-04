@@ -1,9 +1,10 @@
 ---
 title: "Notion"
 description: "Lo spazio di lavoro tutto-in-uno che raccoglie note, link, liste e tabelle in un solo posto: il tuo second brain, gratuito e sincronizzato ovunque."
-date: "2026-05-21"
+ordine: "2026-05-21"
+pubblico: tutti
+image: img/11-oasi.svg
 categories: [Produttività]
-# image: "img/notion.png"
 ---
 
 ## Il problema

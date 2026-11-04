@@ -1,9 +1,10 @@
 ---
 title: "Scanner nascosto in Google Drive"
 description: "L'app Drive ha uno scanner integrato che salva PDF già ritagliati e filtrati direttamente nelle cartelle giuste: niente più file sparsi o fotocopiatrici da decifrare."
-date: "2026-01-15"
+ordine: "2026-01-15"
+pubblico: tutti
+image: img/06-cactus.svg
 categories: [Google Drive]
-# image: "img/scanner-drive.png"
 ---
 
 ## Il problema

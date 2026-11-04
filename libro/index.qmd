@@ -1,6 +1,6 @@
 ---
-title: "Libro"
-subtitle: "Il manuale di fisica: teoria, formule, widget ed esercizi"
+title: "Pagina in costruzione"
+subtitle: "Sto scrivendo un piccolo libro digitale di fisica: aperto a tutti, interattivo e in un linguaggio accessibile. Qui sotto trovi i primi capitoli, ancora in lavorazione."
 toc: false
 listing:
   contents: "*/index.qmd"

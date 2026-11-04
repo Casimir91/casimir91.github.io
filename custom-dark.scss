@@ -1,3 +1,25 @@
 /*-- scss:defaults --*/
 // Barra di navigazione nel tema scuro: stesso antracite del tema chiaro (al posto del blu di darkly)
 $navbar-bg: #343a40;
+// Hover sulle voci della navbar: stesso verde dei link nel testo (#00bc8c di darkly), non la menta derivata
+$navbar-dark-hover-color: #00bc8c;
+$navbar-dark-active-color: #00bc8c;
+
+/*-- scss:rules --*/
+// Forza il verde dei link (#00bc8c) su hover/focus/voce attiva della navbar e sulle icone a destra
+body .navbar {
+  --bs-navbar-hover-color: #00bc8c;
+  --bs-navbar-active-color: #00bc8c;
+  --bs-navbar-brand-hover-color: #00bc8c;
+}
+body .navbar .nav-link:hover,
+body .navbar .nav-link:focus,
+body .navbar .nav-link.active,
+body .navbar .nav-link.show,
+body .navbar .navbar-nav .active > .nav-link,
+body .navbar .navbar-nav .show > .nav-link,
+body .navbar .navbar-brand:hover,
+body .navbar .navbar-brand:focus,
+body .navbar .quarto-navbar-tools .quarto-navigation-tool:hover {
+  color: #00bc8c !important;
+}

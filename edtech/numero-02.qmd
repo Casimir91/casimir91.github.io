@@ -1,9 +1,10 @@
 ---
 title: "Tab Resize"
 description: "Sistema le finestre in layout predefiniti con un clic: mezzo schermo, quarti, terzi, per lavorare e confrontare senza trascinare a mano."
-date: "2025-09-24"
+ordine: "2025-09-24"
+pubblico: tutti
+image: img/02-onde.svg
 categories: [Google Chrome]
-# image: "img/tab-resize.png"
 ---
 
 ## Il problema

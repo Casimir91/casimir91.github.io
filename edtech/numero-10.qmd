@@ -1,9 +1,10 @@
 ---
 title: "Icone personalizzate per le cartelle"
 description: "Assegna a ogni cartella un'icona diversa e riconoscila a colpo d'occhio, senza leggere il nome: due minuti su Mac e su Windows."
-date: "2026-04-08"
+ordine: "2026-04-08"
+pubblico: tutti
+image: img/10-ciottoli.svg
 categories: [Produttività]
-# image: "img/icone-cartelle.png"
 ---
 
 ## Il problema

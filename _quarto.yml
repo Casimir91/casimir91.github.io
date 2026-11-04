@@ -17,8 +17,6 @@ website:
         text: Home
       - href: didattica/index.qmd
         text: Didattica
-      - href: libro/index.qmd
-        text: Libro
       - href: edtech/index.qmd
         text: EdTech
       - href: toolbox/index.qmd
@@ -38,3 +36,4 @@ format:
       dark: [darkly, custom-dark.scss]
     respect-user-color-scheme: true
     toc: true
+    include-after-body: brand-link.html

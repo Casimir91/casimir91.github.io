@@ -1,9 +1,10 @@
 ---
 title: "Tab Group di Chrome"
 description: "Raggruppa le schede del browser in cluster con nome e colore: uno scaffale ordinato per ogni progetto."
-date: "2025-09-04"
+ordine: "2025-09-04"
+pubblico: tutti
+image: img/01-dune.svg
 categories: [Google Chrome]
-# image: "img/tab-group.png"   ← la aggiungi in un secondo momento
 ---
 
 ## Il problema

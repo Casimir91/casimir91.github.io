@@ -1,0 +1,267 @@
+<style>
+.vw{border:1px solid var(--bs-border-color,#ccc);border-radius:.6rem;padding:.6rem .8rem .7rem;margin:1.4rem 0}
+.vw svg{width:100%;height:auto;display:block}
+.vw svg text{fill:currentColor}
+.vw .btns{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.5rem}
+.vw button{border:1px solid #2a7f62;background:transparent;color:inherit;border-radius:.4rem;padding:.35rem .9rem;cursor:pointer;font:inherit}
+.vw button:hover{background:rgba(42,127,98,.18)}
+.vw button.on{background:rgba(42,127,98,.3);font-weight:600}
+.vf{border:1px solid var(--bs-border-color,#ccc);border-radius:.6rem;padding:.9rem 1rem;margin:1.4rem 0}
+.vf .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:.9rem}
+.vf .card{border-left:4px solid var(--c);padding:.1rem .8rem}
+.vf .nm{font-size:.85rem;opacity:.8}
+.vf .fm{font-size:1.45rem;margin:.15rem 0}
+.vf .pr{font-size:1rem;font-weight:600}
+.vf .ex{font-size:.85rem;opacity:.8}
+.vf .note{margin:.8rem 0 0;font-size:.9rem}
+.vf h4{margin:1rem 0 .4rem;font-size:1rem;padding-top:.8rem;border-top:1px solid var(--bs-border-color,#ccc)}
+.vf .row{display:grid;grid-template-columns:minmax(120px,1fr) minmax(150px,1.2fr) 2fr;gap:.2rem .9rem;align-items:baseline;padding:.3rem 0}
+.vf .row .when{font-weight:600}
+.vf .row .fm{font-size:1.15rem;margin:0}
+@media (max-width:560px){.vf .row{grid-template-columns:1fr;padding:.5rem 0}}
+</style>
+<script>
+(function(){
+"use strict";
+var NS="http://www.w3.org/2000/svg",G=9.81;
+var C={pot:"#1D9E75",kin:"#EF9F27",ela:"#7F77DD",ter:"#D85A30",che:"#639922",nuc:"#D4537E",gr:"#888780"};
+function S(tag,at,par,txt){var e=document.createElementNS(NS,tag);for(var k in at)e.setAttribute(k,at[k]);if(txt!==undefined&&txt!==null)e.textContent=txt;if(par)par.appendChild(e);return e;}
+function T(par,x,y,txt,size,o){o=o||{};var e=S("text",{x:x,y:y,"font-size":size||14,"text-anchor":o.a||"start","font-weight":o.w||400},par,txt);if(o.o!==undefined)e.setAttribute("opacity",o.o);if(o.f)e.style.fill=o.f;return e;}
+function ease(p){return p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;}
+function tween(dur,fn,done){var t0=null,id,dead=false;function st(t){if(dead)return;if(t0===null)t0=t;var p=Math.min(1,(t-t0)/dur);fn(p);if(p<1)id=requestAnimationFrame(st);else if(done)done();}id=requestAnimationFrame(st);return function(){dead=true;cancelAnimationFrame(id);};}
+function mount(root,h,label){root.classList.add("vw");var svg=S("svg",{viewBox:"0 0 680 "+h,role:"img","aria-label":label||""},null);root.appendChild(svg);var b=document.createElement("div");b.className="btns";root.appendChild(b);return {svg:svg,btns:b};}
+function button(par,label,fn){var b=document.createElement("button");b.type="button";b.textContent=label;b.onclick=fn;par.appendChild(b);return b;}
+function arrow(par,x1,y1,x2,y2,col,sw){var g=S("g",{},par),a=Math.atan2(y2-y1,x2-x1),L=10,c=col||"currentColor";S("line",{x1:x1,y1:y1,x2:x2-Math.cos(a)*L*.7,y2:y2-Math.sin(a)*L*.7,stroke:c,"stroke-width":sw||2},g);S("polygon",{points:x2+","+y2+" "+(x2-L*Math.cos(a-.4))+","+(y2-L*Math.sin(a-.4))+" "+(x2-L*Math.cos(a+.4))+","+(y2-L*Math.sin(a+.4)),fill:c},g);return g;}
+function bars(s,x0,base,hmax,items,w,gap){var rs=[];items.forEach(function(it,i){var x=x0+i*(w+gap);rs.push(S("rect",{x:x,y:base,width:w,height:0,fill:it.col},s));T(s,x+w/2,base+22,it.lab,13,{a:"middle"});});S("line",{x1:x0-10,y1:base,x2:x0+items.length*(w+gap)-gap+10,y2:base,stroke:"currentColor","stroke-width":2},s);return function(v){v.forEach(function(q,i){var hh=Math.max(0,q)*hmax;rs[i].setAttribute("y",base-hh);rs[i].setAttribute("height",hh);});};}
+function setOn(btns,i){btns.forEach(function(b,j){b.className=j===i?"on":"";});}
+
+/* 1 - what is energy */
+function vIdea(root){
+ var m=mount(root,330,"A raised ball drops on a stake and pushes it into the ground: energy is the ability to do work"),s=m.svg,st=0,busy=false;
+ T(s,470,100,"Energy",26,{w:500});
+ T(s,470,134,"= the ability to do work",16);
+ T(s,470,186,"work = a force",14,{o:.75});
+ T(s,470,206,"moves something",14,{o:.75});
+ var stake=S("rect",{x:212,y:200,width:26,height:70,fill:C.gr},s);
+ S("rect",{x:60,y:250,width:340,height:70,fill:"currentColor",opacity:.15},s);
+ S("line",{x1:60,y1:250,x2:400,y2:250,stroke:"currentColor","stroke-width":2},s);
+ var ball=S("circle",{cx:225,cy:70,r:26,fill:C.pot},s);
+ var l1=T(s,262,76,"has energy",13);
+ var l2=T(s,262,200,"pushes the stake",13,{o:0});
+ var b=button(m.btns,"Drop it",function(){
+  if(busy)return;
+  if(st===1){ball.setAttribute("cy",70);stake.setAttribute("y",200);l1.setAttribute("opacity",1);l2.setAttribute("opacity",0);b.textContent="Drop it";st=0;return;}
+  busy=true;l1.setAttribute("opacity",0);
+  tween(700,function(p){ball.setAttribute("cy",70+104*p*p);},function(){
+   tween(350,function(q){var d=40*ease(q);ball.setAttribute("cy",174+d);stake.setAttribute("y",200+d);},function(){l2.setAttribute("y",236);l2.setAttribute("opacity",1);st=1;busy=false;b.textContent="Again";});
+  });
+ });
+}
+
+/* 2 - falling ball, two stores */
+function vFall(root){
+ var m=mount(root,345,"A ball falls: the height store becomes the motion store and the total stays the same"),s=m.svg,i=0,busy=false;
+ var caps=["Held up","Falling: height becomes motion","Just before landing"],lab=["Drop it","Keep going","Again"],S_=[0,.5,1];
+ var cap=T(s,40,30,caps[0],15,{w:500});
+ S("line",{x1:170,y1:50,x2:170,y2:300,stroke:"currentColor","stroke-dasharray":"4 4",opacity:.4},s);
+ S("line",{x1:60,y1:300,x2:300,y2:300,stroke:"currentColor","stroke-width":2},s);
+ var hm=S("line",{x1:105,y1:300,x2:105,y2:78,stroke:C.pot,"stroke-width":3},s);
+ var hl=T(s,95,196,"height",13,{a:"end",o:.75});
+ var ball=S("circle",{cx:170,cy:64,r:14,fill:"#5F5E5A"},s),bl=T(s,196,69,"ball",13,{o:.75});
+ S("line",{x1:360,y1:100,x2:610,y2:100,stroke:"currentColor","stroke-dasharray":"5 4",opacity:.6},s);
+ T(s,485,90,"Total: always the same",13,{a:"middle",o:.8});
+ var setB=bars(s,380,300,200,[{lab:"Height store",col:C.pot},{lab:"Motion store",col:C.kin}],70,70);
+ var tr=S("g",{opacity:0},s);arrow(tr,458,200,512,200,"currentColor",1.5);T(tr,485,190,"transfer",13,{a:"middle"});
+ function draw(q){var cy=64+222*q;ball.setAttribute("cy",cy);bl.setAttribute("y",cy+5);hm.setAttribute("y2",Math.max(299,cy+16));hm.style.opacity=q>.97?0:1;hl.style.opacity=q>.97?0:.75;setB([1-q,q]);}
+ draw(0);
+ var b=button(m.btns,lab[0],function(){
+  if(busy)return;
+  if(i===2){i=0;draw(0);tr.setAttribute("opacity",0);cap.textContent=caps[0];b.textContent=lab[0];return;}
+  var t0=Math.sqrt(S_[i]),t1=Math.sqrt(S_[i+1]);i++;busy=true;tr.setAttribute("opacity",1);cap.textContent=caps[i];
+  tween(1100*(t1-t0),function(p){var t=t0+(t1-t0)*p;draw(t*t);},function(){busy=false;b.textContent=lab[i];});
+ });
+}
+
+/* 3 - four transfers (drawings from the original chapter, labels in English) */
+function vTrans(root){
+ var m=mount(root,276,"Four ways to move energy between stores: force, current, heating, waves"),s=m.svg,W=680,GY=118,cur=0,p=0,t=0,stop=null,btns=[];
+ var cap=T(s,10,16,"",14,{w:500}),tot=T(s,672,16,"Total: 100 J",13,{a:"end",w:500});
+ var gs=[0,1,2,3].map(function(){return S("g",{transform:"translate(0,16)"},s);});
+ var g0=gs[0];S("line",{x1:6,y1:GY,x2:W-6,y2:GY,stroke:"currentColor","stroke-width":1.5},g0);
+ var cartG=S("g",{},g0);
+ S("rect",{x:0,y:GY-40,width:56,height:24,fill:"#9aa5b1"},cartG);S("circle",{cx:13,cy:GY-8,r:8,fill:"currentColor"},cartG);S("circle",{cx:43,cy:GY-8,r:8,fill:"currentColor"},cartG);
+ S("circle",{cx:-23.7,cy:GY-44.6,r:5.2,fill:"none",stroke:"currentColor","stroke-width":2},cartG);
+ S("polyline",{points:"-25.5,"+(GY-38)+" -34,"+(GY-20.9)+" -41.6,"+GY,fill:"none",stroke:"currentColor","stroke-width":2},cartG);
+ S("line",{x1:-34,y1:GY-20.9,x2:-26.4,y2:GY,stroke:"currentColor","stroke-width":2},cartG);
+ S("line",{x1:-25.5,y1:GY-36,x2:-5.5,y2:GY-32,stroke:"currentColor","stroke-width":2},cartG);
+ arrow(cartG,-30,GY-66,6,GY-66,C.kin,2.5);T(cartG,-12,GY-72,"force",12,{a:"middle",f:C.kin,w:500});
+ var g1=gs[1],bx=W*.14,lx=W*.72;
+ S("rect",{x:bx-14,y:56,width:28,height:38,fill:"#9aa5b1",stroke:"currentColor","stroke-width":2},g1);T(g1,bx,72,"+",12,{a:"middle"});T(g1,bx,110,"battery",12,{a:"middle"});
+ S("path",{d:"M"+bx+" 56V20H"+lx+"V48M"+lx+" 92V116H"+bx+"V94",fill:"none",stroke:"currentColor","stroke-width":2},g1);
+ var lamp=S("circle",{cx:lx,cy:70,r:22,stroke:"currentColor","stroke-width":2,fill:"#ffdc3c","fill-opacity":.2},g1);T(g1,lx+42,74,"lamp",12);
+ var rays=[],a,an;for(a=0;a<8;a++){an=a*Math.PI/4;rays.push(S("line",{x1:lx+27*Math.cos(an),y1:70+27*Math.sin(an),x2:lx+36*Math.cos(an),y2:70+36*Math.sin(an),stroke:"#ffd228","stroke-width":2,opacity:0},g1));}
+ var els=[];for(a=0;a<10;a++)els.push(S("circle",{r:3,fill:"#3b6fb6",opacity:0},g1));
+ var path=[[bx,56],[bx,20],[lx,20],[lx,48],[lx,92],[lx,116],[bx,116],[bx,94]],seg=[[0,1],[1,2],[2,3],[4,5],[5,6],[6,7]],SL=[],ST=0;
+ seg.forEach(function(q){var l=Math.hypot(path[q[1]][0]-path[q[0]][0],path[q[1]][1]-path[q[0]][1]);SL.push(l);ST+=l;});
+ var g2=gs[2],cx=W*.5;S("line",{x1:6,y1:GY,x2:W-6,y2:GY,stroke:"currentColor","stroke-width":1.5},g2);
+ var pot=S("polygon",{points:(cx-34)+","+(GY-62)+" "+(cx+34)+","+(GY-62)+" "+(cx+28)+","+(GY-22)+" "+(cx-28)+","+(GY-22),fill:"#5096dc","fill-opacity":.35,stroke:"currentColor","stroke-width":2},g2);
+ var bub=[],fl=[],st2=[],k;for(k=0;k<6;k++)bub.push(S("circle",{r:2.2,fill:"#fff",opacity:0},g2));
+ for(k=0;k<5;k++)fl.push(S("polygon",{fill:k%2?"#f0a020":"#e8561c",opacity:0},g2));
+ for(k=0;k<3;k++)st2.push(S("path",{fill:"none",stroke:"currentColor","stroke-opacity":.5,"stroke-width":1.5,opacity:0},g2));
+ T(g2,cx,GY+14,"gas",12,{a:"middle"});T(g2,cx+52,GY-40,"water",12);
+ var g3=gs[3],sx=W*.14,ox=W*.72;
+ S("circle",{cx:sx,cy:60,r:24,fill:"#f2c21b"},g3);for(a=0;a<12;a++){an=a*Math.PI/6;S("line",{x1:sx+28*Math.cos(an),y1:60+28*Math.sin(an),x2:sx+38*Math.cos(an),y2:60+38*Math.sin(an),stroke:"#f2c21b","stroke-width":2},g3);}
+ var wv=[0,1,2].map(function(){return S("path",{fill:"none",stroke:"#e8b300","stroke-width":2},g3);});
+ var obj=S("rect",{x:ox,y:34,width:40,height:60,stroke:"currentColor","stroke-width":1.5},g3);T(g3,sx,104,"Sun",12,{a:"middle"});T(g3,ox+20,110,"dark object",12,{a:"middle"});
+ var DATA=[
+  {c:"A force moves energy from the person to the cart",tk:[["Chemical store","person",function(p){return 100-55*p;},C.che],["Kinetic store","cart",function(p){return 40*p;},C.kin],["Thermal store","body",function(p){return 15*p;},C.ter]]},
+  {c:"A current moves energy from the battery to the lamp",tk:[["Chemical store","battery",function(p){return 100-70*p;},C.che],["Thermal store","lamp and air",function(p){return 70*p;},C.ter]]},
+  {c:"Heating moves energy from the flame to the water",tk:[["Chemical store","gas",function(p){return 100-60*p;},C.che],["Thermal store","water",function(p){return 45*p;},C.ter],["Thermal store","air",function(p){return 15*p;},"#e08a6c"]]},
+  {c:"Waves carry energy from the Sun to the object",tk:[["Nuclear store","Sun",function(p){return 100-30*p;},C.nuc],["Thermal store","object",function(p){return 30*p;},C.ter]]}];
+ var TK=[0,1,2].map(function(){var g=S("g",{},s);return {g:g,bg:S("rect",{y:168,height:56,fill:"currentColor","fill-opacity":.12},g),f:S("rect",{y:168,height:0},g),ol:S("rect",{y:168,height:56,fill:"none",stroke:"currentColor"},g),v:T(g,0,163,"",13,{a:"middle",w:500}),l1:T(g,0,240,"",13,{a:"middle",w:500}),l2:T(g,0,257,"",12,{a:"middle",o:.8})};});
+ function upd(){
+  gs.forEach(function(g,i){g.style.display=i===cur?"":"none";});
+  var glow,i,f,d;
+  if(cur===0){var x0=W*.38,x1=W*.7;cartG.setAttribute("transform","translate("+(x0+(x1-x0)*p)+",0)");}
+  else if(cur===1){glow=Math.min(1,p*5)*(p<1?(.75+.25*Math.sin(t*10)):.35);lamp.setAttribute("fill-opacity",.2+.8*glow);rays.forEach(function(r){r.setAttribute("opacity",glow>.1?glow:0);});
+   els.forEach(function(e,q){if(p>0&&p<1){var dist=((t*.4+q/10)%1)*.999*ST,kk;for(kk=0;kk<seg.length;kk++){if(dist<=SL[kk]){f=dist/SL[kk];var a0=path[seg[kk][0]],a1=path[seg[kk][1]];e.setAttribute("cx",a0[0]+(a1[0]-a0[0])*f);e.setAttribute("cy",a0[1]+(a1[1]-a0[1])*f);break;}dist-=SL[kk];}e.setAttribute("opacity",1);}else e.setAttribute("opacity",0);});}
+  else if(cur===2){pot.setAttribute("fill-opacity",.35+.15*p);
+   bub.forEach(function(b,q){b.setAttribute("cx",cx-20+q*8);b.setAttribute("cy",GY-26-((t*18+q*11)%34));b.setAttribute("opacity",p>.35&&p<1?.8:0);});
+   fl.forEach(function(e,q){var h=10+6*Math.sin(t*14+q*2),bx0=cx-26+q*13;e.setAttribute("points",(bx0-5)+","+(GY-1)+" "+bx0+","+(GY-1-h-6)+" "+(bx0+5)+","+(GY-1));e.setAttribute("opacity",p>0&&p<1?1:0);});
+   st2.forEach(function(e,q){var x=cx-14+q*14;e.setAttribute("d","M"+x+" "+(GY-70)+" Q"+(x-6)+" "+(GY-82-((t*10+q*5)%10))+" "+x+" "+(GY-94));e.setAttribute("opacity",p>0&&p<1?1:0);});}
+  else{obj.setAttribute("fill","rgb("+Math.round(60+150*p)+","+Math.round(60-20*p)+",60)");
+   wv.forEach(function(e,r){var y0=38+r*22,dd="",x;for(x=sx+44;x<=ox-10;x+=3){dd+=(x===sx+44?"M":"L")+x+" "+(y0+4*Math.sin((x-sx)*.14-t*8))+" ";}e.setAttribute("d",dd);});}
+  d=DATA[cur];cap.textContent=d.c;
+  TK.forEach(function(tk,q){var it=d.tk[q];if(!it){tk.g.style.display="none";return;}tk.g.style.display="";
+   var n=d.tk.length,gap=Math.min(12,660*.04),bw=(660-gap*(n-1))/n,x=10+q*(bw+gap),v=Math.max(0,Math.min(100,it[2](p))),fh=56*v/100;
+   tk.bg.setAttribute("x",x);tk.bg.setAttribute("width",bw);tk.ol.setAttribute("x",x);tk.ol.setAttribute("width",bw);
+   tk.f.setAttribute("x",x);tk.f.setAttribute("width",bw);tk.f.setAttribute("y",168+56-fh);tk.f.setAttribute("height",fh);tk.f.setAttribute("fill",it[3]);
+   tk.v.setAttribute("x",x+bw/2);tk.v.textContent=Math.round(v)+" J";tk.l1.setAttribute("x",x+bw/2);tk.l1.textContent=it[0];tk.l2.setAttribute("x",x+bw/2);tk.l2.textContent=it[1];});
+  setOn(btns,cur);}
+ function reset(){if(stop)stop();stop=null;p=0;t=0;upd();}
+ ["Force","Current","Heating","Waves"].forEach(function(n,j){btns.push(button(m.btns,n,function(){cur=j;reset();}));});
+ button(m.btns,"Start",function(){if(stop)stop();p=0;var t0=null,id,dead=false;stop=function(){dead=true;cancelAnimationFrame(id);};
+  function f(ts){if(dead)return;if(t0===null)t0=ts;t=(ts-t0)/1000;p=Math.min(1,t/6);upd();if(p<1)id=requestAnimationFrame(f);}id=requestAnimationFrame(f);});
+ reset();
+}
+
+/* 4 - bouncing ball with four stores (slow, with a pause when squashed) */
+function vBounce(root){
+ var m=mount(root,350,"A ball bounces: four bars show height, motion, elastic and thermal energy with a constant total"),s=m.svg,real=false,seg=[],tot=0,stop=null,H0=2,sc=95,GY=300,r=14;
+ var note=T(s,40,30,"Held up",15,{w:500});
+ S("line",{x1:60,y1:GY,x2:260,y2:GY,stroke:"currentColor","stroke-width":2},s);
+ S("line",{x1:160,y1:GY-H0*sc-2*r,x2:160,y2:GY,stroke:"currentColor","stroke-dasharray":"4 4",opacity:.4},s);
+ T(s,172,GY-H0*sc-6,"2 m",12,{o:.7});
+ var ball=S("ellipse",{cx:160,cy:GY-r-H0*sc,rx:r,ry:r,fill:"#5F5E5A"},s);
+ S("line",{x1:320,y1:100,x2:660,y2:100,stroke:"currentColor","stroke-dasharray":"5 4",opacity:.6},s);
+ T(s,490,90,"Total: always the same",13,{a:"middle",o:.8});
+ var setB=bars(s,330,300,200,[{lab:"Height",col:C.pot},{lab:"Motion",col:C.kin},{lab:"Elastic",col:C.ela},{lab:"Thermal",col:C.ter}],56,34);
+ function tf(f){return Math.sqrt(2*f*H0/G)*2.2;}
+ function build(){seg=[];var E=1,n,E2;for(n=0;n<60;n++){E2=real?E*.55:E;seg.push({k:"fall",E:E,d:tf(E)});seg.push({k:"sqa",E:E,d:.5});seg.push({k:"sqh",E:E,d:.9});seg.push({k:"sqb",E:E,E2:E2,d:.5});if(real&&E2<.03){seg.push({k:"end",d:1e9});break;}seg.push({k:"rise",E:E2,d:tf(E2)});E=E2;}tot=0;if(!real)seg.forEach(function(g){tot+=g.d;});}
+ function state(t){var a=0,i,g;for(i=0;i<seg.length;i++){g=seg[i];if(t<a+g.d||g.k==="end"||i===seg.length-1)break;a+=g.d;}
+  var p=Math.min(1,Math.max(0,(t-a)/g.d)),h=0,q=0,Ep=0,Ek=0,El=0,msg="",u;
+  if(g.k==="fall"){h=g.E*(1-p*p)*H0;Ep=g.E*(1-p*p);Ek=g.E*p*p;msg=t<.01?"Held up":"Falling: height becomes motion";}
+  else if(g.k==="sqa"){q=1-Math.pow(1-p,3);Ek=g.E*(1-q);El=g.E*q;msg="Squashing: motion becomes elastic";}
+  else if(g.k==="sqh"){q=1;El=g.E;msg="Squashed: all the energy is elastic";}
+  else if(g.k==="sqb"){q=1-p*p*p;Ek=g.E2*(1-q);El=g.E*q;msg="Springing back: elastic becomes motion";}
+  else if(g.k==="rise"){u=1-p;h=g.E*(1-u*u)*H0;Ep=g.E*(1-u*u);Ek=g.E*u*u;msg="Rising: motion becomes height";}
+  else{msg="Stopped: all the energy is thermal";}
+  return {h:h,q:q,Ep:Ep,Ek:Ek,El:El,msg:msg,end:g.k==="end"};}
+ function draw(x){var ry=r*(1-.55*x.q),rx=r*(1+.6*x.q);ball.setAttribute("rx",rx);ball.setAttribute("ry",ry);ball.setAttribute("cy",GY-ry-x.h*sc);setB([x.Ep,x.Ek,x.El,Math.max(0,1-(x.Ep+x.Ek+x.El))]);note.textContent=x.msg;}
+ function reset(){if(stop)stop();stop=null;build();draw(state(0));}
+ function run(){if(stop)stop();build();var t0=null,id,dead=false;stop=function(){dead=true;cancelAnimationFrame(id);};
+  function f(ts){if(dead)return;if(t0===null)t0=ts;var t=(ts-t0)/1000;if(!real&&tot>0)t=t%tot;var x=state(t);draw(x);if(!x.end)id=requestAnimationFrame(f);}
+  id=requestAnimationFrame(f);}
+ var bs=[];
+ bs.push(button(m.btns,"Perfect bounce",function(){real=false;setOn(bs,0);reset();}));
+ bs.push(button(m.btns,"Real bounce",function(){real=true;setOn(bs,1);reset();}));
+ button(m.btns,"Drop it",run);
+ setOn(bs,0);reset();
+}
+
+/* 5 - formulas: feather and piano, the mass cancels */
+function vFormulas(root){
+ var m=mount(root,330,"Feather and piano fall from the same height: the mass cancels and they land together"),s=m.svg,i=0,busy=false,lab=["Next","Next","Cancel the mass","Drop them","Again"];
+ S("line",{x1:40,y1:270,x2:360,y2:270,stroke:"currentColor","stroke-width":2},s);
+ S("line",{x1:70,y1:100,x2:70,y2:270,stroke:"currentColor","stroke-dasharray":"4 4",opacity:.5},s);
+ T(s,60,190,"h = 1 m",13,{a:"end",o:.8});
+ var fe=S("g",{},s),pi=S("g",{},s);
+ S("path",{d:"M0 0 Q12 -16 0 -34 Q-12 -16 0 0",fill:"#B4B2A9",stroke:"currentColor","stroke-width":1},fe);S("line",{x1:0,y1:0,x2:0,y2:-30,stroke:"currentColor","stroke-width":1},fe);
+ S("rect",{x:-30,y:-34,width:60,height:34,fill:"#444441"},pi);S("rect",{x:-26,y:-8,width:52,height:5,fill:"#D3D1C7"},pi);S("rect",{x:-28,y:0,width:6,height:6,fill:"#444441"},pi);S("rect",{x:22,y:0,width:6,height:6,fill:"#444441"},pi);
+ var ft=T(s,140,60,"feather",13,{a:"middle",o:.8}),pt=T(s,260,60,"piano",13,{a:"middle",o:.8});
+ function pos(y){fe.setAttribute("transform","translate(140,"+y+")");pi.setAttribute("transform","translate(260,"+(y-6)+")");ft.setAttribute("y",y-48);pt.setAttribute("y",y-48);}
+ pos(100);
+ var L=[T(s,400,70,"Height: m g h",20,{f:C.pot}),T(s,400,110,"Motion: ½ m v²",20,{f:C.kin}),T(s,400,160,"m g h = ½ m v²",20),T(s,400,200,"g h = ½ v²",20),T(s,400,240,"v = √(2 g h)",24,{w:500})];
+ var n1=T(s,400,268,"Final speed does not depend on mass",14,{w:500}),n2=T(s,400,288,"(true only without air resistance)",13,{o:.8}),res=T(s,200,300,"Same speed: v ≈ 4.5 m/s (no air)",14,{a:"middle",o:0});
+ var K=[0,1].map(function(){return S("line",{stroke:"#E24B4A","stroke-width":3,"stroke-linecap":"round",opacity:0},s);}),KT=[];
+ function place(){var e=L[2];KT=[0,10].map(function(ch,j){var b=e.getExtentOfChar(ch);K[j].setAttribute("x1",b.x-2);K[j].setAttribute("y1",b.y+b.height);K[j].setAttribute("x2",b.x-2);K[j].setAttribute("y2",b.y+b.height);return [b.x-2,b.y+b.height,b.x+b.width+2,b.y];});}
+ function vis(){var show=[i>=0,i>=1,i>=2,i>=3,i>=3];L.forEach(function(e,j){e.setAttribute("opacity",show[j]?1:0);});n1.setAttribute("opacity",i>=3?1:0);n2.setAttribute("opacity",i>=3?.8:0);K.forEach(function(k){k.setAttribute("opacity",i>=3?1:0);});}
+ vis();
+ var b=button(m.btns,lab[0],function(){
+  if(busy)return;
+  if(i===4){i=0;pos(100);vis();res.setAttribute("opacity",0);b.textContent=lab[0];return;}
+  i++;vis();b.textContent=lab[i];
+  if(i===3){busy=true;place();tween(700,function(p){KT.forEach(function(c,j){K[j].setAttribute("x2",c[0]+(c[2]-c[0])*p);K[j].setAttribute("y2",c[1]+(c[3]-c[1])*p);});},function(){busy=false;});}
+  if(i===4){busy=true;tween(1800,function(p){pos(100+170*p*p);},function(){res.setAttribute("opacity",1);busy=false;b.textContent=lab[4];});}
+ });
+}
+
+/* 6 - work */
+function vWork(root){
+ var m=mount(root,330,"Work: a force moves something; pushing, lifting, falling and carrying a bag sideways"),s=m.svg,cur=0,stop=null,sc=[],btns=[];
+ var ti=T(s,40,38,"",22,{w:500}),su=T(s,40,64,"",14,{o:.8}),su2=T(s,40,84,"",14,{o:.8});
+ S("line",{x1:40,y1:262,x2:640,y2:262,stroke:"currentColor","stroke-width":2},s);
+ (function(){var g=S("g",{},s),c=S("g",{},g),d=S("g",{},g);
+  S("rect",{x:100,y:222,width:80,height:40,fill:C.gr},c);
+  arrow(c,38,240,98,240,C.kin,3);T(c,60,228,"F",16,{w:500,f:C.kin});
+  S("line",{x1:100,y1:290,x2:300,y2:290,stroke:"currentColor"},d);S("line",{x1:100,y1:284,x2:100,y2:296,stroke:"currentColor"},d);S("line",{x1:300,y1:284,x2:300,y2:296,stroke:"currentColor"},d);T(d,200,310,"d",16,{a:"middle"});
+  sc.push({g:g,p:function(p){c.setAttribute("transform","translate("+200*p+",0)");},ti:"W = F × d",su:"A force moves the box: work is done.",su2:""});})();
+ (function(){var g=S("g",{},s),c=S("g",{},g);
+  S("rect",{x:320,y:222,width:60,height:40,fill:C.gr},c);arrow(c,350,216,350,184,C.kin,3);T(c,362,204,"F = m g",15,{w:500,f:C.kin});
+  S("line",{x1:430,y1:262,x2:430,y2:192,stroke:"currentColor"},g);S("line",{x1:424,y1:262,x2:436,y2:262,stroke:"currentColor"},g);S("line",{x1:424,y1:192,x2:436,y2:192,stroke:"currentColor"},g);T(g,444,232,"d = Δh",15);
+  sc.push({g:g,p:function(p){c.setAttribute("transform","translate(0,"+(-70*p)+")");},ti:"W = m g Δh",su:"Lifted slowly: force and motion point the same way.",su2:""});})();
+ (function(){var g=S("g",{},s),c=S("g",{},g);
+  S("circle",{cx:350,cy:0,r:16,fill:C.pot},c);arrow(c,392,-10,392,20,C.kin,3);T(c,402,10,"weight",14,{f:C.kin,w:500});
+  S("line",{x1:450,y1:90,x2:450,y2:246,stroke:"currentColor"},g);S("line",{x1:444,y1:90,x2:456,y2:90,stroke:"currentColor"},g);S("line",{x1:444,y1:246,x2:456,y2:246,stroke:"currentColor"},g);T(g,464,172,"d",15);
+  sc.push({g:g,p:function(p){c.setAttribute("transform","translate(0,"+(90+156*p*p)+")");},ti:"Gravity does the work",su:"The weight points down and the ball moves down.",su2:"Height store becomes motion store."});})();
+ (function(){var g=S("g",{},s),c=S("g",{},g);
+  S("rect",{x:100,y:196,width:44,height:34,fill:C.gr},c);S("path",{d:"M108 196 Q122 176 136 196",fill:"none",stroke:"currentColor","stroke-width":2},c);arrow(c,122,172,122,128,C.kin,3);T(c,134,150,"F (up)",15,{w:500,f:C.kin});
+  arrow(c,160,213,205,213,"currentColor",2);T(c,182,205,"moves",13,{a:"middle",o:.85});
+  S("line",{x1:122,y1:286,x2:322,y2:286,stroke:"currentColor"},g);S("line",{x1:122,y1:280,x2:122,y2:292,stroke:"currentColor"},g);S("line",{x1:322,y1:280,x2:322,y2:292,stroke:"currentColor"},g);T(g,222,308,"d (sideways)",15,{a:"middle"});
+  sc.push({g:g,p:function(p){c.setAttribute("transform","translate("+200*p+",0)");},ti:"W = 0",su:"The force points up, but the bag moves sideways.",su2:"So the force does not push the bag along: no work is done."});})();
+ function sel(j){if(stop)stop();cur=j;sc.forEach(function(o,q){o.g.setAttribute("opacity",q===j?1:0);});ti.textContent=sc[j].ti;su.textContent=sc[j].su;su2.textContent=sc[j].su2;setOn(btns,j);sc[j].p(0);stop=tween(2400,function(p){sc[j].p(j===2?p:ease(p));});}
+ ["Push","Lift","Fall","Carry"].forEach(function(n,j){btns.push(button(m.btns,n,function(){sel(j);}));});
+ sel(0);
+}
+
+/* 7 - car stopping distance, two counters */
+function vCar(root){
+ var m=mount(root,372,"A car brakes from 50 and from 100 km/h: all the motion store goes to the brakes as thermal store"),s=m.svg,X0=100,K=4.6,RY=150,stop=null,btns=[],seen={};
+ var head=T(s,40,38,"Pick a speed",18,{w:500});
+ S("line",{x1:40,y1:RY,x2:640,y2:RY,stroke:"currentColor","stroke-width":2},s);
+ for(var q=0;q<=100;q+=20){var x=X0+q*K;S("line",{x1:x,y1:RY,x2:x,y2:RY+6,stroke:"currentColor"},s);T(s,x,RY+22,q+" m",11,{a:"middle",o:.7});}
+ var D=[{b:"50 km/h",v:50,E:97,F:7000,d:14,r:"Stops in 14 m"},{b:"100 km/h",v:100,E:386,F:7000,d:55,r:"Stops in 55 m: 4 × the energy, 4 × the distance"},{b:"100 km/h, wet road",v:100,E:386,F:3500,d:110,r:"Wet road: half the force, twice the distance"}];
+ var flags=D.map(function(d){var g=S("g",{opacity:0},s),x=X0+d.d*K;S("line",{x1:x,y1:RY-84,x2:x,y2:RY,stroke:"currentColor","stroke-width":2},g);T(g,x,RY-90,d.d+" m",13,{a:"middle",w:500});return g;});
+ var car=S("g",{},s);
+ S("rect",{x:40,y:RY-30,width:60,height:22,fill:C.gr},car);S("rect",{x:52,y:RY-42,width:30,height:12,fill:C.gr},car);S("circle",{cx:55,cy:RY-7,r:7,fill:"#444441"},car);S("circle",{cx:85,cy:RY-7,r:7,fill:"#444441"},car);
+ var spd=T(car,70,RY-52,"",13,{a:"middle",o:.85});
+ T(s,40,215,"Motion store",14,{w:500});var val=T(s,640,215,"",14,{a:"end"});
+ S("rect",{x:40,y:224,width:600,height:24,fill:"currentColor",opacity:.15},s);
+ var fill=S("rect",{x:40,y:224,width:0,height:24,fill:C.kin},s);
+ arrow(s,300,254,300,278,"currentColor",2);T(s,314,271,"transfer: all of it goes to the brakes",13,{o:.85});
+ T(s,40,296,"Thermal store (brakes)",14,{w:500});var val2=T(s,640,296,"",14,{a:"end"});
+ S("rect",{x:40,y:305,width:600,height:24,fill:"currentColor",opacity:.15},s);
+ var fill2=S("rect",{x:40,y:305,width:0,height:24,fill:C.ter},s);
+ var res=T(s,40,358,"",17,{w:500});
+ function draw(d,t,dx){car.setAttribute("transform","translate("+dx+",0)");var f=(1-t)*(1-t);fill.setAttribute("width",600*d.E/386*f);val.textContent=Math.round(d.E*f)+" kJ";fill2.setAttribute("width",600*d.E/386*(1-f));val2.textContent=Math.round(d.E*(1-f))+" kJ";}
+ function sel(j){if(stop)stop();var d=D[j];seen[j]=1;setOn(btns,j);head.textContent="Brakes push back with F = "+d.F+" N";spd.textContent=d.v+" km/h";res.textContent="";flags.forEach(function(g,q){g.setAttribute("opacity",seen[q]&&q!==j?.4:0);});draw(d,0,0);
+  stop=tween(3200,function(p){var t=p;draw(d,t,d.d*K*t*(2-t));},function(){draw(d,1,d.d*K);flags[j].setAttribute("opacity",1);res.textContent=d.r;});}
+ D.forEach(function(d,j){btns.push(button(m.btns,d.b,function(){sel(j);}));});
+ draw(D[0],0,0);spd.textContent="50 km/h";
+}
+
+var V={idea:vIdea,fall:vFall,trans:vTrans,bounce:vBounce,formulas:vFormulas,work:vWork,car:vCar};
+function boot(){document.querySelectorAll(".vw[data-vw]").forEach(function(r){var f=V[r.dataset.vw];if(f&&!r.dataset.ready){r.dataset.ready="1";f(r);}});}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot);else boot();
+})();
+</script>

@@ -1,9 +1,10 @@
 ---
 title: "SnapClass"
 description: "Un foglio Google pronto all'uso che trasforma i voti in istogramma e curva a campana interattiva: capisci com'è andata la verifica in 10 secondi, senza formule."
-date: "2026-03-12"
+ordine: "2026-03-12"
+pubblico: scuola
+image: img/09-sassi-equilibrio.svg
 categories: [Google Fogli]
-# image: "img/snapclass.png"
 ---
 
 ## Il problema

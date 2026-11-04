@@ -1,0 +1,29 @@
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var inputs = document.querySelectorAll(".quarto-listing-filter input");
+  if (!inputs.length) return;
+  var set = {};
+  document.querySelectorAll(".listing-categories .listing-category").forEach(function (el) {
+    var t = el.textContent.trim();
+    if (t) set[t] = true;
+  });
+  var words = Object.keys(set).sort();
+  var prefix = "Cerca: ";
+  if (!words.length) { inputs.forEach(function (i) { i.placeholder = "Cerca una guida"; }); return; }
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    inputs.forEach(function (i) { i.placeholder = prefix + words.slice(0, 3).join(", ") + "…"; });
+    return;
+  }
+  var w = 0, c = 0, deleting = false;
+  function tick() {
+    var word = words[w];
+    c += deleting ? -1 : 1;
+    inputs.forEach(function (i) { i.placeholder = prefix + word.slice(0, c); });
+    var delay = deleting ? 40 : 90;
+    if (!deleting && c === word.length) { deleting = true; delay = 1400; }
+    else if (deleting && c === 0) { deleting = false; w = (w + 1) % words.length; delay = 350; }
+    setTimeout(tick, delay);
+  }
+  tick();
+});
+</script>

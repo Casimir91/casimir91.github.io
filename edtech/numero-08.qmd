@@ -1,9 +1,10 @@
 ---
 title: "Gestisci le iscrizioni in Gmail"
 description: "Una schermata unica con tutte le newsletter a cui sei iscritto e la disiscrizione in un clic: fai riemergere le email importanti dal rumore di fondo."
-date: "2026-02-19"
+ordine: "2026-02-19"
+pubblico: tutti
+image: img/08-barca.svg
 categories: [Gmail]
-# image: "img/gmail-iscrizioni.png"
 ---
 
 ## Il problema

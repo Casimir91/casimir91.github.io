@@ -1,9 +1,10 @@
 ---
 title: "Gemini in Google Classroom"
 description: "Oltre 30 strumenti AI dentro Classroom per progettare lezioni, griglie, quiz e materiali differenziati in minuti invece che ore."
-date: "2025-10-10"
+ordine: "2025-10-10"
+pubblico: scuola
+image: img/04-bambu-scuro.svg
 categories: [AI, Google Classroom]
-# image: "img/gemini-classroom.png"
 ---
 
 ## Il problema

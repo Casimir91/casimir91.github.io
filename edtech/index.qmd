@@ -1,10 +1,32 @@
 ---
 title: "EdTech"
-subtitle: "Strumenti per i professionisti della scuola digitale"
+subtitle: "Guide passo passo sugli strumenti digitali"
 listing:
-  contents: "numero-*.qmd"
-  type: default
-  sort: "date desc"
-  categories: true
-  fields: [image, date, title, description, categories]
+  - id: guide-tutti
+    contents: "numero-*.qmd"
+    include:
+      pubblico: tutti
+    type: grid
+    filter-ui: true
+    sort: "ordine desc"
+    fields: [image, title, description, categories]
+  - id: guide-scuola
+    contents: "numero-*.qmd"
+    include:
+      pubblico: scuola
+    type: grid
+    filter-ui: true
+    sort: "ordine desc"
+    fields: [image, title, description, categories]
+include-after-body: _ricerca.html
 ---
+
+## Per tutti {#per-tutti}
+
+::: {#guide-tutti}
+:::
+
+## Per la scuola {#per-la-scuola}
+
+::: {#guide-scuola}
+:::

@@ -1,0 +1,9 @@
+<!-- Easter egg: il titolo "Prof. Rosi" nella navbar porta al Libro (sezione ancora in costruzione, non linkata nel menu) -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var meta = document.querySelector('meta[name="quarto:offset"]');
+  var offset = meta ? meta.getAttribute("content") : "";
+  var brand = document.querySelector(".navbar-brand");
+  if (brand) brand.setAttribute("href", offset + "libro/index.html");
+});
+</script>

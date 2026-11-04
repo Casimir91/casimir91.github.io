@@ -1,9 +1,10 @@
 ---
 title: "Claude.ai + Apify"
 description: "Un setup gratuito in due step che trasforma una richiesta in italiano in dati strutturati pronti per Google Fogli: niente codice, niente copia-incolla."
-date: "2026-07-06"
+ordine: "2026-07-06"
+pubblico: scuola
+image: img/12-bambu-chiaro.svg
 categories: [AI, Dati]
-# image: "img/claude-apify.png"
 ---
 
 ## Il problema

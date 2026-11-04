@@ -1,9 +1,10 @@
 ---
 title: "NotebookLM per Flipped & more"
 description: "L'AI di Google che risponde solo sui materiali che carichi: guide di studio, quiz, mappe e audio overview per la flipped classroom, senza allucinazioni."
-date: "2025-10-22"
+ordine: "2025-10-22"
+pubblico: scuola
+image: img/05-giardino-zen.svg
 categories: [AI]
-# image: "img/notebooklm.png"
 ---
 
 ## Il problema

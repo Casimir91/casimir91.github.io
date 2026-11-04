@@ -1,9 +1,10 @@
 ---
 title: "Tactiq"
 description: "Trascrive in automatico le riunioni Google Meet in tempo reale: recuperi decisioni e accordi senza prendere un solo appunto a mano."
-date: "2025-10-06"
+ordine: "2025-10-06"
+pubblico: tutti
+image: img/03-tramonto.svg
 categories: [Google Meet, AI]
-# image: "img/tactiq.png"
 ---
 
 ## Il problema
