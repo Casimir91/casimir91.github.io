@@ -1,0 +1,17 @@
+---
+title: "Mock test: campo elettrico e campo magnetico"
+subtitle: "Prova formativa di 70 minuti in vista dell'examination week: testo, soluzioni e formulario"
+date: 2026-11-04
+tipo: "Practice"
+categories: [Fisica]
+---
+
+## Test
+
+[Mock test (PDF) ↗](quarta_2026-11-04_mock-test.pdf){target="_blank" .btn .btn-outline-primary}
+
+[Formulario facoltativo (PDF) ↗](quarta_2026-11-04_mock-test_formulario.pdf){target="_blank" .btn .btn-outline-primary}
+
+## Soluzioni
+
+[Soluzioni (PDF) ↗](quarta_2026-11-04_mock-test_soluzioni.pdf){target="_blank" .btn .btn-outline-primary}

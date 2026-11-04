@@ -7,6 +7,10 @@
 .vw button{border:1px solid #2a7f62;background:transparent;color:inherit;border-radius:.4rem;padding:.35rem .9rem;cursor:pointer;font:inherit}
 .vw button:hover{background:rgba(42,127,98,.18)}
 .vw button.on{background:rgba(42,127,98,.3);font-weight:600}
+.vw .hit{cursor:pointer}
+.vw .hit:focus{outline:none}
+.vw .hit:focus-visible{outline:2px solid #2a7f62;outline-offset:2px}
+.vw input[type=range]{accent-color:#2a7f62}
 .vf{border:1px solid var(--bs-border-color,#ccc);border-radius:.6rem;padding:.9rem 1rem;margin:1.4rem 0}
 .vf .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:.9rem}
 .vf .card{border-left:4px solid var(--c);padding:.1rem .8rem}
@@ -153,7 +157,7 @@ function vTrans(root){
 /* 4 - bouncing ball with four stores (slow, motion changes only at touch and take-off) */
 function vBounce(root){
  var n=N(root),W=n?360:680,H=n?425:350,H0=2,sc=n?75:95,GY=n?225:300,r=14,tx=n?180:160,gx1=n?90:60,gx2=n?270:260,bx0=n?44:330,bw=n?50:56,bg=n?24:34,bb=n?395:300,bmax=n?120:200;
- var m=mount(root,H,"A ball bounces: four bars show height, motion, elastic and thermal energy with a constant total",W),s=m.svg,real=false,seg=[],tot=0,stop=null;
+ var m=mount(root,H,"A ball bounces: four bars show height, motion, elastic and thermal energy with a constant total",W),s=m.svg,real=false,slow=false,seg=[],tot=0,stop=null;
  var note=T(s,n?20:40,n?26:30,"Held up",15,{w:500});
  S("line",{x1:gx1,y1:GY,x2:gx2,y2:GY,stroke:"currentColor","stroke-width":2},s);
  S("line",{x1:tx,y1:GY-H0*sc-2*r,x2:tx,y2:GY,stroke:"currentColor","stroke-dasharray":"4 4",opacity:.4},s);
@@ -176,13 +180,14 @@ function vBounce(root){
   return {h:h,q:q,Ep:Ep,Ek:Ek,El:El,msg:msg,end:g.k==="end"};}
  function draw(x){var ry=r*(1-.55*x.q),rx=r*(1+.6*x.q);ball.setAttribute("rx",rx);ball.setAttribute("ry",ry);ball.setAttribute("cy",GY-ry-x.h*sc);setB([x.Ep,x.Ek,x.El,Math.max(0,1-(x.Ep+x.Ek+x.El))]);note.textContent=x.msg;}
  function reset(){if(stop)stop();stop=null;build();draw(state(0));}
- function run(){if(stop)stop();build();var t0=null,id,dead=false;stop=function(){dead=true;cancelAnimationFrame(id);};
-  function f(ts){if(dead)return;if(t0===null)t0=ts;var t=(ts-t0)/1000;if(!real&&tot>0)t=t%tot;var x=state(t);draw(x);if(!x.end)id=requestAnimationFrame(f);}
+ function run(){if(stop)stop();build();var last=null,tt=0,id,dead=false;stop=function(){dead=true;cancelAnimationFrame(id);};
+  function f(ts){if(dead)return;if(last===null)last=ts;tt+=Math.min(.1,(ts-last)/1000)*(slow?1/3:1);last=ts;var t=tt;if(!real&&tot>0)t=t%tot;var x=state(t);draw(x);if(!x.end)id=requestAnimationFrame(f);}
   id=requestAnimationFrame(f);}
  var bs=[];
  bs.push(button(m.btns,"Perfect bounce",function(){real=false;setOn(bs,0);reset();}));
  bs.push(button(m.btns,"Real bounce",function(){real=true;setOn(bs,1);reset();}));
  button(m.btns,"Drop it",run);
+ var sb=button(m.btns,"Slow motion",function(){slow=!slow;sb.className=slow?"on":"";sb.setAttribute("aria-pressed",slow?"true":"false");});sb.setAttribute("aria-pressed","false");
  setOn(bs,0);reset();
 }
 
@@ -275,7 +280,167 @@ function vCar(root){
  draw(D[0],0,0);spd.textContent="50 km/h";
 }
 
-var V={idea:vIdea,fall:vFall,trans:vTrans,bounce:vBounce,formulas:vFormulas,work:vWork,car:vCar};
+/* ===== PLAY: four small games ===== */
+var OK="#1D9E75",BAD="#D85A30",NAMES=[{lab:"Height",col:C.pot},{lab:"Motion",col:C.kin},{lab:"Elastic",col:C.ela},{lab:"Thermal",col:C.ter}];
+function svgPt(svg,e){var p=svg.createSVGPoint();p.x=e.clientX;p.y=e.clientY;return p.matrixTransform(svg.getScreenCTM().inverse());}
+function shuffle(a){a=a.slice();for(var i=a.length-1,j,t;i>0;i--){j=Math.floor(Math.random()*(i+1));t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function hide(b,on){b.style.display=on?"none":"";}
+function clearSvg(g){while(g.firstChild)g.removeChild(g.firstChild);}
+/* four bars, 0-100 J, draggable when enabled */
+function barPanel(s,x0,base,hmax,w,gap,onChange){
+ var vals=[0,0,0,0],en=[0,0,0,0],touched=[0,0,0,0],rect=[],trk=[],lab=[],gh=[],mk=[],drag=-1,i;
+ NAMES.forEach(function(c,i){var x=x0+i*(w+gap);
+  trk.push(S("rect",{x:x,y:base-hmax,width:w,height:hmax,fill:"currentColor","fill-opacity":.07,"stroke-dasharray":"4 3"},s));
+  rect.push(S("rect",{x:x,y:base,width:w,height:0,fill:c.col},s));
+  gh.push(S("line",{x1:x-5,x2:x+w+5,y1:base,y2:base,stroke:"currentColor","stroke-width":3,opacity:0},s));
+  lab.push(T(s,x+w/2,base-6,"",13,{a:"middle",w:500}));
+  T(s,x+w/2,base+22,c.lab,13,{a:"middle"});
+  mk.push(T(s,x+w/2,base+46,"",18,{a:"middle",w:700}));});
+ S("line",{x1:x0-10,y1:base,x2:x0+4*(w+gap)-gap+10,y2:base,stroke:"currentColor","stroke-width":2},s);
+ function paint(i){var h=vals[i]/100*hmax;rect[i].setAttribute("y",base-h);rect[i].setAttribute("height",h);lab[i].setAttribute("y",base-h-6);lab[i].textContent=(en[i]&&!touched[i])?"?":Math.round(vals[i])+" J";}
+ function total(){return vals[0]+vals[1]+vals[2]+vals[3];}
+ var ov=S("rect",{x:x0-gap/2,y:base-hmax-24,width:4*(w+gap),height:hmax+30,fill:"transparent"},s);ov.style.touchAction="none";
+ function col(e){var p=svgPt(s,e);return {i:Math.floor((p.x-(x0-gap/2))/(w+gap)),y:p.y};}
+ function setY(i,y){vals[i]=Math.max(0,Math.min(100,Math.round((base-y)/hmax*20)*5));touched[i]=1;paint(i);if(onChange)onChange();}
+ ov.addEventListener("pointerdown",function(e){var c=col(e);if(c.i>=0&&c.i<4&&en[c.i]){drag=c.i;try{ov.setPointerCapture(e.pointerId);}catch(_){}setY(drag,c.y);e.preventDefault();}});
+ ov.addEventListener("pointermove",function(e){if(drag>=0)setY(drag,col(e).y);});
+ function up(){drag=-1;}ov.addEventListener("pointerup",up);ov.addEventListener("pointercancel",up);
+ function clearMarks(){for(i=0;i<4;i++){gh[i].setAttribute("opacity",0);mk[i].textContent="";}}
+ return {
+  set:function(v){for(i=0;i<4;i++){vals[i]=v[i];touched[i]=0;paint(i);}if(onChange)onChange();},
+  setEn:function(a){en=a.slice();for(i=0;i<4;i++){touched[i]=0;trk[i].setAttribute("stroke",en[i]?"currentColor":"none");trk[i].setAttribute("stroke-opacity",.55);paint(i);}clearMarks();ov.style.cursor=en.indexOf(1)>=0?"ns-resize":"default";},
+  total:total,get:function(){return vals.slice();},clearMarks:clearMarks,
+  mark:function(truth,tol,only,reveal){var good=0,ok,k;for(k=0;k<4;k++){if(only&&only.indexOf(k)<0)continue;ok=Math.abs(vals[k]-truth[k])<=tol;if(ok)good++;mk[k].textContent=ok?"✓":"✗";mk[k].style.fill=ok?OK:BAD;if(reveal!==false){gh[k].setAttribute("y1",base-truth[k]/100*hmax);gh[k].setAttribute("y2",base-truth[k]/100*hmax);gh[k].setAttribute("opacity",.9);}}return good;}
+ };
+}
+/* perfect-bounce cycle used by the prediction game */
+var CY=[["fall",1.6],["sqa",.4],["sqh",.7],["sqb",.4],["rise",1.6]],CT=4.7;
+function cyc(t){var a=0,i,k,d,p,h=0,q=0,Ep=0,Ek=0,El=0,u;
+ for(i=0;i<5;i++){k=CY[i][0];d=CY[i][1];if(t<a+d||i===4)break;a+=d;}p=Math.min(1,Math.max(0,(t-a)/d));
+ if(k==="fall"){h=1-p*p;Ep=h;Ek=p*p;}else if(k==="sqa"){q=1-Math.pow(1-p,3);Ek=1-q;El=q;}else if(k==="sqh"){q=1;El=1;}
+ else if(k==="sqb"){q=1-p*p*p;Ek=1-q;El=q;}else{u=1-p;h=1-u*u;Ep=h;Ek=u*u;}
+ return {h:h,q:q,v:[Ep*100,Ek*100,El*100,0]};}
+/* ball scene shared by the two bar games */
+function ballScene(s,n,cx,GY,sc,gx1,gx2){
+ var r=14;S("line",{x1:gx1,y1:GY,x2:gx2,y2:GY,stroke:"currentColor","stroke-width":2},s);
+ S("line",{x1:cx,y1:GY-sc-2*r,x2:cx,y2:GY,stroke:"currentColor","stroke-dasharray":"4 4",opacity:.35},s);
+ var ball=S("ellipse",{cx:cx,cy:GY-r,rx:r,ry:r,fill:"#5F5E5A"},s),dir=S("g",{},s);
+ return {pose:function(h,q){var ry=r*(1-.55*q),rx=r*(1+.6*q),cy=GY-ry-h*sc;ball.setAttribute("rx",rx);ball.setAttribute("ry",ry);ball.setAttribute("cy",cy);return cy;},
+  arrow:function(d,cy){clearSvg(dir);if(d)arrow(dir,cx+34,d<0?cy-14:cy+14,cx+34,d<0?cy+16:cy-16,"currentColor",2);}};
+}
+function totalTag(tot,bp){var t=bp.total();tot.textContent="Total: "+t+" J";tot.style.fill=t===100?OK:"";}
+
+/* 8 - predict, then watch */
+function vPredict(root){
+ var n=N(root),W=n?360:680,H=n?522:340,GY=n?200:292,sc=n?120:205,cx=n?180:110,bx=n?30:290,bw=n?56:64,bg=n?24:30,bb=n?468:276,bm=n?190:200;
+ var m=mount(root,H,"Predict game: drag the four bars to guess how the energy is shared, then check and watch the ball",W),s=m.svg;
+ var msg=T(s,20,26,"",15,{w:500}),tot=T(s,n?180:bx+(4*bw+3*bg)/2,n?262:48,"Total: 0 J",14,{a:"middle",w:500});
+ var sc1=ballScene(s,n,cx,GY,sc,n?70:30,n?290:190),bp,ri=0,stop=null,MO=[.8,1.386,2.35,3.58],DR=[-1,-1,0,1];
+ bp=barPanel(s,bx,bb,bm,bw,bg,function(){totalTag(tot,bp);});
+ var bCheck=button(m.btns,"Check",check),bWatch=button(m.btns,"Watch",watch),bNext=button(m.btns,"Next",next);
+ function pose(x,d){var cy=sc1.pose(x.h,x.q);sc1.arrow(d||0,cy);}
+ function start(){if(stop)stop();stop=null;pose(cyc(MO[ri]),DR[ri]);bp.set([0,0,0,0]);bp.setEn([1,1,1,1]);msg.textContent=(ri+1)+" / 4   Drag the bars";msg.style.fill="";hide(bCheck,0);hide(bWatch,1);hide(bNext,1);bNext.textContent=ri===3?"Again":"Next round";}
+ function check(){var x=cyc(MO[ri]),g=bp.mark(x.v,10);msg.textContent=g===4?"Spot on!":g+" of 4 right. Lines show the answer.";msg.style.fill=g===4?OK:"";hide(bCheck,1);hide(bWatch,0);hide(bNext,0);}
+ function watch(){bp.clearMarks();bp.setEn([0,0,0,0]);hide(bWatch,1);hide(bCheck,1);msg.textContent="Total never changes";msg.style.fill="";var t0=MO[ri];
+  stop=tween((CT-t0)*1000,function(p){var x=cyc(t0+(CT-t0)*p);pose(x,0);bp.set(x.v);});}
+ function next(){ri=(ri+1)%4;start();}
+ start();
+}
+
+/* 9 - sort the energy */
+function icon(g,k){var P=function(t,a){return S(t,a,g);},ln=function(y,x1,x2){P("line",{x1:x1,y1:y,x2:x2,y2:y,stroke:"currentColor","stroke-width":3,opacity:.5,"stroke-linecap":"round"});};
+ if(k==="rock"){P("path",{d:"M-60 50 L-60 8 L8 8 L8 50 Z",fill:C.gr,opacity:.55});P("polygon",{points:"-30,8 -26,-12 -10,-20 4,-10 6,8",fill:"#5F5E5A"});}
+ else if(k==="apple"){P("ellipse",{cx:0,cy:-34,rx:50,ry:18,fill:C.pot,opacity:.8});P("line",{x1:8,y1:-18,x2:8,y2:-6,stroke:"#5F5E5A","stroke-width":3});P("circle",{cx:8,cy:9,r:15,fill:"#C0392B"});}
+ else if(k==="car"){P("rect",{x:-34,y:-4,width:64,height:24,fill:C.gr});P("rect",{x:-16,y:-18,width:34,height:14,fill:C.gr});P("circle",{cx:-16,cy:22,r:8,fill:"#444441"});P("circle",{cx:16,cy:22,r:8,fill:"#444441"});ln(-2,-60,-42);ln(8,-60,-42);ln(18,-60,-42);}
+ else if(k==="ball"){P("circle",{cx:22,cy:-4,r:16,fill:"#5F5E5A"});ln(-12,-56,-24);ln(-2,-56,-24);ln(8,-56,-24);}
+ else if(k==="spring"){P("line",{x1:-26,y1:-34,x2:26,y2:-34,stroke:"currentColor","stroke-width":5});P("line",{x1:-26,y1:34,x2:26,y2:34,stroke:"currentColor","stroke-width":5});P("polyline",{points:"0,-34 0,-26 -20,-20 20,-12 -20,-4 20,4 -20,12 20,20 0,26 0,34",fill:"none",stroke:C.ela,"stroke-width":4,"stroke-linejoin":"round"});}
+ else if(k==="bow"){P("path",{d:"M10 -46 Q56 0 10 46",fill:"none",stroke:"#5F5E5A","stroke-width":5,"stroke-linecap":"round"});P("polyline",{points:"10,-46 -28,0 10,46",fill:"none",stroke:C.ela,"stroke-width":2});P("line",{x1:-28,y1:0,x2:46,y2:0,stroke:"currentColor","stroke-width":3});P("polygon",{points:"60,0 46,-6 46,6",fill:"currentColor"});}
+ else if(k==="cup"){P("path",{d:"M-26 -8 L26 -8 L20 34 L-20 34 Z",fill:"#E8E2D0",stroke:"#5F5E5A","stroke-width":2});P("path",{d:"M26 2 Q44 4 22 24",fill:"none",stroke:"#5F5E5A","stroke-width":3});[-10,8].forEach(function(x){P("path",{d:"M"+x+" -14 q-7 -9 0 -18 q7 -9 0 -18",fill:"none",stroke:C.ter,"stroke-width":3,"stroke-linecap":"round"});});}
+ else{P("circle",{cx:0,cy:0,r:46,fill:C.ter,opacity:.25});P("circle",{cx:0,cy:0,r:34,fill:C.ter});P("circle",{cx:0,cy:0,r:10,fill:"#444441"});[0,60,120,180,240,300].forEach(function(a){P("circle",{cx:22*Math.cos(a*Math.PI/180),cy:22*Math.sin(a*Math.PI/180),r:4,fill:"#7A2D12"});});}}
+function vSort(root){
+ var n=N(root),W=n?360:680,H=n?410:330;
+ var m=mount(root,H,"Sorting game: look at the picture and tap the store where its energy is",W),s=m.svg;
+ var CARDS=[{c:0,t:"Rock on a cliff",i:"rock"},{c:0,t:"Apple in a tree",i:"apple"},{c:1,t:"Speeding car",i:"car"},{c:1,t:"Kicked ball",i:"ball"},{c:2,t:"Squashed spring",i:"spring"},{c:2,t:"Drawn bow",i:"bow"},{c:3,t:"Hot cup of tea",i:"cup"},{c:3,t:"Glowing brake disc",i:"disc"}];
+ var cxm=W/2,cy0=n?36:18,cw=190,ch=n?176:170,cnt=T(s,20,n?24:30,"",14,{o:.75});
+ S("rect",{x:cxm-cw/2,y:cy0,width:cw,height:ch,rx:12,fill:"currentColor","fill-opacity":.06,stroke:"currentColor","stroke-opacity":.25},s);
+ var ic=S("g",{transform:"translate("+cxm+","+(cy0+80)+")"},s),cap=T(s,cxm,cy0+ch-14,"",15,{a:"middle",w:500}),mk=T(s,cxm+cw/2-26,cy0+34,"",30,{a:"middle",w:700});
+ var bk=[],bw=n?160:150,bh=n?58:70,by=n?[250,322]:[240,240,240,240],bxs=n?[15,185,15,185]:[10,180,350,520],byy=n?[250,250,322,322]:[240,240,240,240];
+ NAMES.forEach(function(c,i){var g=S("g",{"class":"hit",tabindex:0,role:"button","aria-label":c.lab},s),r=S("rect",{x:bxs[i],y:byy[i],width:bw,height:bh,rx:10,fill:c.col,"fill-opacity":.22,stroke:c.col,"stroke-width":2},g);T(g,bxs[i]+bw/2,byy[i]+bh/2+6,c.lab,17,{a:"middle",w:600});
+  g.addEventListener("click",function(){answer(i);});g.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();answer(i);}});bk.push(r);});
+ var deck,k,lock,timer;
+ var again=button(m.btns,"Play again",play);
+ function reset(){bk.forEach(function(r,i){r.setAttribute("fill-opacity",.22);r.setAttribute("stroke-width",2);r.setAttribute("stroke",NAMES[i].col);});mk.textContent="";}
+ function show(){reset();clearSvg(ic);var c=deck[k];icon(ic,c.i);cap.textContent=c.t;cnt.textContent=(k+1)+" / "+deck.length;lock=false;}
+ function answer(i){if(lock||k>=deck.length)return;lock=true;var c=deck[k],ok=i===c.c;
+  bk[c.c].setAttribute("fill-opacity",.75);bk[c.c].setAttribute("stroke",OK);bk[c.c].setAttribute("stroke-width",4);
+  if(!ok){bk[i].setAttribute("stroke",BAD);bk[i].setAttribute("stroke-width",4);}
+  mk.textContent=ok?"✓":"✗";mk.style.fill=ok?OK:BAD;
+  timer=setTimeout(function(){k++;if(k<deck.length)show();else done();},1100);}
+ function done(){reset();clearSvg(ic);cap.textContent="Sorted!";cnt.textContent=deck.length+" / "+deck.length;lock=true;hide(again,0);}
+ function play(){clearTimeout(timer);deck=shuffle(CARDS);k=0;hide(again,1);show();}
+ play();
+}
+
+/* 10 - fix the bars */
+function vFix(root){
+ var n=N(root),W=n?360:680,H=n?522:340,GY=n?200:292,sc=n?120:205,cx=n?180:110,bx=n?30:290,bw=n?56:64,bg=n?24:30,bb=n?468:276,bm=n?190:200;
+ var m=mount(root,H,"Fix the bars game: drag the missing bar so that the total is 100 joules",W),s=m.svg;
+ var msg=T(s,20,26,"",15,{w:500}),tot=T(s,n?180:bx+(4*bw+3*bg)/2,n?262:48,"",14,{a:"middle",w:500});
+ var sc1=ballScene(s,n,cx,GY,sc,n?70:30,n?290:190),cap=T(s,n?180:110,n?GY+26:GY+24,"",13,{a:"middle",o:.8}),bp;
+ bp=barPanel(s,bx,bb,bm,bw,bg,function(){totalTag(tot,bp);});
+ var LV=[{k:[70,null,0,0],t:[70,30,0,0],h:.7,d:-1,c:"Falling"},{k:[null,50,0,0],t:[50,50,0,0],h:.5,d:-1,c:"Falling"},
+  {k:[25,30,0,null],t:[25,30,0,45],h:.25,d:1,c:"Rising · real bounce"},{k:[null,0,0,45],t:[55,0,0,45],h:.55,d:0,c:"Top of the bounce · real"},
+  {k:[0,0,null,25],t:[0,0,75,25],h:0,q:1,d:0,c:"Squashed · real bounce"}];
+ var li=0,tries=0,solved=false;
+ var bCheck=button(m.btns,"Check",check),bNext=button(m.btns,"Next",next);
+ function start(){var L=LV[li],miss=L.k.map(function(v){return v===null?1:0;});tries=0;solved=false;
+  var cy=sc1.pose(L.h,L.q||0);sc1.arrow(L.d,cy);cap.textContent=L.c;
+  bp.set(L.k.map(function(v){return v===null?0:v;}));bp.setEn(miss);
+  msg.textContent=(li+1)+" / "+LV.length+"   Fix the bar";msg.style.fill="";hide(bCheck,0);bNext.textContent=li===LV.length-1?"Again":"Next";bNext.className="";}
+ function check(){var L=LV[li],idx=[],i;for(i=0;i<4;i++)if(L.k[i]===null)idx.push(i);tries++;
+  var ok=bp.mark(L.t,0,idx,false)===idx.length;
+  if(ok){msg.textContent="Yes! Total = 100 J";msg.style.fill=OK;solved=true;bNext.className="on";hide(bCheck,1);}
+  else if(tries>=2){bp.mark(L.t,0,idx,true);msg.textContent="Total must be 100 J";msg.style.fill=BAD;bNext.className="on";hide(bCheck,1);}
+  else{msg.textContent="Total is "+bp.total()+" J. It must be 100 J.";msg.style.fill=BAD;}}
+ function next(){li=(li+1)%LV.length;start();}
+ start();
+}
+
+/* 11 - stop in time */
+function vStop(root){
+ var n=N(root),W=n?360:680,H=n?292:300,X0=n?44:60,XR=n?330:640,RY=n?170:172,MASS=1000;
+ var m=mount(root,H,"Braking game: choose the speed so that the car stops before the wall",W),s=m.svg;
+ var LV=[{w:20,F:7000,t:"Dry road · wall at 20 m"},{w:60,F:7000,t:"Dry road · wall at 60 m"},{w:60,F:3500,t:"Wet road · wall at 60 m"}];
+ var title=T(s,20,26,"",15,{w:500}),lv=S("g",{},s),car=S("g",{},s),r1=T(s,20,RY+(n?66:78),"",n?15:17,{w:500}),r2=T(s,20,RY+(n?90:104),"",n?15:17,{w:500});
+ S("rect",{x:-60,y:-30,width:60,height:22,fill:C.gr},car);S("rect",{x:-48,y:-42,width:30,height:12,fill:C.gr},car);S("circle",{cx:-45,cy:-7,r:7,fill:"#444441"},car);S("circle",{cx:-15,cy:-7,r:7,fill:"#444441"},car);
+ var spd=T(car,-30,-52,"",13,{a:"middle",o:.85}),boom=S("g",{opacity:0},s);
+ var inp=document.createElement("input");inp.type="range";inp.min=20;inp.max=130;inp.step=5;inp.value=50;inp.setAttribute("aria-label","Speed in kilometres per hour");inp.style.cssText="flex:1 1 150px;min-width:130px";m.btns.appendChild(inp);
+ var bGo=button(m.btns,"Go",go),bNext=button(m.btns,"Next",next);
+ var li=0,stop=null,K=1,wallX=0,busy=false;
+ function px(d){return X0+d*K;}
+ function setup(){var L=LV[li];if(stop)stop();stop=null;busy=false;clearSvg(lv);clearSvg(boom);boom.setAttribute("opacity",0);
+  wallX=X0+(XR-X0)*.8;K=(wallX-X0)/L.w;var step=L.w>30?10:5,d;
+  S("line",{x1:X0,y1:RY,x2:XR,y2:RY,stroke:"currentColor","stroke-width":2},lv);
+  for(d=0;d<=L.w;d+=step){S("line",{x1:px(d),y1:RY,x2:px(d),y2:RY+6,stroke:"currentColor"},lv);T(lv,px(d),RY+22,d+" m",11,{a:"middle",o:.7});}
+  S("rect",{x:wallX,y:RY-74,width:14,height:74,fill:"#6E6C66"},lv);S("rect",{x:wallX,y:RY-74,width:14,height:8,fill:C.ter},lv);
+  title.textContent=(li+1)+" / "+LV.length+"   "+L.t;r1.textContent="";r2.textContent="";r1.style.fill="";
+  car.setAttribute("transform","translate("+X0+","+RY+")");spd.textContent=inp.value+" km/h";hide(bGo,0);hide(bNext,1);bNext.className="";bNext.textContent=li===LV.length-1?"Again":"Next";inp.disabled=false;}
+ inp.addEventListener("input",function(){if(!busy){spd.textContent=inp.value+" km/h";}});
+ function go(){if(busy)return;var L=LV[li];setup();busy=true;hide(bGo,1);inp.disabled=true;
+  var vk=+inp.value,v=vk/3.6,a=L.F/MASS,d=v*v/(2*a),crash=d>L.w,T1=crash?(v-Math.sqrt(v*v-2*a*L.w))/a:v/a,vmax=Math.sqrt(2*a*L.w)*3.6;
+  stop=tween(T1*1000,function(p){var t=T1*p,x=v*t-a*t*t/2;car.setAttribute("transform","translate("+px(x)+","+RY+")");},function(){
+   var dd=crash?L.w:d;car.setAttribute("transform","translate("+px(dd)+","+RY+")");busy=false;inp.disabled=false;
+   if(crash){var vi=Math.sqrt(Math.max(0,v*v-2*a*L.w))*3.6;S("polygon",{points:"0,-30 8,-10 28,-14 14,2 30,16 8,14 2,34 -6,14 -26,20 -12,2 -28,-12 -6,-10",fill:C.ter,transform:"translate("+wallX+","+(RY-34)+")"},boom);boom.setAttribute("opacity",1);
+    r1.textContent="Crash! Hit the wall at "+Math.round(vi)+" km/h";r1.style.fill=BAD;r2.textContent="It needed "+d.toFixed(0)+" m to stop";hide(bGo,0);}
+   else{r1.textContent="Stopped in "+d.toFixed(0)+" m";
+    if(vk>=vmax-10){r1.textContent+=" — nice, almost the top speed!";r1.style.fill=OK;r2.textContent="";hide(bNext,0);bNext.className="on";hide(bGo,0);}
+    else{r2.textContent="Safe, but you can go faster";hide(bGo,0);}}
+   bGo.textContent="Go again";});}
+ function next(){li=(li+1)%LV.length;bGo.textContent="Go";setup();}
+ setup();
+}
+
+var V={idea:vIdea,fall:vFall,trans:vTrans,bounce:vBounce,formulas:vFormulas,work:vWork,car:vCar,predict:vPredict,sort:vSort,fix:vFix,stop:vStop};
 function build(r){var f=V[r.dataset.vw];if(!f)return;r.innerHTML="";r.dataset.n=(r.clientWidth||window.innerWidth)<520?"1":"0";f(r);}
 function boot(){document.querySelectorAll(".vw[data-vw]").forEach(function(r){if(!r.dataset.ready){r.dataset.ready="1";build(r);}});}
 var rz=null;window.addEventListener("resize",function(){clearTimeout(rz);rz=setTimeout(function(){document.querySelectorAll(".vw[data-vw]").forEach(function(r){var nn=(r.clientWidth||window.innerWidth)<520?"1":"0";if(r.dataset.n!==nn)build(r);});},250);});

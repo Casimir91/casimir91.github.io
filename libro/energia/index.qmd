@@ -114,6 +114,32 @@ Same energy at the start, same energy at the end.
 </div>
 ```
 
+## Play
+
+### Predict, then watch
+
+```{=html}
+<div class="vw" data-vw="predict"></div>
+```
+
+### Sort the energy
+
+```{=html}
+<div class="vw" data-vw="sort"></div>
+```
+
+### Fix the bars
+
+```{=html}
+<div class="vw" data-vw="fix"></div>
+```
+
+### Stop in time
+
+```{=html}
+<div class="vw" data-vw="stop"></div>
+```
+
 ## Check yourself
 
 ::: {.mcq-set}
