@@ -11,8 +11,6 @@ format:
       - ../_componenti/visual.html
 ---
 
-Energy in pictures. Chapter 1 of *Physics in Pictures*.
-
 ## Quick quiz
 
 Answer by instinct. No air resistance.
