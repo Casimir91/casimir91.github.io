@@ -100,18 +100,21 @@ Same energy at the start, same energy at the end.
 ## Three formulas
 
 ```{=html}
-<div class="vf">
- <div class="cards">
-  <div class="card" style="--c:#EF9F27"><div class="nm">Kinetic energy</div><div class="fm">E<sub>k</sub> = ½ m v²</div><div class="pr">E<sub>k</sub> ∝ v²</div><div class="ex">∝ means directly proportional: double the speed, 4 × the energy.</div></div>
-  <div class="card" style="--c:#1D9E75"><div class="nm">Gravitational potential energy</div><div class="fm">ΔE<sub>p</sub> = m g Δh</div><div class="pr">ΔE<sub>p</sub> ∝ Δh</div><div class="ex">Twice as high, twice the energy.</div></div>
-  <div class="card" style="--c:#888780"><div class="nm">Work</div><div class="fm">W = F × d</div><div class="pr">W ∝ F and W ∝ d</div><div class="ex">Force along the motion, times the distance moved.</div></div>
- </div>
- <p class="note">All three are measured in joules (J), but they are not the same thing: kinetic and potential energy are <b>stores</b>, work is a <b>transfer</b>.</p>
- <h4>When are they equal?</h4>
- <div class="row"><span class="when">Braking</span><span class="fm">E<sub>k</sub> = W = F × d</span><span class="ex">All the motion store becomes work done by the brakes.</span></div>
- <div class="row"><span class="when">Thrown up, or falling</span><span class="fm">E<sub>k</sub> = ΔE<sub>p</sub></span><span class="ex">Motion store and height store swap, with no air resistance.</span></div>
- <div class="row"><span class="when">Lifted slowly, or pushed by gravity</span><span class="fm">ΔE<sub>p</sub> = W</span><span class="ex">The work done is the height store gained or lost: W = m g Δh.</span></div>
-</div>
+<div class="vw" data-vw="kin"></div>
+```
+
+```{=html}
+<div class="vw" data-vw="pot"></div>
+```
+
+```{=html}
+<div class="vw" data-vw="wrk"></div>
+```
+
+### When are they equal?
+
+```{=html}
+<div class="vw" data-vw="equal"></div>
 ```
 
 ## Play
@@ -226,7 +229,7 @@ $d = E_k / F$: half $F$, double $d$.
 
 ## For those who want the numbers
 
-Worked example, practice, and an exam-style sheet. Use $g = 10\ \text{N/kg}$.
+One worked example. Use $g = 10\ \text{N/kg}$.
 
 ### Worked example
 
@@ -239,96 +242,3 @@ A ball of $0.20\ \text{kg}$ is dropped from $1.8\ \text{m}$. Speed at the ground
 **Speed.** $\tfrac12 \times 0.20 \times v^2 = 3.6$, so $v^2 = 36$ and $v = 6.0\ \text{m/s}$ (about $22\ \text{km/h}$).
 
 **Check.** Units are J and m/s. $6\ \text{m/s}$ is a fast run: plausible. A heavier ball? Same speed: $m$ cancels in $m g \Delta h = \tfrac12 m v^2$.
-
-### Practice
-
-**1.** A ball of $0.50\ \text{kg}$ moves at $8.0\ \text{m/s}$. (a) Kinetic energy? (b) Thrown at $16\ \text{m/s}$: kinetic energy, and compared with (a)? (c) Cyclist and bike, $75\ \text{kg}$, at $36\ \text{km/h}$: kinetic energy?
-
-::: {.callout-tip collapse="true"}
-## Solution
-(a) $\tfrac12 \times 0.50 \times 8.0^2 = 16\ \text{J}$. (b) $\tfrac12 \times 0.50 \times 16^2 = 64\ \text{J}$: 4 × more, since speed doubled. (c) $36 \div 3.6 = 10\ \text{m/s}$, so $E_k = \tfrac12 \times 75 \times 10^2 = 3750\ \text{J}$.
-:::
-
-**2.** (a) A climber of $60\ \text{kg}$ gains $200\ \text{m}$ of height: gain in potential energy? (b) A stone of $0.10\ \text{kg}$ is thrown up at $12\ \text{m/s}$: how high above the hand? No air.
-
-::: {.callout-tip collapse="true"}
-## Solution
-(a) $60 \times 10 \times 200 = 120\,000\ \text{J} = 120\ \text{kJ}$. (b) $E_k = \tfrac12 \times 0.10 \times 12^2 = 7.2\ \text{J}$. At the top it is all $E_p$: $7.2 = 0.10 \times 10 \times \Delta h$, so $\Delta h = 7.2\ \text{m}$.
-:::
-
-**3.** (a) A crate of $40\ \text{kg}$ is pushed $5.0\ \text{m}$ with $120\ \text{N}$: work done? (b) You carry a bag of $20\ \text{kg}$ for $10\ \text{m}$ at constant speed, level: work done by your upward force? (c) Cyclist and bike, $80\ \text{kg}$, at $6.0\ \text{m/s}$, brake with $120\ \text{N}$: stopping distance? And at $12\ \text{m/s}$?
-
-::: {.callout-tip collapse="true"}
-## Solution
-(a) $W = F d = 600\ \text{J}$. Mass not needed. (b) $0\ \text{J}$: the force is up, the motion is sideways. (c) $E_k = \tfrac12 \times 80 \times 6.0^2 = 1440\ \text{J}$, so $d = 1440 / 120 = 12\ \text{m}$. At $12\ \text{m/s}$: $E_k = 5760\ \text{J}$, $d = 48\ \text{m}$: 4 × more.
-:::
-
-### Exam-style sheet
-
-$g = 10\ \text{N/kg}$. Show every step, give units. Total: 33 marks.
-
-**1 · Kinetic energy (4).** Cyclist and bike, $80\ \text{kg}$, at $36\ \text{km/h}$. (a) Speed in $\text{m/s}$. (b) Kinetic energy. (c) Speed doubles: $E_k$ changes by what factor?
-
-::: {.callout-tip collapse="true"}
-## Solution
-(a) $10\ \text{m/s}$. (b) $\tfrac12 \times 80 \times 10^2 = 4000\ \text{J}$. (c) × 4 ($16\,000\ \text{J}$). Common slips: $36$ instead of $10$ (51 840 J), no square (400 J), no $\tfrac12$ (8000 J).
-:::
-
-**2 · Potential energy (3).** A book of $1.5\ \text{kg}$ is lifted from the floor to a shelf $2.0\ \text{m}$ high. (a) Gain in potential energy. (b) It is then pushed $3.0\ \text{m}$ along the shelf: change in $E_p$? Explain.
-
-::: {.callout-tip collapse="true"}
-## Solution
-(a) $1.5 \times 10 \times 2.0 = 30\ \text{J}$. (b) $0\ \text{J}$: $\Delta h = 0$. The push ends up as thermal energy (friction).
-:::
-
-**3 · Speed and energy (4).** A car of $1200\ \text{kg}$ drives $90\ \text{km}$ at $72\ \text{km/h}$. (a) Time in minutes. (b) Kinetic energy.
-
-::: {.callout-tip collapse="true"}
-## Solution
-(a) $90 / 72 = 1.25\ \text{h} = 75\ \text{min}$. (b) $72 \div 3.6 = 20\ \text{m/s}$, so $E_k = \tfrac12 \times 1200 \times 20^2 = 240\,000\ \text{J}$.
-:::
-
-**4 · Roller coaster (5).** A trolley of $400\ \text{kg}$ starts at rest at A, $20\ \text{m}$ high. B is $5\ \text{m}$ high, C is at ground level. No friction. (a) $E_p$ lost from A to B. (b) $E_k$ and speed at B. (c) Speed at C.
-
-::: {.callout-tip collapse="true"}
-## Solution
-(a) $400 \times 10 \times 15 = 60\,000\ \text{J}$. (b) $E_k = 60\,000\ \text{J}$, so $v = \sqrt{2 \times 60\,000 / 400} = \sqrt{300} = 17.3\ \text{m/s}$. (c) $E_k = 400 \times 10 \times 20 = 80\,000\ \text{J}$, so $v = \sqrt{400} = 20\ \text{m/s}$. Energies add up from A, speeds do not.
-:::
-
-**5 · Work (4).** A student pushes a box of $25\ \text{kg}$ along a level floor with a constant horizontal force of $60\ \text{N}$. It moves $8.0\ \text{m}$ at constant speed. (a) Work done by the student. (b) Friction force, and why. (c) The box gains no kinetic energy: where does the energy go?
-
-::: {.callout-tip collapse="true"}
-## Solution
-(a) $60 \times 8.0 = 480\ \text{J}$. Mass not needed. (b) $60\ \text{N}$: constant speed, so the forces balance. (c) Into the thermal store of box and floor (friction), then it spreads out.
-:::
-
-**6 · The ramp (4).** A crate of $50\ \text{kg}$ is pushed up a $4.0\ \text{m}$ ramp with $150\ \text{N}$ parallel to the ramp. It rises $1.0\ \text{m}$. (a) Work done. (b) Gain in potential energy. (c) How much work is not stored as $E_p$, and where does it go?
-
-::: {.callout-tip collapse="true"}
-## Solution
-(a) $150 \times 4.0 = 600\ \text{J}$ (distance along the ramp). (b) $50 \times 10 \times 1.0 = 500\ \text{J}$ (height counts). (c) $100\ \text{J}$, to the thermal store by friction.
-:::
-
-**7 · Stopping a truck (5).** A truck of $8000\ \text{kg}$ at $54\ \text{km/h}$ brakes with a constant $30\,000\ \text{N}$. (a) Kinetic energy. (b) Stopping distance. (c) At twice the speed: distance? Explain, no full calculation.
-
-::: {.callout-tip collapse="true"}
-## Solution
-(a) $54 \div 3.6 = 15\ \text{m/s}$, so $E_k = \tfrac12 \times 8000 \times 15^2 = 900\,000\ \text{J}$. (b) $d = 900\,000 / 30\,000 = 30\ \text{m}$. (c) $120\ \text{m}$: $E_k \propto v^2$ and $d \propto E_k$, so × 4, not × 2.
-:::
-
-**8 · A falling ball (4).** A ball of $0.50\ \text{kg}$ is dropped from $45\ \text{m}$. No air. (a) $E_p$ lost. (b) $E_k$ just before landing. (c) Speed in $\text{m/s}$ and in $\text{km/h}$.
-
-::: {.callout-tip collapse="true"}
-## Solution
-(a) $0.50 \times 10 \times 45 = 225\ \text{J}$. (b) $225\ \text{J}$. (c) $v = \sqrt{2 \times 225 / 0.50} = \sqrt{900} = 30\ \text{m/s}$, and $30 \times 3.6 = 108\ \text{km/h}$.
-:::
-
-### Spot the mistake
-
-A car of $1000\ \text{kg}$ at $50\ \text{km/h}$ has $E_k \approx 97\ \text{kJ}$. Three slips that still give a number that looks fine:
-
-- Speed in $\text{km/h}$: $1\,250\,000\ \text{J}$, about 13 × too big.
-- No square: $6950\ \text{J}$.
-- No $\tfrac12$: $193\,000\ \text{J}$, double.
-
-Three checks: **units** (J, m/s), **size** (compare with a known case, like the 97 kJ), **ratio** (speed × 2 means energy × 4).
