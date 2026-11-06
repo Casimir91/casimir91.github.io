@@ -11,29 +11,76 @@
     "items": []
   },
   {
-    "listing": "/didattica/terza/index.html",
+    "listing": "/didattica/terza/fisica/index.html",
+    "items": []
+  },
+  {
+    "listing": "/didattica/quarta/fisica/index.html",
+    "items": []
+  },
+  {
+    "listing": "/didattica/seconda/index.html",
     "items": [
-      "/didattica/terza/lezioni/2026-09-08-thermal-temperature/index.html",
-      "/didattica/terza/lezioni/2026-09-11-thermal-thermometer/index.html",
-      "/didattica/terza/lezioni/2026-09-18-thermal-expansion/index.html",
-      "/didattica/terza/lezioni/2026-09-22-thermal-lab1/index.html",
-      "/didattica/terza/lezioni/2026-09-29-thermal-paper6/index.html",
-      "/didattica/terza/lezioni/2026-10-02-mock-midterm/index.html",
-      "/didattica/terza/lezioni/2026-10-06-particle-model/index.html",
-      "/didattica/terza/lezioni/2026-10-09-specific-heat/index.html",
-      "/didattica/terza/lezioni/2026-10-12-heat-transfer/index.html",
-      "/didattica/terza/lezioni/2026-10-13-practice-mock/index.html",
-      "/didattica/terza/lezioni/2026-10-16-midterm-test/index.html",
-      "/didattica/terza/lezioni/2026-10-20-changes-of-state/index.html",
-      "/didattica/terza/lezioni/2026-10-23-calorimetria/index.html",
-      "/didattica/terza/lezioni/2026-10-23-thermal-map/index.html",
-      "/didattica/terza/lezioni/2026-10-27-hot-air-cold-body/index.html",
-      "/didattica/terza/lezioni/2026-10-30-semilog-exercises/index.html",
-      "/didattica/terza/lezioni/2026-11-03-thermal-revision/index.html"
+      "/didattica/seconda/lezioni/2026-09-11-motion-speed/index.html",
+      "/didattica/seconda/lezioni/2026-09-21-energy-work/index.html",
+      "/didattica/seconda/lezioni/2026-10-02-energy-work-exercises/index.html",
+      "/didattica/seconda/lezioni/2026-10-05-mock-midterm/index.html",
+      "/didattica/seconda/lezioni/2026-10-06-midterm-test/index.html",
+      "/didattica/seconda/lezioni/2026-10-12-power-efficiency/index.html",
+      "/didattica/seconda/lezioni/2026-10-30-examination-practice/index.html"
     ]
   },
   {
-    "listing": "/didattica/archivio/index.html",
+    "listing": "/didattica/index.html",
+    "items": [
+      "/didattica/prima/index.html",
+      "/didattica/seconda/index.html",
+      "/didattica/terza/index.html",
+      "/didattica/quarta/index.html"
+    ]
+  },
+  {
+    "listing": "/didattica/prima/index.html",
+    "items": [
+      "/didattica/prima/lezioni/2026-09-09-measure-intro/index.html",
+      "/didattica/prima/lezioni/2026-09-16-measure-standardform/index.html",
+      "/didattica/prima/lezioni/2026-09-23-measure-errors/index.html",
+      "/didattica/prima/lezioni/2026-09-30-measure-density-lab1/index.html",
+      "/didattica/prima/lezioni/2026-10-07-measure-density-lab2/index.html",
+      "/didattica/prima/lezioni/2026-10-14-midterm-test/index.html",
+      "/didattica/prima/lezioni/2026-10-28-pendulum-lab4/index.html",
+      "/didattica/prima/lezioni/2026-11-04-mock-test/index.html",
+      "/didattica/prima/lezioni/2026-11-04-lab4-pendulum-sheets/index.html"
+    ]
+  },
+  {
+    "listing": "/didattica/igcse/index.html",
+    "items": [
+      "/didattica/igcse/sets.html"
+    ]
+  },
+  {
+    "listing": "/edtech/index.html",
+    "items": [
+      "/edtech/numero-11.html",
+      "/edtech/numero-10.html",
+      "/edtech/numero-08.html",
+      "/edtech/numero-06.html",
+      "/edtech/numero-03.html",
+      "/edtech/numero-02.html",
+      "/edtech/numero-01.html",
+      "/edtech/numero-12.html",
+      "/edtech/numero-09.html",
+      "/edtech/numero-05.html",
+      "/edtech/numero-04.html"
+    ]
+  },
+  {
+    "listing": "/didattica/prima/fisica/index.html",
+    "items": []
+  },
+  {
+    "listing": "/didattica/seconda/fisica/index.html",
     "items": []
   },
   {
@@ -55,77 +102,31 @@
     ]
   },
   {
-    "listing": "/didattica/seconda/fisica/index.html",
+    "listing": "/didattica/archivio/index.html",
     "items": []
   },
   {
-    "listing": "/didattica/prima/fisica/index.html",
-    "items": []
-  },
-  {
-    "listing": "/edtech/index.html",
+    "listing": "/didattica/terza/index.html",
     "items": [
-      "/edtech/numero-11.html",
-      "/edtech/numero-10.html",
-      "/edtech/numero-08.html",
-      "/edtech/numero-06.html",
-      "/edtech/numero-03.html",
-      "/edtech/numero-02.html",
-      "/edtech/numero-01.html",
-      "/edtech/numero-12.html",
-      "/edtech/numero-09.html",
-      "/edtech/numero-05.html",
-      "/edtech/numero-04.html"
+      "/didattica/terza/lezioni/2026-09-08-thermal-temperature/index.html",
+      "/didattica/terza/lezioni/2026-09-11-thermal-thermometer/index.html",
+      "/didattica/terza/lezioni/2026-09-18-thermal-expansion/index.html",
+      "/didattica/terza/lezioni/2026-09-22-thermal-lab1/index.html",
+      "/didattica/terza/lezioni/2026-09-29-thermal-paper6/index.html",
+      "/didattica/terza/lezioni/2026-10-02-mock-midterm/index.html",
+      "/didattica/terza/lezioni/2026-10-06-particle-model/index.html",
+      "/didattica/terza/lezioni/2026-10-09-specific-heat/index.html",
+      "/didattica/terza/lezioni/2026-10-12-heat-transfer/index.html",
+      "/didattica/terza/lezioni/2026-10-13-practice-mock/index.html",
+      "/didattica/terza/lezioni/2026-10-16-midterm-test/index.html",
+      "/didattica/terza/lezioni/2026-10-20-changes-of-state/index.html",
+      "/didattica/terza/lezioni/2026-10-23-calorimetria/index.html",
+      "/didattica/terza/lezioni/2026-10-23-thermal-map/index.html",
+      "/didattica/terza/lezioni/2026-10-27-hot-air-cold-body/index.html",
+      "/didattica/terza/lezioni/2026-10-30-semilog-exercises/index.html",
+      "/didattica/terza/lezioni/2026-11-03-thermal-revision/index.html",
+      "/didattica/terza/lezioni/2026-11-06-mock-ew-t1/index.html"
     ]
-  },
-  {
-    "listing": "/didattica/igcse/index.html",
-    "items": [
-      "/didattica/igcse/sets.html"
-    ]
-  },
-  {
-    "listing": "/didattica/prima/index.html",
-    "items": [
-      "/didattica/prima/lezioni/2026-09-09-measure-intro/index.html",
-      "/didattica/prima/lezioni/2026-09-16-measure-standardform/index.html",
-      "/didattica/prima/lezioni/2026-09-23-measure-errors/index.html",
-      "/didattica/prima/lezioni/2026-09-30-measure-density-lab1/index.html",
-      "/didattica/prima/lezioni/2026-10-07-measure-density-lab2/index.html",
-      "/didattica/prima/lezioni/2026-10-14-midterm-test/index.html",
-      "/didattica/prima/lezioni/2026-10-28-pendulum-lab4/index.html",
-      "/didattica/prima/lezioni/2026-11-04-mock-test/index.html",
-      "/didattica/prima/lezioni/2026-11-04-lab4-pendulum-sheets/index.html"
-    ]
-  },
-  {
-    "listing": "/didattica/index.html",
-    "items": [
-      "/didattica/prima/index.html",
-      "/didattica/seconda/index.html",
-      "/didattica/terza/index.html",
-      "/didattica/quarta/index.html"
-    ]
-  },
-  {
-    "listing": "/didattica/seconda/index.html",
-    "items": [
-      "/didattica/seconda/lezioni/2026-09-11-motion-speed/index.html",
-      "/didattica/seconda/lezioni/2026-09-21-energy-work/index.html",
-      "/didattica/seconda/lezioni/2026-10-02-energy-work-exercises/index.html",
-      "/didattica/seconda/lezioni/2026-10-05-mock-midterm/index.html",
-      "/didattica/seconda/lezioni/2026-10-06-midterm-test/index.html",
-      "/didattica/seconda/lezioni/2026-10-12-power-efficiency/index.html",
-      "/didattica/seconda/lezioni/2026-10-30-examination-practice/index.html"
-    ]
-  },
-  {
-    "listing": "/didattica/quarta/fisica/index.html",
-    "items": []
-  },
-  {
-    "listing": "/didattica/terza/fisica/index.html",
-    "items": []
   },
   {
     "listing": "/blog/index.html",
