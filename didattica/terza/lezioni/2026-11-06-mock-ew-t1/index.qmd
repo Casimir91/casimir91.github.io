@@ -1,0 +1,15 @@
+---
+title: "Mock Test: Thermal Physics, Examination Week T1"
+subtitle: "Prova formativa di 40 minuti, autocorretta: calibrazione del termometro, dilatazione termica, modello particellare e pressione di un gas, calore specifico e potenza, cambiamenti di stato, conduzione, convezione e irraggiamento, miscele e raffreddamento, lettura degli strumenti, risultati anomali, pendenza e grafici"
+date: 2026-11-06
+tipo: "Mock"
+categories: [Fisica]
+---
+
+## Test
+
+[Mock test (PDF) ↗](terza_2026-11-06_mock-ew-t1.pdf){target="_blank" .btn .btn-outline-primary}
+
+## Soluzioni
+
+[Soluzioni (PDF) ↗](terza_2026-11-06_mock-ew-t1_soluzioni.pdf){target="_blank" .btn .btn-outline-primary}
