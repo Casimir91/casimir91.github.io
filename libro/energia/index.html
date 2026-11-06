@@ -428,19 +428,6 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 .vw .hit:focus{outline:none}
 .vw .hit:focus-visible{outline:2px solid #2a7f62;outline-offset:2px}
 .vw input[type=range]{accent-color:#2a7f62}
-.vf{border:1px solid var(--bs-border-color,#ccc);border-radius:.6rem;padding:.9rem 1rem;margin:1.4rem 0}
-.vf .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:.9rem}
-.vf .card{border-left:4px solid var(--c);padding:.1rem .8rem}
-.vf .nm{font-size:.85rem;opacity:.8}
-.vf .fm{font-size:1.45rem;margin:.15rem 0}
-.vf .pr{font-size:1rem;font-weight:600}
-.vf .ex{font-size:.85rem;opacity:.8}
-.vf .note{margin:.8rem 0 0;font-size:.9rem}
-.vf h4{margin:1rem 0 .4rem;font-size:1rem;padding-top:.8rem;border-top:1px solid var(--bs-border-color,#ccc)}
-.vf .row{display:grid;grid-template-columns:minmax(120px,1fr) minmax(150px,1.2fr) 2fr;gap:.2rem .9rem;align-items:baseline;padding:.3rem 0}
-.vf .row .when{font-weight:600}
-.vf .row .fm{font-size:1.15rem;margin:0}
-@media (max-width:560px){.vf .row{grid-template-columns:1fr;padding:.5rem 0}}
 </style>
 <script>
 (function(){
@@ -857,7 +844,70 @@ function vStop(root){
  setup();
 }
 
-var V={idea:vIdea,fall:vFall,trans:vTrans,bounce:vBounce,formulas:vFormulas,work:vWork,car:vCar,predict:vPredict,sort:vSort,fix:vFix,stop:vStop};
+/* 12-15 - formulas as pictures: tiles for motion, height, work; and a map of when they are equal */
+function TS(par,x,y,size,parts,o){o=o||{};var e=S("text",{x:x,y:y,"font-size":size,"text-anchor":o.a||"start","font-weight":o.w||400},par),up=0;parts.forEach(function(p){var t=S("tspan",{},e,p[0]);if(p[1]){t.setAttribute("font-size",Math.round(size*.7));t.setAttribute("dy",Math.round(size*.25));up=Math.round(size*.25);}else if(up){t.setAttribute("dy",-up);up=0;}});if(o.o!==undefined)e.setAttribute("opacity",o.o);if(o.f)e.style.fill=o.f;return e;}
+function sl(par,lab,min,max,val,fn){var w=document.createElement("label");w.style.cssText="display:flex;align-items:center;gap:.5rem;flex:1 1 170px;margin:0";var t=document.createElement("span");t.textContent=lab;var i=document.createElement("input");i.type="range";i.min=min;i.max=max;i.step=1;i.value=val;i.setAttribute("aria-label",lab);i.style.cssText="flex:1 1 90px;min-width:80px";i.oninput=function(){fn(+i.value);};w.appendChild(t);w.appendChild(i);par.appendChild(w);return i;}
+function vShape(root,kind){
+ var n=N(root),W=n?360:680,t=n?26:30,g=3,st=t+g,K=kind==="kin",P=kind==="pot",X=kind==="wrk",
+  col=K?C.kin:P?C.pot:C.gr,cols=P?1:6,rows=X?5:6,
+  x0=X&&n?36:(n?20:60),yb=X?(n?250:255):(n?272:265),H=n?360:(X?310:300),
+  tx=P?x0+(n?64:90):x0,rx=n?(X?222:212):340,
+  lab=K?"Kinetic energy grows with the square of the speed: a square of tiles":P?"Potential energy grows in step with the height: a column of tiles":"Work is force times distance: a rectangle of tiles",
+  m=mount(root,H,lab,W),s=m.svg,rs=[],ag=null,ag2=null,a=1,b=3,stopI=null,top=yb-rows*t-(rows-1)*g;
+ for(var r=0;r<rows;r++)for(var c=0;c<cols;c++)rs.push({c:c,r:r,e:S("rect",{x:tx+c*st,y:yb-(r+1)*t-r*g,width:t,height:t,rx:3,fill:col,opacity:.1},s)});
+ var ttl=K?"Motion":P?"Height":"Work",tag=X?"a transfer":"a store";
+ if(n){T(s,20,32,ttl,22,{w:500,f:col});T(s,112,32,tag,13,{o:.7});}
+ else{T(s,rx,56,ttl,26,{w:500,f:col});T(s,rx,80,tag,13,{o:.7});}
+ var o1=T(s,rx,n?150:128,"",n?17:20),o2=T(s,rx,n?184:168,"",n?20:28,{w:500,f:col});
+ var fx=n?20:rx,f1=n?316:216,f2=n?340:246,nx=n?150:rx;
+ if(K){TS(s,fx,f1,n?22:24,[["E"],["k",1],[" = ½ m v²"]]);TS(s,fx,f2,16,[["E"],["k",1],[" ∝ v²"]],{o:.8});T(s,nx,n?f2:f2+28,"same mass",13,{o:.7});}
+ if(P){TS(s,fx,f1,n?22:24,[["ΔE"],["p",1],[" = m g Δh"]]);TS(s,fx,f2,16,[["ΔE"],["p",1],[" ∝ Δh"]],{o:.8});T(s,nx,n?f2:f2+28,"same mass",13,{o:.7});}
+ if(X){T(s,fx,f1,"W = F × d",n?22:24);T(s,fx,f2,"N × m = J",16,{o:.8});T(s,nx,n?f2:f2+28,"force along the motion",13,{o:.7});}
+ var px=x0+22,post,plate,ball;
+ if(K){T(s,x0,top-30,"speed",12,{o:.7});}
+ if(P){S("line",{x1:x0-15,y1:yb,x2:tx+t+15,y2:yb,stroke:"currentColor","stroke-width":2},s);post=S("line",{x1:px,y1:yb,x2:px,y2:yb,stroke:"currentColor","stroke-dasharray":"4 4",opacity:.5},s);plate=S("rect",{x:px-26,y:yb,width:52,height:5,rx:2,fill:"currentColor",opacity:.55},s);ball=S("circle",{cx:px,cy:yb,r:15,fill:C.pot},s);}
+ if(X){T(s,tx-20,yb-(rows*st)/2,"F",16,{a:"end",w:500});T(s,tx,yb+40,"d",16,{w:500});}
+ function upd(){
+  var nc=K?a:P?1:a,nr=K?a:P?a:b;
+  rs.forEach(function(q){q.e.setAttribute("opacity",(q.c<nc&&q.r<nr)?1:.1);});
+  if(K){if(ag)ag.remove();ag=arrow(s,x0,top-14,x0+a*st-g,top-14,col,3);o1.textContent="speed × "+a;o2.textContent="energy × "+a*a;}
+  if(P){var ty=yb-a*st+g;post.setAttribute("y1",ty);plate.setAttribute("y",ty);ball.setAttribute("cy",ty-15);o1.textContent="height × "+a;o2.textContent="energy × "+a;}
+  if(X){if(ag)ag.remove();if(ag2)ag2.remove();ag=arrow(s,tx,yb+14,tx+a*st-g,yb+14,"currentColor",3);ag2=arrow(s,tx-12,yb,tx-12,yb-b*st+g,"currentColor",3);o1.textContent=b+" N × "+a+" m";o2.textContent="work = "+a*b+" J";}
+ }
+ function user(fn){return function(v){if(stopI){stopI();stopI=null;}fn(v);upd();};}
+ var tgt=X?4:3,inp;
+ if(X){b=3;sl(m.btns,"Force",1,5,3,user(function(v){b=v;}));inp=sl(m.btns,"Distance",1,6,1,user(function(v){a=v;}));}
+ else{inp=sl(m.btns,K?"Speed":"Height",1,6,1,user(function(v){a=v;}));}
+ upd();
+ stopI=tween(1500,function(p){a=1+Math.floor(p*(tgt-1+.99));inp.value=a;upd();},function(){stopI=null;});
+}
+
+function vEqual(root){
+ var n=N(root),W=n?360:680,H=n?430:330,bw=n?110:140,
+  P=n?[[65,215],[180,52],[295,215]]:[[80,255],[210,52],[340,255]],BG="var(--bs-body-bg,#fff)",
+  nd=[{nm:"Motion",fm:"½ m v²",tg:"store",c:C.kin},{nm:"Height",fm:"m g Δh",tg:"store",c:C.pot},{nm:"Work",fm:"F × d",tg:"transfer",c:C.gr}],
+  ED=[{nm:"Falling",a:0,b:1,eq:[["E"],["k",1],[" = ΔE"],["p",1]],d:["No air: the height store","becomes the motion store."]},
+      {nm:"Lifting",a:1,b:2,eq:[["ΔE"],["p",1],[" = W"]],d:["Lifted slowly: the work","is the height store gained."]},
+      {nm:"Braking",a:0,b:2,eq:[["E"],["k",1],[" = W"]],d:["All the motion store","becomes work by the brakes."]}];
+ var m=mount(root,H,"Motion, height and work: which two are equal when. Falling, lifting, braking",W),s=m.svg;
+ var ln=ED.map(function(e){return S("line",{x1:P[e.a][0],y1:P[e.a][1],x2:P[e.b][0],y2:P[e.b][1],stroke:"currentColor"},s);});
+ var ng=nd.map(function(d,i){var cx=P[i][0],cy=P[i][1],bk=S("rect",{x:cx-bw/2,y:cy-35,width:bw,height:70,rx:10},s),g0=S("g",{},s);bk.style.fill=BG;var r0=S("rect",{x:cx-bw/2,y:cy-35,width:bw,height:70,rx:10,"stroke-width":2,stroke:d.c},g0);r0.style.fill=BG;
+  T(g0,cx,cy-10,d.nm,16,{a:"middle",w:500,f:d.c});T(g0,cx,cy+9,d.fm,14,{a:"middle"});T(g0,cx,cy+26,d.tg,11,{a:"middle",o:.7});return {g:g0,r:r0};});
+ var cg=S("g",{},s),pl=ED.map(function(e,i){var mx=(P[e.a][0]+P[e.b][0])/2,my=(P[e.a][1]+P[e.b][1])/2,g0=S("g",{"class":"hit",tabindex:0,role:"button","aria-label":e.nm+": "+e.d.join(" ")},s),r0=S("rect",{x:mx-42,y:my-14,width:84,height:28,rx:14,stroke:"currentColor","stroke-width":1.5},g0),tn=S("rect",{x:mx-42,y:my-14,width:84,height:28,rx:14,opacity:0},g0);r0.style.fill=BG;tn.style.fill="rgba(42,127,98,.35)";
+  T(g0,mx,my+5,e.nm,14,{a:"middle"});g0.onclick=function(){sel(i);};g0.onkeydown=function(ev){if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();sel(i);}};return tn;});
+ var hint=T(s,n?180:450,n?414:250,"Tap another link.",13,{a:n?"middle":"start",o:.7});
+ function sel(i){var e=ED[i];
+  ln.forEach(function(l,j){l.setAttribute("stroke-width",j===i?5:2);l.setAttribute("opacity",j===i?1:.35);l.setAttribute("stroke-dasharray",j===i?"none":"5 5");});
+  pl.forEach(function(tn,j){tn.setAttribute("opacity",j===i?1:0);});
+  ng.forEach(function(q,j){var on=j===e.a||j===e.b;q.g.setAttribute("opacity",on?1:.5);q.r.setAttribute("stroke-width",on?4:1.5);});
+  while(cg.firstChild)cg.removeChild(cg.firstChild);
+  if(n){TS(cg,180,325,28,e.eq,{a:"middle"});T(cg,180,360,e.d[0],14,{a:"middle"});T(cg,180,382,e.d[1],14,{a:"middle"});}
+  else{TS(cg,450,120,30,e.eq);T(cg,450,160,e.d[0],14);T(cg,450,184,e.d[1],14);}
+ }
+ sel(0);
+}
+
+var V={idea:vIdea,fall:vFall,trans:vTrans,bounce:vBounce,formulas:vFormulas,work:vWork,car:vCar,predict:vPredict,sort:vSort,fix:vFix,stop:vStop,kin:function(r){vShape(r,"kin");},pot:function(r){vShape(r,"pot");},wrk:function(r){vShape(r,"wrk");},equal:vEqual};
 function build(r){var f=V[r.dataset.vw];if(!f)return;r.innerHTML="";r.dataset.n=(r.clientWidth||window.innerWidth)<520?"1":"0";f(r);}
 function boot(){document.querySelectorAll(".vw[data-vw]").forEach(function(r){if(!r.dataset.ready){r.dataset.ready="1";build(r);}});}
 var rz=null;window.addEventListener("resize",function(){clearTimeout(rz);rz=setTimeout(function(){document.querySelectorAll(".vw[data-vw]").forEach(function(r){var nn=(r.clientWidth||window.innerWidth)<520?"1":"0";if(r.dataset.n!==nn)build(r);});},250);});
@@ -1147,7 +1197,10 @@ window.Quarto = {
   <li><a href="#height-and-motion" id="toc-height-and-motion" class="nav-link" data-scroll-target="#height-and-motion">Height and motion</a></li>
   <li><a href="#work" id="toc-work" class="nav-link" data-scroll-target="#work">Work</a></li>
   <li><a href="#back-to-the-car" id="toc-back-to-the-car" class="nav-link" data-scroll-target="#back-to-the-car">Back to the car</a></li>
-  <li><a href="#three-formulas" id="toc-three-formulas" class="nav-link" data-scroll-target="#three-formulas">Three formulas</a></li>
+  <li><a href="#three-formulas" id="toc-three-formulas" class="nav-link" data-scroll-target="#three-formulas">Three formulas</a>
+  <ul class="collapse">
+  <li><a href="#when-are-they-equal" id="toc-when-are-they-equal" class="nav-link" data-scroll-target="#when-are-they-equal">When are they equal?</a></li>
+  </ul></li>
   <li><a href="#play" id="toc-play" class="nav-link" data-scroll-target="#play">Play</a>
   <ul class="collapse">
   <li><a href="#predict-then-watch" id="toc-predict-then-watch" class="nav-link" data-scroll-target="#predict-then-watch">Predict, then watch</a></li>
@@ -1159,9 +1212,6 @@ window.Quarto = {
   <li><a href="#for-those-who-want-the-numbers" id="toc-for-those-who-want-the-numbers" class="nav-link" data-scroll-target="#for-those-who-want-the-numbers">For those who want the numbers</a>
   <ul class="collapse">
   <li><a href="#worked-example" id="toc-worked-example" class="nav-link" data-scroll-target="#worked-example">Worked example</a></li>
-  <li><a href="#practice" id="toc-practice" class="nav-link" data-scroll-target="#practice">Practice</a></li>
-  <li><a href="#exam-style-sheet" id="toc-exam-style-sheet" class="nav-link" data-scroll-target="#exam-style-sheet">Exam-style sheet</a></li>
-  <li><a href="#spot-the-mistake" id="toc-spot-the-mistake" class="nav-link" data-scroll-target="#spot-the-mistake">Spot the mistake</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -1264,18 +1314,13 @@ window.Quarto = {
 </section>
 <section id="three-formulas" class="level2">
 <h2 class="anchored" data-anchor-id="three-formulas">Three formulas</h2>
-<div class="vf">
- <div class="cards">
-  <div class="card" style="--c:#EF9F27"><div class="nm">Kinetic energy</div><div class="fm">E<sub>k</sub> = ½ m v²</div><div class="pr">E<sub>k</sub> ∝ v²</div><div class="ex">∝ means directly proportional: double the speed, 4 × the energy.</div></div>
-  <div class="card" style="--c:#1D9E75"><div class="nm">Gravitational potential energy</div><div class="fm">ΔE<sub>p</sub> = m g Δh</div><div class="pr">ΔE<sub>p</sub> ∝ Δh</div><div class="ex">Twice as high, twice the energy.</div></div>
-  <div class="card" style="--c:#888780"><div class="nm">Work</div><div class="fm">W = F × d</div><div class="pr">W ∝ F and W ∝ d</div><div class="ex">Force along the motion, times the distance moved.</div></div>
- </div>
- <p class="note">All three are measured in joules (J), but they are not the same thing: kinetic and potential energy are <b>stores</b>, work is a <b>transfer</b>.</p>
- <h4 class="anchored">When are they equal?</h4>
- <div class="row"><span class="when">Braking</span><span class="fm">E<sub>k</sub> = W = F × d</span><span class="ex">All the motion store becomes work done by the brakes.</span></div>
- <div class="row"><span class="when">Thrown up, or falling</span><span class="fm">E<sub>k</sub> = ΔE<sub>p</sub></span><span class="ex">Motion store and height store swap, with no air resistance.</span></div>
- <div class="row"><span class="when">Lifted slowly, or pushed by gravity</span><span class="fm">ΔE<sub>p</sub> = W</span><span class="ex">The work done is the height store gained or lost: W = m g Δh.</span></div>
-</div>
+<div class="vw" data-vw="kin"></div>
+<div class="vw" data-vw="pot"></div>
+<div class="vw" data-vw="wrk"></div>
+<section id="when-are-they-equal" class="level3">
+<h3 class="anchored" data-anchor-id="when-are-they-equal">When are they equal?</h3>
+<div class="vw" data-vw="equal"></div>
+</section>
 </section>
 <section id="play" class="level2">
 <h2 class="anchored" data-anchor-id="play">Play</h2>
@@ -1375,7 +1420,7 @@ window.Quarto = {
 </section>
 <section id="for-those-who-want-the-numbers" class="level2">
 <h2 class="anchored" data-anchor-id="for-those-who-want-the-numbers">For those who want the numbers</h2>
-<p>Worked example, practice, and an exam-style sheet. Use <span class="math inline">\(g = 10\ \text{N/kg}\)</span>.</p>
+<p>One worked example. Use <span class="math inline">\(g = 10\ \text{N/kg}\)</span>.</p>
 <section id="worked-example" class="level3">
 <h3 class="anchored" data-anchor-id="worked-example">Worked example</h3>
 <p>A ball of <span class="math inline">\(0.20\ \text{kg}\)</span> is dropped from <span class="math inline">\(1.8\ \text{m}\)</span>. Speed at the ground? No air.</p>
@@ -1383,232 +1428,6 @@ window.Quarto = {
 <p><strong>Energy.</strong> <span class="math inline">\(\Delta E_p = m g \Delta h = 0.20 \times 10 \times 1.8 = 3.6\ \text{J}\)</span>. All of it becomes <span class="math inline">\(E_k\)</span>.</p>
 <p><strong>Speed.</strong> <span class="math inline">\(\tfrac12 \times 0.20 \times v^2 = 3.6\)</span>, so <span class="math inline">\(v^2 = 36\)</span> and <span class="math inline">\(v = 6.0\ \text{m/s}\)</span> (about <span class="math inline">\(22\ \text{km/h}\)</span>).</p>
 <p><strong>Check.</strong> Units are J and m/s. <span class="math inline">\(6\ \text{m/s}\)</span> is a fast run: plausible. A heavier ball? Same speed: <span class="math inline">\(m\)</span> cancels in <span class="math inline">\(m g \Delta h = \tfrac12 m v^2\)</span>.</p>
-</section>
-<section id="practice" class="level3">
-<h3 class="anchored" data-anchor-id="practice">Practice</h3>
-<p><strong>1.</strong> A ball of <span class="math inline">\(0.50\ \text{kg}\)</span> moves at <span class="math inline">\(8.0\ \text{m/s}\)</span>. (a) Kinetic energy? (b) Thrown at <span class="math inline">\(16\ \text{m/s}\)</span>: kinetic energy, and compared with (a)? (c) Cyclist and bike, <span class="math inline">\(75\ \text{kg}\)</span>, at <span class="math inline">\(36\ \text{km/h}\)</span>: kinetic energy?</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Consiglio</span>Solution
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-1" class="callout-1-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<ol type="a">
-<li><span class="math inline">\(\tfrac12 \times 0.50 \times 8.0^2 = 16\ \text{J}\)</span>. (b) <span class="math inline">\(\tfrac12 \times 0.50 \times 16^2 = 64\ \text{J}\)</span>: 4 × more, since speed doubled. (c) <span class="math inline">\(36 \div 3.6 = 10\ \text{m/s}\)</span>, so <span class="math inline">\(E_k = \tfrac12 \times 75 \times 10^2 = 3750\ \text{J}\)</span>.</li>
-</ol>
-</div>
-</div>
-</div>
-<p><strong>2.</strong> (a) A climber of <span class="math inline">\(60\ \text{kg}\)</span> gains <span class="math inline">\(200\ \text{m}\)</span> of height: gain in potential energy? (b) A stone of <span class="math inline">\(0.10\ \text{kg}\)</span> is thrown up at <span class="math inline">\(12\ \text{m/s}\)</span>: how high above the hand? No air.</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Consiglio</span>Solution
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-2" class="callout-2-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<ol type="a">
-<li><span class="math inline">\(60 \times 10 \times 200 = 120\,000\ \text{J} = 120\ \text{kJ}\)</span>. (b) <span class="math inline">\(E_k = \tfrac12 \times 0.10 \times 12^2 = 7.2\ \text{J}\)</span>. At the top it is all <span class="math inline">\(E_p\)</span>: <span class="math inline">\(7.2 = 0.10 \times 10 \times \Delta h\)</span>, so <span class="math inline">\(\Delta h = 7.2\ \text{m}\)</span>.</li>
-</ol>
-</div>
-</div>
-</div>
-<p><strong>3.</strong> (a) A crate of <span class="math inline">\(40\ \text{kg}\)</span> is pushed <span class="math inline">\(5.0\ \text{m}\)</span> with <span class="math inline">\(120\ \text{N}\)</span>: work done? (b) You carry a bag of <span class="math inline">\(20\ \text{kg}\)</span> for <span class="math inline">\(10\ \text{m}\)</span> at constant speed, level: work done by your upward force? (c) Cyclist and bike, <span class="math inline">\(80\ \text{kg}\)</span>, at <span class="math inline">\(6.0\ \text{m/s}\)</span>, brake with <span class="math inline">\(120\ \text{N}\)</span>: stopping distance? And at <span class="math inline">\(12\ \text{m/s}\)</span>?</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Consiglio</span>Solution
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-3" class="callout-3-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<ol type="a">
-<li><span class="math inline">\(W = F d = 600\ \text{J}\)</span>. Mass not needed. (b) <span class="math inline">\(0\ \text{J}\)</span>: the force is up, the motion is sideways. (c) <span class="math inline">\(E_k = \tfrac12 \times 80 \times 6.0^2 = 1440\ \text{J}\)</span>, so <span class="math inline">\(d = 1440 / 120 = 12\ \text{m}\)</span>. At <span class="math inline">\(12\ \text{m/s}\)</span>: <span class="math inline">\(E_k = 5760\ \text{J}\)</span>, <span class="math inline">\(d = 48\ \text{m}\)</span>: 4 × more.</li>
-</ol>
-</div>
-</div>
-</div>
-</section>
-<section id="exam-style-sheet" class="level3">
-<h3 class="anchored" data-anchor-id="exam-style-sheet">Exam-style sheet</h3>
-<p><span class="math inline">\(g = 10\ \text{N/kg}\)</span>. Show every step, give units. Total: 33 marks.</p>
-<p><strong>1 · Kinetic energy (4).</strong> Cyclist and bike, <span class="math inline">\(80\ \text{kg}\)</span>, at <span class="math inline">\(36\ \text{km/h}\)</span>. (a) Speed in <span class="math inline">\(\text{m/s}\)</span>. (b) Kinetic energy. (c) Speed doubles: <span class="math inline">\(E_k\)</span> changes by what factor?</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Consiglio</span>Solution
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-4" class="callout-4-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<ol type="a">
-<li><span class="math inline">\(10\ \text{m/s}\)</span>. (b) <span class="math inline">\(\tfrac12 \times 80 \times 10^2 = 4000\ \text{J}\)</span>. (c) × 4 (<span class="math inline">\(16\,000\ \text{J}\)</span>). Common slips: <span class="math inline">\(36\)</span> instead of <span class="math inline">\(10\)</span> (51 840 J), no square (400 J), no <span class="math inline">\(\tfrac12\)</span> (8000 J).</li>
-</ol>
-</div>
-</div>
-</div>
-<p><strong>2 · Potential energy (3).</strong> A book of <span class="math inline">\(1.5\ \text{kg}\)</span> is lifted from the floor to a shelf <span class="math inline">\(2.0\ \text{m}\)</span> high. (a) Gain in potential energy. (b) It is then pushed <span class="math inline">\(3.0\ \text{m}\)</span> along the shelf: change in <span class="math inline">\(E_p\)</span>? Explain.</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Consiglio</span>Solution
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-5" class="callout-5-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<ol type="a">
-<li><span class="math inline">\(1.5 \times 10 \times 2.0 = 30\ \text{J}\)</span>. (b) <span class="math inline">\(0\ \text{J}\)</span>: <span class="math inline">\(\Delta h = 0\)</span>. The push ends up as thermal energy (friction).</li>
-</ol>
-</div>
-</div>
-</div>
-<p><strong>3 · Speed and energy (4).</strong> A car of <span class="math inline">\(1200\ \text{kg}\)</span> drives <span class="math inline">\(90\ \text{km}\)</span> at <span class="math inline">\(72\ \text{km/h}\)</span>. (a) Time in minutes. (b) Kinetic energy.</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Consiglio</span>Solution
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-6" class="callout-6-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<ol type="a">
-<li><span class="math inline">\(90 / 72 = 1.25\ \text{h} = 75\ \text{min}\)</span>. (b) <span class="math inline">\(72 \div 3.6 = 20\ \text{m/s}\)</span>, so <span class="math inline">\(E_k = \tfrac12 \times 1200 \times 20^2 = 240\,000\ \text{J}\)</span>.</li>
-</ol>
-</div>
-</div>
-</div>
-<p><strong>4 · Roller coaster (5).</strong> A trolley of <span class="math inline">\(400\ \text{kg}\)</span> starts at rest at A, <span class="math inline">\(20\ \text{m}\)</span> high. B is <span class="math inline">\(5\ \text{m}\)</span> high, C is at ground level. No friction. (a) <span class="math inline">\(E_p\)</span> lost from A to B. (b) <span class="math inline">\(E_k\)</span> and speed at B. (c) Speed at C.</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Consiglio</span>Solution
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-7" class="callout-7-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<ol type="a">
-<li><span class="math inline">\(400 \times 10 \times 15 = 60\,000\ \text{J}\)</span>. (b) <span class="math inline">\(E_k = 60\,000\ \text{J}\)</span>, so <span class="math inline">\(v = \sqrt{2 \times 60\,000 / 400} = \sqrt{300} = 17.3\ \text{m/s}\)</span>. (c) <span class="math inline">\(E_k = 400 \times 10 \times 20 = 80\,000\ \text{J}\)</span>, so <span class="math inline">\(v = \sqrt{400} = 20\ \text{m/s}\)</span>. Energies add up from A, speeds do not.</li>
-</ol>
-</div>
-</div>
-</div>
-<p><strong>5 · Work (4).</strong> A student pushes a box of <span class="math inline">\(25\ \text{kg}\)</span> along a level floor with a constant horizontal force of <span class="math inline">\(60\ \text{N}\)</span>. It moves <span class="math inline">\(8.0\ \text{m}\)</span> at constant speed. (a) Work done by the student. (b) Friction force, and why. (c) The box gains no kinetic energy: where does the energy go?</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Consiglio</span>Solution
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-8" class="callout-8-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<ol type="a">
-<li><span class="math inline">\(60 \times 8.0 = 480\ \text{J}\)</span>. Mass not needed. (b) <span class="math inline">\(60\ \text{N}\)</span>: constant speed, so the forces balance. (c) Into the thermal store of box and floor (friction), then it spreads out.</li>
-</ol>
-</div>
-</div>
-</div>
-<p><strong>6 · The ramp (4).</strong> A crate of <span class="math inline">\(50\ \text{kg}\)</span> is pushed up a <span class="math inline">\(4.0\ \text{m}\)</span> ramp with <span class="math inline">\(150\ \text{N}\)</span> parallel to the ramp. It rises <span class="math inline">\(1.0\ \text{m}\)</span>. (a) Work done. (b) Gain in potential energy. (c) How much work is not stored as <span class="math inline">\(E_p\)</span>, and where does it go?</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Consiglio</span>Solution
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-9" class="callout-9-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<ol type="a">
-<li><span class="math inline">\(150 \times 4.0 = 600\ \text{J}\)</span> (distance along the ramp). (b) <span class="math inline">\(50 \times 10 \times 1.0 = 500\ \text{J}\)</span> (height counts). (c) <span class="math inline">\(100\ \text{J}\)</span>, to the thermal store by friction.</li>
-</ol>
-</div>
-</div>
-</div>
-<p><strong>7 · Stopping a truck (5).</strong> A truck of <span class="math inline">\(8000\ \text{kg}\)</span> at <span class="math inline">\(54\ \text{km/h}\)</span> brakes with a constant <span class="math inline">\(30\,000\ \text{N}\)</span>. (a) Kinetic energy. (b) Stopping distance. (c) At twice the speed: distance? Explain, no full calculation.</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Consiglio</span>Solution
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-10" class="callout-10-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<ol type="a">
-<li><span class="math inline">\(54 \div 3.6 = 15\ \text{m/s}\)</span>, so <span class="math inline">\(E_k = \tfrac12 \times 8000 \times 15^2 = 900\,000\ \text{J}\)</span>. (b) <span class="math inline">\(d = 900\,000 / 30\,000 = 30\ \text{m}\)</span>. (c) <span class="math inline">\(120\ \text{m}\)</span>: <span class="math inline">\(E_k \propto v^2\)</span> and <span class="math inline">\(d \propto E_k\)</span>, so × 4, not × 2.</li>
-</ol>
-</div>
-</div>
-</div>
-<p><strong>8 · A falling ball (4).</strong> A ball of <span class="math inline">\(0.50\ \text{kg}\)</span> is dropped from <span class="math inline">\(45\ \text{m}\)</span>. No air. (a) <span class="math inline">\(E_p\)</span> lost. (b) <span class="math inline">\(E_k\)</span> just before landing. (c) Speed in <span class="math inline">\(\text{m/s}\)</span> and in <span class="math inline">\(\text{km/h}\)</span>.</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Consiglio</span>Solution
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-11" class="callout-11-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<ol type="a">
-<li><span class="math inline">\(0.50 \times 10 \times 45 = 225\ \text{J}\)</span>. (b) <span class="math inline">\(225\ \text{J}\)</span>. (c) <span class="math inline">\(v = \sqrt{2 \times 225 / 0.50} = \sqrt{900} = 30\ \text{m/s}\)</span>, and <span class="math inline">\(30 \times 3.6 = 108\ \text{km/h}\)</span>.</li>
-</ol>
-</div>
-</div>
-</div>
-</section>
-<section id="spot-the-mistake" class="level3">
-<h3 class="anchored" data-anchor-id="spot-the-mistake">Spot the mistake</h3>
-<p>A car of <span class="math inline">\(1000\ \text{kg}\)</span> at <span class="math inline">\(50\ \text{km/h}\)</span> has <span class="math inline">\(E_k \approx 97\ \text{kJ}\)</span>. Three slips that still give a number that looks fine:</p>
-<ul>
-<li>Speed in <span class="math inline">\(\text{km/h}\)</span>: <span class="math inline">\(1\,250\,000\ \text{J}\)</span>, about 13 × too big.</li>
-<li>No square: <span class="math inline">\(6950\ \text{J}\)</span>.</li>
-<li>No <span class="math inline">\(\tfrac12\)</span>: <span class="math inline">\(193\,000\ \text{J}\)</span>, double.</li>
-</ul>
-<p>Three checks: <strong>units</strong> (J, m/s), <strong>size</strong> (compare with a known case, like the 97 kJ), <strong>ratio</strong> (speed × 2 means energy × 4).</p>
 
 
 </section>
