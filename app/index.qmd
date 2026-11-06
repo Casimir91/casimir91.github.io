@@ -1,0 +1,29 @@
+---
+title: "Installa l'app EFR"
+search: false
+toc: false
+format:
+  html:
+    include-in-header: _noindex.html
+---
+
+## iPhone e iPad (Safari)
+
+1. Apri questo link con **Safari**.
+2. Tocca l'icona **Condividi** (il quadrato con la freccia verso l'alto), nella barra in basso (o in alto, a seconda del dispositivo).
+3. Scorri il menu e tocca **"Aggiungi alla schermata Home"**.
+4. Tocca **Aggiungi** in alto a destra.
+
+::: {.callout-note}
+Se non vedi la voce, apri il link con Safari.
+:::
+
+<!-- TODO: screenshot dei passaggi per iPhone/Safari -->
+
+## Android (Chrome)
+
+1. Apri questo link con **Chrome**.
+2. Tocca il menu **⋮** (in alto a destra).
+3. Tocca **"Installa app"** (o "Aggiungi a schermata Home").
+
+<!-- TODO: screenshot dei passaggi per Android/Chrome -->

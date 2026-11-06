@@ -4,12 +4,10 @@ subtitle: "cit. un computer qualunque"
 open-graph:
   title: "Prof. Rosi"
   description: "hello, world · fisica e matematica"
-  image: images/og-cover.png
 description-meta: "hello, world · fisica e matematica"
 twitter-card:
   title: "Prof. Rosi"
   description: "hello, world · fisica e matematica"
-  image: images/og-cover.png
 toc: false
 ---
 

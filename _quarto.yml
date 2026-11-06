@@ -1,14 +1,20 @@
 project:
   type: website
+  post-render:
+    - scripts/strip-app-from-sitemap.py
   resources:
     - CNAME
+    - manifest.webmanifest
+    - img/*
     - toolbox/*.html
     - toolbox/*.css
     - toolbox/*.js
 
 website:
   title: "Prof. Rosi"
-  site-url: "https://casimir91.github.io"
+  site-url: "https://ermesfrosi.it"
+  favicon: img/icon-192.png
+  image: /img/icon-512.png
   open-graph: true
   twitter-card: true
   navbar:
@@ -36,4 +42,5 @@ format:
       dark: [darkly, custom-dark.scss]
     respect-user-color-scheme: true
     toc: true
+    include-in-header: _includes/pwa-head.html
     include-after-body: brand-link.html
