@@ -9,70 +9,35 @@ format:
 
 ```{=html}
 <style>
-.efr-lead{font-size:1.2rem;margin-bottom:1.5rem}
-.efr-steps{display:grid;gap:1rem;max-width:34rem}
-.efr-step{display:flex;align-items:center;gap:1.1rem;padding:1rem 1.2rem;border-radius:1rem;background:#293133;color:#fff}
-.efr-n{flex:none;width:2rem;height:2rem;border-radius:50%;background:#00BC8C;color:#293133;font-weight:700;display:grid;place-items:center}
-.efr-ico{flex:none;width:3.4rem;height:3.4rem;color:#00BC8C;position:relative;display:grid;place-items:center}
-.efr-ico svg{width:2.4rem;height:2.4rem}
-.efr-ico.pulse::after{content:"";position:absolute;inset:0;border-radius:50%;border:3px solid #00BC8C;animation:efr-pulse 1.6s ease-out infinite}
-@keyframes efr-pulse{0%{transform:scale(.6);opacity:1}100%{transform:scale(1.25);opacity:0}}
-@media (prefers-reduced-motion:reduce){.efr-ico.pulse::after{animation:none;opacity:.6}}
-.efr-txt{font-size:1.1rem;line-height:1.3}
-.efr-txt b{color:#00BC8C}
-.efr-hint{max-width:34rem;margin-top:1rem;font-size:.95rem;opacity:.8}
+.efr-lead{font-size:1.2rem;margin-bottom:1rem}
+.efr-flow{display:flex;align-items:flex-start;justify-content:center;gap:.15rem;max-width:34rem;margin:1.2rem 0;user-select:none;-webkit-user-select:none;pointer-events:none}
+.efr-item{flex:1 1 0;min-width:0;text-align:center}
+.efr-ico{position:relative;display:grid;place-items:center;width:4.4rem;height:4.4rem;margin:0 auto .5rem}
+.efr-ico svg{width:3rem;height:3rem}
+.efr-ico::after{content:"";position:absolute;inset:0;border-radius:50%;border:3px solid #00BC8C;opacity:0;animation:efr-seq 6s ease-out infinite}
+.efr-ico.s2::after{animation-delay:2s}
+.efr-ico.s3::after{animation-delay:4s}
+.efr-arr{flex:none;width:1.5rem;height:1.5rem;margin-top:1.45rem;opacity:.55}
+.efr-lbl{display:block;font-size:.95rem;line-height:1.25}
+.efr-num{position:absolute;top:-.2rem;left:-.2rem;display:grid;place-items:center;width:1.5rem;height:1.5rem;border-radius:50%;background:#00BC8C;color:#293133;font-size:.85rem;font-weight:700}
+@keyframes efr-seq{0%{opacity:0;transform:scale(.6)}6%{opacity:1}30%{opacity:0;transform:scale(1.25)}100%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.efr-ico::after{animation:none;opacity:.55}}
+.efr-hint{max-width:34rem;font-size:.95rem;opacity:.8}
 </style>
-
 <p class="efr-lead">Tre tocchi e l'app è sulla tua Home.</p>
 ```
 
 ## iPhone (Safari)
 
 ```{=html}
-<div class="efr-steps">
-  <div class="efr-step">
-    <span class="efr-n">1</span>
-    <span class="efr-ico pulse">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="M8.5 6.5 12 3l3.5 3.5"/><path d="M7 10H5.5A1.5 1.5 0 0 0 4 11.5v8A1.5 1.5 0 0 0 5.5 21h13a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 18.5 10H17"/></svg>
-    </span>
-    <span class="efr-txt">Tocca <b>Condividi</b></span>
-  </div>
-  <div class="efr-step">
-    <span class="efr-n">2</span>
-    <span class="efr-ico">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="3.5"/><path d="M12 8v8M8 12h8"/></svg>
-    </span>
-    <span class="efr-txt">Tocca <b>Aggiungi alla schermata Home</b></span>
-  </div>
-  <div class="efr-step">
-    <span class="efr-n">3</span>
-    <span class="efr-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16.2 9.5"/></svg></span>
-    <span class="efr-txt">Tocca <b>Aggiungi</b></span>
-  </div>
-</div>
+<div class="efr-flow" role="img" aria-label="Sequenza dei passaggi"><div class="efr-item"><span class="efr-ico s1"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" fill="none" aria-hidden="true"><path d="M12 15V3"/><path d="M8.5 6.5 12 3l3.5 3.5"/><path d="M7 10H5.5A1.5 1.5 0 0 0 4 11.5v8A1.5 1.5 0 0 0 5.5 21h13a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 18.5 10H17"/></svg><b class="efr-num">1</b></span><span class="efr-lbl">Tocca <strong>Condividi</strong></span></div><svg class="efr-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg><div class="efr-item"><span class="efr-ico s2"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" fill="none" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="3.5"/><path d="M12 8v8M8 12h8"/></svg><b class="efr-num">2</b></span><span class="efr-lbl">Tocca <strong>Aggiungi alla schermata Home</strong></span></div><svg class="efr-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg><div class="efr-item"><span class="efr-ico s3"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16.2 9.5"/></svg><b class="efr-num">3</b></span><span class="efr-lbl">Tocca <strong>Aggiungi</strong></span></div></div>
 <p class="efr-hint">Il simbolo Condividi è il quadrato con la freccia verso l'alto: sta accanto all'indirizzo, in basso, oppure dentro il menu <b>⋯</b>. Se non lo vedi, apri questo link con <b>Safari</b>.</p>
 ```
-
-<!-- TODO: eventuali screenshot o animazione più dettagliata -->
 
 ## Android (Chrome)
 
 ```{=html}
-<div class="efr-steps">
-  <div class="efr-step">
-    <span class="efr-n">1</span>
-    <span class="efr-ico pulse">
-      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="5" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="12" cy="19" r="1.8"/></svg>
-    </span>
-    <span class="efr-txt">Tocca il menu <b>⋮</b> in alto a destra</span>
-  </div>
-  <div class="efr-step">
-    <span class="efr-n">2</span>
-    <span class="efr-ico">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="M7.5 11 12 15.5 16.5 11"/><path d="M5 19h14"/></svg>
-    </span>
-    <span class="efr-txt">Tocca <b>Installa app</b></span>
-  </div>
-</div>
-<p class="efr-hint">Se non vedi "Installa app", scegli <b>Aggiungi a schermata Home</b>. Usa Chrome.</p>
+<div class="efr-flow" role="img" aria-label="Sequenza dei passaggi"><div class="efr-item"><span class="efr-ico s1"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="5" r="1.9"/><circle cx="12" cy="12" r="1.9"/><circle cx="12" cy="19" r="1.9"/></svg><b class="efr-num">1</b></span><span class="efr-lbl">Tocca il menu <strong>⋮</strong></span></div><svg class="efr-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg><div class="efr-item"><span class="efr-ico s2"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" fill="none" aria-hidden="true"><rect x="6.5" y="2.5" width="11" height="19" rx="2.5"/><path d="M12 8v6"/><path d="M9.3 11.6 12 14.3l2.7-2.7"/></svg><b class="efr-num">2</b></span><span class="efr-lbl">Tocca <strong>Installa app</strong> (o <em>Aggiungi a schermata Home</em>)</span></div><svg class="efr-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg><div class="efr-item"><span class="efr-ico s3"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16.2 9.5"/></svg><b class="efr-num">3</b></span><span class="efr-lbl">Scegli <strong>Installa</strong></span></div></div>
+<p class="efr-hint">Scegli <b>Installa</b>, non «Crea scorciatoia». Usa <b>Chrome</b>.</p>
 ```
+
