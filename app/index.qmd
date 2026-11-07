@@ -7,23 +7,72 @@ format:
     include-in-header: _noindex.html
 ---
 
-## iPhone e iPad (Safari)
+```{=html}
+<style>
+.efr-lead{font-size:1.2rem;margin-bottom:1.5rem}
+.efr-steps{display:grid;gap:1rem;max-width:34rem}
+.efr-step{display:flex;align-items:center;gap:1.1rem;padding:1rem 1.2rem;border-radius:1rem;background:#293133;color:#fff}
+.efr-n{flex:none;width:2rem;height:2rem;border-radius:50%;background:#00BC8C;color:#293133;font-weight:700;display:grid;place-items:center}
+.efr-ico{flex:none;width:3.4rem;height:3.4rem;color:#00BC8C;position:relative;display:grid;place-items:center}
+.efr-ico svg{width:2.4rem;height:2.4rem}
+.efr-ico.pulse::after{content:"";position:absolute;inset:0;border-radius:50%;border:3px solid #00BC8C;animation:efr-pulse 1.6s ease-out infinite}
+@keyframes efr-pulse{0%{transform:scale(.6);opacity:1}100%{transform:scale(1.25);opacity:0}}
+@media (prefers-reduced-motion:reduce){.efr-ico.pulse::after{animation:none;opacity:.6}}
+.efr-txt{font-size:1.1rem;line-height:1.3}
+.efr-txt b{color:#00BC8C}
+.efr-hint{max-width:34rem;margin-top:1rem;font-size:.95rem;opacity:.8}
+</style>
 
-1. Apri questo link con **Safari**.
-2. Tocca l'icona **Condividi** (il quadrato con la freccia verso l'alto), nella barra in basso (o in alto, a seconda del dispositivo).
-3. Scorri il menu e tocca **"Aggiungi alla schermata Home"**.
-4. Tocca **Aggiungi** in alto a destra.
+<p class="efr-lead">Tre tocchi e l'app è sulla tua Home.</p>
+```
 
-::: {.callout-note}
-Se non vedi la voce, apri il link con Safari.
-:::
+## iPhone (Safari)
 
-<!-- TODO: screenshot dei passaggi per iPhone/Safari -->
+```{=html}
+<div class="efr-steps">
+  <div class="efr-step">
+    <span class="efr-n">1</span>
+    <span class="efr-ico pulse">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="M8.5 6.5 12 3l3.5 3.5"/><path d="M7 10H5.5A1.5 1.5 0 0 0 4 11.5v8A1.5 1.5 0 0 0 5.5 21h13a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 18.5 10H17"/></svg>
+    </span>
+    <span class="efr-txt">Tocca <b>Condividi</b></span>
+  </div>
+  <div class="efr-step">
+    <span class="efr-n">2</span>
+    <span class="efr-ico">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="3.5"/><path d="M12 8v8M8 12h8"/></svg>
+    </span>
+    <span class="efr-txt">Tocca <b>Aggiungi alla schermata Home</b></span>
+  </div>
+  <div class="efr-step">
+    <span class="efr-n">3</span>
+    <span class="efr-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16.2 9.5"/></svg></span>
+    <span class="efr-txt">Tocca <b>Aggiungi</b></span>
+  </div>
+</div>
+<p class="efr-hint">Il simbolo Condividi è il quadrato con la freccia verso l'alto: sta accanto all'indirizzo, in basso, oppure dentro il menu <b>⋯</b>. Se non lo vedi, apri questo link con <b>Safari</b>.</p>
+```
+
+<!-- TODO: eventuali screenshot o animazione più dettagliata -->
 
 ## Android (Chrome)
 
-1. Apri questo link con **Chrome**.
-2. Tocca il menu **⋮** (in alto a destra).
-3. Tocca **"Installa app"** (o "Aggiungi a schermata Home").
-
-<!-- TODO: screenshot dei passaggi per Android/Chrome -->
+```{=html}
+<div class="efr-steps">
+  <div class="efr-step">
+    <span class="efr-n">1</span>
+    <span class="efr-ico pulse">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="5" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="12" cy="19" r="1.8"/></svg>
+    </span>
+    <span class="efr-txt">Tocca il menu <b>⋮</b> in alto a destra</span>
+  </div>
+  <div class="efr-step">
+    <span class="efr-n">2</span>
+    <span class="efr-ico">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="M7.5 11 12 15.5 16.5 11"/><path d="M5 19h14"/></svg>
+    </span>
+    <span class="efr-txt">Tocca <b>Installa app</b></span>
+  </div>
+</div>
+<p class="efr-hint">Se non vedi "Installa app", scegli <b>Aggiungi a schermata Home</b>. Usa Chrome.</p>
+```

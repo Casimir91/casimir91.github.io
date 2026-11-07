@@ -13,7 +13,7 @@ project:
 website:
   title: "Prof. Rosi"
   site-url: "https://ermesfrosi.it"
-  favicon: img/icon-192.png
+  favicon: img/favicon-round.png
   image: /img/icon-512.png
   open-graph: true
   twitter-card: true
