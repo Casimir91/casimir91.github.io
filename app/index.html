@@ -33,7 +33,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../img/icon-192.png" rel="icon" type="image/png">
+<link href="../img/favicon-round.png" rel="icon" type="image/png">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -83,11 +83,13 @@ ul.task-list li input[type="checkbox"] {
 
 
 <meta property="og:title" content="Installa l’app EFR – Prof.&nbsp;Rosi">
+<meta property="og:description" content="">
 <meta property="og:image" content="https://ermesfrosi.it/img/icon-512.png">
 <meta property="og:site_name" content="Prof.&nbsp;Rosi">
 <meta property="og:image:height" content="512">
 <meta property="og:image:width" content="512">
 <meta name="twitter:title" content="Installa l’app EFR – Prof.&nbsp;Rosi">
+<meta name="twitter:description" content="">
 <meta name="twitter:image" content="https://ermesfrosi.it/img/icon-512.png">
 <meta name="twitter:image-height" content="512">
 <meta name="twitter:image-width" content="512">
@@ -349,37 +351,67 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="iphone-e-ipad-safari" class="level2">
-<h2 class="anchored" data-anchor-id="iphone-e-ipad-safari">iPhone e iPad (Safari)</h2>
-<ol type="1">
-<li>Apri questo link con <strong>Safari</strong>.</li>
-<li>Tocca l’icona <strong>Condividi</strong> (il quadrato con la freccia verso l’alto), nella barra in basso (o in alto, a seconda del dispositivo).</li>
-<li>Scorri il menu e tocca <strong>“Aggiungi alla schermata Home”</strong>.</li>
-<li>Tocca <strong>Aggiungi</strong> in alto a destra.</li>
-</ol>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+<style>
+.efr-lead{font-size:1.2rem;margin-bottom:1.5rem}
+.efr-steps{display:grid;gap:1rem;max-width:34rem}
+.efr-step{display:flex;align-items:center;gap:1.1rem;padding:1rem 1.2rem;border-radius:1rem;background:#293133;color:#fff}
+.efr-n{flex:none;width:2rem;height:2rem;border-radius:50%;background:#00BC8C;color:#293133;font-weight:700;display:grid;place-items:center}
+.efr-ico{flex:none;width:3.4rem;height:3.4rem;color:#00BC8C;position:relative;display:grid;place-items:center}
+.efr-ico svg{width:2.4rem;height:2.4rem}
+.efr-ico.pulse::after{content:"";position:absolute;inset:0;border-radius:50%;border:3px solid #00BC8C;animation:efr-pulse 1.6s ease-out infinite}
+@keyframes efr-pulse{0%{transform:scale(.6);opacity:1}100%{transform:scale(1.25);opacity:0}}
+@media (prefers-reduced-motion:reduce){.efr-ico.pulse::after{animation:none;opacity:.6}}
+.efr-txt{font-size:1.1rem;line-height:1.3}
+.efr-txt b{color:#00BC8C}
+.efr-hint{max-width:34rem;margin-top:1rem;font-size:.95rem;opacity:.8}
+</style>
+
+<p class="efr-lead">Tre tocchi e l'app è sulla tua Home.</p>
+<section id="iphone-safari" class="level2">
+<h2 class="anchored" data-anchor-id="iphone-safari">iPhone (Safari)</h2>
+<div class="efr-steps">
+  <div class="efr-step">
+    <span class="efr-n">1</span>
+    <span class="efr-ico pulse">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"></path><path d="M8.5 6.5 12 3l3.5 3.5"></path><path d="M7 10H5.5A1.5 1.5 0 0 0 4 11.5v8A1.5 1.5 0 0 0 5.5 21h13a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 18.5 10H17"></path></svg>
+    </span>
+    <span class="efr-txt">Tocca <b>Condividi</b></span>
+  </div>
+  <div class="efr-step">
+    <span class="efr-n">2</span>
+    <span class="efr-ico">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="3.5"></rect><path d="M12 8v8M8 12h8"></path></svg>
+    </span>
+    <span class="efr-txt">Tocca <b>Aggiungi alla schermata Home</b></span>
+  </div>
+  <div class="efr-step">
+    <span class="efr-n">3</span>
+    <span class="efr-ico"><svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M8 12.5l2.7 2.7L16.2 9.5"></path></svg></span>
+    <span class="efr-txt">Tocca <b>Aggiungi</b></span>
+  </div>
 </div>
-<div class="callout-title-container flex-fill">
-Nota
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Se non vedi la voce, apri il link con Safari.</p>
-</div>
-</div>
-<!-- TODO: screenshot dei passaggi per iPhone/Safari -->
+<p class="efr-hint">Il simbolo Condividi è il quadrato con la freccia verso l'alto: sta accanto all'indirizzo, in basso, oppure dentro il menu <b>⋯</b>. Se non lo vedi, apri questo link con <b>Safari</b>.</p>
+<!-- TODO: eventuali screenshot o animazione più dettagliata -->
 </section>
 <section id="android-chrome" class="level2">
 <h2 class="anchored" data-anchor-id="android-chrome">Android (Chrome)</h2>
-<ol type="1">
-<li>Apri questo link con <strong>Chrome</strong>.</li>
-<li>Tocca il menu <strong>⋮</strong> (in alto a destra).</li>
-<li>Tocca <strong>“Installa app”</strong> (o “Aggiungi a schermata Home”).</li>
-</ol>
-<!-- TODO: screenshot dei passaggi per Android/Chrome -->
+<div class="efr-steps">
+  <div class="efr-step">
+    <span class="efr-n">1</span>
+    <span class="efr-ico pulse">
+      <svg viewbox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="5" r="1.8"></circle><circle cx="12" cy="12" r="1.8"></circle><circle cx="12" cy="19" r="1.8"></circle></svg>
+    </span>
+    <span class="efr-txt">Tocca il menu <b>⋮</b> in alto a destra</span>
+  </div>
+  <div class="efr-step">
+    <span class="efr-n">2</span>
+    <span class="efr-ico">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"></path><path d="M7.5 11 12 15.5 16.5 11"></path><path d="M5 19h14"></path></svg>
+    </span>
+    <span class="efr-txt">Tocca <b>Installa app</b></span>
+  </div>
+</div>
+<p class="efr-hint">Se non vedi "Installa app", scegli <b>Aggiungi a schermata Home</b>. Usa Chrome.</p>
 
 
 </section>
