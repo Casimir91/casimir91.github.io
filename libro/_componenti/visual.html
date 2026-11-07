@@ -7,6 +7,10 @@
 .vw button{border:1px solid #2a7f62;background:transparent;color:inherit;border-radius:.4rem;padding:.35rem .9rem;cursor:pointer;font:inherit}
 .vw button:hover{background:rgba(42,127,98,.18)}
 .vw button.on{background:rgba(42,127,98,.3);font-weight:600}
+.vw button.go{background:#2a7f62;color:#fff;font-weight:600;padding:.4rem 1.2rem}
+.vw button.go::before{content:"\25B6\00a0"}
+.vw button.go:hover{background:#226650}
+.vw .btns.acts{margin-top:.7rem;padding-top:.6rem;border-top:1px dashed var(--bs-border-color,#ccc)}
 .vw .hit{cursor:pointer}
 .vw .hit:focus{outline:none}
 .vw .hit:focus-visible{outline:2px solid #2a7f62;outline-offset:2px}
@@ -26,6 +30,8 @@ function mount(root,h,label,w){root.classList.add("vw");var svg=S("svg",{viewBox
 function button(par,label,fn){var b=document.createElement("button");b.type="button";b.textContent=label;b.onclick=fn;par.appendChild(b);return b;}
 function arrow(par,x1,y1,x2,y2,col,sw){var g=S("g",{},par),a=Math.atan2(y2-y1,x2-x1),L=10,c=col||"currentColor";S("line",{x1:x1,y1:y1,x2:x2-Math.cos(a)*L*.7,y2:y2-Math.sin(a)*L*.7,stroke:c,"stroke-width":sw||2},g);S("polygon",{points:x2+","+y2+" "+(x2-L*Math.cos(a-.4))+","+(y2-L*Math.sin(a-.4))+" "+(x2-L*Math.cos(a+.4))+","+(y2-L*Math.sin(a+.4)),fill:c},g);return g;}
 function bars(s,x0,base,hmax,items,w,gap){var rs=[];items.forEach(function(it,i){var x=x0+i*(w+gap);rs.push(S("rect",{x:x,y:base,width:w,height:0,fill:it.col},s));T(s,x+w/2,base+22,it.lab,13,{a:"middle"});});S("line",{x1:x0-10,y1:base,x2:x0+items.length*(w+gap)-gap+10,y2:base,stroke:"currentColor","stroke-width":2},s);return function(v){v.forEach(function(q,i){var hh=Math.max(0,q)*hmax;rs[i].setAttribute("y",base-hh);rs[i].setAttribute("height",hh);});};}
+function actRow(m){var d=document.createElement("div");d.className="btns acts";m.btns.parentNode.appendChild(d);return d;}
+function goBtn(par,label,fn){var b=button(par,label,fn);b.className="go";return b;}
 function setOn(btns,i){btns.forEach(function(b,j){b.className=j===i?"on":"";});}
 
 /* 1 - what is energy */
@@ -136,7 +142,7 @@ function vTrans(root){
   setOn(btns,cur);}
  function reset(){if(stop)stop();stop=null;p=0;t=0;upd();}
  ["Force","Current","Heating","Waves"].forEach(function(nm,j){btns.push(button(m.btns,nm,function(){cur=j;reset();}));});
- button(m.btns,"Start",function(){if(stop)stop();p=0;var t0=null,id,dead=false;stop=function(){dead=true;cancelAnimationFrame(id);};
+ var ar=actRow(m);goBtn(ar,"Start",function(){if(stop)stop();p=0;var t0=null,id,dead=false;stop=function(){dead=true;cancelAnimationFrame(id);};
   function f(ts){if(dead)return;if(t0===null)t0=ts;t=(ts-t0)/1000;p=Math.min(1,t/6);upd();if(p<1)id=requestAnimationFrame(f);}id=requestAnimationFrame(f);});
  reset();
 }
@@ -173,8 +179,8 @@ function vBounce(root){
  var bs=[];
  bs.push(button(m.btns,"Perfect bounce",function(){real=false;setOn(bs,0);reset();}));
  bs.push(button(m.btns,"Real bounce",function(){real=true;setOn(bs,1);reset();}));
- button(m.btns,"Drop it",run);
- var sb=button(m.btns,"Slow motion",function(){slow=!slow;sb.className=slow?"on":"";sb.setAttribute("aria-pressed",slow?"true":"false");});sb.setAttribute("aria-pressed","false");
+ var ar=actRow(m);goBtn(ar,"Drop it",run);
+ var sb=button(ar,"Slow motion",function(){slow=!slow;sb.className=slow?"on":"";sb.setAttribute("aria-pressed",slow?"true":"false");});sb.setAttribute("aria-pressed","false");
  setOn(bs,0);reset();
 }
 
