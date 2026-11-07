@@ -15,6 +15,25 @@
 .vw .hit:focus{outline:none}
 .vw .hit:focus-visible{outline:2px solid #2a7f62;outline-offset:2px}
 .vw input[type=range]{accent-color:#2a7f62}
+.vw sub,.vw sup{font-size:.7em;line-height:0}
+.vw .eqb{display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-end;gap:.4rem .5rem;margin:.6rem 0 .2rem;font-size:1.05rem}
+.vw .eg{display:flex;flex-direction:column;align-items:center;gap:.15rem}
+.vw .eg.full{flex:0 0 100%}
+.vw .eg .cap{font-size:.72rem;opacity:.7}
+.vw .eg .row{display:flex;align-items:center;gap:.4rem}
+.vw .eop{opacity:.8;padding-bottom:.5rem}
+.vw .eg .row .eop{padding-bottom:0}
+.vw button.tl{min-width:4.4rem;padding:.4rem .6rem;border-width:2px;font-size:1.05rem;white-space:nowrap}
+.vw button.tl.w{border-radius:1.4rem;border-color:#888780;min-width:3rem}
+.vw button.tl.z{border-style:dashed;opacity:.75;font-weight:600}
+.vw button.tl.ok{border-color:#1D9E75;background:rgba(29,158,117,.2)}
+.vw button.tl.bad{border-color:#D85A30;background:rgba(216,90,48,.15)}
+.vw button.tl:disabled{cursor:default;opacity:1}
+.vw .msgb{min-height:1.5rem;text-align:center;font-weight:500;margin:.7rem 0 .3rem}
+.vw .stp{margin-top:.5rem;border-top:1px dashed var(--bs-border-color,#ccc);padding-top:.3rem}
+.vw .stp>div{display:flex;flex-wrap:wrap;gap:.1rem .8rem;justify-content:center;align-items:baseline;padding:.2rem 0}
+.vw .stp .nt{font-size:.75rem;opacity:.65}
+.vw .stp .fin{font-weight:700;color:#1D9E75}
 </style>
 <script>
 (function(){
@@ -496,7 +515,88 @@ function vEqual(root){
  sel(0);
 }
 
-var V={idea:vIdea,fall:vFall,trans:vTrans,bounce:vBounce,formulas:vFormulas,work:vWork,car:vCar,predict:vPredict,sort:vSort,fix:vFix,stop:vStop,kin:function(r){vShape(r,"kin");},pot:function(r){vShape(r,"pot");},wrk:function(r){vShape(r,"wrk");},equal:vEqual};
+/* 12 - build the equation: mgh_i + 1/2 mv_i^2 = mgh_f + 1/2 mv_f^2 + W, which terms are zero? */
+function vBuild(root){
+ var n=N(root),W=n?360:680,H=n?224:226,GY=n?200:204,sc=n?108:116,cx=W/2,R=14,X0=n?100:110,D=n?210:430;
+ var m=mount(root,H,"Build the equation game: choose which energy terms are zero in each situation, then check",W),s=m.svg;
+ var title=T(s,20,26,"",15,{w:500}),note=T(s,20,46,"",12,{o:.7});
+ /* scene: ball (cases 1,2,4) */
+ var gB=S("g",{},s),gC=S("g",{},s);
+ var gl=S("line",{x1:cx-110,y1:GY,x2:cx+110,y2:GY,stroke:"currentColor","stroke-width":2},gB);
+ var gW=S("g",{},gB),wv="M"+(cx-110)+" "+GY+" q 10 -6 20 0";
+ for(var q=0;q<10;q++)wv+=" t 20 0";
+ S("rect",{x:cx-110,y:GY,width:220,height:H-GY-3,fill:"#7FB8E8","fill-opacity":.55},gW);S("path",{d:wv,fill:"none",stroke:"#3b86c6","stroke-width":2},gW);
+ function cyOf(h){return GY-R-h*sc;}
+ var ghost=S("circle",{cx:cx,cy:cyOf(0),r:R,fill:"none",stroke:"currentColor","stroke-dasharray":"4 3",opacity:.6},gB),
+  ball=S("circle",{cx:cx,cy:cyOf(1),r:R,fill:"#5F5E5A"},gB),
+  lS=T(gB,cx+26,0,"start",12,{o:.8}),lE=T(gB,cx+26,0,"end",12,{o:.8}),aB=S("g",{},gB);
+ /* scene: car (case 3) */
+ function carBody(par,gh){function sty(c){return gh?{fill:"none",stroke:"currentColor","stroke-dasharray":"4 3","stroke-opacity":.6}:{fill:c};}
+  function Rc(x,y,w,h){var a=sty(C.gr);a.x=x;a.y=y;a.width=w;a.height=h;S("rect",a,par);}
+  function Ci(x,y,r){var a=sty("#444441");a.cx=x;a.cy=y;a.r=r;S("circle",a,par);}
+  Rc(-60,-30,60,22);Rc(-48,-42,30,12);Ci(-45,-7,7);Ci(-15,-7,7);}
+ S("line",{x1:20,y1:GY,x2:W-20,y2:GY,stroke:"currentColor","stroke-width":2},gC);
+ S("line",{x1:X0+D,y1:GY-58,x2:X0+D,y2:GY,stroke:"currentColor","stroke-dasharray":"4 4",opacity:.35},gC);
+ var gcar=S("g",{transform:"translate("+(X0+D)+","+GY+")"},gC);carBody(gcar,true);
+ var car=S("g",{transform:"translate("+X0+","+GY+")"},gC);carBody(car,false);
+ var aC=arrow(car,-52,-58,-6,-58,"currentColor",2);
+ T(gC,X0-30,GY+20,"start",12,{a:"middle",o:.8});T(gC,X0+D-30,GY+20,"stop",12,{a:"middle",o:.8});
+ /* the equation: five tappable terms */
+ var TERMS=[{h:"mgh<sub>i</sub>",nm:"start height term"},{h:"&frac12;mv<sub>i</sub><sup>2</sup>",nm:"start motion term"},{h:"mgh<sub>f</sub>",nm:"end height term"},{h:"&frac12;mv<sub>f</sub><sup>2</sup>",nm:"end motion term"},{h:"W",nm:"heat term"}];
+ var eq=document.createElement("div");eq.className="eqb";
+ function grp(cap,full){var g=document.createElement("div");g.className="eg"+(full?" full":"");var c=document.createElement("div");c.className="cap";c.textContent=cap;var r=document.createElement("div");r.className="row";g.appendChild(c);g.appendChild(r);eq.appendChild(g);return r;}
+ function op(par,t){var e=document.createElement("span");e.className="eop";e.textContent=t;par.appendChild(e);}
+ var tl=TERMS.map(function(t,i){var b=document.createElement("button");b.type="button";b.className="tl"+(i===4?" w":"");b.onclick=function(){tog(i);};return b;});
+ var rS=grp("Start",n),rE,rW;
+ rS.appendChild(tl[0]);op(rS,"+");rS.appendChild(tl[1]);
+ op(eq,"=");rE=grp("End");rE.appendChild(tl[2]);op(rE,"+");rE.appendChild(tl[3]);
+ op(eq,"+");rW=grp("To heat");rW.appendChild(tl[4]);
+ var msg=document.createElement("div");msg.className="msgb";msg.setAttribute("aria-live","polite");
+ var stp=document.createElement("div");stp.className="stp";stp.setAttribute("aria-live","polite");
+ root.insertBefore(eq,m.btns);root.insertBefore(msg,m.btns);root.appendChild(stp);
+ /* the four situations; z = which of [h_i, v_i, h_f, v_f, W] are zero */
+ var SIT=[
+  {t:"Falls from rest: speed after the drop?",nt:"No air",k:"ball",h0:1,h1:.5,mo:"in",up:0,dh:1,z:[0,1,0,0,1],
+   L:[["drop the zeros","mgh<sub>i</sub> = mgh<sub>f</sub> + &frac12;mv<sub>f</sub><sup>2</sup>"],["cancel m","gh<sub>i</sub> = gh<sub>f</sub> + &frac12;v<sub>f</sub><sup>2</sup>"],["collect","g(h<sub>i</sub> &minus; h<sub>f</sub>) = &frac12;v<sub>f</sub><sup>2</sup>"],["solve","v<sub>f</sub><sup>2</sup> = 2g(h<sub>i</sub> &minus; h<sub>f</sub>)"]],aha:"Only the change in height counts"},
+  {t:"Thrown up: to the highest point",nt:"No air",k:"ball",h0:0,h1:1,mo:"out",up:1,z:[1,0,0,1,1],
+   L:[["drop the zeros","&frac12;mv<sub>i</sub><sup>2</sup> = mgh<sub>f</sub>"],["cancel m","&frac12;v<sub>i</sub><sup>2</sup> = gh<sub>f</sub>"],["solve","h<sub>f</sub> = v<sub>i</sub><sup>2</sup> / 2g"]],aha:"Double the speed: four times the height"},
+  {t:"Car braking: until it stops",nt:"Friction in the brakes",k:"car",z:[1,0,1,1,0],
+   L:[["drop the zeros","&frac12;mv<sub>i</sub><sup>2</sup> = W"],["W = F d","&frac12;mv<sub>i</sub><sup>2</sup> = Fd"],["solve","d = mv<sub>i</sub><sup>2</sup> / 2F"]],aha:"Double the speed: four times the distance"},
+  {t:"Free fall: from rest to the water",nt:"No air",k:"ball",water:1,h0:1,h1:0,mo:"in",up:0,z:[0,1,1,0,1],
+   L:[["drop the zeros","mgh<sub>i</sub> = &frac12;mv<sub>f</sub><sup>2</sup>"],["cancel m","gh<sub>i</sub> = &frac12;v<sub>f</sub><sup>2</sup>"],["solve","v<sub>f</sub><sup>2</sup> = 2gh<sub>i</sub>"]],aha:"The mass cancels: same speed for any object"}
+ ];
+ var li=0,tries=0,solved=false,shown=0,stop=null,z=[0,0,0,0,0],S0=SIT[0];
+ var bCheck=button(m.btns,"Check",check),bStep=button(m.btns,"Next step",step),bNext=button(m.btns,"Next",next);
+ function paint(i){var b=tl[i];b.innerHTML=z[i]?"0":TERMS[i].h;b.classList.toggle("z",!!z[i]);b.setAttribute("aria-pressed",z[i]?"true":"false");b.setAttribute("aria-label",TERMS[i].nm+(z[i]?": zero":": kept"));}
+ function tog(i){if(solved)return;z[i]=z[i]?0:1;tl[i].classList.remove("ok","bad");paint(i);}
+ function setup(){if(stop)stop();stop=null;S0=SIT[li];solved=false;tries=0;shown=0;z=[0,0,0,0,0];
+  title.textContent=(li+1)+" / "+SIT.length+"   "+S0.t;note.textContent=S0.nt;
+  tl.forEach(function(b,i){b.disabled=false;b.classList.remove("ok","bad");paint(i);});
+  msg.textContent="Tap the terms that are zero";msg.style.color="";stp.innerHTML="";
+  var car3=S0.k==="car";gB.setAttribute("display",car3?"none":"");gC.setAttribute("display",car3?"":"none");
+  if(car3){car.setAttribute("transform","translate("+X0+","+GY+")");aC.setAttribute("opacity",1);}
+  else{gl.setAttribute("display",S0.water?"none":"");gW.setAttribute("display",S0.water?"":"none");ball.setAttribute("cy",cyOf(S0.h0));ghost.setAttribute("cy",cyOf(S0.h1));lS.setAttribute("y",cyOf(S0.h0)+4);lE.setAttribute("y",cyOf(S0.h1)+4);
+   clearSvg(aB);if(S0.up)arrow(aB,cx-34,cyOf(S0.h0)+14,cx-34,cyOf(S0.h0)-18,"currentColor",2);}
+  hide(bCheck,0);hide(bStep,1);hide(bNext,1);bNext.className="";bNext.textContent=li===SIT.length-1?"Again":"Next";}
+ function play(){var f;
+  if(S0.k==="car"){aC.setAttribute("opacity",0);stop=tween(2600,function(p){car.setAttribute("transform","translate("+(X0+D*p*(2-p))+","+GY+")");});}
+  else{clearSvg(aB);stop=tween(2200,function(p){f=S0.mo==="in"?p*p:1-(1-p)*(1-p);ball.setAttribute("cy",cyOf(S0.h0+(S0.h1-S0.h0)*f));},function(){if(S0.dh){var y0=cyOf(S0.h0),y1=cyOf(S0.h1);arrow(aB,cx-40,y0+R,cx-40,y1+R,"currentColor",2);var tx=T(aB,cx-50,(y0+y1)/2+R+5,"h",15,{a:"end",w:600});S("tspan",{"font-size":11,dy:4},tx,"i");S("tspan",{"font-size":15,dy:-4},tx," \u2212 h");S("tspan",{"font-size":11,dy:4},tx,"f");}});}}
+ function addLine(){var L=S0.L[shown],d=document.createElement("div"),a=document.createElement("span"),e=document.createElement("span");
+  a.className="nt";a.innerHTML=L[0];e.className="ex";e.innerHTML=L[1];d.appendChild(a);d.appendChild(e);stp.appendChild(d);shown++;
+  if(shown===S0.L.length){d.className="fin";msg.textContent=S0.aha;msg.style.color=OK;hide(bStep,1);hide(bNext,0);bNext.className="on";}else{hide(bStep,0);}}
+ function win(shownAnswer){solved=true;tl.forEach(function(b){b.disabled=true;});
+  msg.textContent=shownAnswer?"Here is the answer":"Yes!";msg.style.color=OK;hide(bCheck,1);addLine();play();}
+ function check(){var good=0;tries++;
+  tl.forEach(function(b,i){var ok=!!z[i]===!!S0.z[i];if(ok)good++;b.classList.remove("ok","bad");b.classList.add(ok?"ok":"bad");});
+  if(good===5){win(false);}
+  else if(tries>=2){z=S0.z.slice();tl.forEach(function(b,i){paint(i);b.classList.remove("bad");b.classList.add("ok");});win(true);}
+  else{msg.textContent=good+" of 5 right. Fix the red terms.";msg.style.color="";}}
+ function step(){if(solved&&shown<S0.L.length)addLine();}
+ function next(){li=(li+1)%SIT.length;setup();}
+ setup();
+}
+
+var V={idea:vIdea,fall:vFall,trans:vTrans,bounce:vBounce,formulas:vFormulas,work:vWork,car:vCar,predict:vPredict,sort:vSort,fix:vFix,stop:vStop,build:vBuild,kin:function(r){vShape(r,"kin");},pot:function(r){vShape(r,"pot");},wrk:function(r){vShape(r,"wrk");},equal:vEqual};
 function build(r){var f=V[r.dataset.vw];if(!f)return;r.innerHTML="";r.dataset.n=(r.clientWidth||window.innerWidth)<520?"1":"0";f(r);}
 function boot(){document.querySelectorAll(".vw[data-vw]").forEach(function(r){if(!r.dataset.ready){r.dataset.ready="1";build(r);}});}
 var rz=null;window.addEventListener("resize",function(){clearTimeout(rz);rz=setTimeout(function(){document.querySelectorAll(".vw[data-vw]").forEach(function(r){var nn=(r.clientWidth||window.innerWidth)<520?"1":"0";if(r.dataset.n!==nn)build(r);});},250);});

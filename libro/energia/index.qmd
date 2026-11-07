@@ -131,16 +131,16 @@ Same energy at the start, same energy at the end.
 <div class="vw" data-vw="sort"></div>
 ```
 
-### Fix the bars
-
-```{=html}
-<div class="vw" data-vw="fix"></div>
-```
-
 ### Stop in time
 
 ```{=html}
 <div class="vw" data-vw="stop"></div>
+```
+
+### Build the equation
+
+```{=html}
+<div class="vw" data-vw="build"></div>
 ```
 
 ## Check yourself
@@ -226,19 +226,3 @@ $d = E_k / F$: half $F$, double $d$.
 :::
 
 :::
-
-## For those who want the numbers
-
-One worked example. Use $g = 10\ \text{N/kg}$.
-
-### Worked example
-
-A ball of $0.20\ \text{kg}$ is dropped from $1.8\ \text{m}$. Speed at the ground? No air.
-
-**Data.** $m = 0.20\ \text{kg}$, $\Delta h = 1.8\ \text{m}$.
-
-**Energy.** $\Delta E_p = m g \Delta h = 0.20 \times 10 \times 1.8 = 3.6\ \text{J}$. All of it becomes $E_k$.
-
-**Speed.** $\tfrac12 \times 0.20 \times v^2 = 3.6$, so $v^2 = 36$ and $v = 6.0\ \text{m/s}$ (about $22\ \text{km/h}$).
-
-**Check.** Units are J and m/s. $6\ \text{m/s}$ is a fast run: plausible. A heavier ball? Same speed: $m$ cancels in $m g \Delta h = \tfrac12 m v^2$.
