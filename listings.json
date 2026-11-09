@@ -15,8 +15,23 @@
     "items": []
   },
   {
-    "listing": "/didattica/quarta/fisica/index.html",
-    "items": []
+    "listing": "/didattica/quarta/index.html",
+    "items": [
+      "/didattica/quarta/lezioni/2026-09-04-campoelettrico-intro/index.html",
+      "/didattica/quarta/lezioni/2026-09-07-campo-coulomb/index.html",
+      "/didattica/quarta/lezioni/2026-09-21-campoelettrico-flusso/index.html",
+      "/didattica/quarta/lezioni/2026-09-28-teorema-gauss/index.html",
+      "/didattica/quarta/lezioni/2026-09-30-teorema-gauss-dimostrazione/index.html",
+      "/didattica/quarta/lezioni/2026-10-05-mock-test/index.html",
+      "/didattica/quarta/lezioni/2026-10-07-ripasso-mock-midterm/index.html",
+      "/didattica/quarta/lezioni/2026-10-12-midterm/index.html",
+      "/didattica/quarta/lezioni/2026-10-19-magnetismo-intro/index.html",
+      "/didattica/quarta/lezioni/2026-10-21-mappa-elettrostatica/index.html",
+      "/didattica/quarta/lezioni/2026-10-26-dipolo-magnetico/index.html",
+      "/didattica/quarta/lezioni/2026-10-28-teorema-gauss-magnetico/index.html",
+      "/didattica/quarta/lezioni/2026-11-04-mock-test-campo-elettrico-magnetico/index.html",
+      "/didattica/quarta/lezioni/2026-11-09-ripasso-examination-week/index.html"
+    ]
   },
   {
     "listing": "/didattica/seconda/index.html",
@@ -27,7 +42,8 @@
       "/didattica/seconda/lezioni/2026-10-05-mock-midterm/index.html",
       "/didattica/seconda/lezioni/2026-10-06-midterm-test/index.html",
       "/didattica/seconda/lezioni/2026-10-12-power-efficiency/index.html",
-      "/didattica/seconda/lezioni/2026-10-30-examination-practice/index.html"
+      "/didattica/seconda/lezioni/2026-10-30-examination-practice/index.html",
+      "/didattica/seconda/lezioni/2026-11-09-mock-exam-week/index.html"
     ]
   },
   {
@@ -84,22 +100,8 @@
     "items": []
   },
   {
-    "listing": "/didattica/quarta/index.html",
-    "items": [
-      "/didattica/quarta/lezioni/2026-09-04-campoelettrico-intro/index.html",
-      "/didattica/quarta/lezioni/2026-09-07-campo-coulomb/index.html",
-      "/didattica/quarta/lezioni/2026-09-21-campoelettrico-flusso/index.html",
-      "/didattica/quarta/lezioni/2026-09-28-teorema-gauss/index.html",
-      "/didattica/quarta/lezioni/2026-09-30-teorema-gauss-dimostrazione/index.html",
-      "/didattica/quarta/lezioni/2026-10-05-mock-test/index.html",
-      "/didattica/quarta/lezioni/2026-10-07-ripasso-mock-midterm/index.html",
-      "/didattica/quarta/lezioni/2026-10-12-midterm/index.html",
-      "/didattica/quarta/lezioni/2026-10-19-magnetismo-intro/index.html",
-      "/didattica/quarta/lezioni/2026-10-21-mappa-elettrostatica/index.html",
-      "/didattica/quarta/lezioni/2026-10-26-dipolo-magnetico/index.html",
-      "/didattica/quarta/lezioni/2026-10-28-teorema-gauss-magnetico/index.html",
-      "/didattica/quarta/lezioni/2026-11-04-mock-test-campo-elettrico-magnetico/index.html"
-    ]
+    "listing": "/didattica/quarta/fisica/index.html",
+    "items": []
   },
   {
     "listing": "/didattica/archivio/index.html",
