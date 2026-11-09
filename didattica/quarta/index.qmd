@@ -18,5 +18,15 @@ document.addEventListener("DOMContentLoaded", () => {
     a.target = "_blank";
     a.rel = "noopener";
   });
+  // voci del listing mostrate ma non cliccabili (solo il titolo, senza link)
+  const senzaLink = ["2026-11-09-ripasso-examination-week"];
+  document.querySelectorAll(".quarto-listing a.listing-title").forEach(a => {
+    if (senzaLink.some(slug => a.getAttribute("href").includes(slug))) {
+      const span = document.createElement("span");
+      span.className = a.className;
+      span.textContent = a.textContent;
+      a.replaceWith(span);
+    }
+  });
 });
 </script>

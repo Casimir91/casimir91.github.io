@@ -1,0 +1,9 @@
+---
+title: "Ripasso in vista dell'examination week"
+subtitle: "Lezione di ripasso in preparazione all'examination week"
+date: 2026-11-09
+tipo: "Practice"
+categories: [Fisica]
+---
+
+Il 9 novembre si è svolto il ripasso in vista dell'examination week.

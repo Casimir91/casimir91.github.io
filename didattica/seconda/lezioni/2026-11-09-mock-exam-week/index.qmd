@@ -1,0 +1,12 @@
+---
+title: "Examination week · Mock test"
+subtitle: "Formative test on speed, distance-time graphs, energy, work, power, efficiency and energy resources"
+date: 2026-11-09
+tipo: "Mock"
+categories: [Fisica]
+---
+
+## Materiali e indicazioni per lo studio
+
+[Mock test (PDF) ↗](mock-exam-week.pdf){target="_blank" .btn .btn-outline-primary}
+[Soluzioni (PDF) ↗](mock-exam-week-solutions.pdf){target="_blank" .btn .btn-outline-primary}
