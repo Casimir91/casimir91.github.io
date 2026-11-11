@@ -16,7 +16,7 @@
   }
   .ring.long { font-size: calc(var(--zoom, 1) * min(16vw, 36vh)); }
   .ring::before {
-    content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+    content: ""; position: absolute; top: 0; right: 0; bottom: 0; left: 0; border-radius: inherit; pointer-events: none;
     padding: var(--ringw);
     background: conic-gradient(var(--primary) var(--p, 100%), var(--border) 0);
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
@@ -39,7 +39,7 @@
   @media (prefers-reduced-motion: reduce) { body.done { animation: none; background: var(--danger); color: #fff; } }
 </style>
 </head>
-<body data-zoom-max="1.2">
+<body data-zoom-max="1.2" data-ambient>
   <div class="topbar">
     <a href="index.html">← Toolbox</a>
     <span class="status" id="status">Set a time and press Start</span>
@@ -169,5 +169,6 @@
   render(remaining);
 })();
 </script>
+<script src="ambient.js"></script>
 </body>
 </html>

@@ -47,11 +47,14 @@
       modeBtn.onclick = () => { mode = mode === "dark" ? "light" : "dark"; set("toolbox-mode", mode); apply(); refresh(); wake(); };
       bar.appendChild(modeBtn);
 
-      animBtn = document.createElement("button");
-      animBtn.className = "toggle"; animBtn.type = "button"; animBtn.textContent = "Motion";
-      animBtn.title = "Slow background and digit animation";
-      animBtn.onclick = () => { anim = !anim; set("toolbox-anim", anim ? "on" : "off"); apply(); refresh(); wake(); };
-      bar.appendChild(animBtn);
+      // Pages with ambient.js (data-ambient on <body>) have canvas scenes instead of CSS Motion.
+      if (!document.body.hasAttribute("data-ambient")) {
+        animBtn = document.createElement("button");
+        animBtn.className = "toggle"; animBtn.type = "button"; animBtn.textContent = "Motion";
+        animBtn.title = "Slow background and digit animation";
+        animBtn.onclick = () => { anim = !anim; set("toolbox-anim", anim ? "on" : "off"); apply(); refresh(); wake(); };
+        bar.appendChild(animBtn);
+      }
       refresh();
     }
 
