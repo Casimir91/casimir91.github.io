@@ -76,7 +76,9 @@
   var dark = false;
   function readTheme() {
     dark = root.getAttribute("data-mode") === "dark";
-    snowSprite = makeFlake(dark ? "255,255,255" : "95,130,170");
+    var rgb = dark ? "255,255,255" : "95,130,170";
+    snowSprite = makeFlake(rgb);
+    crystalSprites = [makeCrystal(rgb, 0), makeCrystal(rgb, 1), makeCrystal(rgb, 2)];
   }
 
   /* ---------- sprites (pre-rendered once, then just copied: cheap) ---------- */
@@ -130,7 +132,33 @@
     g.fillStyle = rg; g.fillRect(0, 0, 32, 32);
     return c;
   }
-  var snowSprite = null;
+  /* A six-armed snow crystal (dendrite): 60° symmetry, side branches at 60° to each arm. */
+  function makeCrystal(rgb, variant) {
+    var c = document.createElement("canvas"); c.width = c.height = 128;
+    var g = c.getContext("2d"), i, j;
+    g.translate(64, 64);
+    g.strokeStyle = "rgba(" + rgb + ",1)"; g.lineCap = "round";
+    g.shadowColor = "rgba(" + rgb + ",.8)"; g.shadowBlur = 6;
+    var branches = [[[0.35, 0.3], [0.62, 0.22], [0.82, 0.12]],
+                    [[0.45, 0.38], [0.75, 0.2]],
+                    [[0.3, 0.18], [0.5, 0.3], [0.7, 0.18]]][variant % 3];
+    for (i = 0; i < 6; i++) {
+      g.save(); g.rotate(i * Math.PI / 3);
+      g.lineWidth = 5; g.beginPath(); g.moveTo(0, 0); g.lineTo(0, -56); g.stroke();
+      g.lineWidth = 3.5; g.beginPath();
+      for (j = 0; j < branches.length; j++) {
+        var y = -56 * branches[j][0], l = 56 * branches[j][1];
+        g.moveTo(0, y); g.lineTo(l * 0.866, y - l * 0.5);
+        g.moveTo(0, y); g.lineTo(-l * 0.866, y - l * 0.5);
+      }
+      g.stroke(); g.restore();
+    }
+    g.lineWidth = 3; g.beginPath();                 // small hexagon at the centre
+    for (i = 0; i <= 6; i++) g.lineTo(13 * Math.sin(i * Math.PI / 3), -13 * Math.cos(i * Math.PI / 3));
+    g.stroke();
+    return c;
+  }
+  var snowSprite = null, crystalSprites = [];
 
   /* ---------- particle scenes ---------- */
   var parts = [], splashes = [], density = 1;
@@ -144,9 +172,9 @@
   SC.leaves = {
     init: function () {
       parts = [];
-      for (var i = 0, n = howMany(50000, 10, 38); i < n; i++) {
+      for (var i = 0, n = howMany(60000, 8, 30); i < n; i++) {
         var z = rnd(0.45, 1);
-        var p = { z: z, size: rnd(34, 64) * U * z, vy: rnd(40, 75) * U * (0.6 + 0.4 * z),
+        var p = { z: z, size: rnd(60, 105) * U * z, vy: rnd(40, 75) * U * (0.6 + 0.4 * z),
           a: rnd(15, 45) * U, w: rnd(0.8, 1.7), ph: rnd(0, 6.28), rot: rnd(0, 6.28), rv: rnd(-0.6, 0.6),
           fw: rnd(1, 2.6), fp: rnd(0, 6.28), img: pick(LEAF_SPRITES) };
         this.place(p, false); parts.push(p);
@@ -276,24 +304,35 @@
   SC.snow = {
     init: function () {
       parts = [];
-      for (var i = 0, n = howMany(12000, 50, 170); i < n; i++) {
-        var z = rnd(0.3, 1);
-        var p = { z: z, r: rnd(1.5, 4.5) * U * (0.5 + 0.8 * z), vy: rnd(25, 55) * U * (0.4 + 0.6 * z),
-          a: rnd(10, 35) * U, w: rnd(0.4, 1.2), ph: rnd(0, 6.28) };
+      for (var i = 0, n = howMany(14000, 40, 140); i < n; i++) {
+        // about one in five is a big crystal in the foreground, the rest are distant dots
+        var crystal = Math.random() < 0.2, z = crystal ? rnd(0.65, 1) : rnd(0.3, 1);
+        var p = { z: z, crystal: crystal, kind: (Math.random() * 3) | 0,
+          r: crystal ? rnd(20, 40) * U * z : rnd(2.5, 6) * U * (0.5 + 0.8 * z),
+          vy: rnd(25, 55) * U * (0.4 + 0.6 * z) * (crystal ? 0.8 : 1),
+          a: rnd(10, 35) * U, w: rnd(0.4, 1.2), ph: rnd(0, 6.28), rot: rnd(0, 6.28), rv: rnd(-0.5, 0.5) };
         this.place(p, false); parts.push(p);
       }
       parts.sort(byDepth);
     },
-    place: function (p, top) { p.x = rnd(-60, W + 60); p.y = top ? rnd(-H * 0.3, -10) : rnd(-10, H); },
+    place: function (p, top) { p.x = rnd(-60, W + 60); p.y = top ? rnd(-H * 0.3, -60) : rnd(-60, H); },
     frame: function (dt, t) {
       var wv = wind(t * 0.7) * 45 * U;
       ctx.setTransform(S, 0, 0, S, 0, 0);
       for (var i = 0; i < parts.length; i++) {
         var p = parts[i];
         p.x += (wv * p.z + p.a * p.w * Math.cos(p.w * t + p.ph)) * dt; p.y += p.vy * dt;
-        if (p.y > H + 20 || p.x < -80 || p.x > W + 80) this.place(p, true);
+        if (p.y > H + 60 || p.x < -100 || p.x > W + 100) this.place(p, true);
         ctx.globalAlpha = 0.55 + 0.45 * p.z;
-        ctx.drawImage(snowSprite, p.x - 2 * p.r, p.y - 2 * p.r, 4 * p.r, 4 * p.r);
+        if (p.crystal) {
+          p.rot += p.rv * dt;
+          var k = p.r / 64 * S, c = Math.cos(p.rot) * k, s = Math.sin(p.rot) * k;
+          ctx.setTransform(c, s, -s, c, p.x * S, p.y * S);
+          ctx.drawImage(crystalSprites[p.kind], -64, -64);
+          ctx.setTransform(S, 0, 0, S, 0, 0);
+        } else {
+          ctx.drawImage(snowSprite, p.x - 2 * p.r, p.y - 2 * p.r, 4 * p.r, 4 * p.r);
+        }
       }
     }
   };
