@@ -1,0 +1,12 @@
+---
+title: "T1-Final test (Examination week)"
+subtitle: "Thermal physics"
+date: 2026-11-11
+tipo: "Test"
+categories: [Fisica]
+---
+
+## Materiali e indicazioni per lo studio
+
+[Test (PDF) ↗](test-A.pdf){target="_blank" .btn .btn-outline-primary}
+[Soluzioni (PDF) ↗](soluzioni-A.pdf){target="_blank" .btn .btn-outline-primary}
