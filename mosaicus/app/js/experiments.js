@@ -193,17 +193,7 @@ const cooling = {
     { key: 'beta', label: 'Coefficiente B (Beta)', unit: 'K', value: 3950, step: 10, advanced: true },
     { key: 'offset', label: 'Correzione di taratura (si somma a T)', unit: '°C', value: 0, step: 0.1, advanced: true },
   ],
-  wiring: `${SCHEMA_TERMISTORE}
-    <div class="w-block"><h3>Materiale</h3>
-      <p>Arduino, il termistore NTC del kit (10 kΩ) e una resistenza da 10 kΩ, oppure il modulo termistore del kit sensori.</p></div>
-    <div class="w-block"><h3>Collegamenti</h3>
-      <ul>
-        <li>Un piedino del termistore a <b>5V</b>, l'altro ad <b>A0</b></li>
-        <li>Resistenza da 10 kΩ tra <b>A0</b> e <b>GND</b></li>
-      </ul>
-      <p class="w-note">Se hai montato il termistore tra A0 e GND, cambia l'opzione «Posizione del termistore».</p></div>
-    <div class="w-block"><h3>Consiglio</h3>
-      <p class="tip">Infila il termistore in una patata calda (o in acqua calda) e lascialo raffreddare all'aria. Misura Tₐ con un termometro e inseriscila nei parametri.</p></div>`,
+  wiring: `<div class="w-block"><h3>📡 Con Arduino</h3>${SCHEMA_TERMISTORE}<p>Termistore in una patata calda, poi lascialo raffreddare.</p></div>`,
   /** fields = [t_ms, adc] */
   parse(fields, p) {
     const tMs = +fields[0], adc = +fields[1];
@@ -236,9 +226,7 @@ const cooling = {
 // ------------------------------------------------------------------
 // Cinematica · sensore a ultrasuoni HC-SR04 (parte comune)
 // ------------------------------------------------------------------
-const SONAR_TIP = `<p class="tip">Il sensore lavora meglio <b>tra 5 cm e circa 1 m</b>, con un bersaglio <b>piatto e largo</b> (almeno un cartoncino A5) rivolto verso di lui. Oltre il metro, o con oggetti piccoli e tondi, l'eco diventa incerto e compaiono punti sparsi. Il fascio è largo circa 30°: tieni sgombra la traiettoria.</p>`;
-
-function sonarExperiment({ id, title, subtitle, icon, iconBg, sim, window = 4, material, idea }) {
+function sonarExperiment({ id, title, subtitle, icon, iconBg, sim, window = 4, tip }) {
   return {
     id, topic: 'Cinematica', title, subtitle, icon, iconBg, sim,
     lineType: 'S',
@@ -254,15 +242,7 @@ function sonarExperiment({ id, title, subtitle, icon, iconBg, sim, window = 4, m
       { key: 'dMax', label: 'Distanza massima accettata', unit: 'm', value: 3.0, step: 0.1, advanced: true },
       { key: 'spike', label: 'Scarta salti anomali maggiori di', unit: 'm', value: 0.10, step: 0.01, advanced: true },
     ],
-    wiring: `${SCHEMA_HCSR04}
-      <div class="w-block"><h3>Materiale</h3><p>${material}</p></div>
-      <div class="w-block"><h3>Collegamenti</h3>
-        <ul>
-          <li><b>VCC</b> → 5V &nbsp;·&nbsp; <b>GND</b> → GND</li>
-          <li><b>Trig</b> → pin <b>12</b> &nbsp;·&nbsp; <b>Echo</b> → pin <b>11</b></li>
-        </ul></div>
-      <div class="w-block"><h3>Portata del sensore</h3>${SONAR_TIP}</div>
-      <div class="w-block"><h3>Idea</h3><p class="tip">${idea}</p></div>`,
+    wiring: `<div class="w-block"><h3>📡 Con Arduino</h3>${SCHEMA_HCSR04}<p>${tip}</p></div>`,
     /** fields = [t_us, eco_us] */
     parse(fields, p) {
       const tUs = +fields[0], echo = +fields[1];
@@ -313,15 +293,13 @@ function sonarExperiment({ id, title, subtitle, icon, iconBg, sim, window = 4, m
 const motion = sonarExperiment({
   id: 'motion', title: 'Moto rettilineo', subtitle: 'Uniforme e accelerato · HC-SR04',
   icon: ICON_CART, iconBg: 'var(--cielo-t)', sim: 'incline',
-  material: 'Arduino, sensore a ultrasuoni HC-SR04, un carrello (o un libro) con una superficie piatta rivolta verso il sensore.',
-  idea: 'Moto accelerato: piano inclinato, carrello che parte da fermo, sensore in cima alla guida. Moto uniforme: carrello spinto su un tavolo orizzontale.',
+  tip: 'Bersaglio piatto, tra 5 cm e 1 m dal sensore.',
 });
 
 const harmonic = sonarExperiment({
   id: 'harmonic', title: 'Moto armonico', subtitle: 'Oscillazioni · HC-SR04',
   icon: ICON_SPRING, iconBg: 'var(--rosa-t)', sim: 'spring', window: 2,
-  material: 'Arduino, sensore a ultrasuoni HC-SR04, una molla con una massa e un cartoncino piatto attaccato sotto la massa.',
-  idea: 'Appendi la massa alla molla, metti il sensore a terra rivolto verso l\'alto, sotto il cartoncino. Sposta la massa di qualche centimetro e lasciala oscillare. Per le oscillazioni rapide la lisciatura è già impostata bassa (2 punti per lato).',
+  tip: 'Sensore a terra, cartoncino sotto la massa.',
 });
 
 // ------------------------------------------------------------------
@@ -390,9 +368,7 @@ const phoneSound = {
   icon: ICON_FREQ, iconBg: 'var(--rosa-t)', lineType: 'M', sim: 'phone-sound',
   command: (p) => `START,SOUND,${Math.round(p.interval)}`,
   params: [{ key: 'interval', label: 'Intervallo di campionamento', unit: 'ms', value: 50, min: 30, step: 10 }],
-  wiring: '<div class="w-block"><h3>Che cosa fa</h3><p>Ogni 50 ms legge dal microfono <b>un solo numero</b>, la frequenza della componente più forte, e lo mette in un grafico <b>f(t)</b>: serve a vedere come la frequenza <b>cambia nel tempo</b> (effetto Doppler, una sirena, una glissata). Per vedere la <b>forma</b> dell\'onda usa l\'<b>Oscilloscopio</b>.</p></div>' +
-    PHONE_HOW('Effetto Doppler: fai girare il telefono che suona (generatore a 1000 Hz) legato a uno spago e misura con un secondo telefono. Battimenti: due diapason leggermente diversi, il livello sonoro "pulsa". Funziona anche sul computer, con il suo microfono.') +
-    '<div class="w-block"><h3>Cosa misura</h3><p>La <b>frequenza dominante</b> (la componente più forte dello spettro, tra 50 Hz e 5 kHz) e il <b>livello sonoro relativo</b> in dB: 0 dB è il massimo che il microfono registra, quindi i valori sono negativi.</p></div>',
+  wiring: '<div class="w-block"><h3>🎤 Microfono del dispositivo</h3><p>Telefono o computer: non serve altro.</p></div>',
   parse(f) { return isFinite(f[0]) ? { t: f[0] / 1000, freq: f[1], level: f[2] } : null; },
   derive: (rows) => rows,
   views: [
@@ -414,9 +390,7 @@ const instrumentBase = (o) => ({ params: [], views: [], columns: [], readouts: [
 const scopeAudio = instrumentBase({
   id: 'scope', topic: 'Onde e suono', kind: 'scope', source: 'audio', title: 'Oscilloscopio', subtitle: 'Guarda la forma di un suono',
   icon: ICON_SCOPE, iconBg: 'var(--lime-t)',
-  wiring: `<div class="w-block"><h3>Sorgenti</h3><p>🎤 il microfono di questo dispositivo · 🎛 il generatore di Mosaicus · 🎻 suoni di esempio, tutti sulla stessa nota.</p></div>
-    <div class="w-block"><h3>Idea</h3><p class="tip">Canta una «a» e congela (A). Poi fischia la stessa nota (B), poi suona un diapason o uno strumento (C). Stessa frequenza, forme diverse: il <b>timbro</b> sta nelle armoniche.</p></div>
-    <div class="w-block"><h3>Come si legge</h3><p><b>⟷</b> quanti millisecondi entrano nello schermo. <b>↗ ↘</b> trigger: la traccia parte sempre quando il segnale sale (o scende) attraverso lo zero, così sta ferma. <b>f</b> viene dall'<i>autocorrelazione</i>: di quanto devo spostare il segnale perché si sovrapponga a sé stesso? Quello spostamento è il periodo T.</p></div>`,
+  wiring: `<div class="w-block"><h3>🎤 Microfono del dispositivo</h3><p>Telefono o computer: non serve altro.</p></div>`,
 });
 
 const synthesizer = instrumentBase({
@@ -428,10 +402,9 @@ const synthesizer = instrumentBase({
 const scopeArduino = instrumentBase({
   id: 'escope', topic: 'Elettromagnetismo', kind: 'scope', source: 'arduino', title: 'Oscilloscopio elettrico', subtitle: 'Guarda una tensione: microfono, bobina',
   icon: ICON_ESCOPE, iconBg: 'var(--cielo-t)', sim: 'scope',
-  wiring: `<div class="w-block warn"><h3>⚠ Sicurezza</h3><p>Solo tensioni tra <b>0 e 5 V</b>, prese da Arduino stesso o da una bobina. <b>Mai la rete elettrica</b>, mai batterie oltre 5 V. Le tensioni negative si "sollevano" a 2,5 V con un partitore.</p></div>
-    <div class="w-block"><h3>🎤 Microfono del kit</h3>${SCHEMA_MIC}<p class="tip">Il modulo non amplifica molto: il segnale è di qualche decina di mV. Fischia vicino al microfono. Gira la vite del trimmer finché la media è circa 2,5 V.</p></div>
-    <div class="w-block"><h3>🧲 Bobina e magnete</h3>${SCHEMA_COIL}<p class="tip">Avvolgi 200–500 spire di filo smaltato su un tubo di cartone e fai cadere dentro un magnete al neodimio. Usa il trigger <b>singolo</b>: vedi la forza elettromotrice indotta, f.e.m. = −dΦ/dt, prima positiva poi negativa. Variante: il motorino del kit al posto della bobina, fatto girare con le dita, diventa una dinamo.</p></div>
-    <div class="w-block"><h3>Corrente</h3><p>Arduino misura solo tensioni. Per una corrente si mette in serie una piccola resistenza nota R (resistenza di <i>shunt</i>) e si misura la tensione ai suoi capi: I = V/R (scegli «Corrente» in Grandezza misurata).</p></div>`,
+  wiring: `<div class="w-block warn"><h3>⚠ Solo 0–5 V</h3><p>Mai la rete elettrica.</p></div>
+    <div class="w-block"><h3>🎤 Microfono del kit</h3>${SCHEMA_MIC}</div>
+    <div class="w-block"><h3>🧲 Bobina e magnete</h3>${SCHEMA_COIL}<p>Fai cadere il magnete nella bobina, trigger singolo.</p></div>`,
 });
 
 export const EXPERIMENTS = [motion, harmonic, cooling, scopeAudio, synthesizer, phoneSound, scopeArduino, phoneAcc, phoneGyro];
