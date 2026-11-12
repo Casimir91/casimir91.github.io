@@ -59,7 +59,7 @@ export function createScope(el, api) {
       </div>`}
     <div class="readouts scope-ro"></div>
   </div>
-  ${ard ? '' : `<div class="card examples" hidden><span class="ex-lab">La₃ = 220 Hz</span>${EXAMPLES.map(([id, l]) => `<button class="btn btn-small" data-ex="${id}">${l}</button>`).join('')}<button class="btn btn-small" data-ex="beats">Battimenti 440 + 443 Hz</button><span class="ex-gen" hidden>＋ 🎹 Sintetizzatore acceso</span></div>`}
+  ${ard ? '' : `<div class="card examples" hidden><span class="ex-lab">La₃ = 220 Hz</span>${EXAMPLES.map(([id, l]) => `<button class="btn btn-small" data-ex="${id}">${l}</button>`).join('')}<button class="btn btn-small" data-ex="beats">Battimenti 440 + 443 Hz</button><span class="ex-gen" hidden>＋ 🎹 Synth acceso</span></div>`}
   <div class="card scope-body">
     <div class="transport">
       <button class="btn btn-play big run"></button>
@@ -155,38 +155,59 @@ export function createScope(el, api) {
     el.querySelectorAll('[data-src]').forEach((b) => b.addEventListener('click', () => useSource(b.dataset.src)));
     el.querySelectorAll('[data-ex]').forEach((b) => b.addEventListener('click', () => playExample(b.dataset.ex)));
     $('.run').addEventListener('click', async () => {
-      if (S.analyser && !S.paused) { S.paused = true; syncControls(); return; }        // ❚❚ Pausa
-      if (!S.source) { await useSource(store.get('mosaicus.scope.src', 'mic') || 'mic'); return; }
-      S.paused = false; S.showLive = true; S.fHist = []; syncControls();               // ▶ Avvia
+      if (S.analyser && !S.paused) { pause(); return; }                                 // ❚❚ Pausa
+      if (!S.source) await useSource(store.get('mosaicus.scope.src', 'mic') || 'mic');
+      if (S.source) resume();                                                            // ▶ Avvia
     });
   }
 
   // ---------------- sorgenti audio ----------------
   async function useSource(src) {
     if (!audioSupported()) { api.toast('Questo browser non supporta l\'audio (Web Audio API).'); return; }
+    if (src === S.source) return;
     if (src !== 'ex') stopExample();
+    if (src !== 'mic') closeMic();
     try {
       S.analyser = src === 'mic' ? await micAnalyser() : monitorAnalyser();
     } catch (e) {
       api.toast(`Microfono non disponibile: ${e.message}`, 5000);
       return;
     }
-    S.source = src; S.paused = false; S.showLive = true; S.live = null; S.fHist = [];
+    S.source = src; S.showLive = true; S.live = null; S.fHist = [];
+    // il microfono parte subito; gli esempi aspettano ▶ Avvia (si sceglie in silenzio)
+    S.paused = src === 'ex';
+    if (src === 'ex' && !S.example && !generatorOn()) S.example = 'violino';
     store.set('mosaicus.scope.src', src);
     syncControls();
-    if (src === 'ex' && !S.example && !generatorOn()) playExample('violino');
   }
 
-  function stopExample() { S.voices.forEach((v) => v.dispose()); S.voices = []; S.example = null; }
-  function playExample(id) {
-    if (S.example === id) { stopExample(); syncControls(); return; }
-    stopExample();
+  // Il suono degli esempi segue ▶ Avvia / ❚❚ Pausa (e ❄ Congela, che mette in pausa)
+  function stopVoices() { S.voices.forEach((v) => v.dispose()); S.voices = []; }
+  function startVoices(id) {
+    stopVoices();
+    if (!id) return;
     if (id === 'beats') S.voices = [new Voice({ type: 'sine', freq: 440, gain: 0.18 }), new Voice({ type: 'sine', freq: 443, gain: 0.18 })];
     else S.voices = [new Voice({ amps: TIMBRES[id].amps, freq: 220, gain: 0.3 })];
     S.voices.forEach((v) => v.start());
-    S.example = id; S.fHist = [];
-    S.paused = false; S.showLive = true;      // scegliere un esempio = volerlo vedere
+  }
+  function stopExample() { stopVoices(); S.example = null; }
+  function pause() {
+    S.paused = true;
+    stopVoices();
     syncControls();
+  }
+  function resume() {
+    S.paused = false; S.showLive = true; S.fHist = [];
+    if (S.source === 'ex') {
+      if (!S.example && !generatorOn()) S.example = 'violino';
+      startVoices(S.example);
+    }
+    syncControls();
+  }
+  function playExample(id) {
+    if (S.example === id && !S.paused) { pause(); return; }   // stesso tasto: pausa
+    S.example = id;
+    resume();                                                // toccare un esempio = volerlo sentire
   }
 
   // ---------------- Arduino ----------------
@@ -269,6 +290,7 @@ export function createScope(el, api) {
     S.slots.sort((a, b) => a.id.localeCompare(b.id));
     // «Congela» ferma davvero: niente più traccia che si muove. Per un'altra traccia: ▶ Avvia, poi di nuovo ❄
     S.paused = true; S.showLive = false;
+    stopVoices();
     if (S.acq) stopAcq();
     renderSlots(); syncControls(); redraw(); updateReadouts(true);
   }

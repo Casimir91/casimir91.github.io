@@ -728,7 +728,7 @@ function exportChecked() {
   const sel = boxes.filter((b) => b.checked);
   if (!sel.length) return;
   const used = new Set(['riepilogo', 'analisi']);
-  const summary = [['Riquadro', 'Foglio', 'Esperimento', 'Misura di origine', 'Da', 'A', 'Unità', 'Punti', 'Note', 'Colonne calcolate']];
+  const summary = [['Riquadro', 'Foglio', 'Lab', 'Misura di origine', 'Da', 'A', 'Unità', 'Punti', 'Note', 'Colonne calcolate']];
   const analyses = [['Riquadro', 'Analisi', 'Grafico', 'Grandezza', 'Valore', 'Incertezza σ', 'Unità', 'Equazione', 'Dettagli']];
   const sheets = [];
   for (const b of sel) {

@@ -82,13 +82,13 @@ ul.task-list li input[type="checkbox"] {
 
 
 <meta property="og:title" content="Mosaicus – Prof.&nbsp;Rosi">
-<meta property="og:description" content="Micro-laboratorio di fisica: Arduino, sensori del telefono, suono. Funziona offline, è software libero.">
+<meta property="og:description" content="Micro-laboratorio di fisica: Arduino, sensori del telefono, suono. Funziona anche senza rete.">
 <meta property="og:image" content="https://ermesfrosi.it/mosaicus/app/icons/icon-512.png">
 <meta property="og:site_name" content="Prof.&nbsp;Rosi">
 <meta property="og:image:height" content="512">
 <meta property="og:image:width" content="512">
 <meta name="twitter:title" content="Mosaicus – Prof.&nbsp;Rosi">
-<meta name="twitter:description" content="Micro-laboratorio di fisica: Arduino, sensori del telefono, suono. Funziona offline, è software libero.">
+<meta name="twitter:description" content="Micro-laboratorio di fisica: Arduino, sensori del telefono, suono. Funziona anche senza rete.">
 <meta name="twitter:image" content="https://ermesfrosi.it/mosaicus/app/icons/icon-512.png">
 <meta name="twitter:image-height" content="512">
 <meta name="twitter:image-width" content="512">
@@ -334,7 +334,7 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Mosaicus</h1>
-<p class="subtitle lead">Micro-laboratorio di fisica: Arduino, sensori del telefono, suono. Funziona offline, è software libero.</p>
+<p class="subtitle lead">Micro-laboratorio di fisica: Arduino, sensori del telefono, suono. Funziona anche senza rete.</p>
 </div>
 
 
@@ -355,9 +355,14 @@ ul.task-list li input[type="checkbox"] {
 /* ---- versione accanto al titolo ---- */
 .mz-ver{display:inline-block;vertical-align:middle;margin-left:.6rem;padding:.12rem .55rem;border-radius:999px;font-size:.95rem;font-weight:500;letter-spacing:.02em;
   background:#C6F432;color:#00302A}
-/* ---- apertura ---- */
-.mz-hero{max-width:46rem;margin:.4rem 0 1.2rem;border-radius:1rem;overflow:hidden;background:#00302A;aspect-ratio:8/5}
-.mz-hero video{display:block;width:100%;height:100%;object-fit:cover}
+/* ---- licenza e che cosa serve ---- */
+.mz-lic{display:inline-flex;align-items:center;gap:.45rem;margin:.1rem 0 1.1rem;padding:.25rem .75rem;border-radius:999px;border:1px solid var(--bs-border-color,#dee2e6);font-size:.92rem}
+.mz-need{list-style:none;padding:0;margin:.2rem 0 1.3rem;max-width:46rem;display:grid;gap:.45rem}
+.mz-need li{display:grid;grid-template-columns:2rem 7.5rem 1fr;align-items:baseline;gap:.4rem;font-size:1rem}
+.mz-need li > span:first-child{font-size:1.2rem}
+.mz-need b{font-weight:600}
+@media (max-width:520px){.mz-need li{grid-template-columns:1.8rem 1fr}.mz-need li em{grid-column:2}}
+.mz-need em{font-style:normal;opacity:.8}
 .mz-cta{display:flex;flex-wrap:wrap;gap:.7rem;margin:0 0 1.6rem}
 .mz-btn{display:inline-flex;align-items:center;gap:.55rem;padding:.75rem 1.3rem;border-radius:.8rem;font-weight:500;font-size:1.1rem;text-decoration:none!important;border:2px solid transparent;cursor:pointer;font-family:inherit}
 .mz-btn img{width:1.8rem;height:1.8rem}
@@ -388,15 +393,18 @@ ul.task-list li input[type="checkbox"] {
 .mz-dlg .mz-steps{margin:0;border:0;border-radius:0}
 .mz-dlg .mz-x{position:absolute;top:.5rem;right:.6rem;z-index:2;border:0;background:rgba(255,255,255,.85);color:#00302A;border-radius:50%;width:2.2rem;height:2.2rem;font-size:1.2rem;cursor:pointer}
 /* ---- che cosa serve ---- */
-.mz-need{display:grid;grid-template-columns:repeat(auto-fit,minmax(14rem,1fr));gap:.8rem;max-width:46rem;margin:.6rem 0 1rem}
-.mz-need div{border:1px solid var(--bs-border-color,#dee2e6);border-radius:.8rem;padding:.75rem .9rem;font-size:.95rem}
-.mz-need b{display:block;font-size:1.05rem;margin-bottom:.15rem}
-.mz-safe{max-width:46rem;border-left:4px solid #D6336C;padding:.4rem .9rem;font-size:.95rem}
 body.quarto-dark .mz-dots i.on{background:#C6F432}
 @media (prefers-reduced-motion:reduce){.mz-stage video{transition:none}}
 </style>
 
-<div class="mz-hero"><video class="mz-theme" muted="" playsinline="" loop="" autoplay="" preload="metadata" data-light="media/hero-light.mp4" data-dark="media/hero-dark.mp4" data-poster-light="media/hero-light.jpg" data-poster-dark="media/hero-dark.jpg" aria-label="Mosaicus: l'oscilloscopio mostra la forma d'onda di violino, voce e clarinetto sulla stessa nota"></video></div>
+<div class="mz-lic">🔓 Software libero · licenza MIT</div>
+
+<ul class="mz-need" aria-label="Che cosa serve">
+  <li><span>💻</span><b>Computer</b><em>Chrome o Edge</em></li>
+  <li><span>📱</span><b>Telefono</b><em>Chrome o Safari, niente da installare</em></li>
+  <li><span>🔌</span><b>Arduino Uno</b><em>con il <a href="mosaicus_firmware.ino" download="">firmware Mosaicus <span data-mz-fw=""></span></a>, da caricare una volta</em></li>
+  <li><span>🖥</span><b>LIM</b><em>pulsante Modalità LIM</em></li>
+</ul>
 
 <div class="mz-cta">
   <a class="mz-btn mz-open" href="app/"><img src="app/icons/icon.svg" alt="">Apri Mosaicus →</a>
@@ -430,7 +438,7 @@ body.quarto-dark .mz-dots i.on{background:#C6F432}
     <video class="mz-theme" muted="" playsinline="" loop="" preload="none" data-light="media/m5-light.mp4" data-dark="media/m5-dark.mp4" data-poster-light="media/m5-light.jpg" data-poster-dark="media/m5-dark.jpg"></video>
   </div>
   <div class="mz-body">
-    <div class="mz-slide"><h3 class="anchored"><span>1</span>Scegli l'esperimento</h3><p>Tocca un esperimento nell'elenco. Sul telefono l'elenco si apre con <b>Esperimenti</b>, nella barra in basso.</p></div>
+    <div class="mz-slide"><h3 class="anchored"><span>1</span>Scegli il lab</h3><p>Apri un argomento con <b>+</b> e tocca un lab. Sul telefono l'elenco è in <b>Lab</b>, nella barra in basso.</p></div>
     <div class="mz-slide"><h3 class="anchored"><span>2</span>Collega</h3><p>Arduino con il cavo → <b>Collega Arduino</b>. Il telefono → <b>Attiva sensori</b>. Senza niente → <b>Simulatore</b>.</p></div>
     <div class="mz-slide"><h3 class="anchored"><span>3</span>Start e stop</h3><p><b>Avvia</b>, guarda i punti arrivare, poi <b>Ferma</b>.</p></div>
     <div class="mz-slide"><h3 class="anchored"><span>4</span>Scegli un tratto</h3><p>Trascina il dito sul grafico: il tratto si colora.</p></div>
@@ -458,16 +466,6 @@ body.quarto-dark .mz-dots i.on{background:#C6F432}
   </div>
   <div class="mz-nav"><button type="button" data-prev="" aria-label="Passo precedente">←</button><span class="mz-dots"></span><button type="button" data-next="" aria-label="Passo successivo">→</button></div>
 </div>
-</section>
-<section id="che-cosa-serve" class="level2">
-<h2 class="anchored" data-anchor-id="che-cosa-serve">Che cosa serve</h2>
-<div class="mz-need">
-  <div><b>💻 Computer</b>Chrome o Edge. Per Arduino: Uno R3 con il <a href="mosaicus_firmware.ino" download="">firmware Mosaicus <span data-mz-fw=""></span></a>, da caricare una volta con l'IDE di Arduino.</div>
-  <div><b>📱 Telefono</b>Chrome (Android) o Safari (iPhone). Accelerometro, giroscopio, microfono: niente da installare.</div>
-  <div><b>🖥 LIM</b>Pulsante <b>Modalità LIM</b>: testi e grafici più grandi.</div>
-</div>
-<p class="mz-safe">⚡ Oscilloscopio elettrico: solo tensioni tra 0 e 5 V. <b>Mai la rete elettrica.</b></p>
-
 <script>
 (() => {
   // versione: letta dall'app stessa, così è sempre quella pubblicata
@@ -532,7 +530,6 @@ body.quarto-dark .mz-dots i.on{background:#C6F432}
   dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
 })();
 </script>
-<p>Software libero, licenza MIT.</p>
 
 
 </section>
