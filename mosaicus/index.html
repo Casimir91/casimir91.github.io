@@ -352,75 +352,187 @@ ul.task-list li input[type="checkbox"] {
 
 
 <style>
-.mz-open{display:inline-flex;align-items:center;gap:.6rem;padding:.8rem 1.4rem;border-radius:.8rem;background:#C6F432;color:#00302A!important;font-weight:800;font-size:1.15rem;text-decoration:none!important;margin:.4rem 0 1.4rem}
-.mz-open img{width:2rem;height:2rem}
-.mz-open:hover{filter:brightness(1.05);transform:translateY(-1px)}
-.mz-flow{display:flex;align-items:flex-start;justify-content:flex-start;gap:.15rem;max-width:46rem;margin:1rem 0 .4rem;user-select:none;-webkit-user-select:none}
-.mz-item{flex:1 1 0;min-width:0;text-align:center}
-.mz-ico{position:relative;display:grid;place-items:center;width:4.2rem;height:4.2rem;margin:0 auto .45rem;border-radius:1.1rem;background:color-mix(in srgb,#004D43 10%,transparent)}
-.mz-ico svg{width:2.4rem;height:2.4rem}
-.mz-arr{flex:none;width:1.3rem;height:1.3rem;margin-top:1.45rem;opacity:.5}
-.mz-lbl{display:block;font-size:.9rem;line-height:1.25}
-.mz-num{position:absolute;top:-.25rem;left:-.25rem;display:grid;place-items:center;width:1.45rem;height:1.45rem;border-radius:50%;background:#C6F432;color:#00302A;font-size:.8rem;font-weight:800}
+/* ---- versione accanto al titolo ---- */
+.mz-ver{display:inline-block;vertical-align:middle;margin-left:.6rem;padding:.12rem .55rem;border-radius:999px;font-size:.95rem;font-weight:500;letter-spacing:.02em;
+  background:#C6F432;color:#00302A}
+/* ---- apertura ---- */
+.mz-hero{max-width:46rem;margin:.4rem 0 1.2rem;border-radius:1rem;overflow:hidden;background:#00302A;aspect-ratio:8/5}
+.mz-hero video{display:block;width:100%;height:100%;object-fit:cover}
+.mz-cta{display:flex;flex-wrap:wrap;gap:.7rem;margin:0 0 1.6rem}
+.mz-btn{display:inline-flex;align-items:center;gap:.55rem;padding:.75rem 1.3rem;border-radius:.8rem;font-weight:500;font-size:1.1rem;text-decoration:none!important;border:2px solid transparent;cursor:pointer;font-family:inherit}
+.mz-btn img{width:1.8rem;height:1.8rem}
+.mz-open{background:#C6F432;color:#00302A!important}
+.mz-inst{background:transparent;color:inherit;border-color:currentColor}
+.mz-btn:hover{transform:translateY(-1px)}
+/* ---- guida a passi ---- */
+.mz-steps{max-width:46rem;margin:.6rem 0 2rem;border:1px solid var(--bs-border-color,#dee2e6);border-radius:1rem;overflow:hidden;background:var(--bs-body-bg,#fff)}
+.mz-stage{position:relative;aspect-ratio:8/5;background:#00302A;touch-action:pan-y;user-select:none}
+.mz-stage video,.mz-stage .mz-ico-big{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .25s}
+.mz-stage .on{opacity:1}
+.mz-ico-big{display:grid;place-items:center;color:#C6F432}
+.mz-ico-big svg,.mz-ico-big img{width:34%;height:auto;max-height:60%}
+.mz-body{padding:1rem 1.2rem .4rem;min-height:7.2rem}
+.mz-body h3{margin:0 0 .35rem;font-size:1.2rem;font-weight:600}
+.mz-body h3 span{display:inline-grid;place-items:center;width:1.7rem;height:1.7rem;margin-right:.45rem;border-radius:50%;background:#C6F432;color:#00302A;font-size:.9rem;vertical-align:.1rem}
+.mz-body p{margin:0;font-size:1.02rem;line-height:1.5}
+.mz-slide{display:none}.mz-slide.on{display:block}
+.mz-nav{display:flex;align-items:center;justify-content:space-between;gap:.5rem;padding:.4rem .8rem .9rem}
+.mz-nav button{font:inherit;font-size:1.05rem;border:1px solid var(--bs-border-color,#ced4da);background:transparent;color:inherit;border-radius:.7rem;padding:.45rem 1rem;cursor:pointer}
+.mz-nav button:disabled{opacity:.35;cursor:default}
+.mz-dots{display:flex;gap:.45rem}
+.mz-dots i{width:.6rem;height:.6rem;border-radius:50%;background:var(--bs-border-color,#ced4da);cursor:pointer}
+.mz-dots i.on{background:#7CB518;width:1.4rem;border-radius:999px}
+/* ---- installazione (finestra) ---- */
+.mz-dlg{border:0;border-radius:1rem;padding:0;max-width:min(30rem,94vw);width:100%;background:var(--bs-body-bg,#fff);color:var(--bs-body-color,#212529)}
+.mz-dlg::backdrop{background:rgba(0,30,25,.55)}
+.mz-dlg .mz-steps{margin:0;border:0;border-radius:0}
+.mz-dlg .mz-x{position:absolute;top:.5rem;right:.6rem;z-index:2;border:0;background:rgba(255,255,255,.85);color:#00302A;border-radius:50%;width:2.2rem;height:2.2rem;font-size:1.2rem;cursor:pointer}
+/* ---- che cosa serve ---- */
 .mz-need{display:grid;grid-template-columns:repeat(auto-fit,minmax(14rem,1fr));gap:.8rem;max-width:46rem;margin:.6rem 0 1rem}
 .mz-need div{border:1px solid var(--bs-border-color,#dee2e6);border-radius:.8rem;padding:.75rem .9rem;font-size:.95rem}
 .mz-need b{display:block;font-size:1.05rem;margin-bottom:.15rem}
 .mz-safe{max-width:46rem;border-left:4px solid #D6336C;padding:.4rem .9rem;font-size:.95rem}
-@media (max-width:600px){
- .mz-flow{flex-direction:column;align-items:stretch;gap:0}
- .mz-item{display:flex;align-items:center;gap:.9rem;text-align:left}
- .mz-ico{margin:0;width:3.4rem;height:3.4rem;flex:none}
- .mz-ico svg{width:2rem;height:2rem}
- .mz-lbl{font-size:1rem}
- .mz-arr{transform:rotate(90deg);margin:.2rem 0 .2rem 1.05rem;width:1.2rem;height:1.2rem}
-}
+body.quarto-dark .mz-dots i.on{background:#C6F432}
+@media (prefers-reduced-motion:reduce){.mz-stage video{transition:none}}
 </style>
-<a class="mz-open" href="app/"><img src="app/icons/icon.svg" alt="">Apri Mosaicus →</a>
+
+<div class="mz-hero"><video class="mz-theme" muted="" playsinline="" loop="" autoplay="" preload="metadata" data-light="media/hero-light.mp4" data-dark="media/hero-dark.mp4" data-poster-light="media/hero-light.jpg" data-poster-dark="media/hero-dark.jpg" aria-label="Mosaicus: l'oscilloscopio mostra la forma d'onda di violino, voce e clarinetto sulla stessa nota"></video></div>
+
+<div class="mz-cta">
+  <a class="mz-btn mz-open" href="app/"><img src="app/icons/icon.svg" alt="">Apri Mosaicus →</a>
+  <button class="mz-btn mz-inst" type="button" data-open-install="">📲 Installala</button>
+</div>
+
+<dialog class="mz-dlg" id="mzInstall" aria-label="Come installare Mosaicus">
+  <button class="mz-x" type="button" data-close="" aria-label="Chiudi">✕</button>
+  <div class="mz-steps" data-steps="">
+    <div class="mz-stage">
+      <div class="mz-ico-big"><img src="app/icons/icon.svg" alt=""></div>
+      <div class="mz-ico-big"><svg viewbox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="5" r="1.9"></circle><circle cx="12" cy="12" r="1.9"></circle><circle cx="12" cy="19" r="1.9"></circle></svg></div>
+      <div class="mz-ico-big"><svg viewbox="0 0 24 24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="3.5"></rect><path d="M12 8v8M8 12h8"></path></svg></div>
+    </div>
+    <div class="mz-body">
+      <div class="mz-slide"><h3 class="anchored"><span>1</span>Apri Mosaicus</h3><p>Dal telefono o dal computer, con Chrome, Edge o Safari.</p></div>
+      <div class="mz-slide"><h3 class="anchored"><span>2</span>Apri il menu</h3><p>Il menu <b>⋮</b> del browser (Android, computer) oppure <b>Condividi</b> (iPhone).</p></div>
+      <div class="mz-slide"><h3 class="anchored"><span>3</span>Installala</h3><p>Scegli <b>Installa app</b> o <b>Aggiungi alla schermata Home</b>. Da quel momento funziona anche senza rete.</p></div>
+    </div>
+    <div class="mz-nav"><button type="button" data-prev="">←</button><span class="mz-dots"></span><button type="button" data-next="">→</button></div>
+  </div>
+</dialog>
 <section id="misura" class="level2">
 <h2 class="anchored" data-anchor-id="misura">Misura</h2>
-<div class="mz-flow" role="img" aria-label="Scegli l'esperimento, collega il sensore, avvia, trascina un tratto, invialo a Elaborazione">
-<div class="mz-item"><span class="mz-ico"><svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h3M4 12h3M4 18h3M10 6h10M10 12h10M10 18h10"></path></svg><b class="mz-num">1</b></span><span class="mz-lbl">Scegli l'<strong>esperimento</strong></span></div>
-<svg class="mz-arr" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path></svg>
-<div class="mz-item"><span class="mz-ico"><svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 7V3M15 7V3"></path><rect x="6" y="7" width="12" height="6" rx="2"></rect><path d="M12 13v3a4 4 0 0 1-4 4H6"></path></svg><b class="mz-num">2</b></span><span class="mz-lbl"><strong>Collega</strong> Arduino, il telefono o il simulatore</span></div>
-<svg class="mz-arr" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path></svg>
-<div class="mz-item"><span class="mz-ico"><svg viewbox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"></path></svg><b class="mz-num">3</b></span><span class="mz-lbl"><strong>▶ Avvia</strong></span></div>
-<svg class="mz-arr" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path></svg>
-<div class="mz-item"><span class="mz-ico"><svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17c3-1 4-9 7-9s4 6 7 6 3-3 4-4"></path><path d="M8 3v18M16 3v18" stroke-dasharray="2 2.5"></path></svg><b class="mz-num">4</b></span><span class="mz-lbl"><strong>Trascina</strong> un tratto</span></div>
-<svg class="mz-arr" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path></svg>
-<div class="mz-item"><span class="mz-ico"><svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="13" height="14" rx="2"></rect><path d="M12 12h9M18 9l3 3-3 3"></path></svg><b class="mz-num">5</b></span><span class="mz-lbl"><strong>Invia</strong> a Elaborazione</span></div>
+<div class="mz-steps" data-steps="" aria-roledescription="guida a passi">
+  <div class="mz-stage">
+    <video class="mz-theme" muted="" playsinline="" loop="" preload="none" data-light="media/m1-light.mp4" data-dark="media/m1-dark.mp4" data-poster-light="media/m1-light.jpg" data-poster-dark="media/m1-dark.jpg"></video>
+    <video class="mz-theme" muted="" playsinline="" loop="" preload="none" data-light="media/m2-light.mp4" data-dark="media/m2-dark.mp4" data-poster-light="media/m2-light.jpg" data-poster-dark="media/m2-dark.jpg"></video>
+    <video class="mz-theme" muted="" playsinline="" loop="" preload="none" data-light="media/m3-light.mp4" data-dark="media/m3-dark.mp4" data-poster-light="media/m3-light.jpg" data-poster-dark="media/m3-dark.jpg"></video>
+    <video class="mz-theme" muted="" playsinline="" loop="" preload="none" data-light="media/m4-light.mp4" data-dark="media/m4-dark.mp4" data-poster-light="media/m4-light.jpg" data-poster-dark="media/m4-dark.jpg"></video>
+    <video class="mz-theme" muted="" playsinline="" loop="" preload="none" data-light="media/m5-light.mp4" data-dark="media/m5-dark.mp4" data-poster-light="media/m5-light.jpg" data-poster-dark="media/m5-dark.jpg"></video>
+  </div>
+  <div class="mz-body">
+    <div class="mz-slide"><h3 class="anchored"><span>1</span>Scegli l'esperimento</h3><p>Tocca un esperimento nell'elenco. Sul telefono l'elenco si apre con <b>Esperimenti</b>, nella barra in basso.</p></div>
+    <div class="mz-slide"><h3 class="anchored"><span>2</span>Collega</h3><p>Arduino con il cavo → <b>Collega Arduino</b>. Il telefono → <b>Attiva sensori</b>. Senza niente → <b>Simulatore</b>.</p></div>
+    <div class="mz-slide"><h3 class="anchored"><span>3</span>Start e stop</h3><p><b>Avvia</b>, guarda i punti arrivare, poi <b>Ferma</b>.</p></div>
+    <div class="mz-slide"><h3 class="anchored"><span>4</span>Scegli un tratto</h3><p>Trascina il dito sul grafico: il tratto si colora.</p></div>
+    <div class="mz-slide"><h3 class="anchored"><span>5</span>Invialo</h3><p><b>Invia il tratto a Elaborazione</b>, poi <b>Vai a Elaborazione</b>.</p></div>
+  </div>
+  <div class="mz-nav"><button type="button" data-prev="" aria-label="Passo precedente">←</button><span class="mz-dots"></span><button type="button" data-next="" aria-label="Passo successivo">→</button></div>
 </div>
 </section>
 <section id="elabora" class="level2">
 <h2 class="anchored" data-anchor-id="elabora">Elabora</h2>
-<div class="mz-flow" role="img" aria-label="Tira la retta a occhio, oppure fai il fit, oppure misura il periodo con il righello; salva; esporta in Excel">
-<div class="mz-item"><span class="mz-ico"><svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="17" r="1"></circle><circle cx="9" cy="13" r="1"></circle><circle cx="12" cy="12" r="1"></circle><circle cx="16" cy="8" r="1"></circle><circle cx="19" cy="6" r="1"></circle><path d="M3 20L21 4"></path></svg><b class="mz-num">1</b></span><span class="mz-lbl"><strong>Retta a occhio</strong> o <strong>fit</strong></span></div>
-<svg class="mz-arr" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path></svg>
-<div class="mz-item"><span class="mz-ico"><svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12c2-6 4-6 6 0s4 6 6 0 4-6 6 0"></path><path d="M5.5 3v18M17.5 3v18"></path></svg><b class="mz-num">2</b></span><span class="mz-lbl"><strong>Righello</strong>: T = Δt / N</span></div>
-<svg class="mz-arr" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path></svg>
-<div class="mz-item"><span class="mz-ico"><svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg><b class="mz-num">3</b></span><span class="mz-lbl"><strong>＋ Salva</strong></span></div>
-<svg class="mz-arr" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path></svg>
-<div class="mz-item"><span class="mz-ico"><svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"></rect><path d="M8 8l8 8M16 8l-8 8"></path></svg><b class="mz-num">4</b></span><span class="mz-lbl"><strong>Esporta</strong> in Excel</span></div>
+<div class="mz-steps" data-steps="" aria-roledescription="guida a passi">
+  <div class="mz-stage">
+    <video class="mz-theme" muted="" playsinline="" loop="" preload="none" data-light="media/e1-light.mp4" data-dark="media/e1-dark.mp4" data-poster-light="media/e1-light.jpg" data-poster-dark="media/e1-dark.jpg"></video>
+    <video class="mz-theme" muted="" playsinline="" loop="" preload="none" data-light="media/e2-light.mp4" data-dark="media/e2-dark.mp4" data-poster-light="media/e2-light.jpg" data-poster-dark="media/e2-dark.jpg"></video>
+    <video class="mz-theme" muted="" playsinline="" loop="" preload="none" data-light="media/e3-light.mp4" data-dark="media/e3-dark.mp4" data-poster-light="media/e3-light.jpg" data-poster-dark="media/e3-dark.jpg"></video>
+    <video class="mz-theme" muted="" playsinline="" loop="" preload="none" data-light="media/e4-light.mp4" data-dark="media/e4-dark.mp4" data-poster-light="media/e4-light.jpg" data-poster-dark="media/e4-dark.jpg"></video>
+    <video class="mz-theme" muted="" playsinline="" loop="" preload="none" data-light="media/e5-light.mp4" data-dark="media/e5-dark.mp4" data-poster-light="media/e5-light.jpg" data-poster-dark="media/e5-dark.jpg"></video>
+  </div>
+  <div class="mz-body">
+    <div class="mz-slide"><h3 class="anchored"><span>1</span>Il riquadro</h3><p>Ogni tratto diventa un riquadro. Sopra scegli cosa mettere sugli assi x e y.</p></div>
+    <div class="mz-slide"><h3 class="anchored"><span>2</span>Retta a occhio</h3><p>Muovi le due maniglie finché la retta passa in mezzo ai punti, poi leggi la pendenza Δy/Δx. Alla fine il confronto con il computer.</p></div>
+    <div class="mz-slide"><h3 class="anchored"><span>3</span>Fit</h3><p>Scegli un modello (retta, parabola, sinusoide…). Il computer trova la curva migliore e ti dà la grandezza fisica con la sua incertezza.</p></div>
+    <div class="mz-slide"><h3 class="anchored"><span>4</span>Righello</h3><p>Sulle onde: metti le due linee su due creste e conta i periodi N tra le due. <span style="white-space:nowrap">T = Δt / N</span>, <span style="white-space:nowrap">f = 1 / T</span>.</p></div>
+    <div class="mz-slide"><h3 class="anchored"><span>5</span>Salva ed esporta</h3><p><b>＋ Salva</b> il risultato, spunta i riquadri, <b>Esporta in Excel</b>.</p></div>
+  </div>
+  <div class="mz-nav"><button type="button" data-prev="" aria-label="Passo precedente">←</button><span class="mz-dots"></span><button type="button" data-next="" aria-label="Passo successivo">→</button></div>
 </div>
 </section>
 <section id="che-cosa-serve" class="level2">
 <h2 class="anchored" data-anchor-id="che-cosa-serve">Che cosa serve</h2>
 <div class="mz-need">
-  <div><b>💻 Computer</b>Chrome o Edge. Per Arduino: Uno R3 con il <a href="mosaicus_firmware.ino" download="">firmware Mosaicus</a>, da caricare una volta con l'IDE di Arduino.</div>
+  <div><b>💻 Computer</b>Chrome o Edge. Per Arduino: Uno R3 con il <a href="mosaicus_firmware.ino" download="">firmware Mosaicus <span data-mz-fw=""></span></a>, da caricare una volta con l'IDE di Arduino.</div>
   <div><b>📱 Telefono</b>Chrome (Android) o Safari (iPhone). Accelerometro, giroscopio, microfono: niente da installare.</div>
   <div><b>🖥 LIM</b>Pulsante <b>Modalità LIM</b>: testi e grafici più grandi.</div>
 </div>
 <p class="mz-safe">⚡ Oscilloscopio elettrico: solo tensioni tra 0 e 5 V. <b>Mai la rete elettrica.</b></p>
-</section>
-<section id="installala" class="level2">
-<h2 class="anchored" data-anchor-id="installala">Installala</h2>
-<div class="mz-flow" role="img" aria-label="Apri Mosaicus, apri il menu del browser, scegli Installa app o Aggiungi a Home">
-<div class="mz-item"><span class="mz-ico"><img src="app/icons/icon.svg" alt="" style="width:2.4rem;height:2.4rem"><b class="mz-num">1</b></span><span class="mz-lbl">Apri <strong>Mosaicus</strong></span></div>
-<svg class="mz-arr" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path></svg>
-<div class="mz-item"><span class="mz-ico"><svg viewbox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="5" r="1.9"></circle><circle cx="12" cy="12" r="1.9"></circle><circle cx="12" cy="19" r="1.9"></circle></svg><b class="mz-num">2</b></span><span class="mz-lbl">Menu <strong>⋮</strong> (Android, computer) o <strong>Condividi</strong> (iPhone)</span></div>
-<svg class="mz-arr" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path></svg>
-<div class="mz-item"><span class="mz-ico"><svg viewbox="0 0 24 24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="3.5"></rect><path d="M12 8v8M8 12h8"></path></svg><b class="mz-num">3</b></span><span class="mz-lbl"><strong>Installa app</strong> o <strong>Aggiungi alla schermata Home</strong></span></div>
-</div>
-<p>Poi funziona anche senza rete. Software libero, licenza MIT.</p>
+
+<script>
+(() => {
+  // versione: letta dall'app stessa, così è sempre quella pubblicata
+  fetch('app/version.json', { cache: 'no-cache' }).then((r) => r.json()).then((v) => {
+    const h = document.querySelector('h1.title');
+    if (h && !h.querySelector('.mz-ver')) { const s = document.createElement('span'); s.className = 'mz-ver'; s.textContent = `v${v.app}`; s.title = `Mosaicus ${v.app}, firmware ${v.firmware} (${v.date})`; h.append(s); }
+    document.querySelectorAll('[data-mz-fw]').forEach((e) => (e.textContent = `v${v.firmware}`));
+  }).catch(() => {});
+
+  // tema del sito (chiaro/scuro): scelgo i video giusti e li cambio se il tema cambia
+  const dark = () => document.body.classList.contains('quarto-dark');
+  const setSrc = (v, force) => {
+    const want = v.dataset[dark() ? 'dark' : 'light'];
+    v.poster = v.dataset[dark() ? 'posterDark' : 'posterLight'] || '';
+    if (v.dataset.loaded || force) {
+      if (!v.currentSrc.endsWith(want)) { const play = !v.paused; v.src = want; v.dataset.loaded = '1'; if (play) v.play().catch(() => {}); }
+    }
+  };
+  const all = () => document.querySelectorAll('video.mz-theme');
+  all().forEach((v) => setSrc(v, v.autoplay));
+  new MutationObserver(() => all().forEach((v) => setSrc(v, false))).observe(document.body, { attributes: true, attributeFilter: ['class'] });
+
+  // guide a passi: frecce, pallini, scorrimento del dito, tastiera
+  document.querySelectorAll('[data-steps]').forEach((box) => {
+    const media = [...box.querySelector('.mz-stage').children];
+    const slides = [...box.querySelectorAll('.mz-slide')];
+    const dots = box.querySelector('.mz-dots');
+    slides.forEach((_, i) => { const d = document.createElement('i'); d.title = `Passo ${i + 1}`; d.addEventListener('click', () => go(i)); dots.append(d); });
+    let k = 0;
+    const visible = () => box.offsetParent !== null;
+    function go(i) {
+      k = Math.max(0, Math.min(slides.length - 1, i));
+      slides.forEach((s, j) => s.classList.toggle('on', j === k));
+      media.forEach((m, j) => {
+        m.classList.toggle('on', j === k);
+        if (m.tagName !== 'VIDEO') return;
+        if (j === k) { setSrc(m, true); m.currentTime = 0; if (visible()) m.play().catch(() => {}); }
+        else if (j === k + 1) { m.preload = 'auto'; setSrc(m, true); m.pause(); }   // il prossimo si prepara intanto
+        else m.pause();
+      });
+      [...dots.children].forEach((d, j) => d.classList.toggle('on', j === k));
+      box.querySelector('[data-prev]').disabled = k === 0;
+      box.querySelector('[data-next]').disabled = k === slides.length - 1;
+    }
+    box.querySelector('[data-prev]').addEventListener('click', () => go(k - 1));
+    box.querySelector('[data-next]').addEventListener('click', () => go(k + 1));
+    box.tabIndex = 0;
+    box.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') go(k + 1); if (e.key === 'ArrowLeft') go(k - 1); });
+    let x0 = null;
+    const stage = box.querySelector('.mz-stage');
+    stage.addEventListener('pointerdown', (e) => (x0 = e.clientX));
+    stage.addEventListener('pointerup', (e) => { if (x0 == null) return; const dx = e.clientX - x0; x0 = null; if (Math.abs(dx) > 40) go(k + (dx < 0 ? 1 : -1)); });
+    go(0);
+    // il video parte solo quando la guida è sullo schermo
+    new IntersectionObserver((en) => en.forEach((x) => { const v = media[k]; if (v.tagName !== 'VIDEO') return; x.isIntersecting ? v.play().catch(() => {}) : v.pause(); }), { threshold: 0.4 }).observe(stage);
+    box._go = go;
+  });
+
+  const dlg = document.getElementById('mzInstall');
+  document.querySelector('[data-open-install]').addEventListener('click', () => { dlg.showModal ? dlg.showModal() : dlg.setAttribute('open', ''); dlg.querySelector('[data-steps]')._go(0); });
+  dlg.querySelector('[data-close]').addEventListener('click', () => dlg.close());
+  dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+})();
+</script>
+<p>Software libero, licenza MIT.</p>
 
 
 </section>

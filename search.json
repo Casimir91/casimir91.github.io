@@ -25,7 +25,7 @@
     "href": "toolbox/index.html#lab-tools",
     "title": "Toolbox",
     "section": "Lab tools",
-    "text": "Lab tools\n\n\n  \n    \n    \n      Mosaicus — physics micro-lab\n      Arduino sensors, phone sensors and sound in one app: live graphs, oscilloscope with spectrum, tone generator, a sensor-driven musical instrument, data analysis and Excel export.\n      Computer · smartphone · whiteboard · offline · MIT licence · guide in Italian\n      Open Mosaicus →"
+    "text": "Lab tools\n\n\n  \n    \n    \n      Mosaicus \n      Physics micro-lab. Arduino sensors, phone sensors and sound in one app: live graphs, oscilloscope with spectrum, tone generator, a sensor-driven musical instrument, data analysis and Excel export.\n      Computer · smartphone · whiteboard · offline · MIT licence · guide in Italian\n      Open the guide →"
   },
   {
     "objectID": "stories/luna.html",
@@ -1554,38 +1554,24 @@
     "text": "Perché la Luna non cade sulla Terra?\n\n\nIl cannone di Newton: una simulazione per capire cos’è un’orbita.\n\n\n\n\n\n\n\n\n\n\nPelucchi, stormi e agenti AI\n\n\n\nIntelligenza Artificiale\n\nSistemi Complessi\n\n\n\nDa un pelucchio sui vestiti a Giorgio Parisi e agli stormi: cosa hanno in comune — e cosa no — gli agenti dei sistemi complessi e gli agenti AI.\n\n\n\n22 ago 2026\n\n\n\n\n\n\nNessun risultato"
   },
   {
-    "objectID": "mosaicus/index.html",
-    "href": "mosaicus/index.html",
-    "title": "Mosaicus",
-    "section": "",
-    "text": "Apri Mosaicus →"
-  },
-  {
     "objectID": "mosaicus/index.html#misura",
     "href": "mosaicus/index.html#misura",
     "title": "Mosaicus",
     "section": "Misura",
-    "text": "Misura\n\n1Scegli l'esperimento\n\n2Collega Arduino, il telefono o il simulatore\n\n3▶ Avvia\n\n4Trascina un tratto\n\n5Invia a Elaborazione"
+    "text": "Misura\n\n  \n    \n    \n    \n    \n    \n  \n  \n    1Scegli l'esperimentoTocca un esperimento nell'elenco. Sul telefono l'elenco si apre con Esperimenti, nella barra in basso.\n    2CollegaArduino con il cavo → Collega Arduino. Il telefono → Attiva sensori. Senza niente → Simulatore.\n    3Start e stopAvvia, guarda i punti arrivare, poi Ferma.\n    4Scegli un trattoTrascina il dito sul grafico: il tratto si colora.\n    5InvialoInvia il tratto a Elaborazione, poi Vai a Elaborazione.\n  \n  ←→"
   },
   {
     "objectID": "mosaicus/index.html#elabora",
     "href": "mosaicus/index.html#elabora",
     "title": "Mosaicus",
     "section": "Elabora",
-    "text": "Elabora\n\n1Retta a occhio o fit\n\n2Righello: T = Δt / N\n\n3＋ Salva\n\n4Esporta in Excel"
+    "text": "Elabora\n\n  \n    \n    \n    \n    \n    \n  \n  \n    1Il riquadroOgni tratto diventa un riquadro. Sopra scegli cosa mettere sugli assi x e y.\n    2Retta a occhioMuovi le due maniglie finché la retta passa in mezzo ai punti, poi leggi la pendenza Δy/Δx. Alla fine il confronto con il computer.\n    3FitScegli un modello (retta, parabola, sinusoide…). Il computer trova la curva migliore e ti dà la grandezza fisica con la sua incertezza.\n    4RighelloSulle onde: metti le due linee su due creste e conta i periodi N tra le due. T = Δt / N, f = 1 / T.\n    5Salva ed esporta＋ Salva il risultato, spunta i riquadri, Esporta in Excel.\n  \n  ←→"
   },
   {
     "objectID": "mosaicus/index.html#che-cosa-serve",
     "href": "mosaicus/index.html#che-cosa-serve",
     "title": "Mosaicus",
     "section": "Che cosa serve",
-    "text": "Che cosa serve\n\n  💻 ComputerChrome o Edge. Per Arduino: Uno R3 con il firmware Mosaicus, da caricare una volta con l'IDE di Arduino.\n  📱 TelefonoChrome (Android) o Safari (iPhone). Accelerometro, giroscopio, microfono: niente da installare.\n  🖥 LIMPulsante Modalità LIM: testi e grafici più grandi.\n\n⚡ Oscilloscopio elettrico: solo tensioni tra 0 e 5 V. Mai la rete elettrica."
-  },
-  {
-    "objectID": "mosaicus/index.html#installala",
-    "href": "mosaicus/index.html#installala",
-    "title": "Mosaicus",
-    "section": "Installala",
-    "text": "Installala\n\n1Apri Mosaicus\n\n2Menu ⋮ (Android, computer) o Condividi (iPhone)\n\n3Installa app o Aggiungi alla schermata Home\n\nPoi funziona anche senza rete. Software libero, licenza MIT."
+    "text": "Che cosa serve\n\n  💻 ComputerChrome o Edge. Per Arduino: Uno R3 con il firmware Mosaicus , da caricare una volta con l'IDE di Arduino.\n  📱 TelefonoChrome (Android) o Safari (iPhone). Accelerometro, giroscopio, microfono: niente da installare.\n  🖥 LIMPulsante Modalità LIM: testi e grafici più grandi.\n\n⚡ Oscilloscopio elettrico: solo tensioni tra 0 e 5 V. Mai la rete elettrica.\n\n\nSoftware libero, licenza MIT."
   }
 ]

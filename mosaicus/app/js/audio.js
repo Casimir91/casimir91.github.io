@@ -14,8 +14,18 @@ let mic = null; // { stream, src, analyser }
 
 export const audioSupported = () => typeof window !== 'undefined' && !!(window.AudioContext || window.webkitAudioContext);
 
+/**
+ * Tipo di sessione audio (Safari su iPhone/iPad). Il valore predefinito è "ambient": con
+ * l'interruttore laterale su silenzioso i suoni della pagina sono muti. "playback" li fa
+ * suonare come una app di musica; "play-and-record" serve mentre si usa il microfono.
+ */
+function sessionType(type) {
+  try { if ('audioSession' in navigator && navigator.audioSession.type !== type) navigator.audioSession.type = type; } catch { /* non supportato */ }
+}
+
 /** Il contesto audio va creato/ripreso dentro un tocco o un clic (regola dei browser). */
 export function audio() {
+  if (!mic) sessionType('playback');
   if (!ctx) {
     const AC = window.AudioContext || window.webkitAudioContext;
     ctx = new AC({ latencyHint: 'interactive' });
@@ -28,7 +38,7 @@ export function audio() {
 }
 
 // i browser avviano l'audio "sospeso": lo riprendo al primo tocco
-if (typeof document !== 'undefined') document.addEventListener('pointerdown', () => { if (ctx?.state === 'suspended') ctx.resume(); }, true);
+if (typeof document !== 'undefined') document.addEventListener('pointerdown', () => { if (ctx && ctx.state !== 'running') ctx.resume(); }, true);
 
 export function monitorAnalyser() { return audio().monitor; }
 
@@ -37,6 +47,7 @@ export async function micAnalyser() {
   if (mic) return mic.analyser;
   if (!navigator.mediaDevices?.getUserMedia) throw new Error('questo browser non dà accesso al microfono');
   if (!window.isSecureContext) throw new Error('il microfono funziona solo da una pagina sicura (https)');
+  sessionType('play-and-record');
   const { ctx: c } = audio();
   const stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
   const src = c.createMediaStreamSource(stream);
@@ -51,6 +62,7 @@ export function closeMic() {
   mic.stream.getTracks().forEach((t) => t.stop());
   mic.src.disconnect();
   mic = null;
+  sessionType('playback');
 }
 
 /** Onda periodica da una ricetta di armoniche (ampiezze dei seni, fasi nulle). */

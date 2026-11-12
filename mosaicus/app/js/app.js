@@ -9,11 +9,12 @@ import { saveSession, getSession, deleteSession, listSessions } from './storage.
 import { toCSV, toXLSX, download } from './export.js';
 import { initWorkbench, addBox, boxesForSession, focusBox, refreshStyle as wbRefreshStyle } from './workbench.js';
 import { createScope } from './scope.js';
-import { createGenerator, onGeneratorChange, generatorState, stopGenerator } from './generator.js';
-import { createInstrument } from './instrument.js';
+import { createSynth, onGeneratorChange, generatorState, stopGenerator } from './synth.js';
 import { audioSupported } from './audio.js';
 
-const APP_VERSION = '0.8';
+// versione: la stessa di version.json (letta dalla pagina del sito) e di CACHE in sw.js
+const APP_VERSION = '0.10.0';
+const FIRMWARE_VERSION = '0.2';   // firmware atteso su Arduino
 const $ = (s) => document.querySelector(s);
 
 const state = {
@@ -41,6 +42,13 @@ const group = new ChartGroup({
 
 // ---------------- utilità ----------------
 /** Avviso in basso. Con `action` ({ label, run }) diventa anche un pulsante: es. «Vai a Elaborazione →». */
+/** Confronta due versioni "a.b.c": <0 se a è più vecchia di b. */
+function cmpVersion(a, b) {
+  const x = String(a).split('.').map(Number), y = String(b).split('.').map(Number);
+  for (let i = 0; i < Math.max(x.length, y.length); i++) { const d = (x[i] || 0) - (y[i] || 0); if (d) return d; }
+  return 0;
+}
+
 function toast(msg, ms = 2800, action = null) {
   const t = $('#toast');
   t.textContent = msg;
@@ -101,6 +109,8 @@ function renderExperimentList() {
 
 function selectExperiment(id, { keepData = false } = {}) {
   if (state.running) { toast('Ferma la misura prima di cambiare esperimento.'); return; }
+  // generatore e strumento musicale sono confluiti nel sintetizzatore (v0.10)
+  if (id === 'generator' || id === 'theremin') id = 'synth';
   state.exp = byId(id) || EXPERIMENTS[0];
   id = state.exp.id;
   state.params = { ...defaultParams(state.exp), ...store.get(`mosaicus.params.${id}`, {}) };
@@ -164,15 +174,14 @@ function makeInstrument(exp) {
     openExperiment(id) { showPage('misura'); selectExperiment(id); },
   };
   if (exp.kind === 'scope') return createScope(el, api);
-  if (exp.kind === 'generator') return createGenerator(el, api);
-  if (exp.kind === 'instrument') return createInstrument(el, api);
+  if (exp.kind === 'synth') return createSynth(el, api);
   return null;
 }
 
 /** Spia del generatore acceso, visibile nelle altre pagine. */
 function updateGenChip() {
   const G = generatorState(), chip = $('#genChip');
-  chip.hidden = !G.on || state.exp?.id === 'generator';
+  chip.hidden = !G.on || state.exp?.id === 'synth';
   chip.querySelector('b').textContent = `${fmtVal(G.f, G.f < 100 ? 1 : 0)} Hz${G.two ? ` + ${fmtVal(G.f + G.df, 1)} Hz` : ''}`;
 }
 
@@ -367,7 +376,8 @@ async function saveSelection() {
   if (rows.length < 3) { toast('Il tratto contiene troppo pochi punti validi.'); return; }
   // le colonne vuote (es. sensore assente) non vengono portate in Elaborazione
   if (!state.session?.id) await autosave(true);
-  const keys = state.exp.columns.map((c) => c.key).filter((k) => k !== 'ok' && rows.some((r) => isFinite(r[k])));
+  // in Elaborazione vanno solo le grandezze fisiche (t, x, v, a, T…), non i dati tecnici del sensore
+  const keys = state.exp.columns.map((c) => c.key).filter((k) => k !== 'ok' && !QUANTITIES[k]?.raw && rows.some((r) => isFinite(r[k])));
   const columns = keys.map((k) => ({ key: k, sym: QUANTITIES[k]?.sym ?? k, unit: QUANTITIES[k]?.unit ?? '', name: QUANTITIES[k]?.name ?? k }));
   const yView = state.view && !state.view.raw ? state.view : state.exp.views.find((v) => !v.raw);
   const t1 = rows[0].t, t2 = rows[rows.length - 1].t;
@@ -375,7 +385,7 @@ async function saveSelection() {
     title: `${state.exp.title} · ${fmtVal(t1, 2)}–${fmtVal(t2, 2)} s`,
     experiment: state.exp.id, expTitle: state.exp.title,
     sessionId: state.session?.id ?? null, sessionName: $('#sessionName').value.trim() || state.session?.name || '',
-    t1, t2, columns, yKey: yView.key, xKey: 't',
+    t1, t2, columns, yKey: keys.includes(yView.key) ? yView.key : keys.find((k) => k !== 't'), xKey: 't',
     rows: rows.map((r) => Object.fromEntries(keys.map((k) => [k, isFinite(r[k]) ? r[k] : NaN]))),
   });
   renderSavedSelections();
@@ -490,6 +500,9 @@ function handleLine(line) {
   if (line.startsWith('#MOSAICUS')) {
     state.ready = true; state.fw = line.split(',')[1];
     const k = state.link?.kind;
+    if (k !== 'simulatore' && k !== 'telefono' && state.fw && cmpVersion(state.fw, FIRMWARE_VERSION) < 0) {
+      toast(`Su Arduino c'è il firmware v${state.fw}: aggiornalo alla v${FIRMWARE_VERSION} (file mosaicus_firmware.ino, da caricare con l'IDE di Arduino).`, 9000);
+    }
     setStatus(k === 'simulatore' ? simStatus() : k === 'telefono' ? 'Sensori del telefono pronti' : `Arduino pronto · firmware ${state.fw}`, 'pill-on');
     refreshButtons();
     return;
@@ -656,7 +669,9 @@ function setLim(on) {
 
 // ---------------- avvio ----------------
 async function init() {
+  window.__mosaicus = { state, group };   // aggancio per le prove automatiche e la registrazione dei video della guida
   setLim(store.get('mosaicus.lim', false));
+  document.querySelectorAll('.appver').forEach((e) => (e.textContent = `v${APP_VERSION}`));
   applyTheme(savedTheme() ? savedTheme() === 'dark' : !!darkQuery?.matches);
   $('#btnTheme').addEventListener('click', () => {
     const dark = !document.documentElement.classList.contains('dark');
@@ -710,7 +725,7 @@ async function init() {
 
   updateSourceUI();
   onGeneratorChange(updateGenChip);
-  $('#genChip .gc-open').addEventListener('click', () => { showPage('misura'); selectExperiment('generator'); });
+  $('#genChip .gc-open').addEventListener('click', () => { showPage('misura'); selectExperiment('synth'); });
   $('#genChip .gc-stop').addEventListener('click', () => stopGenerator());
   if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
     navigator.serviceWorker.register('sw.js').catch(() => { /* offline non disponibile */ });

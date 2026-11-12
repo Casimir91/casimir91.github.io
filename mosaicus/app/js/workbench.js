@@ -126,7 +126,8 @@ function render() {
 function renderBox(box) {
   const el = document.createElement('section');
   el.className = 'card box'; el.dataset.id = box.id;
-  const cols = [...box.columns, ...box.computed];
+  // negli assi solo grandezze fisiche: i dati tecnici del sensore (eco, ADC…) restano fuori, anche nei riquadri vecchi
+  const cols = [...box.columns.filter((c) => !QUANTITIES[c.key]?.raw || c.key === box.xKey || c.key === box.yKey), ...box.computed];
   const opt = (sel) => cols.map((c) => `<option value="${esc(c.key)}"${c.key === sel ? ' selected' : ''}>${esc(axisLabel(c))}</option>`).join('');
   el.innerHTML = `
     <header class="box-head">
@@ -178,6 +179,7 @@ function renderBox(box) {
   const chart = group.add(new Chart($('canvas', el), { compact: false }));
   const v = { el, group, chart, tool: 'select', selection: null, eye: null, tangent: null, fitModel: null, current: null, pending: null };
   views.set(box.id, v);
+  el.__mz = { box, v };   // aggancio per le prove automatiche e la registrazione dei video della guida
 
   $('.sx', el).addEventListener('change', (e) => setAxis(box, v, 'x', e.target.value));
   $('.sy', el).addEventListener('change', (e) => setAxis(box, v, 'y', e.target.value));

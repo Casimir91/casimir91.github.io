@@ -25,8 +25,7 @@ const ICON_SOUND = `<svg viewBox="0 0 24 24" fill="none" stroke="#004D43" stroke
 const ICON_THERMO = `<svg viewBox="0 0 24 24" fill="none" stroke="#004D43" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13.5V4a2 2 0 0 1 4 0v9.5a4 4 0 1 1-4 0z"/><path d="M12 9v7" stroke="#D6336C"/><path d="M17 5h3M17 9h3"/></svg>`;
 
 const ICON_SCOPE = `<svg viewBox="0 0 24 24" fill="none" stroke="#004D43" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="14" rx="2.5"/><path d="M5 11c1.5-5 3-5 4.5 0s3 5 4.5 0 3-5 4.5 0" stroke="#D6336C"/><path d="M8 21h8"/></svg>`;
-const ICON_GEN = `<svg viewBox="0 0 24 24" fill="none" stroke="#004D43" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h4l5-4v14l-5-4H3z"/><path d="M16 9.5c1.2 1.4 1.2 3.6 0 5M19 7c2.6 2.8 2.6 7.2 0 10" stroke="#D6336C"/></svg>`;
-const ICON_THEREMIN = `<svg viewBox="0 0 24 24" fill="none" stroke="#004D43" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5" fill="#FFE1EE"/><circle cx="16.5" cy="16" r="2.5" fill="#FFE1EE"/><path d="M9 10l10-2" stroke="#D6336C"/></svg>`;
+const ICON_SYNTH = `<svg viewBox="0 0 24 24" fill="none" stroke="#004D43" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="11" width="20" height="10" rx="1.5"/><path d="M7 11v6M12 11v6M17 11v6"/><path d="M3 6c2-4 4-4 6 0s4 4 6 0 4-4 6 0" stroke="#D6336C"/></svg>`;
 const ICON_FREQ = `<svg viewBox="0 0 24 24" fill="none" stroke="#004D43" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 20h18M3 20V4"/><path d="M5 14h3l2-6 2 9 2-5h2.5l1.5-2" stroke="#D6336C"/></svg>`;
 const ICON_ESCOPE = `<svg viewBox="0 0 24 24" fill="none" stroke="#004D43" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="15" height="12" rx="2"/><path d="M4.5 11l2.5-4 2.5 4 2.5-4 2.5 4" stroke="#D6336C"/><path d="M17 9h3a2 2 0 0 1 2 2v10M9.5 15v3"/></svg>`;
 
@@ -124,8 +123,9 @@ const Q = {
       mean: [{ label: 'accelerazione media', unit: 'm/s²', calc: (f) => P(f, 'mean') }],
       dsin: [...periodFrom(), { label: 'accelerazione massima', unit: 'm/s²', calc: (f) => P(f, 'A') }],
     } },
-  d: { sym: 'd', name: 'distanza dal sensore', unit: 'm', models: ['lin', 'poly2'] },
-  echo: { sym: 'eco', name: 'tempo di volo', unit: 'µs', models: [] },
+  // raw: true = dato tecnico del sensore, utile in Misura (monitor, controllo) ma non inviato a Elaborazione
+  d: { sym: 'd', name: 'distanza dal sensore', unit: 'm', models: ['lin', 'poly2'], raw: true },
+  echo: { sym: 'eco', name: 'tempo di volo', unit: 'µs', models: [], raw: true },
   T: { sym: 'T', name: 'temperatura', unit: '°C', models: ['expC', 'lin'],
     slope: 'rapidità di variazione della temperatura',
     physics: {
@@ -144,7 +144,7 @@ const Q = {
         { label: 'tempo caratteristico θ = 1/k', unit: 's', calc: (f) => { const [m, s] = P(f, 'm'); return [-1 / m, s / (m * m)]; } },
       ],
     } },
-  adc: { sym: 'ADC', name: 'lettura grezza', unit: '', models: [] },
+  adc: { sym: 'ADC', name: 'lettura grezza', unit: '', models: [], raw: true },
   ...Object.fromEntries(['ax', 'ay', 'az', 'amod'].map((k) => [k, {
     sym: k === 'amod' ? '|a|' : `a${k[1]}`.replace(/a(.)/, 'a_$1'), name: k === 'amod' ? 'accelerazione (modulo)' : `accelerazione lungo ${k[1]}`, unit: 'm/s²',
     models: ['dsin', 'mean', 'lin'], slope: 'variazione dell\'accelerazione',
@@ -165,7 +165,7 @@ const Q = {
     physics: { mean: [{ label: 'frequenza media', unit: 'Hz', calc: (f) => P(f, 'mean') }] } },
   level: { sym: 'L', name: 'livello sonoro (relativo)', unit: 'dB', models: ['mean', 'dsin'],
     physics: { dsin: [...periodFrom(), { label: 'frequenza dei battimenti (se la curva è |cos|, è il doppio di f)', unit: 'Hz', calc: (f) => { const [w, s] = P(f, 'w'); return [w / TWO_PI, s / TWO_PI]; } }] } },
-  R: { sym: 'R', name: 'resistenza del termistore', unit: 'Ω', models: ['expC', 'exp'] },
+  R: { sym: 'R', name: 'resistenza del termistore', unit: 'Ω', models: ['expC', 'exp'], raw: true },
 };
 export const QUANTITIES = { t: Q_T, ...Q };
 
@@ -418,18 +418,13 @@ const scopeAudio = instrumentBase({
     <div class="w-block"><h3>Come si legge</h3><p><b>⟷</b> quanti millisecondi entrano nello schermo. <b>↗ ↘</b> trigger: la traccia parte sempre quando il segnale sale (o scende) attraverso lo zero, così sta ferma. <b>f</b> viene dall'<i>autocorrelazione</i>: di quanto devo spostare il segnale perché si sovrapponga a sé stesso? Quello spostamento è il periodo T.</p></div>`,
 });
 
-const generator = instrumentBase({
-  id: 'generator', topic: 'Onde e suono', kind: 'generator', source: 'audio', title: 'Generatore', subtitle: 'Crea suoni: forma, nota, battimenti',
-  icon: ICON_GEN, iconBg: 'var(--zaff-t)',
-  wiring: `<div class="w-block"><h3>Idea</h3><p class="tip">Soglia dell'udito: scendi fino a 20 Hz e sali fino a quando non senti più nulla. Battimenti: attiva il secondo suono con Δf = 2 Hz. Onda quadra e sinusoide alla stessa frequenza: perché suonano diverse?</p></div>
-    <div class="w-block"><h3>Con un secondo telefono</h3><p>Il generatore continua a suonare anche se cambi pagina: apri l'Oscilloscopio su un altro dispositivo, con il microfono, e guarda la forma d'onda arrivata attraverso l'aria.</p></div>`,
-});
-
-const theremin = instrumentBase({
-  id: 'theremin', topic: 'Onde e suono', kind: 'instrument', source: 'arduino', optionalLink: true, title: 'Strumento musicale', subtitle: 'Si suona con la mano: dito, telefono, HC-SR04',
-  icon: ICON_THEREMIN, iconBg: 'var(--rosa-t)', sim: 'hand',
-  wiring: `<div class="w-block"><h3>📡 Con Arduino</h3>${SCHEMA_HCSR04}<p>Sensore rivolto verso l'alto; la mano sopra, tra 5 e 50 cm. Collega Arduino in alto (oppure il simulatore), scegli 📡 e premi ▶ Suona.</p></div>
-    <div class="w-block"><h3>La fisica</h3><p>Ogni ottava raddoppia la frequenza e contiene 12 semitoni uguali: un semitono moltiplica f per 2<sup>1/12</sup> ≈ 1,0595. Per questo f = 440 · 2<sup>n/12</sup>. Con la scala «continua» senti anche le note "in mezzo".</p></div>`,
+const synthesizer = instrumentBase({
+  id: 'synth', topic: 'Onde e suono', kind: 'synth', source: 'arduino', optionalLink: true, title: 'Sintetizzatore', subtitle: 'Crea un suono e suonalo: tastiera, dito, telefono, HC-SR04',
+  icon: ICON_SYNTH, iconBg: 'var(--zaff-t)', sim: 'hand',
+  wiring: `<div class="w-block"><h3>Timbro</h3><p>Ogni suono periodico è una <b>somma di sinusoidi</b>: la fondamentale f e le armoniche 2f, 3f, 4f… (serie di Fourier). Le forme d'onda e gli strumenti sono solo "ricette" diverse di armoniche: prova a premere <b>Quadra</b> e guarda i cursori.</p></div>
+    <div class="w-block"><h3>Inviluppo</h3><p>Anche il modo in cui il suono nasce e si spegne fa riconoscere uno strumento. <b>Pizzicato</b> e <b>Campana</b> si smorzano in modo esponenziale, A(t) = A₀·e<sup>−t/τ</sup>, con τ ≈ 0,25 s e 1,2 s.</p></div>
+    <div class="w-block"><h3>Idea</h3><p class="tip">Battimenti: 🎹 Tastiera, secondo suono, Δf = 2 Hz. Soglia dell'udito: scendi fino a 20 Hz. Guarda il suono con l'Oscilloscopio (sorgente Esempi) mentre suona.</p></div>
+    <div class="w-block"><h3>📡 Con Arduino</h3>${SCHEMA_HCSR04}<p>Sensore rivolto verso l'alto, la mano sopra tra 5 e 50 cm. Ogni semitono moltiplica f per 2<sup>1/12</sup> ≈ 1,0595: per questo f = 440 · 2<sup>n/12</sup>.</p></div>`,
 });
 
 const scopeArduino = instrumentBase({
@@ -441,7 +436,7 @@ const scopeArduino = instrumentBase({
     <div class="w-block"><h3>Corrente</h3><p>Arduino misura solo tensioni. Per una corrente si mette in serie una piccola resistenza nota R (resistenza di <i>shunt</i>) e si misura la tensione ai suoi capi: I = V/R (scegli «Corrente» in Grandezza misurata).</p></div>`,
 });
 
-export const EXPERIMENTS = [motion, harmonic, cooling, scopeAudio, generator, theremin, phoneSound, scopeArduino, phoneAcc, phoneGyro];
+export const EXPERIMENTS = [motion, harmonic, cooling, scopeAudio, synthesizer, phoneSound, scopeArduino, phoneAcc, phoneGyro];
 export const TOPICS = ['Cinematica', 'Termologia', 'Onde e suono', 'Elettromagnetismo', 'Smartphone'];
 export const byId = (id) => EXPERIMENTS.find((e) => e.id === id);
 export const defaultParams = (exp) => Object.fromEntries(exp.params.map((p) => [p.key, p.value]));
