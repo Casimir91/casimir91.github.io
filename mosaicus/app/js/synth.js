@@ -43,7 +43,13 @@ function rmsOf(amps, signs = null) {
   return Math.sqrt(s / n);
 }
 // per le forme d'onda classiche l'RMS si calcola con molte armoniche (come l'oscillatore vero)
-const many = (f, N = 64) => Array.from({ length: N }, (_, k) => f(k + 1));
+const NH = 128;                                 // armoniche della forma classica (l'oscillatore vero a 220 Hz ne ha circa 100)
+const many = (f, N = NH) => Array.from({ length: N }, (_, k) => f(k + 1));
+/** Coefficiente (con segno) della k-esima armonica delle forme classiche, come le calcola Web Audio. */
+const waveCoef = (type, k) => type === 'sine' ? (k === 1 ? 1 : 0)
+  : type === 'square' ? (k % 2 ? 1 / k : 0)
+  : type === 'triangle' ? (k % 2 ? (((k - 1) / 2) % 2 ? -1 : 1) / (k * k) : 0)
+  : (k % 2 ? 1 : -1) / k;                       // dente di sega (rampa che sale)
 const RMS_WAVE = {
   sine: Math.SQRT1_2,
   square: rmsOf(many((n) => (n % 2 ? 1 / n : 0))),
@@ -63,9 +69,22 @@ const ENV = {
 // ---------------------------------------------------------------------------
 // Motore (unico per tutta l'app)
 // ---------------------------------------------------------------------------
-const DEF = { preset: 'sinusoide', amps: [...WAVES.sinusoide.amps], env: 'continuo', f: 440, vol: 0.6, two: false, df: 3, mode: 'keys', scale: 'pentatonica', range: 'Do4–Do6' };
+const DEF = { preset: 'sinusoide', amps: [...WAVES.sinusoide.amps], sgn: Array(8).fill(1), tail: [], env: 'continuo', f: 440, vol: 0.6, two: false, df: 3, mode: 'keys', scale: 'pentatonica', range: 'Do4–Do6' };
 const saved = store.get('mosaicus.synth', null) || (() => { const g = store.get('mosaicus.gen', {}); return { f: g.f, vol: g.vol }; })();
 const SY = { ...DEF, ...Object.fromEntries(Object.entries(saved || {}).filter(([k, v]) => k in DEF && v != null)), on: false };
+/** Fissa segni e armoniche 9…64 della forma classica: toccando un cursore la "forma libera" parte dall'onda esatta. */
+function classicTail(id) {
+  const w = WAVES[id];
+  SY.sgn = Array.from({ length: 8 }, (_, i) => (w && waveCoef(w.type, i + 1) < 0 ? -1 : 1));
+  SY.tail = w ? Array.from({ length: NH - 8 }, (_, i) => waveCoef(w.type, i + 9)) : [];
+}
+if (WAVES[SY.preset]) classicTail(SY.preset);
+/** Coefficienti (con segno) di tutte le armoniche del timbro attuale: quelli da cui nasce il suono. */
+const fullCoefs = () => {
+  const w = WAVES[SY.preset];
+  return w ? many((k) => waveCoef(w.type, k), NH) : SY.amps.map((a, i) => a * (SY.sgn[i] || 1)).concat(SY.tail);
+};
+export const synthCoefs = fullCoefs;           // aggancio per le prove automatiche
 const save = () => { const o = {}; Object.keys(DEF).forEach((k) => (o[k] = SY[k])); store.set('mosaicus.synth', o); };
 const listeners = new Set();
 const notify = () => listeners.forEach((fn) => fn(SY));
@@ -84,7 +103,7 @@ class SynthVoice {
   timbre() {
     const w = WAVES[SY.preset];
     if (w) { this.osc.type = w.type; this.eq = Math.SQRT1_2 / RMS_WAVE[w.type]; }
-    else { this.osc.setPeriodicWave(periodicWave(SY.amps)); this.eq = Math.SQRT1_2 / (rmsOf(SY.amps) || 1); }
+    else { const c = fullCoefs(); this.osc.setPeriodicWave(periodicWave(c)); this.eq = Math.SQRT1_2 / (rmsOf(c) || 1); }
   }
   level() { return Math.min(0.9, 0.42 * SY.vol * this.eq); }
   freq(f, glide = 0.012) { this.osc.frequency.setTargetAtTime(f, this.c.currentTime, glide); }
@@ -221,6 +240,7 @@ export function createSynth(el, api) {
   function setPreset(id) {
     SY.preset = id;
     SY.amps = [...(WAVES[id]?.amps || TIMBRES[id]?.amps || SY.amps)];
+    classicTail(id);
     save(); retimbre(); paint();
   }
   sliders.forEach((s) => {
@@ -381,10 +401,8 @@ export function createSynth(el, api) {
       }
     }
     if (!x) {
-      const n = 400, w = WAVES[SY.preset];
-      const amps = w ? many((k) => (k <= 64 ? (w.type === 'sine' ? (k === 1 ? 1 : 0) : w.type === 'square' ? (k % 2 ? 1 / k : 0) : w.type === 'triangle' ? (k % 2 ? 1 / (k * k) : 0) : 1 / k) : 0), 32) : SY.amps;
-      const signs = w?.type === 'triangle' ? many((k) => (((k - 1) / 2) % 2 ? -1 : 1), 32) : null;
-      const yy = synth(amps, 2, n, n, { phases: signs ? signs.map((s) => (s < 0 ? Math.PI : 0)) : null });
+      const n = 400;
+      const yy = synth(fullCoefs().slice(0, 96), 2, n, n);   // 2 periodi su 400 punti: oltre la 96ª armonica ci sarebbe aliasing
       x = Array.from({ length: n }, (_, i) => (i / n) * 2); y = Array.from(yy);
       note = 'calcolata';
     }
@@ -416,8 +434,9 @@ export function createSynth(el, api) {
     el.querySelectorAll('[data-preset]').forEach((b) => b.classList.toggle('active', b.dataset.preset === SY.preset));
     $('.sy-free').hidden = SY.preset !== 'libera';
     el.querySelectorAll('[data-env]').forEach((b) => b.classList.toggle('active', b.dataset.env === SY.env));
-    const terms = SY.amps.map((v, i) => (v ? `${fmtIt(v, 2)}·sin(${i ? i + 1 : ''}ωt)` : null)).filter(Boolean);
-    $('.harm-eq').textContent = `y = ${terms.join(' + ') || '0'}${WAVES[SY.preset] && SY.preset !== 'sinusoide' ? ' + … (continua con le armoniche più alte)' : ''}`;
+    const terms = SY.amps.map((v, i) => (v ? { v, i, neg: SY.sgn[i] < 0 } : null)).filter(Boolean);
+    const eq = terms.map((t, j) => `${t.neg ? (j ? ' − ' : '−') : (j ? ' + ' : '')}${fmtIt(t.v, 2)}·sin(${t.i ? t.i + 1 : ''}ωt)`).join('');
+    $('.harm-eq').textContent = `y = ${eq || '0'}${SY.tail.some(Boolean) ? ' + … (continua con le armoniche più alte)' : ''}`;
     // modi
     el.querySelectorAll('[data-mode]').forEach((b) => b.classList.toggle('active', b.dataset.mode === SY.mode));
     $('.mode-keys').hidden = SY.mode !== 'keys';

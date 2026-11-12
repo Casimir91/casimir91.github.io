@@ -13,7 +13,7 @@ import { createSynth, onGeneratorChange, generatorState, stopGenerator } from '.
 import { audioSupported } from './audio.js';
 
 // versione: la stessa di version.json (letta dalla pagina del sito) e di CACHE in sw.js
-const APP_VERSION = '0.11.3';
+const APP_VERSION = '0.11.4';
 const FIRMWARE_VERSION = '0.2';   // firmware atteso su Arduino
 const $ = (s) => document.querySelector(s);
 
