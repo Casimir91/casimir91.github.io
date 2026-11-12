@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>/* tema prima del primo disegno: niente lampo bianco */
+    try { const t = JSON.parse(localStorage.getItem('mosaicus.theme') || 'null');
+      if (t === 'dark' || (t == null && matchMedia('(prefers-color-scheme: dark)').matches)) document.documentElement.classList.add('dark'); } catch (e) {}</script>
+  <title>Mosaicus · micro-laboratorio di fisica</title>
+  <meta name="description" content="Mosaicus: app offline e open source per fare esperimenti di fisica con Arduino e con i sensori del telefono. Grafici in tempo reale, oscilloscopio, generatore di suoni, analisi dei dati, esportazione in Excel.">
+  <meta name="theme-color" content="#004D43">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="css/fonts.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <img src="icons/icon.svg" alt="" width="34" height="34">
+      <div>
+        <h1>Mosaicus</h1>
+        <p>micro-laboratorio di fisica</p>
+      </div>
+    </div>
+    <nav class="nav" aria-label="Pagine">
+      <button class="nav-btn active" data-page="misura">Misura</button>
+      <button class="nav-btn" data-page="elab">Elaborazione <span id="elabCount"></span></button>
+    </nav>
+    <div class="conn">
+      <span id="status" class="pill pill-off">Nessun dispositivo</span>
+      <button id="btnConnect" class="btn btn-primary">Collega Arduino</button>
+      <button id="btnSim" class="btn">Simulatore</button>
+      <button id="btnDisconnect" class="btn btn-ghost" hidden>Scollega</button>
+      <button id="btnTheme" class="btn" title="Tema chiaro o scuro" aria-label="Tema scuro" aria-pressed="false">☾</button>
+      <button id="btnLim" class="btn" title="Ingrandisce testi e grafici per la proiezione in classe" aria-pressed="false">Modalità LIM</button>
+    </div>
+  </header>
+
+  <div id="banner" class="banner" hidden></div>
+
+  <!-- ===================== PAGINA MISURA ===================== -->
+  <main class="layout page" id="page-misura">
+    <aside class="side">
+      <section class="card">
+        <h2>Esperimento</h2>
+        <div id="expList" class="exp-tree"></div>
+      </section>
+
+      <section class="card" id="paramCard">
+        <details open>
+          <summary><h2>Parametri</h2></summary>
+          <form id="paramForm" onsubmit="return false"></form>
+        </details>
+      </section>
+
+      <section class="card">
+        <details id="wiringBox" open>
+          <summary><h2>Collegamenti</h2></summary>
+          <div id="wiring" class="wiring"></div>
+        </details>
+      </section>
+
+      <section class="card">
+        <details open>
+          <summary><h2>Quaderno delle misure</h2></summary>
+          <p class="hint">Le misure si salvano qui da sole.</p>
+          <ul id="sessionList" class="sessions"></ul>
+        </details>
+      </section>
+    </aside>
+
+    <section class="main">
+      <div id="instrPanel" class="instr" hidden></div>
+
+      <div class="card controls ts">
+        <div class="ctrl-left">
+          <button id="btnStart" class="btn btn-go" disabled>▶ Avvia</button>
+          <button id="btnStop" class="btn btn-stop" disabled>■ Ferma</button>
+          <button id="btnZero" class="btn" hidden title="Imposta come origine la posizione attuale">⌖ Azzera posizione</button>
+          <input id="sessionName" class="name-input" placeholder="Nome della misura (es. Gruppo 3 – piano inclinato)" aria-label="Nome della misura">
+        </div>
+        <div id="readouts" class="readouts"></div>
+      </div>
+
+      <div class="card chart-card ts">
+        <div class="chart-toolbar">
+          <div class="tabs" id="viewTabs" role="group" aria-label="Grafici da mostrare"></div>
+          <div class="zoom" role="group" aria-label="Zoom sull'asse dei tempi">
+            <button class="btn btn-small" id="zoomIn" title="Ingrandisci (anche: pizzico sul trackpad, due dita sulla LIM, Ctrl + rotella)">＋</button>
+            <button class="btn btn-small" id="zoomOut" title="Riduci">－</button>
+            <button class="btn btn-small" id="zoomSel" title="Ingrandisci il tratto selezionato">Zoom sulla selezione</button>
+            <button class="btn btn-small" id="zoomFit" title="Mostra tutti i dati">Adatta</button>
+          </div>
+        </div>
+
+        <div class="chart-stack" id="chartStack"></div>
+
+        <div class="selbar">
+          <p id="selInfo" class="selinfo"></p>
+          <div class="selactions">
+            <button class="btn btn-small btn-ghost" id="btnClearSel" title="Annulla la selezione (anche: doppio clic sul grafico)">Annulla selezione</button>
+            <button class="btn btn-go" id="btnSaveSel" title="Manda il tratto alla pagina Elaborazione, per analizzarlo">Invia il tratto a Elaborazione →</button>
+            <details class="menu" id="exportMenu">
+              <summary class="btn"><span id="exportLabel">Esporta tutto</span> ▾</summary>
+              <div class="menu-list">
+                <button class="btn btn-small" data-export="xlsx">Excel (.xlsx)</button>
+                <button class="btn btn-small" data-export="csv-it">CSV per Excel in italiano</button>
+                <button class="btn btn-small" data-export="csv">CSV standard (Fogli Google, Python)</button>
+                <button class="btn btn-small" data-export="png">Immagine dei grafici (.png)</button>
+              </div>
+            </details>
+          </div>
+        </div>
+        <p class="hint">trascina = scegli un tratto · doppio clic = annulla · pizzico = zoom · tocca un grafico = attivalo</p>
+
+        <details class="sub" id="selTableBox">
+          <summary><span>Tabella dei dati del tratto selezionato</span></summary>
+          <p class="hint" id="selTableNote"></p>
+          <div class="table-wrap tall"><table id="dataTable"></table></div>
+        </details>
+        <details class="sub" open>
+          <summary><span>Tratti salvati da questa misura <span id="savedSelCount"></span></span></summary>
+          <div id="savedSel"></div>
+        </details>
+      </div>
+
+      <div class="card" id="serialCard">
+        <details>
+          <summary><h2>Monitor seriale</h2></summary>
+          <p class="hint">Le righe grezze che arrivano da Arduino: il dato “com'è” prima di ogni conversione.</p>
+          <pre id="serialLog" class="serial-log"></pre>
+        </details>
+      </div>
+
+      <footer class="foot">
+        Mosaicus v0.7 · software libero con licenza MIT · <a href="https://ermesfrosi.it" target="_blank" rel="noopener">ermesfrosi.it</a>
+      </footer>
+    </section>
+  </main>
+
+  <!-- ===================== PAGINA ELABORAZIONE ===================== -->
+  <main class="wb page" id="page-elab" hidden>
+    <div class="card wb-head">
+      <div>
+        <h2>Elaborazione</h2>
+        <p class="hint">Ogni riquadro è un tratto inviato da Misura. Spunta quelli da esportare.</p>
+      </div>
+      <div class="wb-actions">
+        <button class="btn btn-small" id="wbAll">Spunta tutti</button>
+        <button class="btn btn-go" id="wbExport">Esporta in Excel i riquadri spuntati</button>
+      </div>
+    </div>
+    <div id="wbList" class="wb-list"></div>
+    <footer class="foot">
+      Mosaicus v0.7 · software libero con licenza MIT · <a href="https://ermesfrosi.it" target="_blank" rel="noopener">ermesfrosi.it</a>
+    </footer>
+  </main>
+
+  <div id="genChip" class="gen-chip" hidden><button class="gc-open" title="Apri il generatore">🔊 <b></b></button><button class="gc-stop" title="Spegni il generatore">■</button></div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

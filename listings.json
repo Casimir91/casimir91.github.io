@@ -1,13 +1,106 @@
 [
   {
-    "listing": "/stories/index.html",
+    "listing": "/blog/index.html",
     "items": [
-      "/stories/luna.html",
-      "/stories/pelucchi-stormi-agenti-ai.html"
+      "/blog/posts/primo-post.html"
     ]
   },
   {
-    "listing": "/didattica/tolc/index.html",
+    "listing": "/didattica/terza/fisica/index.html",
+    "items": []
+  },
+  {
+    "listing": "/didattica/quarta/index.html",
+    "items": [
+      "/didattica/quarta/lezioni/2026-09-04-campoelettrico-intro/index.html",
+      "/didattica/quarta/lezioni/2026-09-07-campo-coulomb/index.html",
+      "/didattica/quarta/lezioni/2026-09-21-campoelettrico-flusso/index.html",
+      "/didattica/quarta/lezioni/2026-09-28-teorema-gauss/index.html",
+      "/didattica/quarta/lezioni/2026-09-30-teorema-gauss-dimostrazione/index.html",
+      "/didattica/quarta/lezioni/2026-10-05-mock-test/index.html",
+      "/didattica/quarta/lezioni/2026-10-07-ripasso-mock-midterm/index.html",
+      "/didattica/quarta/lezioni/2026-10-12-midterm/index.html",
+      "/didattica/quarta/lezioni/2026-10-19-magnetismo-intro/index.html",
+      "/didattica/quarta/lezioni/2026-10-21-mappa-elettrostatica/index.html",
+      "/didattica/quarta/lezioni/2026-10-26-dipolo-magnetico/index.html",
+      "/didattica/quarta/lezioni/2026-10-28-teorema-gauss-magnetico/index.html",
+      "/didattica/quarta/lezioni/2026-11-04-mock-test-campo-elettrico-magnetico/index.html",
+      "/didattica/quarta/lezioni/2026-11-09-ripasso-examination-week/index.html"
+    ]
+  },
+  {
+    "listing": "/didattica/seconda/index.html",
+    "items": [
+      "/didattica/seconda/lezioni/2026-09-11-motion-speed/index.html",
+      "/didattica/seconda/lezioni/2026-09-21-energy-work/index.html",
+      "/didattica/seconda/lezioni/2026-10-02-energy-work-exercises/index.html",
+      "/didattica/seconda/lezioni/2026-10-05-mock-midterm/index.html",
+      "/didattica/seconda/lezioni/2026-10-06-midterm-test/index.html",
+      "/didattica/seconda/lezioni/2026-10-12-power-efficiency/index.html",
+      "/didattica/seconda/lezioni/2026-10-30-examination-practice/index.html",
+      "/didattica/seconda/lezioni/2026-11-09-mock-exam-week/index.html"
+    ]
+  },
+  {
+    "listing": "/didattica/index.html",
+    "items": [
+      "/didattica/prima/index.html",
+      "/didattica/seconda/index.html",
+      "/didattica/terza/index.html",
+      "/didattica/quarta/index.html"
+    ]
+  },
+  {
+    "listing": "/didattica/prima/fisica/index.html",
+    "items": []
+  },
+  {
+    "listing": "/edtech/index.html",
+    "items": [
+      "/edtech/numero-11.html",
+      "/edtech/numero-10.html",
+      "/edtech/numero-08.html",
+      "/edtech/numero-06.html",
+      "/edtech/numero-03.html",
+      "/edtech/numero-02.html",
+      "/edtech/numero-01.html",
+      "/edtech/numero-12.html",
+      "/edtech/numero-09.html",
+      "/edtech/numero-05.html",
+      "/edtech/numero-04.html"
+    ]
+  },
+  {
+    "listing": "/didattica/igcse/index.html",
+    "items": [
+      "/didattica/igcse/sets.html"
+    ]
+  },
+  {
+    "listing": "/didattica/prima/index.html",
+    "items": [
+      "/didattica/prima/lezioni/2026-09-09-measure-intro/index.html",
+      "/didattica/prima/lezioni/2026-09-16-measure-standardform/index.html",
+      "/didattica/prima/lezioni/2026-09-23-measure-errors/index.html",
+      "/didattica/prima/lezioni/2026-09-30-measure-density-lab1/index.html",
+      "/didattica/prima/lezioni/2026-10-07-measure-density-lab2/index.html",
+      "/didattica/prima/lezioni/2026-10-14-midterm-test/index.html",
+      "/didattica/prima/lezioni/2026-10-28-pendulum-lab4/index.html",
+      "/didattica/prima/lezioni/2026-11-04-mock-test/index.html",
+      "/didattica/prima/lezioni/2026-11-04-lab4-pendulum-sheets/index.html",
+      "/didattica/prima/lezioni/2026-11-11-final-test/index.html"
+    ]
+  },
+  {
+    "listing": "/didattica/seconda/fisica/index.html",
+    "items": []
+  },
+  {
+    "listing": "/didattica/quarta/fisica/index.html",
+    "items": []
+  },
+  {
+    "listing": "/didattica/archivio/index.html",
     "items": []
   },
   {
@@ -35,107 +128,14 @@
     ]
   },
   {
-    "listing": "/didattica/archivio/index.html",
+    "listing": "/didattica/tolc/index.html",
     "items": []
   },
   {
-    "listing": "/didattica/quarta/fisica/index.html",
-    "items": []
-  },
-  {
-    "listing": "/didattica/seconda/fisica/index.html",
-    "items": []
-  },
-  {
-    "listing": "/didattica/prima/index.html",
+    "listing": "/stories/index.html",
     "items": [
-      "/didattica/prima/lezioni/2026-09-09-measure-intro/index.html",
-      "/didattica/prima/lezioni/2026-09-16-measure-standardform/index.html",
-      "/didattica/prima/lezioni/2026-09-23-measure-errors/index.html",
-      "/didattica/prima/lezioni/2026-09-30-measure-density-lab1/index.html",
-      "/didattica/prima/lezioni/2026-10-07-measure-density-lab2/index.html",
-      "/didattica/prima/lezioni/2026-10-14-midterm-test/index.html",
-      "/didattica/prima/lezioni/2026-10-28-pendulum-lab4/index.html",
-      "/didattica/prima/lezioni/2026-11-04-mock-test/index.html",
-      "/didattica/prima/lezioni/2026-11-04-lab4-pendulum-sheets/index.html",
-      "/didattica/prima/lezioni/2026-11-11-final-test/index.html"
-    ]
-  },
-  {
-    "listing": "/didattica/igcse/index.html",
-    "items": [
-      "/didattica/igcse/sets.html"
-    ]
-  },
-  {
-    "listing": "/edtech/index.html",
-    "items": [
-      "/edtech/numero-11.html",
-      "/edtech/numero-10.html",
-      "/edtech/numero-08.html",
-      "/edtech/numero-06.html",
-      "/edtech/numero-03.html",
-      "/edtech/numero-02.html",
-      "/edtech/numero-01.html",
-      "/edtech/numero-12.html",
-      "/edtech/numero-09.html",
-      "/edtech/numero-05.html",
-      "/edtech/numero-04.html"
-    ]
-  },
-  {
-    "listing": "/didattica/prima/fisica/index.html",
-    "items": []
-  },
-  {
-    "listing": "/didattica/index.html",
-    "items": [
-      "/didattica/prima/index.html",
-      "/didattica/seconda/index.html",
-      "/didattica/terza/index.html",
-      "/didattica/quarta/index.html"
-    ]
-  },
-  {
-    "listing": "/didattica/seconda/index.html",
-    "items": [
-      "/didattica/seconda/lezioni/2026-09-11-motion-speed/index.html",
-      "/didattica/seconda/lezioni/2026-09-21-energy-work/index.html",
-      "/didattica/seconda/lezioni/2026-10-02-energy-work-exercises/index.html",
-      "/didattica/seconda/lezioni/2026-10-05-mock-midterm/index.html",
-      "/didattica/seconda/lezioni/2026-10-06-midterm-test/index.html",
-      "/didattica/seconda/lezioni/2026-10-12-power-efficiency/index.html",
-      "/didattica/seconda/lezioni/2026-10-30-examination-practice/index.html",
-      "/didattica/seconda/lezioni/2026-11-09-mock-exam-week/index.html"
-    ]
-  },
-  {
-    "listing": "/didattica/quarta/index.html",
-    "items": [
-      "/didattica/quarta/lezioni/2026-09-04-campoelettrico-intro/index.html",
-      "/didattica/quarta/lezioni/2026-09-07-campo-coulomb/index.html",
-      "/didattica/quarta/lezioni/2026-09-21-campoelettrico-flusso/index.html",
-      "/didattica/quarta/lezioni/2026-09-28-teorema-gauss/index.html",
-      "/didattica/quarta/lezioni/2026-09-30-teorema-gauss-dimostrazione/index.html",
-      "/didattica/quarta/lezioni/2026-10-05-mock-test/index.html",
-      "/didattica/quarta/lezioni/2026-10-07-ripasso-mock-midterm/index.html",
-      "/didattica/quarta/lezioni/2026-10-12-midterm/index.html",
-      "/didattica/quarta/lezioni/2026-10-19-magnetismo-intro/index.html",
-      "/didattica/quarta/lezioni/2026-10-21-mappa-elettrostatica/index.html",
-      "/didattica/quarta/lezioni/2026-10-26-dipolo-magnetico/index.html",
-      "/didattica/quarta/lezioni/2026-10-28-teorema-gauss-magnetico/index.html",
-      "/didattica/quarta/lezioni/2026-11-04-mock-test-campo-elettrico-magnetico/index.html",
-      "/didattica/quarta/lezioni/2026-11-09-ripasso-examination-week/index.html"
-    ]
-  },
-  {
-    "listing": "/didattica/terza/fisica/index.html",
-    "items": []
-  },
-  {
-    "listing": "/blog/index.html",
-    "items": [
-      "/blog/posts/primo-post.html"
+      "/stories/luna.html",
+      "/stories/pelucchi-stormi-agenti-ai.html"
     ]
   },
   {
