@@ -245,7 +245,7 @@ export class Chart {
     g.strokeStyle = this.color('--axis'); g.lineWidth = 1.2;
     g.strokeRect(this.pad.l + 0.5, top + 0.5, this.plotW(), bottom - top);
     g.fillStyle = this.color('--ink');
-    g.font = `700 ${13 * k}px ${FONT}`;
+    g.font = `500 ${13 * k}px ${FONT}`;
     if (!this.compact) {
       g.textAlign = 'center'; g.textBaseline = 'bottom';
       g.fillText(this.xLabel, this.pad.l + this.plotW() / 2, this.h - 6);
@@ -344,7 +344,7 @@ export class Chart {
         const X1 = this.sx(o.x1), Y1 = this.sy(o.y1), X2 = this.sx(o.x2), Y2 = this.sy(o.y2);
         g.setLineDash([]); g.lineWidth = 1.8 * Math.sqrt(k);
         g.beginPath(); g.moveTo(X1, Y1); g.lineTo(X2, Y1); g.lineTo(X2, Y2); g.stroke();
-        g.font = `700 ${12.5 * k}px ${FONT}`;
+        g.font = `500 ${12.5 * k}px ${FONT}`;
         const pill = (txt, cx, cy, align) => {
           const tw = g.measureText(txt).width + 12 * k, th = 20 * k;
           let bx = align === 'center' ? cx - tw / 2 : align === 'left' ? cx : cx - tw;
@@ -365,7 +365,7 @@ export class Chart {
         g.beginPath(); g.arc(X, bottom - r * 1.6, r, 0, 2 * Math.PI); g.fill();
         g.strokeStyle = '#ffffff'; g.lineWidth = 2; g.stroke();
         if (o.label) {
-          g.font = `800 ${13 * k}px ${FONT}`; g.fillStyle = o.color || this.color('--fit');
+          g.font = `500 ${13 * k}px ${FONT}`; g.fillStyle = o.color || this.color('--fit');
           g.textAlign = X > R - 30 * k ? 'right' : 'left'; g.textBaseline = 'top';
           g.fillText(o.label, X + (g.textAlign === 'left' ? 5 : -5) * k, top + 4 * k);
         }
@@ -379,7 +379,7 @@ export class Chart {
         g.beginPath(); g.moveTo(X1 + s * ah, Y - ah * 0.6); g.lineTo(X1, Y); g.lineTo(X1 + s * ah, Y + ah * 0.6); g.stroke();
         g.beginPath(); g.moveTo(X2 - s * ah, Y - ah * 0.6); g.lineTo(X2, Y); g.lineTo(X2 - s * ah, Y + ah * 0.6); g.stroke();
         if (o.label) {
-          g.font = `700 ${12.5 * k}px ${FONT}`;
+          g.font = `500 ${12.5 * k}px ${FONT}`;
           const tw = g.measureText(o.label).width + 12 * k, th = 20 * k;
           const bx = Math.min(Math.max((X1 + X2) / 2 - tw / 2, L + 2), R - tw - 2), by = Y + 6 * k;
           g.fillStyle = this.color('--card'); g.globalAlpha = 0.92; g.fillRect(bx, by, tw, th); g.globalAlpha = 1;
@@ -400,7 +400,7 @@ export class Chart {
         g.strokeStyle = o.color || this.color('--fit'); g.lineWidth = 3 * Math.sqrt(k);
         g.beginPath(); g.arc(X, Y, r, 0, 2 * Math.PI); g.stroke();
         if (o.label) {
-          g.font = `800 ${13 * k}px ${FONT}`; g.fillStyle = o.color || this.color('--fit');
+          g.font = `500 ${13 * k}px ${FONT}`; g.fillStyle = o.color || this.color('--fit');
           g.textAlign = 'left'; g.textBaseline = 'bottom'; g.fillText(o.label, X + r + 2, Y - r);
         }
       }

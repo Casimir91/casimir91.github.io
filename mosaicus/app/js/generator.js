@@ -64,7 +64,7 @@ export function harmonicEditor(el, getAmps, onChange) {
         <div class="harm-sliders">${[1, 2, 3, 4, 5, 6, 7, 8].map((n) => `<label><input type="range" class="vs" min="0" max="1" step="0.01" data-n="${n}" aria-label="Ampiezza dell'armonica ${n}"><b>${n}</b><small class="hv"></small></label>`).join('')}</div>
         <div class="harm-prev screen-wrap"><canvas aria-label="Forma d'onda risultante"></canvas></div>
       </div>
-      <p class="harm-eq"></p>
+      <details class="sub harm-f"><summary><span>La formula</span></summary><p class="harm-eq"></p></details>
     </div>`;
   const scr = new Screen(el.querySelector('canvas'), { divX: 8, divY: 4 });
   const sliders = [...el.querySelectorAll('.vs')];
@@ -112,7 +112,7 @@ export function createGenerator(el, api) {
   <div class="card gen">
     <div class="gen-top">
       <div class="gen-display"><b class="gen-f"></b><span>Hz</span><em class="gen-note"></em></div>
-      <button class="btn btn-go gen-play">▶ Suona</button>
+      <button class="btn btn-play big gen-play">▶ Suona</button>
     </div>
     <div class="seg wave" role="group" aria-label="Forma d'onda">${WAVES.map(([id, l, d]) => `<button data-type="${id}" title="${l}">${waveIcon(d)}<span>${l}</span></button>`).join('')}</div>
     <div class="gen-freq">
@@ -131,7 +131,7 @@ export function createGenerator(el, api) {
       <span class="two-ctrl">f₂ = f + Δf &nbsp;<input type="range" class="dfr" min="-10" max="10" step="0.5" aria-label="Differenza di frequenza"> <b class="df-v"></b></span>
       <p class="beats"></p>
     </div>
-    <p class="hint">Suona anche se cambi esperimento → guardalo con 〰 Oscilloscopio, sorgente 🎛 Generatore.</p>
+    <p class="hint gen-tip">Suona anche se cambi esperimento: guardalo con l'Oscilloscopio, sorgente 🎛 Generatore.</p>
   </div>`;
   const $ = (s) => el.querySelector(s);
   let editor = null;
@@ -143,7 +143,7 @@ export function createGenerator(el, api) {
     $('.fr').value = toSlider(G.f); $('.fnum').value = G.f;
     $('.vl').value = G.vol;
     $('.gen-play').textContent = G.on ? '■ Ferma' : '▶ Suona';
-    $('.gen-play').classList.toggle('btn-stop', G.on); $('.gen-play').classList.toggle('btn-go', !G.on);
+    $('.gen-play').classList.toggle('on', G.on);
     el.querySelectorAll('[data-type]').forEach((b) => b.classList.toggle('active', b.dataset.type === G.type));
     el.querySelectorAll('.key').forEach((k) => k.classList.toggle('on', Math.abs(1200 * Math.log2(G.f / noteFreq(+k.dataset.n))) < 3));
     $('.two-on').checked = G.two; $('.dfr').value = G.df; $('.df-v').textContent = `${G.df > 0 ? '+' : G.df < 0 ? '−' : ''}${fmtIt(Math.abs(G.df), 1)} Hz`;

@@ -13,7 +13,7 @@ import { createGenerator, onGeneratorChange, generatorState, stopGenerator } fro
 import { createInstrument } from './instrument.js';
 import { audioSupported } from './audio.js';
 
-const APP_VERSION = '0.7';
+const APP_VERSION = '0.8';
 const $ = (s) => document.querySelector(s);
 
 const state = {
@@ -40,10 +40,22 @@ const group = new ChartGroup({
 });
 
 // ---------------- utilità ----------------
-function toast(msg, ms = 2800) {
-  const t = $('#toast'); t.textContent = msg; t.classList.add('show');
-  clearTimeout(toast._h); toast._h = setTimeout(() => t.classList.remove('show'), ms);
+/** Avviso in basso. Con `action` ({ label, run }) diventa anche un pulsante: es. «Vai a Elaborazione →». */
+function toast(msg, ms = 2800, action = null) {
+  const t = $('#toast');
+  t.textContent = msg;
+  t.classList.toggle('has-action', !!action);
+  if (action) {
+    const b = document.createElement('button');
+    b.className = 'btn btn-small toast-act'; b.textContent = action.label;
+    b.addEventListener('click', () => { t.classList.remove('show'); action.run(); });
+    t.append(b);
+  }
+  t.classList.add('show');
+  clearTimeout(toast._h); toast._h = setTimeout(() => t.classList.remove('show'), action ? Math.max(ms, 6000) : ms);
 }
+const isPhone = () => window.matchMedia('(max-width: 700px)').matches;
+const goElab = () => showPage('elab');
 const store = {
   get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } },
   set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* storage non disponibile */ } },
@@ -59,6 +71,7 @@ const escapeHTML = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', 
 function showPage(id) {
   document.querySelectorAll('.page').forEach((p) => (p.hidden = p.id !== `page-${id}`));
   document.querySelectorAll('.nav-btn').forEach((b) => b.classList.toggle('active', b.dataset.page === id));
+  document.querySelectorAll('.bottom-nav [data-go]').forEach((b) => b.classList.toggle('active', b.dataset.go === id));
   store.set('mosaicus.page', id);
   window.scrollTo({ top: 0 });
 }
@@ -75,7 +88,11 @@ function renderExperimentList() {
       const b = document.createElement('button');
       b.className = 'exp-card'; b.dataset.id = e.id;
       b.innerHTML = `<span class="exp-icon" style="background:${e.iconBg}">${e.icon}</span><span><b>${e.title}</b><small>${e.subtitle}</small></span>`;
-      b.addEventListener('click', () => selectExperiment(e.id));
+      b.addEventListener('click', () => {
+        selectExperiment(e.id);
+        // sul telefono l'elenco sta sopra: dopo la scelta porto in vista l'esperimento
+        if (isPhone() && state.exp.id === e.id) document.querySelector('#page-misura .main').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
       list.appendChild(b);
     }
     det.appendChild(list); box.appendChild(det);
@@ -140,7 +157,7 @@ function makeInstrument(exp) {
     },
     async sendBox(data, msg) {
       await addBox({ experiment: exp.id, expTitle: exp.title, sessionId: null, sessionName: '', ...data });
-      toast(`${msg} Le trovi in Elaborazione.`);
+      toast(msg, 6000, { label: 'Vai a Elaborazione →', run: goElab });
       pulseNav();
     },
     setSimSignal(sig) { state.simSignal = sig; if (state.link?.kind === 'simulatore') state.link.scopeSignal = sig; },
@@ -305,9 +322,10 @@ function updateReadouts() {
   const box = $('#readouts');
   const last = (key) => { for (let i = state.rows.length - 1; i >= 0; i--) if (isFinite(state.rows[i][key])) return state.rows[i][key]; return NaN; };
   const tEnd = state.rows.length ? state.rows[state.rows.length - 1].t : 0;
-  box.innerHTML = state.exp.readouts.map((r) =>
-    `<div class="ro"><small>${r.label}</small><b>${fmtVal(last(r.key), r.digits)}</b><em>${r.unit}</em></div>`).join('') +
-    `<div class="ro"><small>Tempo · punti</small><b>${fmtVal(tEnd, 1)}</b><em>s · ${state.rows.length}</em></div>`;
+  // gerarchia: la prima grandezza è la principale (grande), il tempo e i punti sono un dettaglio (piccoli)
+  box.innerHTML = state.exp.readouts.map((r, i) =>
+    `<div class="ro${i === 0 ? ' ro-main' : ''}"><small>${r.label}</small><b>${fmtVal(last(r.key), r.digits)}</b><em>${r.unit}</em></div>`).join('') +
+    `<div class="ro ro-minor"><small>Tempo · punti</small><b>${fmtVal(tEnd, 1)}</b><em>s · ${state.rows.length}</em></div>`;
 }
 
 // ---------------- selezione: salva, esporta, tabella ----------------
@@ -324,6 +342,8 @@ function updateSelectionUI() {
   else if (has) info.innerHTML = `<b>${fmtVal(state.selection[0], 2)} – ${fmtVal(state.selection[1], 2)} s</b> · ${rows.length} punti`;
   else info.innerHTML = 'Trascina su un grafico per scegliere un tratto.';
   $('#btnSaveSel').textContent = has ? 'Invia il tratto a Elaborazione →' : 'Invia tutta la misura a Elaborazione →';
+  document.querySelector('.selbar').classList.toggle('has-sel', has && !state.running);
+  if (has) hideDragHint(true);
   $('#btnSaveSel').disabled = !state.rows.length || state.running;
   $('#exportLabel').textContent = has ? 'Esporta selezione' : 'Esporta tutto';
   if ($('#selTableBox').open) renderSelTable();
@@ -359,7 +379,7 @@ async function saveSelection() {
     rows: rows.map((r) => Object.fromEntries(keys.map((k) => [k, isFinite(r[k]) ? r[k] : NaN]))),
   });
   renderSavedSelections();
-  toast(`Tratto inviato a Elaborazione (${rows.length} punti).`);
+  toast(`Tratto inviato (${rows.length} punti).`, 6000, { label: 'Vai a Elaborazione →', run: goElab });
   pulseNav(box.id);
 }
 
@@ -518,6 +538,25 @@ async function stop() {
   try { await state.link?.write('STOP'); } catch { /* scollegato */ }
   recompute();
   await autosave();
+  showDragHint();
+}
+
+/** Suggerimento animato «trascina qui» sul primo grafico: compare le prime volte, sparisce al primo tocco. */
+function showDragHint() {
+  if (!state.rows.length || state.selection || state.running || state.exp.kind) return;
+  const n = store.get('mosaicus.hint.drag', 0);
+  if (n >= 3) return;
+  const cell = document.querySelector('#chartStack .chart-cell');
+  if (!cell || cell.querySelector('.drag-hint')) return;
+  const h = document.createElement('div');
+  h.className = 'drag-hint'; h.setAttribute('aria-hidden', 'true');
+  h.innerHTML = '<span class="dh-band"></span><span class="dh-hand">👆</span><span class="dh-txt">trascina per scegliere un tratto</span>';
+  cell.append(h);
+  store.set('mosaicus.hint.drag', n + 1);
+}
+function hideDragHint(done = false) {
+  document.querySelectorAll('.drag-hint').forEach((h) => h.remove());
+  if (done) store.set('mosaicus.hint.drag', 3);
 }
 
 async function autosave(quiet = false) {
@@ -587,6 +626,7 @@ async function openSession(id) {
   renderParams();
   recompute();
   renderSavedSelections();
+  showDragHint();
   toast(`Aperta «${s.name}». Se cambi i parametri, i dati vengono ricalcolati.`);
 }
 
@@ -626,13 +666,23 @@ async function init() {
   darkQuery?.addEventListener?.('change', (e) => { if (!savedTheme()) applyTheme(e.matches); });
   $('#btnLim').addEventListener('click', () => setLim(!document.documentElement.classList.contains('lim')));
   document.querySelectorAll('.nav-btn').forEach((b) => b.addEventListener('click', () => showPage(b.dataset.page)));
+  // barra in basso (telefono): Esperimenti porta all'elenco, Misura al pannello, Elaborazione all'altra pagina
+  document.querySelectorAll('.bottom-nav [data-go]').forEach((b) => b.addEventListener('click', () => {
+    const go = b.dataset.go;
+    if (go === 'elab') { showPage('elab'); return; }
+    showPage('misura');
+    const target = go === 'exp' ? document.querySelector('#expList').closest('.card') : document.querySelector('#page-misura .main');
+    target.scrollIntoView({ block: 'start' });
+  }));
+  $('#backToMisura').addEventListener('click', () => showPage('misura'));
+  $('#chartStack').addEventListener('pointerdown', () => hideDragHint(), true);
 
   if (window.matchMedia('(max-width: 700px)').matches) {
     document.querySelectorAll('#page-misura .side details').forEach((d) => { if (!d.classList.contains('topic')) d.open = false; });
   }
   await initWorkbench({
     toast,
-    onCount: (n) => { $('#elabCount').textContent = n ? `(${n})` : ''; renderSavedSelections(); },
+    onCount: (n) => { $('#elabCount').textContent = n ? `(${n})` : ''; $('#elabCount2').textContent = n || ''; renderSavedSelections(); },
   });
   renderExperimentList();
   // su un telefono che non può collegare Arduino si parte dai sensori del telefono

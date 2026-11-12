@@ -385,7 +385,7 @@ const phoneGyro = phoneMotion({
 });
 
 const phoneSound = {
-  id: 'phoneSound', topic: 'Onde e suono', source: 'phone', title: 'Frequenzimetro', subtitle: 'Microfono · frequenza e livello nel tempo',
+  id: 'phoneSound', topic: 'Onde e suono', source: 'phone', title: 'Frequenza nel tempo', subtitle: 'Effetto Doppler, glissati · microfono',
   icon: ICON_FREQ, iconBg: 'var(--rosa-t)', lineType: 'M', sim: 'phone-sound',
   command: (p) => `START,SOUND,${Math.round(p.interval)}`,
   params: [{ key: 'interval', label: 'Intervallo di campionamento', unit: 'ms', value: 50, min: 30, step: 10 }],
@@ -411,7 +411,7 @@ const phoneSound = {
 const instrumentBase = (o) => ({ params: [], views: [], columns: [], readouts: [], ...o });
 
 const scopeAudio = instrumentBase({
-  id: 'scope', topic: 'Onde e suono', kind: 'scope', source: 'audio', title: 'Oscilloscopio', subtitle: 'Forma d\'onda e spettro del suono',
+  id: 'scope', topic: 'Onde e suono', kind: 'scope', source: 'audio', title: 'Oscilloscopio', subtitle: 'Guarda la forma di un suono',
   icon: ICON_SCOPE, iconBg: 'var(--lime-t)',
   wiring: `<div class="w-block"><h3>Sorgenti</h3><p>🎤 il microfono di questo dispositivo · 🎛 il generatore di Mosaicus · 🎻 suoni di esempio, tutti sulla stessa nota.</p></div>
     <div class="w-block"><h3>Idea</h3><p class="tip">Canta una «a» e congela (A). Poi fischia la stessa nota (B), poi suona un diapason o uno strumento (C). Stessa frequenza, forme diverse: il <b>timbro</b> sta nelle armoniche.</p></div>
@@ -419,21 +419,21 @@ const scopeAudio = instrumentBase({
 });
 
 const generator = instrumentBase({
-  id: 'generator', topic: 'Onde e suono', kind: 'generator', source: 'audio', title: 'Generatore', subtitle: 'Onde sinusoidali, quadre, … e battimenti',
+  id: 'generator', topic: 'Onde e suono', kind: 'generator', source: 'audio', title: 'Generatore', subtitle: 'Crea suoni: forma, nota, battimenti',
   icon: ICON_GEN, iconBg: 'var(--zaff-t)',
   wiring: `<div class="w-block"><h3>Idea</h3><p class="tip">Soglia dell'udito: scendi fino a 20 Hz e sali fino a quando non senti più nulla. Battimenti: attiva il secondo suono con Δf = 2 Hz. Onda quadra e sinusoide alla stessa frequenza: perché suonano diverse?</p></div>
     <div class="w-block"><h3>Con un secondo telefono</h3><p>Il generatore continua a suonare anche se cambi pagina: apri l'Oscilloscopio su un altro dispositivo, con il microfono, e guarda la forma d'onda arrivata attraverso l'aria.</p></div>`,
 });
 
 const theremin = instrumentBase({
-  id: 'theremin', topic: 'Onde e suono', kind: 'instrument', source: 'arduino', optionalLink: true, title: 'Strumento musicale', subtitle: 'Theremin con il dito, il telefono o HC-SR04',
+  id: 'theremin', topic: 'Onde e suono', kind: 'instrument', source: 'arduino', optionalLink: true, title: 'Strumento musicale', subtitle: 'Si suona con la mano: dito, telefono, HC-SR04',
   icon: ICON_THEREMIN, iconBg: 'var(--rosa-t)', sim: 'hand',
   wiring: `<div class="w-block"><h3>📡 Con Arduino</h3>${SCHEMA_HCSR04}<p>Sensore rivolto verso l'alto; la mano sopra, tra 5 e 50 cm. Collega Arduino in alto (oppure il simulatore), scegli 📡 e premi ▶ Suona.</p></div>
     <div class="w-block"><h3>La fisica</h3><p>Ogni ottava raddoppia la frequenza e contiene 12 semitoni uguali: un semitono moltiplica f per 2<sup>1/12</sup> ≈ 1,0595. Per questo f = 440 · 2<sup>n/12</sup>. Con la scala «continua» senti anche le note "in mezzo".</p></div>`,
 });
 
 const scopeArduino = instrumentBase({
-  id: 'escope', topic: 'Elettromagnetismo', kind: 'scope', source: 'arduino', title: 'Oscilloscopio elettrico', subtitle: 'Tensione su A0 · 400 campioni a raffica',
+  id: 'escope', topic: 'Elettromagnetismo', kind: 'scope', source: 'arduino', title: 'Oscilloscopio elettrico', subtitle: 'Guarda una tensione: microfono, bobina',
   icon: ICON_ESCOPE, iconBg: 'var(--cielo-t)', sim: 'scope',
   wiring: `<div class="w-block warn"><h3>⚠ Sicurezza</h3><p>Solo tensioni tra <b>0 e 5 V</b>, prese da Arduino stesso o da una bobina. <b>Mai la rete elettrica</b>, mai batterie oltre 5 V. Le tensioni negative si "sollevano" a 2,5 V con un partitore.</p></div>
     <div class="w-block"><h3>🎤 Microfono del kit</h3>${SCHEMA_MIC}<p class="tip">Il modulo non amplifica molto: il segnale è di qualche decina di mV. Fischia vicino al microfono. Gira la vite del trimmer finché la media è circa 2,5 V.</p></div>

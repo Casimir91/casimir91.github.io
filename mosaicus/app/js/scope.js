@@ -17,6 +17,8 @@ const LIVE = '#C6F432';
 const SLOT = [{ id: 'A' }, { id: 'B' }, { id: 'C' }];
 /** Colore della traccia congelata: dipende dal tema (chiaro: zafferano, cielo, rosa; scuro: bianco, verde, grigio). */
 const slotColor = (id) => getComputedStyle(document.documentElement).getPropertyValue(`--slot-${id.toLowerCase()}`).trim() || '#fff';
+/** Tratteggio della traccia (nel tema scuro B e C sono tratteggiate: ci sono solo bianco e lime). */
+const slotDash = (id) => { const v = getComputedStyle(document.documentElement).getPropertyValue(`--slot-${id.toLowerCase()}-dash`).trim(); return !v || v === 'none' ? null : v.split(/\s+/).map(Number); };
 const WIN_STEPS = [2, 3, 4, 5, 6, 8, 10, 12, 15, 20, 25, 30, 40, 50];       // ms
 const DT_STEPS = [20, 50, 100, 250, 500, 1000, 2500];                        // µs tra due campioni (Arduino)
 const N_ARD = 400;
@@ -36,7 +38,7 @@ export function createScope(el, api) {
   const pref = store.get(`mosaicus.scope.${api.mode}`, {});
   const S = {
     source: ard ? 'arduino' : null, analyser: null, buf: null,
-    paused: false, winMs: pref.winMs ?? 10, edge: pref.edge ?? 1, same: pref.same ?? !ard,
+    paused: !ard, showLive: true, winMs: pref.winMs ?? 10, edge: pref.edge ?? 1, same: pref.same ?? !ard,
     live: null, slots: [], fHist: [], yHalf: 0.05, fRef: 0,
     example: null, voices: [],
     dt: pref.dt ?? 100, level: pref.level ?? 2.5, single: pref.single ?? false, acq: false,
@@ -49,8 +51,6 @@ export function createScope(el, api) {
   <div class="card scope-head">
     ${ard ? `
       <div class="ctrl-left">
-        <button class="btn btn-go" data-act="acq">▶ Avvia</button>
-        <button class="btn btn-stop" data-act="stop" disabled>■ Ferma</button>
         <label class="mini">circuito <select class="circuit">
           <option value="mic">Microfono del kit</option><option value="coil">Bobina e magnete</option><option value="lamp">Luce di una lampada</option></select></label>
       </div>` : `
@@ -61,6 +61,11 @@ export function createScope(el, api) {
   </div>
   ${ard ? '' : `<div class="card examples" hidden><span class="ex-lab">La₃ = 220 Hz</span>${EXAMPLES.map(([id, l]) => `<button class="btn btn-small" data-ex="${id}">${l}</button>`).join('')}<button class="btn btn-small" data-ex="beats">Battimenti 440 + 443 Hz</button></div>`}
   <div class="card scope-body">
+    <div class="transport">
+      <button class="btn btn-play big run"></button>
+      <button class="btn btn-play big freeze" title="Ferma e conserva la traccia (fino a 3)">❄ Congela</button>
+      <div class="slots"></div>
+    </div>
     <div class="screen-wrap"><canvas class="cv-wave" aria-label="Forma d'onda"></canvas><div class="screen-msg"></div></div>
     <div class="knobs">
       ${ard ? `
@@ -71,11 +76,6 @@ export function createScope(el, api) {
         <label class="knob">⟷ <input type="range" class="win" min="0" max="${WIN_STEPS.length - 1}" step="1"> <b class="win-v"></b></label>`}
       <div class="seg edge" role="group" aria-label="Trigger"><button data-edge="1" title="Trigger sul fronte di salita">↗</button><button data-edge="-1" title="Trigger sul fronte di discesa">↘</button><button data-edge="0" title="Senza trigger">⟿</button></div>
       <label class="tog"><input type="checkbox" class="same"> ↕ stessa altezza</label>
-      ${ard ? '' : '<button class="btn btn-small pause" title="Ferma l\'immagine">❚❚</button>'}
-    </div>
-    <div class="freeze-bar">
-      <button class="btn btn-go freeze" title="Conserva la traccia attuale (fino a 3)">❄ Congela</button>
-      <div class="slots"></div>
     </div>
     <div class="screen-wrap spec"><canvas class="cv-spec" aria-label="Spettro"></canvas></div>
     <div class="recipe"></div>
@@ -104,7 +104,8 @@ export function createScope(el, api) {
       $('.dt').value = S.dt; $('.lvl').value = S.level; $('.lvl-v').textContent = `${fmtIt(S.level, 2)} V`;
       setSeg('.mode', 'data-single', S.single ? 1 : 0);
       $('.circuit').value = S.circuit; $('.qty').value = S.qty; $('.v0').value = S.V0; $('.r').value = S.R;
-      $('[data-act="acq"]').disabled = S.acq; $('[data-act="stop"]').disabled = !S.acq;
+      $('.run').textContent = S.acq ? '■ Ferma' : '▶ Avvia';
+      $('.run').classList.toggle('on', S.acq);
       api.setSimSignal?.(S.circuit);
     } else {
       const i = WIN_STEPS.indexOf(S.winMs);
@@ -112,10 +113,12 @@ export function createScope(el, api) {
       setSeg('.src', 'data-src', S.source);
       $('.examples').hidden = S.source !== 'ex';
       el.querySelectorAll('[data-ex]').forEach((b) => b.classList.toggle('active', b.dataset.ex === S.example));
-      $('.pause').textContent = S.paused ? '▶' : '❚❚';
-      $('.pause').classList.toggle('on', S.paused);
+      const live = S.analyser && !S.paused;
+      $('.run').textContent = live ? '❚❚ Pausa' : '▶ Avvia';
+      $('.run').classList.toggle('on', !!live);
     }
-    $('.freeze').disabled = S.slots.length >= 3 || !S.live;
+    $('.freeze').disabled = S.slots.length >= 3 || !S.live || !S.showLive;
+    $('.freeze').textContent = S.slots.length >= 3 ? '❄ Tre tracce: togline una' : '❄ Congela';
   }
 
   el.querySelectorAll('.edge [data-edge]').forEach((b) => b.addEventListener('click', () => { S.edge = +b.dataset.edge; save(); syncControls(); if (S.acq) restartAcq(); }));
@@ -145,13 +148,16 @@ export function createScope(el, api) {
     $('.qty').addEventListener('change', (e) => { S.qty = e.target.value; save(); reconvert(); });
     $('.v0').addEventListener('change', (e) => { const v = parseFloat(e.target.value); if (isFinite(v)) S.V0 = v; save(); reconvert(); });
     $('.r').addEventListener('change', (e) => { const v = parseFloat(e.target.value); if (v > 0) S.R = v; save(); reconvert(); });
-    $('[data-act="acq"]').addEventListener('click', startAcq);
-    $('[data-act="stop"]').addEventListener('click', stopAcq);
+    $('.run').addEventListener('click', () => (S.acq ? stopAcq() : startAcq()));
   } else {
     $('.win').addEventListener('input', (e) => { S.winMs = WIN_STEPS[+e.target.value]; $('.win-v').textContent = `${S.winMs} ms`; save(); redraw(); });
     el.querySelectorAll('[data-src]').forEach((b) => b.addEventListener('click', () => useSource(b.dataset.src)));
     el.querySelectorAll('[data-ex]').forEach((b) => b.addEventListener('click', () => playExample(b.dataset.ex)));
-    $('.pause').addEventListener('click', () => { S.paused = !S.paused; syncControls(); });
+    $('.run').addEventListener('click', async () => {
+      if (S.analyser && !S.paused) { S.paused = true; syncControls(); return; }        // ❚❚ Pausa
+      if (!S.source) { await useSource(store.get('mosaicus.scope.src', 'mic') || 'mic'); return; }
+      S.paused = false; S.showLive = true; S.fHist = []; syncControls();               // ▶ Avvia
+    });
   }
 
   // ---------------- sorgenti audio ----------------
@@ -164,7 +170,7 @@ export function createScope(el, api) {
       api.toast(`Microfono non disponibile: ${e.message}`, 5000);
       return;
     }
-    S.source = src; S.paused = false; S.live = null; S.fHist = [];
+    S.source = src; S.paused = false; S.showLive = true; S.live = null; S.fHist = [];
     store.set('mosaicus.scope.src', src);
     syncControls();
     if (src === 'ex' && !S.example) playExample('violino');
@@ -178,6 +184,7 @@ export function createScope(el, api) {
     else S.voices = [new Voice({ amps: TIMBRES[id].amps, freq: 220, gain: 0.3 })];
     S.voices.forEach((v) => v.start());
     S.example = id; S.fHist = [];
+    S.paused = false; S.showLive = true;      // scegliere un esempio = volerlo vedere
     syncControls();
   }
 
@@ -188,7 +195,7 @@ export function createScope(el, api) {
   }
   async function startAcq() {
     if (!api.ready()) { api.toast('Prima collega Arduino (o il simulatore) con i pulsanti in alto.'); return; }
-    S.acq = true; syncControls();
+    S.acq = true; S.showLive = true; syncControls();
     await api.send(acqCommand());
     S.msg = S.single && S.edge ? 'In attesa del trigger…' : '';
   }
@@ -259,7 +266,10 @@ export function createScope(el, api) {
       name: ard ? `${free.id}` : S.source === 'ex' && S.example ? `${EX_NAME[S.example] || free.id}` : free.id };
     S.slots.push(slot);
     S.slots.sort((a, b) => a.id.localeCompare(b.id));
-    renderSlots(); syncControls(); redraw();
+    // «Congela» ferma davvero: niente più traccia che si muove. Per un'altra traccia: ▶ Avvia, poi di nuovo ❄
+    S.paused = true; S.showLive = false;
+    if (S.acq) stopAcq();
+    renderSlots(); syncControls(); redraw(); updateReadouts(true);
   }
   const EX_NAME = Object.fromEntries([...EXAMPLES, ['beats', 'Battimenti']]);
 
@@ -271,7 +281,7 @@ export function createScope(el, api) {
         <input value="${esc(s.name)}" aria-label="Nome della traccia ${s.id}">
         <small>${isFinite(s.f) ? `${fmtIt(sig(s.f, 4), 1)} Hz${noteOf(s.f) && !ard ? ` · ${noteOf(s.f).label}` : ''}` : '—'}</small>
         <button class="x" title="Elimina">✕</button>
-      </div>`).join('') || '<span class="hint">❄ conserva fino a 3 tracce: A, B, C</span>';
+      </div>`).join('');
     box.querySelectorAll('.slot').forEach((d) => {
       const s = S.slots.find((x) => x.id === d.dataset.id);
       d.querySelector('.eye').addEventListener('click', () => { s.visible = !s.visible; renderSlots(); redraw(); });
@@ -296,8 +306,8 @@ export function createScope(el, api) {
 
   function redraw() {
     const tmax = windowMs();
-    const frames = [...S.slots.filter((s) => s.visible), ...(S.live ? [S.live] : [])];
-    const tr = frames.map((f) => ({ ...traceXY(f, tmax, S.same), color: f === S.live ? LIVE : slotColor(f.id), width: f === S.live ? 2 : 2.2, glow: f === S.live }));
+    const frames = [...S.slots.filter((s) => s.visible), ...(S.live && S.showLive ? [S.live] : [])];
+    const tr = frames.map((f) => ({ ...traceXY(f, tmax, S.same), color: f === S.live ? LIVE : slotColor(f.id), dash: f === S.live ? null : slotDash(f.id), width: f === S.live ? 2 : 2.2, glow: f === S.live }));
     let y0, y1, yLabel;
     if (S.same) { y0 = -1.2; y1 = 1.2; yLabel = 'altezze normalizzate'; }
     else {
@@ -321,7 +331,8 @@ export function createScope(el, api) {
     });
     if (hlines.length && wave.map) drawLevel(hlines[0]);
     const msg = $('.screen-msg');
-    msg.textContent = !ard && !S.source ? 'Scegli una sorgente ↑'
+    msg.textContent = !ard && !S.source ? 'Scegli una sorgente ↑ e premi ▶ Avvia'
+      : !frames.length ? 'Premi ▶ Avvia'
       : !ard && S.source === 'gen' && !generatorOn() ? 'Il generatore è spento'
       : ard && !S.live && !S.acq ? 'Collega in alto, poi ▶ Avvia' : '';
     msg.hidden = !msg.textContent;
@@ -338,7 +349,8 @@ export function createScope(el, api) {
   }
 
   function drawSpectrum(frames) {
-    const ref = S.live && isFinite(S.live.f) ? S.live.f : S.slots.find((s) => isFinite(s.f))?.f;
+    const liveOn = S.live && S.showLive;
+    const ref = liveOn && isFinite(S.live.f) ? S.live.f : S.slots.find((s) => isFinite(s.f))?.f;
     if (ref && (!S.fRef || Math.abs(ref / S.fRef - 1) > 0.15)) S.fRef = ref;
     const srMin = Math.min(...frames.map((f) => f.sr), 48000);
     // fondo scala: il primo valore "tondo" che contiene circa 9 armoniche
@@ -355,10 +367,10 @@ export function createScope(el, api) {
       const x = new Float32Array(kmax), y = new Float32Array(kmax);
       for (let k = 0; k < kmax; k++) { x[k] = k * f.spec.df; y[k] = f.spec.mag[k] / (S.same ? m || 1 : 1); }
       const live = f === S.live;
-      return { x, y, color: live ? LIVE : slotColor(f.id), width: live ? 1.8 : 1.6, glow: live, fill: live ? 'rgba(198,244,50,0.12)' : null };
+      return { x, y, color: live ? LIVE : slotColor(f.id), dash: live ? null : slotDash(f.id), width: live ? 1.8 : 1.6, glow: live, fill: live ? 'rgba(198,244,50,0.12)' : null };
     });
     const markers = [];
-    const base = S.live && isFinite(S.live.f) ? S.live.f : null;
+    const base = liveOn && isFinite(S.live.f) ? S.live.f : S.slots.find((s) => s.visible && isFinite(s.f))?.f ?? null;
     if (base) for (let n = 1; n * base <= fmax && n <= 12; n++) markers.push({ x: n * base, label: String(n), color: 'rgba(198,244,50,0.55)' });
     spec.draw({
       x0: 0, x1: fmax, y0: 0, y1: (S.same ? 1 : gmax || 1) * 1.12, traces: tr, markers, centerX: false, centerY: false,
@@ -367,7 +379,7 @@ export function createScope(el, api) {
   }
 
   function renderRecipe() {
-    const rows = [...(S.live ? [{ ...S.live, id: 'ora', name: 'dal vivo', color: LIVE }] : []), ...S.slots.filter((s) => s.visible)];
+    const rows = [...(S.live && S.showLive ? [{ ...S.live, id: 'ora', name: 'dal vivo', color: LIVE }] : []), ...S.slots.filter((s) => s.visible)];
     const box = $('.recipe');
     if (!rows.some((r) => r.recipe)) { box.innerHTML = ''; return; }
     box.innerHTML = `<div class="rc-head"><b>Armoniche</b><span>${[1, 2, 3, 4, 5, 6, 7, 8].map((n) => `<i>${n}</i>`).join('')}</span></div>` +
@@ -379,8 +391,10 @@ export function createScope(el, api) {
     const now = performance.now();
     if (!force && now - roLast < 160) return;
     roLast = now;
-    const f = S.live?.f;
-    if (isFinite(f)) { S.fHist.push(f); if (S.fHist.length > 5) S.fHist.shift(); } else S.fHist = [];
+    const src = S.showLive ? S.live : S.slots[S.slots.length - 1];
+    const f = src?.f;
+    if (!S.showLive) S.fHist = isFinite(f) ? [f] : [];
+    else if (isFinite(f)) { S.fHist.push(f); if (S.fHist.length > 5) S.fHist.shift(); } else S.fHist = [];
     const fm = S.fHist.length ? [...S.fHist].sort((a, b) => a - b)[S.fHist.length >> 1] : NaN;
     const note = !ard && isFinite(fm) ? noteOf(fm) : null;
     const cells = [
@@ -388,9 +402,9 @@ export function createScope(el, api) {
       ['T', isFinite(fm) ? fmtIt(sig(1000 / fm, 3), 3) : '—', 'ms'],
     ];
     if (note) cells.push(['nota', note.label, `${note.cents >= 0 ? '+' : '−'}${Math.abs(note.cents)} cent`]);
-    if (ard && S.live) {
-      let lo = Infinity, hi = -Infinity, s = 0; S.live.y.forEach((v) => { lo = Math.min(lo, v); hi = Math.max(hi, v); s += v; });
-      cells.push(['picco-picco', fmtIt(sig(hi - lo, 3), 3), unit()], ['media', fmtIt(sig(s / S.live.y.length, 3), 3), unit()]);
+    if (ard && src) {
+      let lo = Infinity, hi = -Infinity, s = 0; src.y.forEach((v) => { lo = Math.min(lo, v); hi = Math.max(hi, v); s += v; });
+      cells.push(['picco-picco', fmtIt(sig(hi - lo, 3), 3), unit()], ['media', fmtIt(sig(s / src.y.length, 3), 3), unit()]);
     }
     $('.scope-ro').innerHTML = cells.map(([l, v, u]) => `<div class="ro"><small>${l}</small><b>${v}</b><em>${u}</em></div>`).join('');
   }
@@ -415,7 +429,7 @@ export function createScope(el, api) {
   function chosen() {
     const vis = S.slots.filter((s) => s.visible);
     if (vis.length) return vis;
-    if (S.live) return [{ ...S.live, id: 'A', name: ard ? 'A' : S.source === 'ex' ? EX_NAME[S.example] || 'A' : 'A' }];
+    if (S.live && S.showLive) return [{ ...S.live, id: 'A', name: ard ? 'A' : S.source === 'ex' ? EX_NAME[S.example] || 'A' : 'A' }];
     return [];
   }
   const meta = (list) => list.map((s) => `${s.id}${s.name !== s.id ? ` = ${s.name}` : ''}: ${isFinite(s.f) ? `${fmtIt(sig(s.f, 4), 1)} Hz` : 'f non trovata'}${!ard && noteOf(s.f) ? ` (${noteOf(s.f).label})` : ''}`).join(' · ');

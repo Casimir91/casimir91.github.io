@@ -38,7 +38,8 @@ export class Screen {
     const pad = { l: 8 * k, r: 8 * k, t: 8 * k, b: 22 * k };
     const pw = W - pad.l - pad.r, ph = H - pad.t - pad.b;
     // fondo
-    g.fillStyle = '#00302A'; g.fillRect(0, 0, W, H);
+    const css = getComputedStyle(document.documentElement);
+    g.fillStyle = css.getPropertyValue('--screen').trim() || '#00302A'; g.fillRect(0, 0, W, H);
     const grd = g.createRadialGradient(W / 2, H / 2, 10, W / 2, H / 2, Math.max(W, H) * 0.7);
     grd.addColorStop(0, 'rgba(198,244,50,0.07)'); grd.addColorStop(1, 'rgba(0,0,0,0)');
     g.fillStyle = grd; g.fillRect(0, 0, W, H);
@@ -64,7 +65,7 @@ export class Screen {
       g.strokeStyle = m.color || 'rgba(255,255,255,0.5)'; g.setLineDash(m.dash || [3, 4]); g.lineWidth = m.width || 1;
       g.beginPath(); g.moveTo(X, pad.t); g.lineTo(X, pad.t + ph); g.stroke(); g.setLineDash([]);
       if (m.label) {
-        g.font = `800 ${11 * k}px ${FONT}`; g.fillStyle = m.color || '#fff'; g.textAlign = 'center'; g.textBaseline = 'top';
+        g.font = `500 ${11 * k}px ${FONT}`; g.fillStyle = m.color || '#fff'; g.textAlign = 'center'; g.textBaseline = 'top';
         g.fillText(m.label, X, pad.t + 3 * k + (m.row || 0) * 13 * k);
       }
     }
@@ -73,6 +74,7 @@ export class Screen {
       g.lineJoin = 'round';
       g.strokeStyle = t.color; g.lineWidth = (t.width || 1.8) * Math.sqrt(k);
       if (t.glow) { g.shadowColor = t.color; g.shadowBlur = 8 * k; }
+      g.setLineDash(t.dash ? t.dash.map((d) => d * k) : []);
       g.beginPath();
       let pen = false;
       for (let i = 0; i < t.x.length; i++) {
@@ -80,7 +82,7 @@ export class Screen {
         if (!isFinite(Y)) { pen = false; continue; }
         pen ? g.lineTo(X, Y) : g.moveTo(X, Y); pen = true;
       }
-      g.stroke(); g.shadowBlur = 0;
+      g.stroke(); g.shadowBlur = 0; g.setLineDash([]);
       if (t.fill) {
         g.lineTo(sx(t.x[t.x.length - 1]), sy(y0)); g.lineTo(sx(t.x[0]), sy(y0)); g.closePath();
         g.fillStyle = t.fill; g.fill();
@@ -89,7 +91,7 @@ export class Screen {
     g.restore();
 
     // scritte di scala
-    g.font = `700 ${11.5 * k}px ${FONT}`; g.fillStyle = 'rgba(198,244,50,0.85)';
+    g.font = `500 ${11.5 * k}px ${FONT}`; g.fillStyle = 'rgba(198,244,50,0.85)';
     g.textBaseline = 'middle';
     g.textAlign = 'left'; g.fillText(frame.xLabel || '', pad.l, H - pad.b / 2);
     g.textAlign = 'right'; g.fillText(frame.yLabel || '', W - pad.r, H - pad.b / 2);
