@@ -11,6 +11,7 @@
 
 let ctx = null, master = null, monitor = null;
 let mic = null; // { stream, src, analyser }
+let micUsers = 0; // quante parti dell'app stanno usando (o chiedendo) il microfono
 
 export const audioSupported = () => typeof window !== 'undefined' && !!(window.AudioContext || window.webkitAudioContext);
 
@@ -23,9 +24,17 @@ function sessionType(type) {
   try { if ('audioSession' in navigator && navigator.audioSession.type !== type) navigator.audioSession.type = type; } catch { /* non supportato */ }
 }
 
+/**
+ * Da chiamare PRIMA di getUserMedia: con la sessione "playback" Safari rifiuta la cattura
+ * («Audio Session category is not compatible with audio capture»). Finché qualcuno usa il
+ * microfono la sessione resta "play-and-record", anche se nel frattempo si chiama audio().
+ */
+export function micSessionOn() { micUsers++; sessionType('play-and-record'); }
+export function micSessionOff() { micUsers = Math.max(0, micUsers - 1); if (!micUsers) sessionType('playback'); }
+
 /** Il contesto audio va creato/ripreso dentro un tocco o un clic (regola dei browser). */
 export function audio() {
-  if (!mic) sessionType('playback');
+  if (!micUsers) sessionType('playback');
   if (!ctx) {
     const AC = window.AudioContext || window.webkitAudioContext;
     ctx = new AC({ latencyHint: 'interactive' });
@@ -47,9 +56,12 @@ export async function micAnalyser() {
   if (mic) return mic.analyser;
   if (!navigator.mediaDevices?.getUserMedia) throw new Error('questo browser non dà accesso al microfono');
   if (!window.isSecureContext) throw new Error('il microfono funziona solo da una pagina sicura (https)');
-  sessionType('play-and-record');
-  const { ctx: c } = audio();
-  const stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
+  micSessionOn();
+  let c, stream;
+  try {
+    c = audio().ctx;
+    stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
+  } catch (e) { micSessionOff(); throw e; }
   const src = c.createMediaStreamSource(stream);
   const analyser = c.createAnalyser(); analyser.fftSize = 16384; analyser.smoothingTimeConstant = 0;
   src.connect(analyser);
@@ -62,7 +74,7 @@ export function closeMic() {
   mic.stream.getTracks().forEach((t) => t.stop());
   mic.src.disconnect();
   mic = null;
-  sessionType('playback');
+  micSessionOff();
 }
 
 /** Onda periodica da una ricetta di armoniche (ampiezze dei seni, fasi nulle). */

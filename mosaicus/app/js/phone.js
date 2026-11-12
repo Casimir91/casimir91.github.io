@@ -13,6 +13,8 @@
 //    Alcuni dispositivi usano la convenzione opposta: per questo c'è il parametro "segno".
 //  • Il livello sonoro è relativo (dB rispetto al fondo scala del microfono), non tarato in dB SPL.
 
+import { micSessionOn, micSessionOff } from './audio.js';
+
 const FW = 'telefono';
 
 export const phoneSupport = () => ({
@@ -84,9 +86,10 @@ export class PhoneLink {
 
   async _startSound(interval) {
     let stream;
+    micSessionOn();
     try {
       stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
-    } catch (e) { this._emit(`#ERR,microfono non disponibile (${e.message})`); return; }
+    } catch (e) { micSessionOff(); this._emit(`#ERR,microfono non disponibile (${e.message})`); return; }
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
     const src = ctx.createMediaStreamSource(stream);
     const an = ctx.createAnalyser();
@@ -103,7 +106,7 @@ export class PhoneLink {
       const level = 10 * Math.log10(s / wave.length + 1e-12);
       this._emit(`M,${Math.round(performance.now() - t0)},${isFinite(f) ? f.toFixed(2) : 'nan'},${level.toFixed(2)}`);
     }, interval);
-    this._stopFns.push(() => { clearInterval(timer); stream.getTracks().forEach((tr) => tr.stop()); ctx.close(); });
+    this._stopFns.push(() => { clearInterval(timer); stream.getTracks().forEach((tr) => tr.stop()); ctx.close(); micSessionOff(); });
   }
 }
 
