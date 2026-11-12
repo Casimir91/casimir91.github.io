@@ -31,7 +31,7 @@ export function createInstrument(el, api) {
     <div class="seg isrc" role="group" aria-label="Che cosa comanda la nota">
       <button data-src="finger">✋ Dito</button><button data-src="tilt">📱 Inclinazione</button><button data-src="sonar">📡 Ultrasuoni</button>
     </div>
-    <button class="btn btn-go iplay">▶ Suona</button>
+    <button class="btn btn-play big iplay">▶ Suona</button>
   </div>
   <div class="card instr-body">
     <div class="inote"><b class="in-name">—</b><span class="in-f"></span><em class="in-d"></em></div>
@@ -138,11 +138,11 @@ export function createInstrument(el, api) {
     cv.width = Math.round(r.width * dpr); cv.height = Math.round(r.height * dpr);
     const g = cv.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0);
     const W = r.width, H = r.height, k = (parseFloat(getComputedStyle(document.documentElement).fontSize) || 15) / 15;
-    g.fillStyle = '#00302A'; g.fillRect(0, 0, W, H);
+    g.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--screen').trim() || '#00302A'; g.fillRect(0, 0, W, H);
     const [a, b] = RANGES[P.range];
     const xOf = (n) => ((n - a) / (b - a)) * W;
     const deg = { cromatica: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], maggiore: [0, 2, 4, 5, 7, 9, 11], pentatonica: [0, 2, 4, 7, 9], continua: [0, 2, 4, 5, 7, 9, 11] }[P.scale];
-    g.font = `700 ${11 * k}px "Plus Jakarta Sans", system-ui, sans-serif`; g.textAlign = 'center'; g.textBaseline = 'bottom';
+    g.font = `500 ${11 * k}px "Plus Jakarta Sans", system-ui, sans-serif`; g.textAlign = 'center'; g.textBaseline = 'bottom';
     for (let n = Math.ceil(a); n <= b; n++) {
       const c = ((n + 9) % 12 + 12) % 12;
       const isDo = c === 0, inScale = deg.includes(c);
@@ -179,7 +179,7 @@ export function createInstrument(el, api) {
     const live = P.src === 'finger' ? false : S.playing || S.acq;
     $('.iplay').hidden = P.src === 'finger';
     $('.iplay').textContent = live ? '■ Ferma' : '▶ Suona';
-    $('.iplay').classList.toggle('btn-stop', live); $('.iplay').classList.toggle('btn-go', !live);
+    $('.iplay').classList.toggle('on', live);
     $('.in-hint').textContent = {
       finger: 'Tieni premuto sul nastro e scorri: a destra le note alte.',
       tilt: 'Inclina il telefono a destra e a sinistra.',

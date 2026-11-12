@@ -1575,17 +1575,17 @@
     "text": "Elabora\n\n1Retta a occhio o fit\n\n2Righello: T = Δt / N\n\n3＋ Salva\n\n4Esporta in Excel"
   },
   {
-    "objectID": "mosaicus/index.html#suono",
-    "href": "mosaicus/index.html#suono",
-    "title": "Mosaicus",
-    "section": "Suono",
-    "text": "Suono\n\n1Microfono, generatore o esempi\n\n2❄ Congela A, B, C\n\n3Confronta le armoniche\n\n4Invia e misura col righello"
-  },
-  {
     "objectID": "mosaicus/index.html#che-cosa-serve",
     "href": "mosaicus/index.html#che-cosa-serve",
     "title": "Mosaicus",
     "section": "Che cosa serve",
-    "text": "Che cosa serve\n\n  💻 ComputerChrome o Edge. Per Arduino: Uno R3 con il firmware Mosaicus, da caricare una volta con l'IDE di Arduino.\n  📱 TelefonoChrome (Android) o Safari (iPhone). Accelerometro, giroscopio, microfono: niente da installare.\n  🖥 LIMPulsante Modalità LIM: testi e grafici più grandi.\n\n⚡ Oscilloscopio elettrico: solo tensioni tra 0 e 5 V. Mai la rete elettrica.\nPer averla come app (anche senza rete): apri Mosaicus, poi menu ⋮ → Installa app. Software libero, licenza MIT."
+    "text": "Che cosa serve\n\n  💻 ComputerChrome o Edge. Per Arduino: Uno R3 con il firmware Mosaicus, da caricare una volta con l'IDE di Arduino.\n  📱 TelefonoChrome (Android) o Safari (iPhone). Accelerometro, giroscopio, microfono: niente da installare.\n  🖥 LIMPulsante Modalità LIM: testi e grafici più grandi.\n\n⚡ Oscilloscopio elettrico: solo tensioni tra 0 e 5 V. Mai la rete elettrica."
+  },
+  {
+    "objectID": "mosaicus/index.html#installala",
+    "href": "mosaicus/index.html#installala",
+    "title": "Mosaicus",
+    "section": "Installala",
+    "text": "Installala\n\n1Apri Mosaicus\n\n2Menu ⋮ (Android, computer) o Condividi (iPhone)\n\n3Installa app o Aggiungi alla schermata Home\n\nPoi funziona anche senza rete. Software libero, licenza MIT."
   }
 ]

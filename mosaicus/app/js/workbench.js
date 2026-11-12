@@ -139,11 +139,11 @@ function renderBox(box) {
       <button class="btn btn-small btn-ghost box-del" title="Elimina il riquadro">Elimina</button>
     </header>
     <div class="box-bar">
-      <label class="axis">asse orizzontale <select class="sx">${opt(box.xKey)}</select></label>
-      <label class="axis">asse verticale <select class="sy">${opt(box.yKey)}</select></label>
+      <label class="axis"><span class="long">asse orizzontale</span><span class="short">x</span> <select class="sx">${opt(box.xKey)}</select></label>
+      <label class="axis"><span class="long">asse verticale</span><span class="short">y</span> <select class="sy">${opt(box.yKey)}</select></label>
       <div class="tools" role="group" aria-label="Strumenti">
-        <button class="btn btn-small tool" data-tool="select" title="Trascina sul grafico per scegliere il tratto da analizzare">⇔ Seleziona tratto</button>
-        <button class="btn btn-small tool" data-tool="line" title="Tira tu la retta che media i punti, poi misurane la pendenza">／ Retta a occhio</button>
+        <button class="btn btn-small tool" data-tool="select" title="Trascina sul grafico per scegliere il tratto da analizzare">⇔ <span class="long">Seleziona </span>tratto</button>
+        <button class="btn btn-small tool" data-tool="line" title="Tira tu la retta che media i punti, poi misurane la pendenza">／ Retta<span class="long"> a occhio</span></button>
         <button class="btn btn-small tool" data-tool="tangent" title="Scegli un punto misurato: tangente alla curva in quel punto">⌒ Tangente</button>
         <button class="btn btn-small tool" data-tool="fit" title="Retta o curva dei minimi quadrati">∿ Fit</button>
         <button class="btn btn-small tool" data-tool="ruler" title="Due cursori verticali: periodo e frequenza">📏 Righello</button>
