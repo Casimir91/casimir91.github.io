@@ -11,7 +11,7 @@
 import { Screen, niceDiv, fmtIt } from './screen.js';
 import { pitch, spectrum, findTrigger, harmonics, noteOf, TIMBRES, sig } from './dsp.js';
 import { micAnalyser, monitorAnalyser, readSamples, Voice, closeMic, audioSupported, sampleRate } from './audio.js';
-import { generatorOn } from './generator.js';
+import { generatorOn } from './synth.js';
 
 const LIVE = '#C6F432';
 const SLOT = [{ id: 'A' }, { id: 'B' }, { id: 'C' }];
@@ -59,7 +59,7 @@ export function createScope(el, api) {
       </div>`}
     <div class="readouts scope-ro"></div>
   </div>
-  ${ard ? '' : `<div class="card examples" hidden><span class="ex-lab">La₃ = 220 Hz</span>${EXAMPLES.map(([id, l]) => `<button class="btn btn-small" data-ex="${id}">${l}</button>`).join('')}<button class="btn btn-small" data-ex="beats">Battimenti 440 + 443 Hz</button><span class="ex-gen" hidden>＋ 🎛 Generatore acceso</span></div>`}
+  ${ard ? '' : `<div class="card examples" hidden><span class="ex-lab">La₃ = 220 Hz</span>${EXAMPLES.map(([id, l]) => `<button class="btn btn-small" data-ex="${id}">${l}</button>`).join('')}<button class="btn btn-small" data-ex="beats">Battimenti 440 + 443 Hz</button><span class="ex-gen" hidden>＋ 🎹 Sintetizzatore acceso</span></div>`}
   <div class="card scope-body">
     <div class="transport">
       <button class="btn btn-play big run"></button>

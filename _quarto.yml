@@ -11,6 +11,7 @@ project:
     - toolbox/*.js
     - mosaicus/app/**
     - mosaicus/mosaicus_firmware.ino
+    - mosaicus/media/*
 
 website:
   title: "Prof. Rosi"

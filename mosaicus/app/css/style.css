@@ -606,8 +606,8 @@ td.pcell:empty { background: transparent; }
    ========================================================================= */
 /* pulsanti di avvio e arresto: celesti, con la scritta (la scritta è il simbolo) */
 .btn-play { background: #8FD3FF; border-color: #5FB8EC; color: #00302A; font-weight: 500; }
-.btn-play:hover:not(:disabled) { background: #A9DEFF; border-color: #3FA6E0; }
-.btn-play.on { background: #00302A; border-color: #00302A; color: #8FD3FF; }
+@media (hover: hover) { .btn-play:hover:not(:disabled) { background: #A9DEFF; border-color: #3FA6E0; } }
+.btn-play.on, .btn-play.on:hover:not(:disabled) { background: #00302A; border-color: #00302A; color: #8FD3FF; }
 .btn-play:disabled { opacity: 0.45; }
 .btn-play.big { font-size: 1.12rem; padding: 0.7rem 1.3rem; border-radius: 0.8rem; min-width: 9rem; }
 .transport { display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap; }
@@ -736,8 +736,8 @@ html.dark [fill="#FFE1EE"], html.dark [fill="#EAF8C9"], html.dark [fill="#F3F7F6
 html.dark [fill="#6B7F7B"] { fill: rgba(255, 255, 255, 0.6); }
 #btnTheme { min-width: 2.6rem; padding-left: 0.7rem; padding-right: 0.7rem; font-size: 1.05rem; }
 html.dark .btn-play { background: #FFFFFF; border-color: #FFFFFF; color: #071D19; }
-html.dark .btn-play:hover:not(:disabled) { background: #fff; border-color: var(--lime); }
-html.dark .btn-play.on { background: transparent; border-color: #FFFFFF; color: #FFFFFF; }
+@media (hover: hover) { html.dark .btn-play:hover:not(:disabled) { background: #fff; border-color: var(--lime); } }
+html.dark .btn-play.on, html.dark .btn-play.on:hover:not(:disabled) { background: transparent; border-color: #FFFFFF; color: #FFFFFF; }
 html.dark .dh-band { background: rgba(255, 255, 255, 0.14); border-color: #FFFFFF; }
 html.dark .bottom-nav { border-top-color: var(--line); }
 .ex-gen { font-weight: 500; color: var(--green); margin-left: 0.3rem; }
@@ -745,3 +745,28 @@ html.dark .bottom-nav { border-top-color: var(--line); }
 html:not(.dark) .rc-row i { box-shadow: inset 0 0 0 1px rgba(0, 48, 42, 0.3); }
 html:not(.dark) .slot .eye, html:not(.dark) .rc-row b::before { box-shadow: inset 0 0 0 1px rgba(0, 48, 42, 0.3); }
 html:not(.dark) .slot[data-id="A"] { border-color: #9DB5AF; }
+
+/* =========================================================================
+   v0.10 — Sintetizzatore (generatore + strumento musicale)
+   ========================================================================= */
+.syn-top { display: flex; align-items: center; justify-content: space-between; gap: 0.8rem 1.2rem; flex-wrap: wrap; }
+.syn-top .gen-display em { font-size: 1rem; }
+.syn-timbre { display: flex; flex-direction: column; gap: 0.8rem; }
+.syn-tgrid { display: grid; grid-template-columns: 1.3fr minmax(16rem, 1fr); gap: 0.9rem; align-items: stretch; }
+.syn-tgrid .screen-wrap canvas { height: clamp(10rem, 22vw, 15rem); }
+.syn-presets { display: flex; flex-direction: column; gap: 0.5rem; }
+.syn-instr { display: flex; gap: 0.4rem; flex-wrap: wrap; align-items: center; }
+.syn-instr .btn.active { background: var(--green); border-color: var(--green); color: var(--on-green); }
+.sy-free { color: var(--green); font-weight: 500; margin-left: 0.3rem; }
+.syn-env { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+.syn-play { display: flex; flex-direction: column; gap: 0.8rem; }
+.syn-play .mode-keys, .syn-play .mode-hand { display: flex; flex-direction: column; gap: 0.8rem; }
+.seg.modes > button { font-size: 0.95rem; }
+@media (max-width: 700px) {
+  .syn-tgrid { grid-template-columns: 1fr; }
+  .seg.modes { display: grid; grid-template-columns: 1fr 1fr; }
+  .seg.modes > button { border-bottom: 1px solid var(--line); }
+  .syn-top .sy-play { flex: 1; }
+  .syn-top .vol { flex-basis: 100%; }
+  .seg.wave.env > button span { display: inline; font-size: 0.7rem; }
+}
