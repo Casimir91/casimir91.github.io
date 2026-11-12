@@ -9,6 +9,8 @@ project:
     - toolbox/*.html
     - toolbox/*.css
     - toolbox/*.js
+    - mosaicus/app/**
+    - mosaicus/mosaicus_firmware.ino
 
 website:
   title: "Prof. Rosi"

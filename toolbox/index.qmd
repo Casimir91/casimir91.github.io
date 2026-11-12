@@ -53,7 +53,21 @@ css: index-cards.css
 
 ## Lab tools
 
-*Coming soon: audio analyser (oscilloscope, FFT spectrum, CSV export), accelerometer and gyroscope.*
+```{=html}
+<div class="tb-grid">
+
+  <a class="tb-card" href="../mosaicus/">
+    <div class="tb-preview" style="background:#00302A"><svg viewBox="0 0 220 110" width="220" height="110" aria-hidden="true"><g stroke="rgba(198,244,50,.18)" stroke-width="1"><path d="M0 22H220M0 44H220M0 66H220M0 88H220M44 0V110M88 0V110M132 0V110M176 0V110"/></g><path d="M0 55 C14 10 26 10 40 55 S66 100 80 55 S106 10 120 55 S146 100 160 55 S186 10 200 55 S214 80 220 70" fill="none" stroke="#C6F432" stroke-width="3" style="filter:drop-shadow(0 0 4px #C6F432)"/><path d="M0 55 C10 30 18 25 30 48 S50 85 66 60 S88 18 104 52 S130 92 150 58 S178 22 196 50 S214 70 220 62" fill="none" stroke="#FFC531" stroke-width="2.4"/></svg></div>
+    <div class="tb-body">
+      <div class="tb-title">Mosaicus — physics micro-lab</div>
+      <p>Arduino sensors, phone sensors and sound in one app: live graphs, oscilloscope with spectrum, tone generator, a sensor-driven musical instrument, data analysis and Excel export.</p>
+      <div class="tb-meta">Computer · smartphone · whiteboard · offline · MIT licence · guide in Italian</div>
+      <div class="tb-open">Open Mosaicus →</div>
+    </div>
+  </a>
+
+</div>
+```
 
 ```{=html}
 <script>
