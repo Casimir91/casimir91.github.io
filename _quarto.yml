@@ -12,6 +12,7 @@ project:
     - mosaicus/app/**
     - mosaicus/mosaicus_firmware.ino
     - mosaicus/media/*
+    - fonts/*
 
 website:
   title: "Prof. Rosi"
@@ -41,8 +42,8 @@ format:
   html:
     lang: it
     theme:
-      light: sandstone
-      dark: [darkly, custom-dark.scss]
+      light: [sandstone, fonts.scss]
+      dark: [darkly, custom-dark.scss, fonts.scss]
     respect-user-color-scheme: true
     toc: true
     include-in-header: _includes/pwa-head.html
