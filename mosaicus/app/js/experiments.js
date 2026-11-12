@@ -355,7 +355,8 @@ function phoneMotion(base) {
   };
 }
 
-const phoneAcc = phoneMotion({
+// accelerometro e giroscopio: nascosti dall'elenco finché non entrano in un lab (scelta del docente: lab, non strumenti)
+const phoneAcc = phoneMotion({ hidden: true,
   id: 'phoneAcc', title: 'Accelerometro', subtitle: 'Sensori del telefono · a_x, a_y, a_z',
   icon: ICON_PHONE, iconBg: 'var(--lime-t)',
   wiring: AXES_NOTE + PHONE_HOW('Pendolo: appendi il telefono a due spaghi, schermo verso di te, e fallo oscillare. Ascensore: telefono sul pavimento, guarda a_z alla partenza e all\'arrivo. Moto circolare: telefono in un\'insalatiera centrifuga (ben fissato!).'),
@@ -370,7 +371,7 @@ const phoneAcc = phoneMotion({
   columns: [{ key: 't', head: 't (s)' }, { key: 'ax', head: 'a_x (m/s2)' }, { key: 'ay', head: 'a_y (m/s2)' }, { key: 'az', head: 'a_z (m/s2)' }, { key: 'amod', head: '|a| (m/s2)' }],
 });
 
-const phoneGyro = phoneMotion({
+const phoneGyro = phoneMotion({ hidden: true,
   id: 'phoneGyro', title: 'Giroscopio', subtitle: 'Sensori del telefono · velocità angolare',
   icon: ICON_GYRO, iconBg: 'var(--cielo-t)',
   wiring: AXES_NOTE + PHONE_HOW('Moto circolare uniforme: telefono appoggiato su una sedia girevole o su un giradischi, ω_z costante. Pendolo: il giroscopio mostra l\'oscillazione con il periodo del pendolo, mentre l\'accelerometro lungo il filo oscilla a frequenza doppia. Perché?'),
@@ -419,12 +420,9 @@ const scopeAudio = instrumentBase({
 });
 
 const synthesizer = instrumentBase({
-  id: 'synth', topic: 'Onde e suono', kind: 'synth', source: 'arduino', optionalLink: true, title: 'Sintetizzatore', subtitle: 'Crea un suono e suonalo: tastiera, dito, telefono, HC-SR04',
+  id: 'synth', topic: 'Onde e suono', featured: true, kind: 'synth', source: 'arduino', optionalLink: true, title: 'Synth', subtitle: 'Crea un suono e suonalo: tastiera, dito, telefono, HC-SR04',
   icon: ICON_SYNTH, iconBg: 'var(--zaff-t)', sim: 'hand',
-  wiring: `<div class="w-block"><h3>Timbro</h3><p>Ogni suono periodico è una <b>somma di sinusoidi</b>: la fondamentale f e le armoniche 2f, 3f, 4f… (serie di Fourier). Le forme d'onda e gli strumenti sono solo "ricette" diverse di armoniche: prova a premere <b>Quadra</b> e guarda i cursori.</p></div>
-    <div class="w-block"><h3>Inviluppo</h3><p>Anche il modo in cui il suono nasce e si spegne fa riconoscere uno strumento. <b>Pizzicato</b> e <b>Campana</b> si smorzano in modo esponenziale, A(t) = A₀·e<sup>−t/τ</sup>, con τ ≈ 0,25 s e 1,2 s.</p></div>
-    <div class="w-block"><h3>Idea</h3><p class="tip">Battimenti: 🎹 Tastiera, secondo suono, Δf = 2 Hz. Soglia dell'udito: scendi fino a 20 Hz. Guarda il suono con l'Oscilloscopio (sorgente Esempi) mentre suona.</p></div>
-    <div class="w-block"><h3>📡 Con Arduino</h3>${SCHEMA_HCSR04}<p>Sensore rivolto verso l'alto, la mano sopra tra 5 e 50 cm. Ogni semitono moltiplica f per 2<sup>1/12</sup> ≈ 1,0595: per questo f = 440 · 2<sup>n/12</sup>.</p></div>`,
+  wiring: `<div class="w-block"><h3>📡 Con Arduino</h3>${SCHEMA_HCSR04}<p>Sensore rivolto verso l'alto, la mano sopra tra 5 e 50 cm.</p></div>`,
 });
 
 const scopeArduino = instrumentBase({
@@ -437,6 +435,6 @@ const scopeArduino = instrumentBase({
 });
 
 export const EXPERIMENTS = [motion, harmonic, cooling, scopeAudio, synthesizer, phoneSound, scopeArduino, phoneAcc, phoneGyro];
-export const TOPICS = ['Cinematica', 'Termologia', 'Onde e suono', 'Elettromagnetismo', 'Smartphone'];
+export const TOPICS = ['Cinematica', 'Termologia', 'Onde e suono', 'Elettromagnetismo'];
 export const byId = (id) => EXPERIMENTS.find((e) => e.id === id);
 export const defaultParams = (exp) => Object.fromEntries(exp.params.map((p) => [p.key, p.value]));

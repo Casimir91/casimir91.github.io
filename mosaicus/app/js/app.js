@@ -13,7 +13,7 @@ import { createSynth, onGeneratorChange, generatorState, stopGenerator } from '.
 import { audioSupported } from './audio.js';
 
 // versione: la stessa di version.json (letta dalla pagina del sito) e di CACHE in sw.js
-const APP_VERSION = '0.10.0';
+const APP_VERSION = '0.11.1';
 const FIRMWARE_VERSION = '0.2';   // firmware atteso su Arduino
 const $ = (s) => document.querySelector(s);
 
@@ -87,31 +87,38 @@ function showPage(id) {
 // ---------------- esperimenti (albero per argomento) ----------------
 function renderExperimentList() {
   const box = $('#expList'); box.innerHTML = '';
+  const card = (e) => {
+    const b = document.createElement('button');
+    b.className = `exp-card${e.featured ? ' featured' : ''}`; b.dataset.id = e.id;
+    b.innerHTML = `<span class="exp-icon" style="background:${e.iconBg}">${e.icon}</span><span><b>${e.title}</b><small>${e.subtitle}</small></span>`;
+    b.addEventListener('click', () => {
+      selectExperiment(e.id);
+      // sul telefono l'elenco sta sopra: dopo la scelta porto in vista il lab
+      if (isPhone() && state.exp.id === e.id) document.querySelector('#page-misura .main').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    return b;
+  };
+  // i lab in evidenza stanno in cima, sempre visibili
+  EXPERIMENTS.filter((e) => e.featured && !e.hidden).forEach((e) => box.appendChild(card(e)));
+  // gli argomenti partono chiusi: si aprono con il «+»
   for (const topic of TOPICS) {
+    const list = EXPERIMENTS.filter((x) => x.topic === topic && !x.featured && !x.hidden);
+    if (!list.length) continue;
     const det = document.createElement('details');
-    det.className = 'topic'; det.open = true;
+    det.className = 'topic'; det.open = false;
     det.innerHTML = `<summary>${topic}</summary>`;
-    const list = document.createElement('div'); list.className = 'exp-list';
-    for (const e of EXPERIMENTS.filter((x) => x.topic === topic)) {
-      const b = document.createElement('button');
-      b.className = 'exp-card'; b.dataset.id = e.id;
-      b.innerHTML = `<span class="exp-icon" style="background:${e.iconBg}">${e.icon}</span><span><b>${e.title}</b><small>${e.subtitle}</small></span>`;
-      b.addEventListener('click', () => {
-        selectExperiment(e.id);
-        // sul telefono l'elenco sta sopra: dopo la scelta porto in vista l'esperimento
-        if (isPhone() && state.exp.id === e.id) document.querySelector('#page-misura .main').scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
-      list.appendChild(b);
-    }
-    det.appendChild(list); box.appendChild(det);
+    const div = document.createElement('div'); div.className = 'exp-list';
+    list.forEach((e) => div.appendChild(card(e)));
+    det.appendChild(div); box.appendChild(det);
   }
 }
 
 function selectExperiment(id, { keepData = false } = {}) {
-  if (state.running) { toast('Ferma la misura prima di cambiare esperimento.'); return; }
+  if (state.running) { toast('Ferma la misura prima di cambiare lab.'); return; }
   // generatore e strumento musicale sono confluiti nel sintetizzatore (v0.10)
   if (id === 'generator' || id === 'theremin') id = 'synth';
-  state.exp = byId(id) || EXPERIMENTS[0];
+  state.exp = byId(id);
+  if (!state.exp || state.exp.hidden) state.exp = byId(serialSupported() ? 'motion' : 'synth');
   id = state.exp.id;
   state.params = { ...defaultParams(state.exp), ...store.get(`mosaicus.params.${id}`, {}) };
   store.set('mosaicus.lastExp', id);
@@ -421,7 +428,7 @@ async function exportData(kind) {
   if (kind === 'xlsx') {
     const info = [
       ['Mosaicus', `v${APP_VERSION}`],
-      ['Esperimento', `${state.exp.title} — ${state.exp.subtitle}`],
+      ['Lab', `${state.exp.title} — ${state.exp.subtitle}`],
       ['Nome della misura', $('#sessionName').value || state.session?.name || ''],
       ['Data', new Date(state.session?.created ?? Date.now()).toLocaleString('it-IT')],
       ['Sorgente', state.session?.source === 'simulatore' ? 'simulatore' : `Arduino (firmware ${state.session?.fw ?? '?'})`],
@@ -669,7 +676,7 @@ function setLim(on) {
 
 // ---------------- avvio ----------------
 async function init() {
-  window.__mosaicus = { state, group };   // aggancio per le prove automatiche e la registrazione dei video della guida
+  window.__mosaicus = { state, group, get instr() { return instr; } };   // aggancio per le prove automatiche e la registrazione dei video della guida
   setLim(store.get('mosaicus.lim', false));
   document.querySelectorAll('.appver').forEach((e) => (e.textContent = `v${APP_VERSION}`));
   applyTheme(savedTheme() ? savedTheme() === 'dark' : !!darkQuery?.matches);
@@ -681,7 +688,7 @@ async function init() {
   darkQuery?.addEventListener?.('change', (e) => { if (!savedTheme()) applyTheme(e.matches); });
   $('#btnLim').addEventListener('click', () => setLim(!document.documentElement.classList.contains('lim')));
   document.querySelectorAll('.nav-btn').forEach((b) => b.addEventListener('click', () => showPage(b.dataset.page)));
-  // barra in basso (telefono): Esperimenti porta all'elenco, Misura al pannello, Elaborazione all'altra pagina
+  // barra in basso (telefono): Lab porta all'elenco, Misura al pannello, Elaborazione all'altra pagina
   document.querySelectorAll('.bottom-nav [data-go]').forEach((b) => b.addEventListener('click', () => {
     const go = b.dataset.go;
     if (go === 'elab') { showPage('elab'); return; }
@@ -701,7 +708,7 @@ async function init() {
   });
   renderExperimentList();
   // su un telefono che non può collegare Arduino si parte dai sensori del telefono
-  selectExperiment(store.get('mosaicus.lastExp', serialSupported() ? 'motion' : 'phoneAcc'));
+  selectExperiment(store.get('mosaicus.lastExp', serialSupported() ? 'motion' : 'synth'));
   renderSessions();
   refreshButtons();
   showPage(store.get('mosaicus.page', 'misura') === 'elab' ? 'elab' : 'misura');

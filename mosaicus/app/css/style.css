@@ -770,3 +770,16 @@ html:not(.dark) .slot[data-id="A"] { border-color: #9DB5AF; }
   .syn-top .vol { flex-basis: 100%; }
   .seg.wave.env > button span { display: inline; font-size: 0.7rem; }
 }
+
+/* =========================================================================
+   v0.11 — elenco dei lab: argomenti chiusi, Synth in evidenza
+   ========================================================================= */
+.exp-card.featured { position: relative; padding: 0.85rem 0.9rem; border: 2px solid var(--lime);
+  background: linear-gradient(120deg, var(--lime-t), transparent 75%); margin-bottom: 0.3rem; }
+.exp-card.featured b { font-size: 1.25rem; letter-spacing: 0.01em; }
+.exp-card.featured .exp-icon { width: 2.8rem; height: 2.8rem; background: var(--lime) !important; }
+.exp-card.featured .exp-icon svg { width: 1.7rem; height: 1.7rem; }
+.exp-card.featured::after { content: '✦'; position: absolute; top: 0.45rem; right: 0.6rem; color: var(--green); font-size: 0.9rem; }
+.exp-card.featured.active { border-color: var(--green); }
+html.dark .exp-card.featured .exp-icon svg [stroke="#004D43"], html.dark .exp-card.featured .exp-icon svg { stroke: #071D19; }
+.exp-tree > .exp-card.featured + .topic { margin-top: 0.35rem; }
