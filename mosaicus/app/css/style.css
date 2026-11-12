@@ -31,7 +31,7 @@
   --bar: #004D43;         /* barra superiore */
   --on-green: #FFFFFF;    /* testo sopra il verde (pulsanti attivi) */
   --on-lime: #00302A;     /* testo sopra lime e colori chiari: sempre scuro */
-  --slot-a: #FFC531;      /* tracce congelate dell'oscilloscopio */
+  --slot-a: #FFFFFF;      /* tracce congelate dell'oscilloscopio: bianco, celeste, rosa (piene e marcate) */
   --slot-b: #8FD3FF;
   --slot-c: #FF7AB2;
   --screen: #00302A;      /* schermi di oscilloscopio e strumento */
@@ -708,8 +708,7 @@ html.dark {
   --accent: rgba(255, 255, 255, 0.8);  --fit: #C6F432;  --raw: rgba(255, 255, 255, 0.35);
   --sel: rgba(198, 244, 50, 0.1);
   --tip-bg: #C6F432; --tip-ink: #071D19;
-  --slot-a: #FFFFFF; --slot-b: rgba(255, 255, 255, 0.55); --slot-c: rgba(198, 244, 50, 0.6);
-  --slot-b-dash: 7 5; --slot-c-dash: 2 4;
+  /* tracce congelate: uguali nei due temi (scelta del docente), sullo schermo scuro si vedono bene */
 }
 html.dark .topbar { border-bottom: 1px solid var(--line); }
 html.dark .brand img { content: url(../icons/icon-dark.svg); }
@@ -741,3 +740,8 @@ html.dark .btn-play:hover:not(:disabled) { background: #fff; border-color: var(-
 html.dark .btn-play.on { background: transparent; border-color: #FFFFFF; color: #FFFFFF; }
 html.dark .dh-band { background: rgba(255, 255, 255, 0.14); border-color: #FFFFFF; }
 html.dark .bottom-nav { border-top-color: var(--line); }
+.ex-gen { font-weight: 500; color: var(--green); margin-left: 0.3rem; }
+/* la traccia A è bianca: nel tema chiaro le serve un contorno per staccarsi dal fondo */
+html:not(.dark) .rc-row i { box-shadow: inset 0 0 0 1px rgba(0, 48, 42, 0.3); }
+html:not(.dark) .slot .eye, html:not(.dark) .rc-row b::before { box-shadow: inset 0 0 0 1px rgba(0, 48, 42, 0.3); }
+html:not(.dark) .slot[data-id="A"] { border-color: #9DB5AF; }

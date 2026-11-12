@@ -55,11 +55,11 @@ export function createScope(el, api) {
           <option value="mic">Microfono del kit</option><option value="coil">Bobina e magnete</option><option value="lamp">Luce di una lampada</option></select></label>
       </div>` : `
       <div class="seg src" role="group" aria-label="Sorgente del segnale">
-        <button data-src="mic">🎤 Microfono</button><button data-src="gen">🎛 Generatore</button><button data-src="ex">🎻 Esempi</button>
+        <button data-src="mic">🎤 Microfono</button><button data-src="ex">🎻 Esempi</button>
       </div>`}
     <div class="readouts scope-ro"></div>
   </div>
-  ${ard ? '' : `<div class="card examples" hidden><span class="ex-lab">La₃ = 220 Hz</span>${EXAMPLES.map(([id, l]) => `<button class="btn btn-small" data-ex="${id}">${l}</button>`).join('')}<button class="btn btn-small" data-ex="beats">Battimenti 440 + 443 Hz</button></div>`}
+  ${ard ? '' : `<div class="card examples" hidden><span class="ex-lab">La₃ = 220 Hz</span>${EXAMPLES.map(([id, l]) => `<button class="btn btn-small" data-ex="${id}">${l}</button>`).join('')}<button class="btn btn-small" data-ex="beats">Battimenti 440 + 443 Hz</button><span class="ex-gen" hidden>＋ 🎛 Generatore acceso</span></div>`}
   <div class="card scope-body">
     <div class="transport">
       <button class="btn btn-play big run"></button>
@@ -112,6 +112,7 @@ export function createScope(el, api) {
       $('.win').value = i < 0 ? 6 : i; $('.win-v').textContent = `${S.winMs} ms`;
       setSeg('.src', 'data-src', S.source);
       $('.examples').hidden = S.source !== 'ex';
+      $('.ex-gen').hidden = !generatorOn();
       el.querySelectorAll('[data-ex]').forEach((b) => b.classList.toggle('active', b.dataset.ex === S.example));
       const live = S.analyser && !S.paused;
       $('.run').textContent = live ? '❚❚ Pausa' : '▶ Avvia';
@@ -173,7 +174,7 @@ export function createScope(el, api) {
     S.source = src; S.paused = false; S.showLive = true; S.live = null; S.fHist = [];
     store.set('mosaicus.scope.src', src);
     syncControls();
-    if (src === 'ex' && !S.example) playExample('violino');
+    if (src === 'ex' && !S.example && !generatorOn()) playExample('violino');
   }
 
   function stopExample() { S.voices.forEach((v) => v.dispose()); S.voices = []; S.example = null; }
@@ -307,7 +308,7 @@ export function createScope(el, api) {
   function redraw() {
     const tmax = windowMs();
     const frames = [...S.slots.filter((s) => s.visible), ...(S.live && S.showLive ? [S.live] : [])];
-    const tr = frames.map((f) => ({ ...traceXY(f, tmax, S.same), color: f === S.live ? LIVE : slotColor(f.id), dash: f === S.live ? null : slotDash(f.id), width: f === S.live ? 2 : 2.2, glow: f === S.live }));
+    const tr = frames.map((f) => ({ ...traceXY(f, tmax, S.same), color: f === S.live ? LIVE : slotColor(f.id), dash: f === S.live ? null : slotDash(f.id), width: f === S.live ? 2 : 2.8, glow: f === S.live }));
     let y0, y1, yLabel;
     if (S.same) { y0 = -1.2; y1 = 1.2; yLabel = 'altezze normalizzate'; }
     else {
@@ -333,11 +334,8 @@ export function createScope(el, api) {
     const msg = $('.screen-msg');
     msg.textContent = !ard && !S.source ? 'Scegli una sorgente ↑ e premi ▶ Avvia'
       : !frames.length ? 'Premi ▶ Avvia'
-      : !ard && S.source === 'gen' && !generatorOn() ? 'Il generatore è spento'
       : ard && !S.live && !S.acq ? 'Collega in alto, poi ▶ Avvia' : '';
     msg.hidden = !msg.textContent;
-    msg.innerHTML = msg.textContent === 'Il generatore è spento' ? 'Il generatore è spento · <button class="btn btn-small" data-open-gen>Apri il generatore</button>' : esc(msg.textContent);
-    msg.querySelector('[data-open-gen]')?.addEventListener('click', () => api.openExperiment?.('generator'));
     drawSpectrum(frames);
   }
 
@@ -367,7 +365,7 @@ export function createScope(el, api) {
       const x = new Float32Array(kmax), y = new Float32Array(kmax);
       for (let k = 0; k < kmax; k++) { x[k] = k * f.spec.df; y[k] = f.spec.mag[k] / (S.same ? m || 1 : 1); }
       const live = f === S.live;
-      return { x, y, color: live ? LIVE : slotColor(f.id), dash: live ? null : slotDash(f.id), width: live ? 1.8 : 1.6, glow: live, fill: live ? 'rgba(198,244,50,0.12)' : null };
+      return { x, y, color: live ? LIVE : slotColor(f.id), dash: live ? null : slotDash(f.id), width: live ? 1.8 : 2.2, glow: live, fill: live ? 'rgba(198,244,50,0.12)' : null };
     });
     const markers = [];
     const base = liveOn && isFinite(S.live.f) ? S.live.f : S.slots.find((s) => s.visible && isFinite(s.f))?.f ?? null;
@@ -479,7 +477,7 @@ export function createScope(el, api) {
   syncControls(); renderSlots(); updateReadouts(true); redraw();
   if (!ard) {
     // il generatore si riprende da solo; il microfono e gli esempi partono solo con un tocco
-    if (store.get('mosaicus.scope.src', null) === 'gen') useSource('gen');
+    // il microfono e gli esempi partono solo con un tocco
   }
   S.raf = requestAnimationFrame(tick);
 
