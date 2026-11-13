@@ -783,3 +783,24 @@ html:not(.dark) .slot[data-id="A"] { border-color: #9DB5AF; }
 .exp-card.featured.active { border-color: var(--green); }
 html.dark .exp-card.featured .exp-icon svg [stroke="#004D43"], html.dark .exp-card.featured .exp-icon svg { stroke: #071D19; }
 .exp-tree > .exp-card.featured + .topic { margin-top: 0.35rem; }
+
+/* v0.12 Synth: tonica e scale per umore */
+.scales { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.8rem; }
+.tonic { display: flex; flex-wrap: wrap; align-self: flex-start; border: 1px solid var(--line); border-radius: 0.7rem; overflow: hidden; background: var(--card); }
+.tonic > button { font: 500 0.84rem/1.2 var(--font); min-width: 2.4rem; padding: 0.5rem 0.55rem; border: 0; border-right: 1px solid var(--line); background: transparent; color: var(--ink); cursor: pointer; }
+.tonic > button:last-child { border-right: 0; }
+.tonic > button.active { background: var(--green); color: var(--on-green); }
+.scale-now { font: 500 1.4rem/1.1 var(--font); color: var(--ink); letter-spacing: 0.01em; }
+.sc-group { display: flex; align-items: center; flex-wrap: wrap; gap: 0.35rem 0.7rem; }
+.sc-label { flex: 0 0 6.6rem; font: 500 0.8rem var(--font); color: var(--muted); }
+.sc-chips { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.sc-chips > button { font: 500 0.86rem/1.2 var(--font); padding: 0.42rem 0.8rem; border-radius: 999px; border: 1px solid var(--line); background: var(--card); color: var(--ink); cursor: pointer; }
+.sc-chips > button.active { background: var(--green); border-color: var(--green); color: var(--on-green); }
+@media (hover: hover) { .sc-chips > button:hover, .tonic > button:hover { background: var(--bg); } .sc-chips > button.active:hover, .tonic > button.active:hover { background: var(--green); } }
+@media (max-width: 700px) {
+  .sc-label { flex-basis: 100%; }
+  .tonic { align-self: stretch; }
+  .tonic > button { min-width: 0; flex: 1 0 16.66%; padding: 0.6rem 0.2rem; font-size: 0.82rem; border-bottom: 1px solid var(--line); }
+  .tonic > button:nth-child(6n) { border-right: 0; }
+  .tonic > button:nth-last-child(-n+6) { border-bottom: 0; }
+}

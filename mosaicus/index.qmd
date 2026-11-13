@@ -53,7 +53,7 @@ body.quarto-dark .mz-dots i.on{background:#C6F432}
 @media (prefers-reduced-motion:reduce){.mz-stage video{transition:none}}
 </style>
 
-<div class="mz-lic">🔓 Software libero · © 2026 Ermes Ferdinando Rosi · <a href="app/LICENSE.txt">licenza MIT</a> · <a href="app/NOTICE.txt">crediti e privacy</a></div>
+<div class="mz-lic">© 2026 Ermes Ferdinando Rosi · <a href="app/LICENSE.txt">licenza MIT</a> · <a href="app/NOTICE.txt">crediti e privacy</a></div>
 
 <ul class="mz-need" aria-label="Che cosa serve">
   <li><span>💻</span><b>Computer</b><em>Chrome o Edge: Arduino o anche i sensori del computer</em></li>

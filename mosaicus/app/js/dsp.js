@@ -154,22 +154,44 @@ export function noteOf(f, a4 = 440) {
   return { n, name: NOTE_IT[idx], octave, label: `${NOTE_IT[idx]}${octave}`, cents: Math.round((x - n) * 100), fNote: noteFreq(n, a4) };
 }
 
-/** Gradi delle scale, in semitoni da Do. */
+/** Gradi delle scale, in semitoni dalla tonica (la tonica si sceglie a parte: Do, Re, Mi…). */
 export const SCALES = {
   continua: null,
   cromatica: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-  maggiore: [0, 2, 4, 5, 7, 9, 11],
+  // luminose
+  maggiore: [0, 2, 4, 5, 7, 9, 11],           // = modo ionico
+  lidia: [0, 2, 4, 6, 7, 9, 11],
+  misolidia: [0, 2, 4, 5, 7, 9, 10],
   pentatonica: [0, 2, 4, 7, 9],
+  // malinconiche
+  minore: [0, 2, 3, 5, 7, 8, 10],             // = minore naturale = modo eolio
+  dorica: [0, 2, 3, 5, 7, 9, 10],
+  frigia: [0, 1, 3, 5, 7, 8, 10],
+  locria: [0, 1, 3, 5, 6, 8, 10],
+  minoreArmonica: [0, 2, 3, 5, 7, 8, 11],
+  minoreMelodica: [0, 2, 3, 5, 7, 9, 11],     // salendo
+  pentatonicaMin: [0, 3, 5, 7, 10],
+  // esotiche
+  araba: [0, 1, 4, 5, 7, 8, 11],              // doppia armonica
+  napoletana: [0, 1, 3, 5, 7, 8, 11],         // minore napoletana
+  ungherese: [0, 2, 3, 6, 7, 8, 11],          // minore ungherese
+  giapponese: [0, 2, 3, 7, 8],                // hirajoshi
+  spagnola: [0, 1, 4, 5, 7, 8, 10],           // frigia dominante
+  // blues e altre
+  blues: [0, 3, 5, 6, 7, 10],
+  bluesMag: [0, 2, 3, 4, 7, 9],
+  esatonale: [0, 2, 4, 6, 8, 10],
+  diminuita: [0, 2, 3, 5, 6, 8, 9, 11],       // tono-semitono
 };
 
-/** Aggancia la frequenza alla nota della scala più vicina (in semitoni). */
-export function snapToScale(f, scale = 'cromatica', a4 = 440) {
+/** Aggancia la frequenza alla nota della scala più vicina (in semitoni); root = tonica in semitoni sopra il Do (0…11). */
+export function snapToScale(f, scale = 'cromatica', a4 = 440, root = 0) {
   const deg = SCALES[scale];
   if (!deg || !(f > 0)) return f;
   const x = 12 * Math.log2(f / a4) + 9;          // semitoni da Do₄
   let best = null;
-  for (let oct = Math.floor(x / 12) - 1; oct <= Math.floor(x / 12) + 1; oct++) {
-    for (const d of deg) { const s = oct * 12 + d; if (best == null || Math.abs(s - x) < Math.abs(best - x)) best = s; }
+  for (let oct = Math.floor(x / 12) - 2; oct <= Math.floor(x / 12) + 1; oct++) {
+    for (const d of deg) { const s = oct * 12 + root + d; if (best == null || Math.abs(s - x) < Math.abs(best - x)) best = s; }
   }
   return noteFreq(best - 9, a4);
 }

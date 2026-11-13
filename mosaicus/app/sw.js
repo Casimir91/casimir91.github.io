@@ -1,12 +1,12 @@
 // Mosaicus — service worker: mette in cache l'app per l'uso offline.
 // Quando pubblichi una nuova versione, cambia CACHE (es. 'mosaicus-v0.2').
-const CACHE = 'mosaicus-v0.11.7';
+const CACHE = 'mosaicus-v0.12.0';
 const FILES = [
   './', './index.html', './manifest.webmanifest', './css/fonts.css', './css/style.css',
   './js/app.js', './js/analysis.js', './js/chart.js', './js/experiments.js', './js/fits.js',
   './js/serial.js', './js/simulator.js', './js/storage.js', './js/export.js', './js/formula.js', './js/workbench.js', './js/phone.js',
   './js/dsp.js', './js/audio.js', './js/screen.js', './js/scope.js', './js/synth.js',
-  './LICENSE.txt', './NOTICE.txt', './icons/icon.svg', './icons/icon-dark.svg', './icons/icon-192.png', './icons/icon-512.png',
+  './icons/icon.svg', './icons/icon-dark.svg', './icons/icon-192.png', './icons/icon-512.png',
 ];
 
 self.addEventListener('install', (e) => {

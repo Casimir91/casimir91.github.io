@@ -14,7 +14,7 @@
 // pagina, così lo si guarda con l'oscilloscopio (sorgente «Esempi», che legge l'uscita dell'app).
 
 import { audio, periodicWave, audioSupported, monitorAnalyser, readSamples, sampleRate } from './audio.js';
-import { noteOf, noteFreq, snapToScale, NOTE_IT, TIMBRES, synth, findTrigger } from './dsp.js';
+import { noteOf, noteFreq, snapToScale, SCALES, NOTE_IT, TIMBRES, synth, findTrigger } from './dsp.js';
 import { Screen, fmtIt } from './screen.js';
 
 const store = {
@@ -69,7 +69,7 @@ const ENV = {
 // ---------------------------------------------------------------------------
 // Motore (unico per tutta l'app)
 // ---------------------------------------------------------------------------
-const DEF = { preset: 'sinusoide', amps: [...WAVES.sinusoide.amps], sgn: Array(8).fill(1), tail: [], env: 'continuo', f: 440, vol: 0.6, two: false, df: 3, mode: 'keys', scale: 'pentatonica', range: 'Do4–Do6' };
+const DEF = { preset: 'sinusoide', amps: [...WAVES.sinusoide.amps], sgn: Array(8).fill(1), tail: [], env: 'continuo', f: 440, vol: 0.6, two: false, df: 3, mode: 'keys', scale: 'pentatonica', tonic: 0, range: 'Do4–Do6' };
 const saved = store.get('mosaicus.synth', null) || (() => { const g = store.get('mosaicus.gen', {}); return { f: g.f, vol: g.vol }; })();
 const SY = { ...DEF, ...Object.fromEntries(Object.entries(saved || {}).filter(([k, v]) => k in DEF && v != null)), on: false };
 /** Fissa segni e armoniche 9…64 della forma classica: toccando un cursore la "forma libera" parte dall'onda esatta. */
@@ -169,7 +169,15 @@ const toSlider = (f) => Math.round((1000 * Math.log(f / FMIN)) / Math.log(FMAX /
 const fromSlider = (u) => FMIN * Math.pow(FMAX / FMIN, u / 1000);
 const roundF = (f) => (f < 100 ? Math.round(f * 10) / 10 : Math.round(f));
 const RANGES = { 'Do3–Do5': [-21, 3], 'Do4–Do6': [-9, 15], 'Do2–Do4': [-33, -9] };
-const SCALE_LABEL = { continua: 'continua', cromatica: 'cromatica', maggiore: 'Do maggiore', pentatonica: 'pentatonica' };
+/** Scale per "umore": [icona, gruppo, [[chiave, etichetta], …]]. Con « · » il secondo nome è un sinonimo. */
+const SCALE_UI = [
+  ['☀', 'luminose', [['maggiore', 'maggiore · ionica'], ['lidia', 'lidia'], ['misolidia', 'misolidia'], ['pentatonica', 'pentatonica']]],
+  ['☾', 'malinconiche', [['minore', 'minore · eolia'], ['dorica', 'dorica'], ['frigia', 'frigia'], ['locria', 'locria'], ['minoreArmonica', 'minore armonica'], ['minoreMelodica', 'minore melodica'], ['pentatonicaMin', 'pentatonica minore']]],
+  ['✦', 'esotiche', [['araba', 'araba'], ['napoletana', 'napoletana'], ['ungherese', 'ungherese'], ['giapponese', 'giapponese'], ['spagnola', 'spagnola']]],
+  ['♪', 'blues', [['blues', 'blues'], ['bluesMag', 'blues maggiore']]],
+  ['∿', 'altre', [['esatonale', 'esatonale'], ['diminuita', 'diminuita'], ['cromatica', 'cromatica'], ['continua', 'continua']]],
+];
+const SCALE_NAME = Object.fromEntries(SCALE_UI.flatMap(([, , l]) => l.map(([k, n]) => [k, n.split(' · ')[0]])));
 const D_NEAR = 0.05, D_FAR = 0.5, V_SOUND = 343;
 const MODES = [['keys', '🎹 Tastiera'], ['ribbon', '✋ Nastro'], ['tilt', '📱 Inclinazione'], ['sonar', '📡 Ultrasuoni']];
 
@@ -225,7 +233,11 @@ export function createSynth(el, api) {
       <p class="hint in-hint"></p>
       <div class="ictrl">
         <label class="mini">note <select class="irange">${Object.keys(RANGES).map((r) => `<option>${r}</option>`).join('')}</select></label>
-        <div class="seg iscale" role="group" aria-label="Scala">${Object.entries(SCALE_LABEL).map(([k, l]) => `<button data-scale="${k}">${l}</button>`).join('')}</div>
+      </div>
+      <div class="scales">
+        <div class="tonic" role="group" aria-label="Tonica">${NOTE_IT.map((n, i) => `<button data-root="${i}">${n}</button>`).join('')}</div>
+        <div class="scale-now" aria-live="polite"></div>
+        ${SCALE_UI.map(([ic, g, list]) => `<div class="sc-group"><span class="sc-label">${ic} ${g}</span><div class="sc-chips">${list.map(([k, l]) => `<button data-scale="${k}">${l}</button>`).join('')}</div></div>`).join('')}
       </div>
     </div>
     <p class="hint gen-tip">La differenza tra i timbri si sente meglio tra 300 e 1000 Hz: l'altoparlante del telefono quasi non riproduce le note basse.</p>
@@ -279,7 +291,7 @@ export function createSynth(el, api) {
     L.u = Math.min(1, Math.max(0, u));
     const [a, b] = RANGES[SY.range];
     let f = noteFreq(a + L.u * (b - a));
-    if (SY.scale !== 'continua') f = snapToScale(f, SY.scale);
+    if (SY.scale !== 'continua') f = snapToScale(f, SY.scale, 440, SY.tonic);
     L.n = 12 * Math.log2(f / 440);
     const changed = L.lastNote == null || Math.abs(L.n - L.lastNote) > 0.01;
     // con pizzicato o campana, ogni nota nuova della scala è un nuovo "colpo"
@@ -293,7 +305,7 @@ export function createSynth(el, api) {
   const uFrom = (e) => { const r = rib.getBoundingClientRect(); return (e.clientX - r.left) / r.width; };
   rib.addEventListener('pointerdown', (e) => {
     if (SY.mode !== 'ribbon') return;
-    down = true; rib.setPointerCapture(e.pointerId); L.playing = true; setU(uFrom(e), true);
+    stopHear(); down = true; rib.setPointerCapture(e.pointerId); L.playing = true; setU(uFrom(e), true);
   });
   rib.addEventListener('pointermove', (e) => { if (down) setU(uFrom(e)); });
   const up = () => { if (down) { down = false; L.playing = false; noteOff(); paint(); } };
@@ -330,6 +342,7 @@ export function createSynth(el, api) {
     L.playing = false;
   }
   $('.sy-play').addEventListener('click', async () => {
+    stopHear();
     if (SY.mode === 'keys') {
       if (SY.on) noteOff(); else if (!noteOn(SY.f)) api.toast('Questo browser non supporta l\'audio.');
       paint(); return;
@@ -344,10 +357,26 @@ export function createSynth(el, api) {
   });
 
   el.querySelectorAll('[data-mode]').forEach((b) => b.addEventListener('click', async () => {
-    await stopHand(); noteOff(true);
+    stopHear(); await stopHand(); noteOff(true);
     SY.mode = b.dataset.mode; save(); L.u = null; L.n = NaN; L.lastNote = null; ensureVoices(); paint(); api.onSource?.(SY.mode);
   }));
-  el.querySelectorAll('[data-scale]').forEach((b) => b.addEventListener('click', () => { SY.scale = b.dataset.scale; save(); setU(L.u); }));
+  // Ascolto rapido: toccando una scala (o cambiando tonica) se ne sente la salita, così se ne riconosce il carattere.
+  let hearT = [];
+  function stopHear() { hearT.forEach(clearTimeout); hearT = []; if (L.hearing) { L.hearing = false; noteOff(true); } }
+  function hearScale() {
+    stopHear();
+    const deg = SCALES[SY.scale];
+    if (!deg || L.dead || SY.on || L.playing || L.acq || L.tiltOn) return;
+    const seq = [...deg.map((d) => SY.tonic + d), SY.tonic + 12], dt = seq.length > 9 ? 120 : 200;
+    L.hearing = true;
+    seq.forEach((s, i) => hearT.push(setTimeout(() => {
+      if (L.dead) return;
+      noteOn(noteFreq(s - 9));
+      if (i === seq.length - 1) hearT.push(setTimeout(() => { L.hearing = false; noteOff(); }, dt * 1.8));
+    }, i * dt)));
+  }
+  el.querySelectorAll('[data-scale]').forEach((b) => b.addEventListener('click', () => { SY.scale = b.dataset.scale; save(); setU(L.u); paint(); hearScale(); }));
+  el.querySelectorAll('[data-root]').forEach((b) => b.addEventListener('click', () => { SY.tonic = +b.dataset.root; save(); setU(L.u); paint(); hearScale(); }));
   $('.irange').addEventListener('change', (e) => { SY.range = e.target.value; save(); setU(L.u); });
   el.querySelectorAll('input[type=range]').forEach((r) => r.addEventListener('pointerup', () => r.blur()));
 
@@ -361,10 +390,10 @@ export function createSynth(el, api) {
     g.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--screen').trim() || '#00302A'; g.fillRect(0, 0, W, H);
     const [a, b] = RANGES[SY.range];
     const xOf = (n) => ((n - a) / (b - a)) * W;
-    const deg = { cromatica: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], maggiore: [0, 2, 4, 5, 7, 9, 11], pentatonica: [0, 2, 4, 7, 9], continua: [0, 2, 4, 5, 7, 9, 11] }[SY.scale];
+    const root = SY.tonic || 0, deg = SCALES[SY.scale] || SCALES.maggiore;   // continua: si disegna la scala maggiore
     g.font = `500 ${11 * k}px "Plus Jakarta Sans", system-ui, sans-serif`; g.textAlign = 'center'; g.textBaseline = 'bottom';
     for (let n = Math.ceil(a); n <= b; n++) {
-      const c = ((n + 9) % 12 + 12) % 12, isDo = c === 0, inScale = deg.includes(c);
+      const c = ((n + 9) % 12 + 12) % 12, isDo = c === root, inScale = deg.includes(((c - root) % 12 + 12) % 12);   // isDo = la tonica
       const X = Math.round(xOf(n)) + 0.5;
       g.strokeStyle = isDo ? 'rgba(198,244,50,0.6)' : inScale ? 'rgba(198,244,50,0.28)' : 'rgba(255,255,255,0.07)';
       g.lineWidth = isDo ? 2 : 1;
@@ -448,6 +477,8 @@ export function createSynth(el, api) {
     const fb = Math.abs(SY.df);
     $('.beats').innerHTML = SY.two ? (fb ? `battimenti: f<sub>b</sub> = |Δf| = <b>${fmtIt(fb, 1)} Hz</b> → un "wa" ogni <b>${fmtIt(1 / fb, 2)} s</b>` : 'Δf = 0: nessun battimento') : '';
     el.querySelectorAll('[data-scale]').forEach((b) => b.classList.toggle('active', b.dataset.scale === SY.scale));
+    el.querySelectorAll('[data-root]').forEach((b) => b.classList.toggle('active', +b.dataset.root === SY.tonic));
+    $('.scale-now').textContent = SCALES[SY.scale] && SY.scale !== 'cromatica' ? `${NOTE_IT[SY.tonic]} ${SCALE_NAME[SY.scale]}` : SCALE_NAME[SY.scale];
     $('.irange').value = SY.range;
     $('.in-hint').textContent = {
       ribbon: 'Tieni premuto sul nastro e scorri: a destra le note alte.',
@@ -465,7 +496,7 @@ export function createSynth(el, api) {
   return {
     onLine,
     destroy() {
-      L.dead = true; cancelAnimationFrame(L.raf); off(); ro.disconnect(); scr.destroy();
+      L.dead = true; stopHear(); cancelAnimationFrame(L.raf); off(); ro.disconnect(); scr.destroy();
       // la tastiera continua a suonare cambiando pagina; i modi "con la mano" si fermano
       if (SY.mode !== 'keys') { stopHand(); noteOff(true); }
     },
