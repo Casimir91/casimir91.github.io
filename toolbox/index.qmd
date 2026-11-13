@@ -15,7 +15,7 @@ css: index-cards.css
     <div class="tb-body">
       <div class="tb-title">Clock</div>
       <p>Large HH:MM:SS display that adapts to any screen and orientation. Optional synchronisation with a network time reference.</p>
-      <div class="tb-meta">Fullscreen · 4 palettes · light and dark</div>
+      <div class="tb-meta">Fullscreen · 5 palettes · light and dark</div>
       <div class="tb-open">Open the clock →</div>
     </div>
   </a>

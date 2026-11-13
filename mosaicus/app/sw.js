@@ -1,6 +1,6 @@
 // Mosaicus — service worker: mette in cache l'app per l'uso offline.
 // Quando pubblichi una nuova versione, cambia CACHE (es. 'mosaicus-v0.2').
-const CACHE = 'mosaicus-v0.11.6';
+const CACHE = 'mosaicus-v0.11.7';
 const FILES = [
   './', './index.html', './manifest.webmanifest', './css/fonts.css', './css/style.css',
   './js/app.js', './js/analysis.js', './js/chart.js', './js/experiments.js', './js/fits.js',

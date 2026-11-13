@@ -6,8 +6,8 @@
   const get = (k, d) => { try { return localStorage.getItem(k) || d; } catch (e) { return d; } };
   const set = (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} };
 
-  const PALETTES = ["light", "zen", "ocean", "amber"];
-  const NAMES = { light: "Light", zen: "Zen", ocean: "Ocean", amber: "Amber" };
+  const PALETTES = ["light", "zen", "ocean", "amber", "lime"];
+  const NAMES = { light: "Light", zen: "Zen", ocean: "Ocean", amber: "Amber", lime: "Lime" };
 
   let pal = get("toolbox-palette", "light");
   if (!PALETTES.includes(pal)) pal = "light";
