@@ -56,6 +56,22 @@
   --primary: #ffb000; --primary-fg: #000000; --accent: #ffd27a;
 }
 
+/* ---------- LIME palette: dark green and lime (the Mosaicus colours) ---------- */
+/* Dark follows Mosaicus' dark theme: one green (the page background), lime and white;
+   surfaces share the background and are told apart by thin translucent white borders. */
+:root[data-palette="lime"][data-mode="light"] {
+  --bg: #f2f8d8; --fg: #00302a; --muted: #4d6b63;
+  --surface: #e6f0bc; --border: #c9d98a;
+  --primary: #004d43; --primary-fg: #c6f432; --accent: #6b9400;
+}
+:root[data-palette="lime"][data-mode="dark"] {
+  --bg: #071d19; --fg: #ffffff; --muted: #b7c4c0;
+  --surface: #071d19; --border: rgba(255,255,255,.22);
+  --primary: #c6f432; --primary-fg: #00302a; --accent: #c6f432;
+}
+/* In dark the digits are lime (the timer alarm sets --primary to white, so it stays readable). */
+:root[data-palette="lime"][data-mode="dark"] .digits { color: var(--primary); }
+
 /* ---------- base ---------- */
 * { box-sizing: border-box; }
 html, body { height: 100%; margin: 0; }
@@ -121,6 +137,7 @@ button:focus-visible, input:focus-visible { outline: 3px solid var(--accent); ou
 .dot[data-p="zen"]   { --d1: #f3efe6; --d2: #5f7a63; }
 .dot[data-p="ocean"] { --d1: #eaf4fb; --d2: #1b6aa5; }
 .dot[data-p="amber"] { --d1: #fbf3e2; --d2: #ffb000; }
+.dot[data-p="lime"]  { --d1: #c6f432; --d2: #071d19; }
 .themebar .mode { font-size: 1.2rem; line-height: 1; padding: .4rem .7rem; min-height: 2.25rem; }
 .themebar .toggle { padding: .35rem .8rem; min-height: 2.25rem; font-size: .9rem; }
 
