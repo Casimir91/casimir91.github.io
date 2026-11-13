@@ -356,7 +356,8 @@ ul.task-list li input[type="checkbox"] {
 .mz-ver{display:inline-block;vertical-align:middle;margin-left:.6rem;padding:.12rem .55rem;border-radius:999px;font-size:.95rem;font-weight:500;letter-spacing:.02em;
   background:#C6F432;color:#00302A}
 /* ---- licenza e che cosa serve ---- */
-.mz-lic{display:inline-flex;align-items:center;gap:.45rem;margin:.1rem 0 1.1rem;padding:.25rem .75rem;border-radius:999px;border:1px solid var(--bs-border-color,#dee2e6);font-size:.92rem}
+.mz-lic{display:inline-flex;flex-wrap:wrap;align-items:center;gap:.45rem;margin:.1rem 0 1.1rem;padding:.25rem .75rem;border-radius:999px;border:1px solid var(--bs-border-color,#dee2e6);font-size:.92rem}
+.mz-priv{max-width:46rem;margin:-1rem 0 1.6rem;font-size:.88rem;opacity:.75}
 .mz-need{list-style:none;padding:0;margin:.2rem 0 1.3rem;max-width:46rem;display:grid;gap:.45rem}
 .mz-need li{display:grid;grid-template-columns:2rem 7.5rem 1fr;align-items:baseline;gap:.4rem;font-size:1rem}
 .mz-need li > span:first-child{font-size:1.2rem}
@@ -397,11 +398,11 @@ body.quarto-dark .mz-dots i.on{background:#C6F432}
 @media (prefers-reduced-motion:reduce){.mz-stage video{transition:none}}
 </style>
 
-<div class="mz-lic">🔓 Software libero · licenza MIT</div>
+<div class="mz-lic">🔓 Software libero · © 2026 Ermes Ferdinando Rosi · <a href="app/LICENSE.txt">licenza MIT</a> · <a href="app/NOTICE.txt">crediti e privacy</a></div>
 
 <ul class="mz-need" aria-label="Che cosa serve">
-  <li><span>💻</span><b>Computer</b><em>Chrome o Edge</em></li>
-  <li><span>📱</span><b>Telefono</b><em>Chrome o Safari, niente da installare</em></li>
+  <li><span>💻</span><b>Computer</b><em>Chrome o Edge: Arduino e anche i sensori del computer</em></li>
+  <li><span>📱</span><b>Telefono</b><em>Chrome o Safari: usa i sensori del telefono, senza Arduino né firmware. Si può installare come app</em></li>
   <li><span>🔌</span><b>Arduino Uno</b><em>con il <a href="mosaicus_firmware.ino" download="">firmware Mosaicus <span data-mz-fw=""></span></a>, da caricare una volta</em></li>
   <li><span>🖥</span><b>LIM</b><em>pulsante Modalità LIM</em></li>
 </ul>
@@ -410,6 +411,8 @@ body.quarto-dark .mz-dots i.on{background:#C6F432}
   <a class="mz-btn mz-open" href="app/"><img src="app/icons/icon.svg" alt="">Apri Mosaicus →</a>
   <button class="mz-btn mz-inst" type="button" data-open-install="">📲 Installala</button>
 </div>
+
+<p class="mz-priv">🎤 Il microfono serve solo a misurare il suono: l'audio non viene registrato né inviato, resta sul tuo dispositivo.</p>
 
 <dialog class="mz-dlg" id="mzInstall" aria-label="Come installare Mosaicus">
   <button class="mz-x" type="button" data-close="" aria-label="Chiudi">✕</button>

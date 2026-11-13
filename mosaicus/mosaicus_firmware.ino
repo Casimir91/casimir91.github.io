@@ -1,6 +1,8 @@
 /*
   Mosaicus — firmware unico per Arduino Uno R3 (e compatibili, es. Elegoo UNO R3)
   ---------------------------------------------------------------------------------
+  Copyright (c) 2026 Ermes Ferdinando Rosi — licenza MIT (testo: https://ermesfrosi.it/mosaicus/app/LICENSE.txt)
+
   Si carica UNA volta sola. Da quel momento è l'app Mosaicus a decidere quale
   esperimento avviare, inviando comandi testuali sulla porta seriale.
 

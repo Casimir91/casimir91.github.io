@@ -69,6 +69,7 @@
     <button id="reset">Reset</button>
     <button id="zoomOut" aria-label="Smaller digits">A−</button>
     <button id="zoomIn" aria-label="Larger digits">A+</button>
+    <button id="fs" type="button" aria-pressed="false" class="toggle" hidden>⛶ Full screen</button>
   </div>
 
 <script>
@@ -165,6 +166,28 @@
   ["min", "sec"].forEach(id => $(id).addEventListener("input", () => {
     if (!running) { total = remaining = readInputs(); render(remaining); }
   }));
+
+  /* ---------- full screen (needs a tap/click: browsers refuse it otherwise) ---------- */
+  const fsBtn = $("fs"), de = document.documentElement;
+  const fsEnabled = document.fullscreenEnabled || document.webkitFullscreenEnabled;
+  const fsElement = () => document.fullscreenElement || document.webkitFullscreenElement;
+  if (fsEnabled && (de.requestFullscreen || de.webkitRequestFullscreen)) {
+    fsBtn.hidden = false;            // stays hidden where unsupported (e.g. iPhone Safari)
+    const syncFs = () => {
+      const on = !!fsElement();
+      fsBtn.textContent = on ? "⛶ Exit full screen" : "⛶ Full screen";
+      fsBtn.setAttribute("aria-pressed", String(on));
+    };
+    fsBtn.onclick = () => {
+      try {
+        if (fsElement()) { (document.exitFullscreen || document.webkitExitFullscreen).call(document); }
+        else { (de.requestFullscreen || de.webkitRequestFullscreen).call(de); }
+      } catch (e) {}
+    };
+    document.addEventListener("fullscreenchange", syncFs);
+    document.addEventListener("webkitfullscreenchange", syncFs);
+    syncFs();
+  }
 
   render(remaining);
 })();
