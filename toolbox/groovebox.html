@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Groovebox · Toolbox</title>
+<link rel="stylesheet" href="toolbox.css">
+<script src="toolbox.js"></script>
+<style>
+  :root { --barh: 3.6rem; }
+  .grv { width: min(100%, 62rem); margin: 0 auto; padding: .25rem 1rem 2.5rem; display: flex; flex-direction: column; gap: .8rem; }
+  h1 { font-size: 1.5rem; font-weight: 500; margin: 0; letter-spacing: -.01em; }
+  .sub { color: var(--muted); margin: .15rem 0 0; font-size: .95rem; }
+  .how { color: var(--muted); margin: .35rem 0 0; font-size: .9rem; }
+  .how b { color: var(--fg); font-weight: 500; }
+  /* the controls never fade away here (Zen palette hides them on idle in the other tools) */
+  body.idle .topbar { opacity: 1; pointer-events: auto; }
+  select { font: inherit; color: inherit; padding: .4rem .6rem; min-height: 2.5rem; background: var(--bg); border: 1px solid var(--border); border-radius: .5rem; }
+  input[type="range"] { width: 100%; accent-color: var(--primary); min-height: 1.8rem; }
+
+  /* sticky transport: Play is always under your thumb */
+  .bar { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; gap: .8rem; padding: .5rem .8rem; min-height: var(--barh);
+         background: var(--surface); border: 1px solid var(--border); border-radius: .8rem; box-shadow: 0 2px 8px rgba(0,0,0,.12); }
+  .bar .play { min-width: 6.5rem; min-height: 2.75rem; font-size: 1.1rem; }
+  .bar .tempo { display: flex; align-items: center; gap: .4rem; }
+  .bar .tempo button { min-width: 2.5rem; padding: 0; font-size: 1.2rem; }
+  .bar .tempo output { min-width: 4.6rem; text-align: center; font-variant-numeric: tabular-nums; }
+  .bar .tempo small { color: var(--muted); }
+  .bar .solo-flag { margin-left: auto; color: var(--accent); font-size: .85rem; display: none; }
+  body.has-solo .bar .solo-flag { display: block; }
+
+  /* collapsible sections */
+  .sec { background: var(--surface); border: 1px solid var(--border); border-radius: .8rem; scroll-margin-top: calc(var(--barh) + .8rem); }
+  .sec > summary { list-style: none; display: flex; align-items: center; gap: .6rem; min-height: 3.2rem; padding: .4rem 1rem; cursor: pointer; font-weight: 500; }
+  .sec > summary::-webkit-details-marker { display: none; }
+  .sec > summary::after { content: "▾"; margin-left: auto; color: var(--muted); transition: transform .2s; }
+  .sec:not([open]) > summary::after { transform: rotate(-90deg); }
+  .sec > summary .chip { color: var(--muted); font-weight: 400; font-size: .88rem; }
+  .sec > summary:focus-visible { outline: 3px solid var(--accent); outline-offset: -3px; border-radius: .8rem; }
+  .sec-body { padding: .2rem 1rem 1rem; display: flex; flex-direction: column; gap: .8rem; }
+  .selrow { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .4rem .8rem; color: var(--muted); font-size: .92rem; }
+  .selrow b { color: var(--fg); font-weight: 500; }
+  .selrow button { padding: .35rem .9rem; min-height: 2.4rem; }
+  .chips { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; }
+  .chips > span { color: var(--muted); font-size: .85rem; margin-right: .2rem; }
+  .chips button { padding: .3rem .8rem; min-height: 2.25rem; font-size: .92rem; }
+  .chips button[aria-pressed="true"], .seg button[aria-pressed="true"] { border-color: var(--primary); box-shadow: inset 0 0 0 1px var(--primary); }
+
+  /* step grids */
+  .trk { display: grid; grid-template-columns: 11rem 1fr; gap: .6rem; align-items: center; padding: .25rem 0; }
+  .trk.muted .steps, .trk-head.muted .pad { opacity: .45; }
+  .trk-head { display: flex; gap: .3rem; }
+  .pad { flex: 1; text-align: left; padding: .4rem .6rem; min-height: 2.5rem; font-weight: 500; }
+  .pad.sel { border-color: var(--primary); box-shadow: inset 0 0 0 1px var(--primary); }
+  .mute, .solo { min-width: 2.3rem; padding: 0; min-height: 2.5rem; font-size: .85rem; }
+  .mute[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #000; }
+  .solo[aria-pressed="true"] { background: var(--primary); border-color: var(--primary); color: var(--primary-fg); }
+  .steps { display: grid; grid-template-columns: repeat(16, 1fr); gap: 3px; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+  .st { min-width: 0; min-height: 0; padding: 0; height: 2.6rem; border-radius: .35rem; background: var(--bg); border: 1px solid var(--border); }
+  .st:nth-child(4n+1) { background: color-mix(in srgb, var(--bg) 78%, var(--border)); }
+  .st:nth-child(4n) { margin-right: 4px; }
+  .st[aria-pressed="true"][data-v="1"], .brow .st[aria-pressed="true"] { background: var(--primary); border-color: var(--primary); }
+  .st.cur { outline: 3px solid var(--accent); outline-offset: -2px; }
+  /* step values: 1 hit, 2 ghost, 3 roll x2, 4 roll x3 */
+  .st[data-v="2"] { background: color-mix(in srgb, var(--primary) 38%, var(--bg)); border-color: color-mix(in srgb, var(--primary) 55%, var(--border)); }
+  .st[data-v="3"] { background: linear-gradient(90deg, var(--primary) 0 40%, var(--bg) 40% 60%, var(--primary) 60% 100%); border-color: var(--primary); }
+  .st[data-v="4"] { background: linear-gradient(90deg, var(--primary) 0 26%, var(--bg) 26% 37%, var(--primary) 37% 63%, var(--bg) 63% 74%, var(--primary) 74% 100%); border-color: var(--primary); }
+  .styles { position: relative; }
+  /* keyboard */
+  .kb { position: relative; display: flex; height: 9.5rem; touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; border-radius: .5rem; overflow: hidden; border: 1px solid var(--border); }
+  .kb .wk { flex: 1; background: #f6f6f2; border-right: 1px solid #b9b9b0; display: flex; align-items: flex-end; justify-content: center; position: relative; color: #555; font-size: .7rem; padding-bottom: .25rem; }
+  .kb .wk:last-of-type { border-right: 0; }
+  .kb .bk { position: absolute; top: 0; height: 60%; background: #1c1c1c; border-radius: 0 0 .3rem .3rem; z-index: 2; }
+  .kb .wk.on { background: var(--primary); } .kb .bk.on { background: var(--primary); }
+  .kb .inkey::after { content: ""; position: absolute; bottom: 1.3rem; left: 50%; width: .4rem; height: .4rem; margin-left: -.2rem; border-radius: 50%; background: var(--accent); }
+  .kb .bk.inkey::after { bottom: .4rem; }
+  .kb .wk span { position: absolute; bottom: .1rem; }
+  .kctl { display: flex; align-items: center; gap: .4rem; }
+  .kctl button { min-width: 2.5rem; padding: 0; min-height: 2.5rem; }
+  #kRec[aria-pressed="true"] { background: #d1242f; border-color: #d1242f; color: #fff; }
+  .kroll { width: 100%; height: 4.5rem; display: block; border-radius: .5rem; }
+  #kRec, #kUndo, #kClear { min-height: 2.4rem; }
+  /* progression and mixer */
+  .prog { display: grid; grid-template-columns: repeat(4, 1fr); gap: .6rem; }
+  .pbar { display: flex; flex-direction: column; gap: .3rem; padding: .6rem; border: 1px solid var(--border); border-radius: .6rem; background: var(--bg); }
+  .pbar.now { border-color: var(--accent); box-shadow: inset 0 0 0 2px var(--accent); }
+  .pbar .pn { font-weight: 500; font-size: .9rem; }
+  .pbar .proot { color: var(--muted); font-size: .85rem; }
+  .mixrow { display: grid; grid-template-columns: 5.5rem 1fr 1fr; gap: .4rem 1rem; align-items: center; min-height: 2.1rem; }
+  .mixrow.head { color: var(--muted); font-size: .8rem; min-height: 0; }
+  .mixname { font-size: .92rem; }
+  .grove.fx { grid-template-columns: repeat(3, 1fr); }
+  .styles button.now { border-color: var(--primary); box-shadow: inset 0 0 0 1px var(--primary); }
+  /* bass notes: the start is a full cell, the sustained part a lower bar joined to it */
+  .brow .st[data-n="start"] { border-top-right-radius: 0; border-bottom-right-radius: 0; }
+  .brow.root .st[data-n="tail"]:not([aria-pressed="true"]), .brow .st[data-n="tail"] { background: color-mix(in srgb, var(--primary) 55%, var(--bg)); border-color: var(--primary); border-radius: 0; border-left-width: 0; }
+
+  /* bass note grid: rows are the notes of the scale */
+  .bctl { display: flex; flex-wrap: wrap; gap: .5rem .8rem; align-items: center; }
+  .bctl label { display: flex; align-items: center; gap: .4rem; color: var(--muted); font-size: .88rem; }
+  #bassHead { min-width: 11rem; }
+  .brow { display: grid; grid-template-columns: 2.2rem 1fr; gap: .4rem; align-items: center; }
+  .brow + .brow { margin-top: 3px; }
+  .blab { text-align: right; font-size: .8rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .brow.root .blab { color: var(--fg); font-weight: 500; }
+  .brow .st { height: 1.9rem; }
+  .brow.root .st:not([aria-pressed="true"]) { background: color-mix(in srgb, var(--primary) 14%, var(--bg)); }
+  .pager { display: none; gap: .4rem; }
+  .pager button { padding: .3rem .8rem; min-height: 2.25rem; font-size: .9rem; }
+  .pager button[aria-pressed="true"] { border-color: var(--primary); box-shadow: inset 0 0 0 1px var(--primary); }
+  .pager button.now::after { content: " ●"; color: var(--accent); }
+
+  /* sound lab */
+  .lab-scope { position: sticky; top: calc(var(--barh) + .4rem); z-index: 10; background: var(--surface); padding: .3rem 0 .4rem; display: flex; flex-direction: column; gap: .4rem; }
+  .lab-scope .seg, .seg { display: flex; flex-wrap: wrap; gap: .4rem; }
+  .seg button { padding: .3rem .8rem; min-height: 2.25rem; font-size: .92rem; }
+  canvas.scr { width: 100%; height: 14rem; display: block; border-radius: .5rem; }
+  .lab-tools { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+  .lab-tools button { padding: .35rem .9rem; min-height: 2.4rem; }
+  .lab-tools button[aria-pressed="true"] { background: var(--primary); border-color: var(--primary); color: var(--primary-fg); }
+  #labHint { margin: 0; color: var(--muted); font-size: .92rem; }
+  #labParams { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: .8rem 1.6rem; }
+  .pn-row { display: grid; grid-template-columns: 1fr auto; gap: 0 .5rem; align-items: center; font-size: .92rem; }
+  .pn-row span { font-weight: 500; }
+  .pn-row output { font-variant-numeric: tabular-nums; }
+  .pn-row input, .pn-row .seg { grid-column: 1 / -1; }
+  .pn-row small { grid-column: 1 / -1; color: var(--muted); font-size: .82rem; line-height: 1.3; }
+  .scope-head { display: flex; flex-wrap: wrap; gap: .5rem 1rem; align-items: center; justify-content: space-between; }
+  .scope-ctl { display: flex; flex-wrap: wrap; gap: .4rem; }
+  .scope-ctl button { padding: .3rem .8rem; min-height: 2.25rem; font-size: .92rem; }
+  .scope-ctl button[aria-pressed="true"] { border-color: var(--primary); box-shadow: inset 0 0 0 1px var(--primary); }
+
+  /* tempo & swing */
+  .grove { display: grid; grid-template-columns: repeat(3, 1fr); gap: .6rem 1.4rem; }
+  .ctl { display: flex; flex-direction: column; gap: .15rem; min-width: 0; }
+  .ctl span { color: var(--muted); font-size: .85rem; display: flex; justify-content: space-between; }
+  .ctl output { color: var(--fg); font-variant-numeric: tabular-nums; }
+  .note { margin: 0; color: var(--muted); font-size: .88rem; }
+  .foot { color: var(--muted); font-size: .85rem; text-align: center; }
+  .foot a { color: var(--primary); }
+
+  @media (max-width: 680px) {
+    .bar { gap: .5rem; padding: .4rem .6rem; }
+    .bar .play { min-width: 5.6rem; }
+    .bar .tempo small { display: none; }
+    .trk { grid-template-columns: 1fr; gap: .3rem; }
+    .steps { grid-template-columns: repeat(8, 1fr); gap: 4px; }
+    .st { height: 2.9rem; }
+    .st:nth-child(8n) { margin-right: 0; }
+    .brow .st { height: 2.3rem; }
+    .pager { display: flex; }
+    #bgrid[data-page="0"] .st.hi, #bgrid[data-page="1"] .st:not(.hi) { display: none; }
+    .grove, .grove.fx { grid-template-columns: 1fr; }
+    .prog { grid-template-columns: repeat(2, 1fr); }
+    .mixrow { grid-template-columns: 4.6rem 1fr 1fr; gap: .3rem .6rem; }
+    canvas.scr { height: 11rem; }
+    #bassHead { min-width: 0; }
+  }
+  @media (min-width: 681px) { #bgrid .st.hi { display: block; } }
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <a href="index.html">← Toolbox</a>
+    <span class="status" id="status" aria-live="polite">Tap Play, or tap a pad to hear a sound</span>
+    <div class="themebar" id="themebar"></div>
+  </div>
+
+  <main class="grv">
+    <header>
+      <h1>Groovebox</h1>
+      <p class="sub">Build a beat: drums, a bassline that holds its notes, guitar and funk. Then look at the sound on the oscilloscope.</p>
+      <p class="how"><b>1</b> Pick a style · <b>2</b> Press Play · <b>3</b> Paint steps, drag the bass notes longer, shape any sound</p>
+    </header>
+
+    <div class="bar" id="bar">
+      <button class="primary play" aria-pressed="false">▶ Play</button>
+      <div class="tempo"><button id="bpmDown" aria-label="Slower">−</button><output><span id="bpmBar">120</span> <small>BPM</small></output><button id="bpmUp" aria-label="Faster">+</button></div>
+      <span class="solo-flag">Solo on</span>
+    </div>
+
+    <div class="chips styles" id="presets"><span>Style</span>
+      <button data-preset="House">House</button><button data-preset="Hip-hop">Hip-hop</button><button data-preset="Trap">Trap</button><button data-preset="Funk">Funk</button><button data-preset="Breakbeat">Breakbeat</button>
+      <button data-preset="Surprise">🎲 Surprise</button><button data-preset="Clear">Clear</button>
+    </div>
+
+    <div id="sections" style="display:contents">
+
+      <details class="sec" id="sec-drums" open>
+        <summary>Drums <span class="chip" id="sum-drums"></span></summary>
+        <div class="sec-body">
+          <div class="chips" id="brush"><span>Brush</span>
+            <button data-brush="1" aria-pressed="true">● Hit</button><button data-brush="2" aria-pressed="false">◐ Ghost</button>
+            <button data-brush="3" aria-pressed="false">⁞ Roll ×2</button><button data-brush="4" aria-pressed="false">⋮ Roll ×3</button>
+          </div>
+          <p class="note">Ghost = a soft hit (funk snare). Roll = the step is split in two or three quick hits (trap hi-hat). Tap a filled step with the same brush to clear it.</p>
+          <div id="seq"></div>
+          <div class="selrow"><span>Selected: <b class="sel-name">Kick</b></span><button data-open="lab">Shape this sound →</button></div>
+        </div>
+      </details>
+
+      <details class="sec" id="sec-bass">
+        <summary>Bass line <span class="chip" id="sum-bass"></span></summary>
+        <div class="sec-body">
+          <div class="bctl">
+            <div class="trk-head" id="bassHead">
+              <button class="pad" data-pad="bass" aria-label="Bass: select and hear">Bass</button>
+              <button class="solo toggle" data-solo="bass" aria-pressed="false" title="Solo" aria-label="Solo Bass">S</button>
+              <button class="mute toggle" data-mute="bass" aria-pressed="false" title="Mute" aria-label="Mute Bass">M</button>
+            </div>
+            <label>Key <select id="key" aria-label="Key"></select></label>
+            <label>Scale <select id="scale" aria-label="Scale"></select></label>
+          </div>
+          <div class="chips" id="bassSounds"></div>
+          <div class="chips" id="noteLens"></div>
+          <p class="note">Each row is a note of the scale. Tap to place a note of the chosen length, or <b>drag to the right</b> to hold it longer: the note keeps sounding (sustain) until its end. A new note cuts the previous one.</p>
+          <div class="pager" id="pager"><button data-page="0" aria-pressed="true">Steps 1–8</button><button data-page="1" aria-pressed="false">Steps 9–16</button></div>
+          <div id="bgrid" data-page="0"></div>
+          <div class="selrow"><span>Selected: <b class="sel-name">Kick</b></span><button data-open="lab">Shape this sound →</button></div>
+        </div>
+      </details>
+
+      <details class="sec" id="sec-prog">
+        <summary>Chord progression <span class="chip" id="sum-prog"></span></summary>
+        <div class="sec-body">
+          <div class="chips" id="progPresets"></div>
+          <p class="note">The loop is <b>4 bars</b>. Each bar shifts <b>Bass</b>, <b>Chord stab</b>, <b>Pluck</b> and the <b>Chank</b> string by some semitones: same pattern, another chord. After bar 4 it returns to bar 1. (Transposing by n semitones multiplies every frequency by 2<sup>n/12</sup>.)</p>
+          <div class="prog" id="prog"></div>
+        </div>
+      </details>
+
+      <details class="sec" id="sec-gtr">
+        <summary>Guitar, funk &amp; arp <span class="chip" id="sum-gtr"></span></summary>
+        <div class="sec-body">
+          <p class="note"><b>Chord stab</b> and <b>Pluck</b> follow the bass: they play the note under the step (the key note when the bass is silent). Use the brush of the Drums section for ghost notes and rolls.</p>
+          <div id="gseq"></div>
+          <div class="chips" id="arpCtl"></div>
+          <p class="note"><b>Arp</b> plays the chord of the bass note one note at a time: each active step takes the next note. Order, number of notes and octaves are the chips above; the pitches follow the chord progression.</p>
+          <div class="selrow"><span>Selected: <b class="sel-name">Kick</b></span><button data-open="lab">Shape this sound →</button></div>
+        </div>
+      </details>
+
+      <details class="sec" id="sec-keys">
+        <summary>Keys · live synth <span class="chip" id="sum-keys"></span></summary>
+        <div class="sec-body">
+          <div class="bctl">
+            <div class="trk-head" id="keysHead">
+              <button class="pad" data-pad="keys" aria-label="Keys: select and hear">Keys</button>
+              <button class="solo toggle" data-solo="keys" aria-pressed="false" title="Solo" aria-label="Solo Keys">S</button>
+              <button class="mute toggle" data-mute="keys" aria-pressed="false" title="Mute the recorded loop" aria-label="Mute Keys">M</button>
+            </div>
+            <div class="kctl"><button id="kOctDown" aria-label="Octave down">−</button><output>Octave <b id="kOctOut">C4</b></output><button id="kOctUp" aria-label="Octave up">+</button></div>
+          </div>
+          <div class="chips" id="keySounds"></div>
+          <div id="kb" class="kb" role="group" aria-label="Piano keyboard"></div>
+          <p class="note">Dots mark the notes of the current key and scale. On a computer: <b>A S D F G H J K L</b> are the white keys, <b>W E T Y U O P</b> the black ones, <b>Z</b>/<b>X</b> change octave. Slide a finger across the keys for a glissando.</p>
+          <div class="lab-tools"><button id="kRec" class="toggle" aria-pressed="false">● Rec</button><button id="kUndo">⌫ Undo last pass</button><button id="kClear">🗑 Clear loop</button><button data-open="lab">Shape this sound →</button></div>
+          <p class="note" id="kInfo"></p>
+          <canvas id="kroll" class="kroll" aria-label="The recorded loop as a piano roll"></canvas>
+          <p class="note"><b>Loop station:</b> Rec starts the loop if it is stopped and records every note exactly when you play it, over the 4 bars of the progression. Press Rec again to stop recording: the notes keep looping with the beat and follow the tempo. Rec again to overdub more.</p>
+        </div>
+      </details>
+
+      <details class="sec" id="sec-mix">
+        <summary>Mixer &amp; filters <span class="chip" id="sum-mix"></span></summary>
+        <div class="sec-body">
+          <div id="strips"></div>
+          <p class="note">Volume sets the loudness of each channel; <b>Reverb send</b> sends part of it into a virtual room.</p>
+          <div class="grove fx">
+            <label class="ctl"><span>High-pass <output id="hpOut"></output></span><input id="fxhp" type="range" min="0" max="100" step="1" aria-label="Master high-pass filter"></label>
+            <label class="ctl"><span>Low-pass <output id="lpOut"></output></span><input id="fxlp" type="range" min="0" max="100" step="1" aria-label="Master low-pass filter"></label>
+            <label class="ctl"><span>Resonance <output id="resOut"></output></span><input id="fxres" type="range" min="0" max="100" step="1" aria-label="Filter resonance"></label>
+            <label class="ctl"><span>Reverb return <output id="revOut"></output></span><input id="fxrev" type="range" min="0" max="100" step="1" aria-label="Reverb level"></label>
+            <label class="ctl"><span>Room decay <output id="rtOut"></output></span><input id="fxrt" type="range" min="4" max="30" step="1" aria-label="Reverb decay time"></label>
+          </div>
+          <p class="note">Filters act on the whole mix. <b>High-pass</b> removes the lows (raise it for a thin, telephone sound), <b>low-pass</b> removes the highs (lower it for a muffled, underwater sound); resonance boosts the band around the cutoff. <b>Reverb</b> = the sound convolved with the “impulse response” of a room: noise that fades to −60 dB in the decay time. The oscilloscope shows the result.</p>
+          <div class="lab-tools"><button id="mixReset">↺ Reset mixer</button></div>
+        </div>
+      </details>
+
+      <details class="sec" id="sec-lab">
+        <summary>Sound lab <span class="chip" id="sum-lab"></span></summary>
+        <div class="sec-body">
+          <div class="chips" id="labChips"></div>
+          <div class="lab-scope">
+            <canvas class="scr" id="labScope" aria-label="Waveform or spectrum of the selected sound, alone"></canvas>
+            <div class="seg" id="labView">
+              <button data-lv="full" aria-pressed="true">∿ Whole</button>
+              <button data-lv="attack" aria-pressed="false">⌕ 40 ms</button>
+              <button data-lv="spec" aria-pressed="false">▮ Spectrum</button>
+            </div>
+          </div>
+          <div class="lab-tools">
+            <button id="hearBtn">▶ Hear</button>
+            <button id="soloBtn" class="toggle" aria-pressed="false" title="While the loop plays, hear only this sound">Solo in the loop</button>
+            <button id="resetBtn">↺ Reset</button>
+            <button data-open="drums">↑ Back to the beat</button>
+          </div>
+          <p id="labHint"></p>
+          <div id="labParams"></div>
+          <p class="note">Move a slider: the white trace is the sound before, the green one is the sound now.</p>
+        </div>
+      </details>
+
+      <details class="sec" id="sec-scope">
+        <summary>Oscilloscope · the whole mix <span class="chip">last hit</span></summary>
+        <div class="sec-body">
+          <div class="scope-head">
+            <span class="note">Triggered on the last hit: all the sounds that play together, added.</span>
+            <div class="scope-ctl">
+              <button data-view="wave" aria-pressed="true">∿ Waveform</button>
+              <button data-view="spec" aria-pressed="false">▮ Spectrum</button>
+              <button data-win="20" aria-pressed="false">20 ms</button>
+              <button data-win="100" aria-pressed="true">100 ms</button>
+              <button data-win="400" aria-pressed="false">400 ms</button>
+            </div>
+          </div>
+          <canvas class="scr" id="scope" aria-label="Waveform or spectrum of the last hit of the mix"></canvas>
+        </div>
+      </details>
+
+      <details class="sec" id="sec-groove" open>
+        <summary>Tempo &amp; swing <span class="chip" id="sum-groove"></span></summary>
+        <div class="sec-body">
+          <div class="grove">
+            <label class="ctl"><span>Tempo <output id="bpmOut">120</output></span><input id="bpm" type="range" min="60" max="180" step="1" value="120" aria-label="Tempo in beats per minute"></label>
+            <label class="ctl"><span>Swing <output id="swingOut">0 %</output></span><input id="swing" type="range" min="0" max="50" step="1" value="0" aria-label="Swing"></label>
+            <label class="ctl"><span>Volume <output id="volOut">80 %</output></span><input id="vol" type="range" min="0" max="100" step="1" value="80" aria-label="Volume"></label>
+          </div>
+          <p class="note"><b>Swing</b> delays every second step, so the beat “swings” instead of ticking like a clock. <span id="swingNote"></span></p>
+          <p class="note" id="phys"></p>
+        </div>
+      </details>
+    </div>
+
+    <p class="foot">Sound engine shared with <a href="../mosaicus/">Mosaicus</a> · works on smartphone, also with the silent switch on</p>
+  </main>
+
+<script type="module" src="groovebox.js"></script>
+</body>
+</html>

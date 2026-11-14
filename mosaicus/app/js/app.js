@@ -13,7 +13,7 @@ import { createSynth, onGeneratorChange, generatorState, stopGenerator } from '.
 import { audioSupported } from './audio.js';
 
 // versione: la stessa di version.json (letta dalla pagina del sito) e di CACHE in sw.js
-const APP_VERSION = '0.12.0';
+const APP_VERSION = '0.13.0';
 const FIRMWARE_VERSION = '0.2';   // firmware atteso su Arduino
 const $ = (s) => document.querySelector(s);
 
@@ -31,6 +31,7 @@ const state = {
   selection: null,  // [t1, t2]
   session: null,    // { id?, name, created, source, fw }
   simSignal: 'mic', // segnale del simulatore per l'oscilloscopio elettrico
+  sent: false,      // il tratto è già stato inviato a Elaborazione (per la guida a passi)
 };
 let instr = null;   // pannello dello strumento attivo (oscilloscopio, generatore, strumento musicale)
 
@@ -63,7 +64,7 @@ function toast(msg, ms = 2800, action = null) {
   clearTimeout(toast._h); toast._h = setTimeout(() => t.classList.remove('show'), action ? Math.max(ms, 6000) : ms);
 }
 const isPhone = () => window.matchMedia('(max-width: 700px)').matches;
-const goElab = () => showPage('elab');
+const goElab = () => { state.sent = false; showPage('elab'); };
 const store = {
   get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } },
   set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* storage non disponibile */ } },
@@ -117,7 +118,7 @@ function selectExperiment(id, { keepData = false } = {}) {
   if (state.running) { toast('Ferma la misura prima di cambiare lab.'); return; }
   // generatore e strumento musicale sono confluiti nel sintetizzatore (v0.10)
   if (id === 'generator' || id === 'theremin') id = 'synth';
-  state.exp = byId(id);
+  state.exp = byId(id); state.sent = false;
   if (!state.exp || state.exp.hidden) state.exp = byId(serialSupported() ? 'motion' : 'synth');
   id = state.exp.id;
   state.params = { ...defaultParams(state.exp), ...store.get(`mosaicus.params.${id}`, {}) };
@@ -363,6 +364,7 @@ function updateSelectionUI() {
   $('#btnSaveSel').disabled = !state.rows.length || state.running;
   $('#exportLabel').textContent = has ? 'Esporta selezione' : 'Esporta tutto';
   if ($('#selTableBox').open) renderSelTable();
+  updateGuide();
 }
 
 function renderSelTable() {
@@ -396,6 +398,7 @@ async function saveSelection() {
     rows: rows.map((r) => Object.fromEntries(keys.map((k) => [k, isFinite(r[k]) ? r[k] : NaN]))),
   });
   renderSavedSelections();
+  state.sent = true; updateGuide();
   toast(`Tratto inviato (${rows.length} punti).`, 6000, { label: 'Vai a Elaborazione →', run: goElab });
   pulseNav(box.id);
 }
@@ -469,6 +472,48 @@ function refreshButtons() {
   $('#btnStop').disabled = !state.running;
   document.querySelectorAll('.exp-card').forEach((b) => (b.disabled = state.running));
   updateSelectionUI();
+  updateGuide();
+}
+
+// ---------------- percorso guidato (v0.13) ----------------
+// Una striscia sopra il grafico dice qual è il prossimo gesto, e il pulsante da premere pulsa in lime:
+// 1 scegli il lab · 2 sorgente (Arduino o simulatore) · 3 Avvia · 4 Ferma · 5 scegli un tratto · 6 invia e vai a Elaborazione.
+const GUIDE_STEPS = 6;
+const GUIDE = {
+  link:  { n: 2, text: 'Scegli da dove arrivano i dati' },
+  wait:  { n: 2, text: 'Collegamento in corso…' },
+  start: { n: 3, text: 'Premi <b>▶ Avvia</b>' },
+  stop:  { n: 4, text: 'Premi <b>■ Ferma</b> quando vuoi' },
+  pick:  { n: 5, text: 'Trascina sul grafico per scegliere un tratto' },
+  send:  { n: 6, text: 'Invia il tratto a Elaborazione' },
+  go:    { n: 6, text: 'Tratto inviato' },
+};
+function guideStep() {
+  if (!state.exp || state.exp.kind || state.exp.source === 'audio') return null;
+  if (!state.link) return 'link';
+  if (!state.ready) return 'wait';
+  if (state.running) return 'stop';
+  if (!state.rows.length) return 'start';
+  if (state.sent) return 'go';
+  return state.selection ? 'send' : 'pick';
+}
+function updateGuide() {
+  const el = $('#coach'); if (!el) return;
+  const g = guideStep();
+  document.body.dataset.guide = g || '';
+  if (!g) { el.hidden = true; el.dataset.key = ''; return; }
+  el.hidden = false;
+  const bc = $('#btnConnect');
+  const key = `${g}|${bc.textContent}|${bc.disabled}`;
+  if (el.dataset.key === key) return;
+  el.dataset.key = key;
+  const { n, text } = GUIDE[g];
+  const dots = Array.from({ length: GUIDE_STEPS }, (_, i) => `<i class="${i + 1 < n ? 'done' : i + 1 === n ? 'now' : ''}"></i>`).join('');
+  let act = '';
+  if (g === 'link') act = `<button class="btn btn-primary" data-g="connect"${bc.disabled ? ' disabled' : ''}>${bc.textContent}</button><button class="btn" data-g="sim">Simulatore</button>`;
+  if (g === 'send') act = '<button class="btn btn-go" data-g="send">Invia a Elaborazione →</button>';
+  if (g === 'go') act = '<button class="btn btn-go" data-g="go">Vai a Elaborazione →</button>';
+  el.innerHTML = `<div class="coach-dots" aria-hidden="true">${dots}</div><p class="coach-text"><span class="coach-n">${n}</span>${text}</p>${act ? `<div class="coach-act">${act}</div>` : ''}`;
 }
 
 async function connect(kind) {
@@ -545,6 +590,7 @@ async function start() {
   const name = $('#sessionName').value.trim() || `${state.exp.title} ${new Date().toLocaleString('it-IT', { dateStyle: 'short', timeStyle: 'short' })}`;
   state.session = { name, created: Date.now(), source: state.link.kind, fw: state.fw };
   $('#sessionName').value = name;
+  state.sent = false;
   state.running = true; refreshButtons();
   recompute();
   renderSavedSelections();
@@ -707,12 +753,18 @@ async function init() {
     onCount: (n) => { $('#elabCount').textContent = n ? `(${n})` : ''; $('#elabCount2').textContent = n || ''; renderSavedSelections(); },
   });
   renderExperimentList();
+  // l'attenzione sul riquadro dei lab si spegne al primo tocco
+  $('#labCard')?.addEventListener('pointerdown', () => $('#labCard').classList.remove('attn'), { once: true });
   // su un telefono che non può collegare Arduino si parte dai sensori del telefono
   selectExperiment(store.get('mosaicus.lastExp', serialSupported() ? 'motion' : 'synth'));
   renderSessions();
   refreshButtons();
   showPage(store.get('mosaicus.page', 'misura') === 'elab' ? 'elab' : 'misura');
 
+  $('#coach').addEventListener('click', (e) => {
+    const g = e.target.closest('[data-g]')?.dataset.g;
+    if (g === 'connect') $('#btnConnect').click(); else if (g === 'sim') $('#btnSim').click(); else if (g === 'send') $('#btnSaveSel').click(); else if (g === 'go') goElab();
+  });
   $('#btnConnect').addEventListener('click', () => connect('serial'));
   $('#btnSim').addEventListener('click', () => connect('sim'));
   $('#btnDisconnect').addEventListener('click', async () => { if (state.running) await stop(); await state.link?.close(); });

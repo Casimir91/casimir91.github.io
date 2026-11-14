@@ -394,7 +394,7 @@ const scopeAudio = instrumentBase({
 });
 
 const synthesizer = instrumentBase({
-  id: 'synth', topic: 'Onde e suono', featured: true, kind: 'synth', source: 'arduino', optionalLink: true, title: 'Synth', subtitle: 'Crea un suono e suonalo: tastiera, dito, telefono, HC-SR04',
+  id: 'synth', topic: 'Onde e suono', kind: 'synth', source: 'arduino', optionalLink: true, title: 'Synth', subtitle: 'Crea un suono e suonalo: tastiera, dito, telefono, HC-SR04',
   icon: ICON_SYNTH, iconBg: 'var(--zaff-t)', sim: 'hand',
   wiring: `<div class="w-block"><h3>📡 Con Arduino</h3>${SCHEMA_HCSR04}<p>Sensore rivolto verso l'alto, la mano sopra tra 5 e 50 cm.</p></div>`,
 });

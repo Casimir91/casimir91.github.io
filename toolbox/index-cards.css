@@ -84,3 +84,11 @@
   .tb-t { animation: none; }
   .tb-card { transition: none; }
 }
+
+/* ---------- Groovebox preview: a step grid with a sweeping playhead (pure CSS) ---------- */
+.tb-seq { position: relative; display: grid; grid-template-columns: repeat(16, .72rem); grid-auto-rows: .72rem; gap: 3px; }
+.tb-seq i { border-radius: 3px; background: var(--bs-border-color, #dee2e6); }
+.tb-seq i.on { background: var(--bs-link-color, var(--bs-primary, #325d88)); }
+.tb-head { position: absolute; top: -3px; bottom: -3px; left: -2px; width: calc(.72rem + 4px); border: 2px solid #f47c3c; border-radius: 4px; animation: tb-sweep 2s steps(16, jump-none) infinite; }
+@keyframes tb-sweep { from { transform: translateX(0); } to { transform: translateX(calc(15 * (.72rem + 3px))); } }
+@media (prefers-reduced-motion: reduce) { .tb-head { animation: none; } }
