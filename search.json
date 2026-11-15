@@ -25,7 +25,7 @@
     "href": "toolbox/index.html#music",
     "title": "Toolbox",
     "section": "Music",
-    "text": "Music\n\n\n  \n    \n    \n      Groovebox\n      A small rack of electronic instruments: launch ready-made loops (drums, bass, guitar, keys) that change at the next bar, play 16 MPC-style pads and a keyboard, and bend the whole mix with a Kaoss-style XY pad (filter, reverb, echo, flanger). Shape each sound and watch it on the oscilloscope.\n      Loops · pads · keys · XY effects pad · mixer · oscilloscope · works on smartphone\n      Open the Groovebox →"
+    "text": "Music\n\n\n  \n    \n    \n      Groovebox\n      A small rack of electronic instruments: launch ready-made loops (drums, bass, guitar, keys) that change at the next bar, play 16 MPC-style pads and a keyboard, and bend the whole mix with a Kaoss-style XY pad (filter, reverb, echo, flanger). Shape each sound and watch it on the oscilloscope.\n      Loops · pads · keys · XY effects pad · mixer · oscilloscope · works on smartphone\n      Open the Groovebox →\n    \n  \n\n  \n    \n      \n      \n      \n      \n    \n    \n      Waveshaper & Granular\n      Two ways to sculpt a sound. Draw the transfer curve y = f(x) and watch the harmonics appear in the spectrum, or build them from Chebyshev polynomials. Then cut a sound (sweep, chords, microphone or your own file) into grains and play with position, spray, size, density and pitch.\n      Drawable curve · live spectrum · grain cloud · microphone and audio file · works on smartphone\n      Open the lab →"
   },
   {
     "objectID": "toolbox/index.html#lab-tools",

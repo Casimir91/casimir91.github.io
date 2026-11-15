@@ -16,6 +16,56 @@
 <style>
   .chips[hidden], #pwaInstall[hidden] { display: none; }
   #pwaInstall { padding: .3rem .8rem; min-height: 2.25rem; }
+  /* waveshaper / granular */
+  .ws-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
+  canvas.ws-curve { height: 13rem; touch-action: none; cursor: crosshair; background: color-mix(in srgb, var(--surface) 70%, transparent); }
+  canvas.ws-spec { height: 13rem; }
+  canvas.gr-wave { height: 6rem; touch-action: none; cursor: pointer; }
+  .harm-link { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; font-size: .9rem; }
+  .harm-link span { flex: 1 1 14rem; } .harm-link button { padding: .3rem .8rem; min-height: 2.3rem; }
+  #grGrab button[disabled] { opacity: .5; }
+  @media (max-width: 640px) { .ws-wrap { grid-template-columns: 1fr; } canvas.ws-curve, canvas.ws-spec { height: 11rem; } }
+  /* Song timeline */
+  .song { display: flex; flex-direction: column; gap: .6rem; --lh: 3.1rem; --rh: 1.7rem; --hw: 5rem; }
+  .song-bar { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; }
+  .song-bar .grow { flex: 1; }
+  .song-bar button { padding: .35rem .75rem; min-height: 2.4rem; }
+  .song-bar .go[aria-pressed="true"] { background: #c0392b; border-color: #c0392b; color: #fff; }
+  .song-info { margin: 0; color: var(--muted); font-size: .85rem; font-variant-numeric: tabular-nums; }
+  .song-scroll { display: flex; overflow-x: auto; border: 1px solid var(--border); border-radius: .6rem; background: var(--bg); position: relative; }
+  .sg-heads { position: sticky; left: 0; z-index: 3; flex: 0 0 var(--hw); background: var(--surface); border-right: 1px solid var(--border); }
+  .sg-corner { height: var(--rh); border-bottom: 1px solid var(--border); }
+  .sg-head { height: var(--lh); display: flex; align-items: center; justify-content: space-between; gap: .2rem; padding: 0 .35rem 0 .5rem; border-bottom: 1px solid var(--border); border-left: 4px solid var(--lc); font-size: .8rem; cursor: pointer; }
+  .sg-head.on { background: color-mix(in srgb, var(--lc) 16%, var(--surface)); }
+  .sg-head .m { min-width: 1.7rem; min-height: 1.7rem; padding: 0; font-size: .72rem; border-radius: .4rem; }
+  .sg-head .m[aria-pressed="true"] { background: var(--muted); color: var(--bg); }
+  .sg-lanes { position: relative; flex: 0 0 auto; width: calc(var(--cw) * var(--len)); }
+  .sg-ruler { display: flex; height: var(--rh); border-bottom: 1px solid var(--border); position: sticky; top: 0; }
+  .sg-rc { flex: 0 0 var(--cw); border-left: 1px solid var(--border); font-size: .72rem; color: var(--muted); padding: .25rem .3rem 0; cursor: pointer; user-select: none; touch-action: pan-x pan-y; }
+  .sg-rc.now { background: color-mix(in srgb, var(--primary) 22%, transparent); color: var(--fg); }
+  .sg-rc.cur span::before { content: "▸ "; color: var(--accent); }
+  .sg-lane { position: relative; height: var(--lh); border-bottom: 1px solid var(--border); touch-action: pan-x pan-y;
+    background-image: linear-gradient(to right, var(--border) 1px, transparent 1px), linear-gradient(to right, color-mix(in srgb, var(--border) 45%, transparent) 1px, transparent 1px);
+    background-size: var(--cw) 100%, calc(var(--cw) / 4) 100%; }
+  .sg-lane.on { background-color: color-mix(in srgb, var(--lc) 5%, transparent); }
+  .sg-lane.armed { cursor: copy; outline: 1px dashed var(--lc); outline-offset: -2px; }
+  .sg-lane.muted .sg-clip { opacity: .4; }
+  .sg-clip { position: absolute; top: .22rem; bottom: .22rem; border-radius: .4rem; border: 1px solid var(--lc); background: color-mix(in srgb, var(--lc) 26%, var(--surface)); overflow: hidden; touch-action: none; cursor: grab; }
+  .sg-clip.sel { box-shadow: 0 0 0 2px var(--fg); z-index: 2; }
+  .sg-clip .sg-th { position: absolute; inset: 0; width: 100%; height: 100%; background: none; border: 0; border-radius: 0; opacity: .75; pointer-events: none; }
+  .sg-clip .nm { position: absolute; left: .3rem; top: .08rem; font-size: .68rem; font-weight: 600; line-height: 1; max-width: calc(100% - .8rem); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; pointer-events: none; text-shadow: 0 0 3px var(--surface), 0 0 3px var(--surface); }
+  .sg-clip .rh { position: absolute; right: 0; top: 0; bottom: 0; width: .9rem; cursor: ew-resize; background: linear-gradient(to right, transparent, color-mix(in srgb, var(--lc) 70%, transparent)); }
+  .sg-cursor { position: absolute; top: 0; bottom: 0; left: 0; width: 0; border-left: 2px solid var(--accent); pointer-events: none; z-index: 4; }
+  .sg-head-line { position: absolute; top: 0; bottom: 0; left: 0; width: 0; border-left: 2px solid var(--primary); box-shadow: 0 0 6px var(--primary); pointer-events: none; z-index: 5; display: none; }
+  .song-act { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; min-height: 2.5rem; }
+  .song-act button { padding: .3rem .7rem; min-height: 2.2rem; }
+  .song-bin h3 { margin: 0 0 .3rem; font-size: .85rem; font-weight: 500; }
+  .song-bin h3 small { color: var(--muted); font-weight: 400; margin-left: .4rem; }
+  .song-bin .chips button { padding: .3rem .7rem; min-height: 2.2rem; font-size: .88rem; }
+  .song-bin .chips button[aria-pressed="true"] { border-color: var(--primary); background: color-mix(in srgb, var(--primary) 22%, var(--surface)); }
+  #songScenes button { padding: .3rem .7rem; min-height: 2.2rem; font-size: .88rem; }
+  @media (max-width: 520px) { .song #songScenes, .song-bin .chips { flex-wrap: nowrap; overflow-x: auto; padding-bottom: .3rem; } .song #songScenes > *, .song-bin .chips > * { flex: 0 0 auto; } .song { --hw: 4.2rem; --lh: 2.9rem; } .sg-head b { font-size: .72rem; } }
+
   :root { --barh: 3.6rem; }
   .grv { width: min(100%, 62rem); margin: 0 auto; padding: .25rem 1rem 2.5rem; display: flex; flex-direction: column; gap: .8rem; }
   h1 { font-size: 1.5rem; font-weight: 500; margin: 0; letter-spacing: -.01em; }
@@ -312,6 +362,26 @@
       </details>
     </section>
 
+    <!-- SONG -->
+    <section class="view" id="v-song" data-view="song" hidden>
+      <div id="songRoot" class="song">
+        <div class="song-bar">
+          <button class="go" id="songPlay" aria-pressed="false">▶ Play song</button>
+          <button id="songLoop" class="toggle" aria-pressed="true" title="Go back to the start when the song ends">⟲ Loop</button>
+          <span class="grow"></span>
+          <button id="songZoomOut" aria-label="Zoom out">－</button><button id="songZoomIn" aria-label="Zoom in">＋</button>
+          <button id="songLess" title="Shorten the timeline by one cycle">− cycle</button><button id="songMore" title="Add four cycles at the end">+ 4 cycles</button>
+          <button id="songClear">Clear</button><button id="songRender" title="Plays the song once and saves it: format and tracks are chosen in Mix FX › Export">● Render</button>
+        </div>
+        <p class="song-info" id="songInfo"></p>
+        <div class="song-scroll" id="songScroll"><div class="sg-heads" id="songHeads"></div><div class="sg-lanes" id="songLanes"></div></div>
+        <div class="song-act" id="songAct"></div>
+        <div class="chips" id="songScenes"></div>
+        <div class="song-bin" id="songBin"></div>
+        <p class="note">A block is a <b>4-bar loop</b>; every column of the ruler is one cycle (the bar numbers are the first bar of each). <b>Pick a loop</b> below, then <b>tap or drag</b> in its lane to place it. <b>Scenes</b> drop six loops at the pink cursor (click the ruler to move it). While the song plays you can still edit: changes enter at the next cycle. Key, scale, chords and tempo stay as you set them in Loops.</p>
+      </div>
+    </section>
+
     <!-- PADS -->
     <section class="view" id="v-pads" data-view="pads" hidden>
       <div class="vh"><h2>Pads</h2><span class="note">Touch the <b>centre</b> of a pad for a loud hit, the <b>edge</b> for a soft one (like a real drum skin).</span></div>
@@ -362,6 +432,30 @@
       <p class="note" id="xyNote"></p>
       <div class="vh"><h2>Mixer</h2><button id="mixReset">↺ Reset</button></div>
       <div class="mixer" id="mixer"></div>
+      <details class="sec" id="sec-ws">
+        <summary>Waveshaper <span class="chip" id="wsChip">off</span></summary>
+        <div class="sec-body">
+          <p class="note">A <b>transfer function</b> y = f(x): every sample of the master goes in as x and comes out as f(x). A straight line leaves the sound alone; a curve that flattens (soft clip) adds <b>harmonics</b>. <b>Draw</b> your own curve on the plot, pick a preset, or build it from the Lab harmonics (Chebyshev: Tₙ(cos θ) = cos nθ). The shaded band is where your music sits on the curve: more drive means a wider band. It also acts on the Drums / Bass stems when you record.</p>
+          <div class="lab-tools"><button id="wsOn" class="toggle" aria-pressed="false">○ Waveshaper off</button><button id="wsSmooth">Smooth the curve</button></div>
+          <div class="ws-wrap"><canvas id="wsCurve" class="scr ws-curve" aria-label="Transfer function: draw it with your finger"></canvas><canvas id="wsSpec" class="scr ws-spec" aria-label="Spectrum of the shaped signal"></canvas></div>
+          <div class="chips" id="wsPresets"><span>Curve</span></div>
+          <div id="wsParams"></div>
+        </div>
+      </details>
+      <details class="sec" id="sec-gr">
+        <summary>Granular cloud <span class="chip" id="grChip">no sample</span></summary>
+        <div class="sec-body">
+          <p class="note">The sample is cut into tiny <b>grains</b> (3–500 ms), each with a smooth window, scattered around a <b>position</b> and played hundreds per second: a cloud. Short grains of Δt ms smear the pitch by about Δf ≈ 1/Δt. Grab what the groove is playing, or load a file of yours: it is decoded inside your browser, <b>never uploaded and never saved</b> (it disappears when you reload). Use only audio you have the right to use. The cloud goes into the mix before the master filter and effects, so it is in the master recording but not in the Drums / Bass stems.</p>
+          <div class="chips" id="grGrab"><span>Sample</span><button data-bars="2">● Grab 2 bars</button><button data-bars="4">● Grab 4 bars</button><button id="grFileBtn" type="button">Load a file…</button><input id="grFile" type="file" accept="audio/*" hidden></div>
+          <p class="note" id="grSrcName">No sample yet: press Play, then grab the groove.</p>
+          <canvas id="grWave" class="scr gr-wave" aria-label="Sample waveform: tap to move the position"></canvas>
+          <div class="lab-tools"><button id="grPlay" class="toggle" aria-pressed="false">▶ Start cloud</button></div>
+          <div id="grSliders"></div>
+          <p class="note" id="grRead"></p>
+          <div class="chips" id="grWin"><span>Window</span><button data-w="hann" aria-pressed="true">Hann</button><button data-w="gauss" aria-pressed="false">Gauss</button><button data-w="tri" aria-pressed="false">Triangle</button><button data-w="tukey" aria-pressed="false">Tukey</button><button data-w="rect" aria-pressed="false">Rectangle</button></div>
+          <div class="chips" id="grTime"><span>Timing</span><button data-t="reg" aria-pressed="true">Regular</button><button data-t="rnd" aria-pressed="false">Random (Poisson)</button></div>
+        </div>
+      </details>
       <details class="sec" id="sec-export">
         <summary>Export · record <span class="chip" id="expChip"></span></summary>
         <div class="sec-body">
@@ -492,6 +586,7 @@
             <div class="harm-sliders" id="harmSliders"></div>
           </div>
           <div class="chips" id="harmPresets"></div>
+          <div class="harm-link" id="harmLink"></div>
           <p class="harm-eq" id="harmEq"></p>
           <div class="lab-tools"><button id="harmHear" class="toggle" aria-pressed="false">▶ Hold to hear (A3)</button></div>
         </div>
@@ -536,6 +631,7 @@
     <button class="primary play" aria-pressed="false">▶ Play</button>
     <div class="tabs" id="tabs" role="tablist">
       <button role="tab" data-tab="loops" aria-selected="true"><span class="ic">▦</span>Loops</button>
+      <button role="tab" data-tab="song" aria-selected="false"><span class="ic">☰</span>Song</button>
       <button role="tab" data-tab="pads" aria-selected="false"><span class="ic">◼</span>Pads</button>
       <button role="tab" data-tab="keys" aria-selected="false"><span class="ic">♪</span>Keys</button>
       <button role="tab" data-tab="fx" aria-selected="false"><span class="ic">◉</span>Mix&nbsp;FX</button>

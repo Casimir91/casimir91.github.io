@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Calculator · Toolbox</title>
+<link rel="stylesheet" href="toolbox.css">
+<link rel="stylesheet" href="vendor/mathlive/mathlive-fonts.css">
+<link rel="stylesheet" href="vendor/mathlive/mathlive-static.css">
+<link rel="stylesheet" href="calculator.css">
+<script src="toolbox.js"></script>
+</head>
+<body data-zoom-max="1.6">
+  <div class="topbar">
+    <a href="index.html">← Toolbox</a>
+    <span class="status">Fractions · decimals · standard form</span>
+    <div class="themebar" id="themebar"></div>
+  </div>
+
+  <main class="calc" id="calc">
+    <section class="screen" aria-label="Display">
+      <ol class="history" id="history" aria-label="Previous calculations"></ol>
+      <div class="entry" id="entry"></div>
+      <div class="result" id="result" aria-live="polite">
+        <div class="res-main" id="resMain"></div>
+        <div class="res-note" id="resNote"></div>
+      </div>
+      <div class="formats" id="formats" role="group" aria-label="Show the result as"></div>
+    </section>
+
+    <section class="pad" id="pad" aria-label="Keypad"></section>
+  </main>
+
+  <div class="controls zoombar">
+    <button id="zoomOut" aria-label="Smaller">A−</button>
+    <button id="zoomIn" aria-label="Larger">A+</button>
+  </div>
+
+  <noscript><p class="status">This calculator needs JavaScript.</p></noscript>
+  <script type="module" src="calculator.js"></script>
+</body>
+</html>

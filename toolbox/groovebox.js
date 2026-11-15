@@ -11,6 +11,8 @@ import { audio, audioSupported } from '../mosaicus/app/js/audio.js';
 import { Screen } from '../mosaicus/app/js/screen.js';
 import { SCALES, noteFreq, TIMBRES } from '../mosaicus/app/js/dsp.js';
 import { prepareRecorder, Tap, encodeWav, encodeMp3, zip } from './gb-export.js';
+import { initSong } from './gb-song.js';
+import { buildShaper, initFx } from './gb-fx.js';
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -312,7 +314,7 @@ let xrec = null; // the export in progress (see Export · record)
 let A = null; // { ctx, bus, hp, lp, an, buf, conv, revOut, aud, strips, sess }
 //   channel strip (one per sound):  voice ─► vol ─┬─► dry ─► bus
 //                                                 └─► send ─► reverb (ConvolverNode) ─► return ─► bus
-//   bus ─► high-pass ─► low-pass ─► compressor ─► master            (filters act on the whole mix, reverb included)
+//   bus ─► high-pass ─► low-pass ─► waveshaper (dry/wet) ─► compressor ─► master            (filters act on the whole mix, reverb included)
 const GTRIM = { drums: 0.75, bass: 0.5, guitar: 2.0, keys: 2.4 }; // the references have far more mid-range than bass in the mix: loops are balanced like that (live keys and pads are untouched)
 let kickMul = 1; // temporary boost of the kick (drop effect)
 const volGain = (id) => (S.gmute[GROUP[id]] || S.gmute[MUTEK[id]] ? 0 : Math.pow(S.mix[id].vol / 80, 1.6) * (id === 'vox' ? 1 : Math.pow(S.grp[GROUP[id]] / 80, 1.6) * (GTRIM[GROUP[id]] ?? 1) * (id === 'kick' ? kickMul : 1))); // voice pads: the Pads fader is already applied by the pad itself          // 80 = unity gain, 100 = +4 dB
@@ -357,7 +359,7 @@ function applyFx() {
 let irTimer = 0;
 function applyReverbTime() { clearTimeout(irTimer); irTimer = setTimeout(() => { if (A) { A.conv.buffer = impulse(A.ctx, S.fx.rtime); if (xrec) for (const st of xrec.stems) st.conv.buffer = A.conv.buffer; } }, 150); }
 /** Effects of the XY pad: three parallel sends taken after the filters (reverb, echo, flanger). The filter is an insert (hp + lp). */
-function buildFx(ctx, lp, comp) {
+function buildFx(ctx, lp, comp, main = false) {
   const G = (v = 0) => { const g = ctx.createGain(); g.gain.value = v; return g; };
   const rs = G(), cS = ctx.createConvolver(), cL = ctx.createConvolver(), oS = G(1), oL = G(0);
   cS.buffer = impulse(ctx, 0.6); cL.buffer = impulse(ctx, 2.8); lp.connect(rs); rs.connect(cS); rs.connect(cL); cS.connect(oS); cL.connect(oL); oS.connect(comp); oL.connect(comp);
@@ -365,7 +367,8 @@ function buildFx(ctx, lp, comp) {
   lp.connect(es); es.connect(dl); dl.connect(ef); ef.connect(fb); fb.connect(dl); ef.connect(comp);
   const fs = G(), fd = ctx.createDelay(0.05), lfo = ctx.createOscillator(), depth = G(0.002), ffb = G(0.5); fd.delayTime.value = 0.005; lfo.frequency.value = 0.5;
   lfo.connect(depth); depth.connect(fd.delayTime); lfo.start(); lp.connect(fs); fs.connect(fd); fd.connect(ffb); ffb.connect(fd); fd.connect(comp);
-  return { rs, oS, oL, es, dl, fb, fs, lfo, depth, ffb };
+  const ws = buildShaper(ctx, lp, comp, main); // the waveshaper insert: lp → (dry + shaped) → comp
+  return { rs, oS, oL, es, dl, fb, fs, lfo, depth, ffb, ws };
 }
 const ECHO_DIV = [1 / 16, 1 / 8, 3 / 16, 1 / 4, 3 / 8, 1 / 2, 3 / 4, 1]; // delay times in beats: the echo stays in time with the beat
 /** One XY pad position (x, y in 0…1, y up) for one effect; on = false releases it. */
@@ -395,10 +398,10 @@ function engine() {
     const comp = ctx.createDynamicsCompressor();
     comp.threshold.value = -10; comp.knee.value = 8; comp.ratio.value = 4; comp.attack.value = 0.003; comp.release.value = 0.12;
     const an = ctx.createAnalyser(); an.fftSize = 32768; an.smoothingTimeConstant = 0;
-    bus.connect(hp); hp.connect(lp); lp.connect(comp); comp.connect(master); comp.connect(an);
+    bus.connect(hp); hp.connect(lp); comp.connect(master); comp.connect(an);
     const conv = ctx.createConvolver(); conv.buffer = impulse(ctx, S.fx.rtime);
     const revOut = ctx.createGain(); revOut.gain.value = S.fx.rev / 100; conv.connect(revOut); revOut.connect(bus);
-    A = { ctx, master, bus, hp, lp, an, buf: new Float32Array(an.fftSize), conv, revOut, aud: null, strips: null, sess: null, fx: buildFx(ctx, lp, comp), gan: {}, gbuf: new Float32Array(1024) };
+    A = { ctx, master, bus, hp, lp, an, buf: new Float32Array(an.fftSize), conv, revOut, aud: null, strips: null, sess: null, fx: buildFx(ctx, lp, comp, true), gan: {}, gbuf: new Float32Array(1024) };
     for (const g of [...GROUPS.map(([k]) => k), 'live', 'pads']) { const a = ctx.createAnalyser(); a.fftSize = 1024; a.smoothingTimeConstant = 0; A.gan[g] = a; } // one level meter per group (after its fader)
     A.aud = makeStrips(bus, conv);
     // iPhone: a silent one-sample buffer played inside the first tap "unlocks" the output
@@ -878,6 +881,7 @@ function tick() {
       if (bar === 0) cycleT0 = nextT; // start of the 4-bar cycle: the recorders measure positions from here
       if (xrec) recBar(nextT);
       if (pendScene) { Object.assign(S, pendScene); pendScene = null; syncDirty = true; }
+      if (bar === 0) song.cycle(nextT);   // the Song timeline queues the loops of the next 4-bar cycle
       for (const [k] of SLOTS) { const sl = SL[k]; if (sl.next !== undefined) { sl.cur = sl.next; sl.next = undefined; loopsDirty = true; if (sl.cur && sl.cur !== 'mine') { clipExtras(k, sl.cur); copyToMine(k, sl.cur); } } }
       curBass = bassOf(bar); curCov = coverOf(curBass.b, curBass.l);
     }
@@ -909,6 +913,7 @@ function stop() {
   if (recording) stopRec();
   if (padRec) stopPadRec();
   if (xrec) finishExport(true);
+  song.stopped();
   clearInterval(timer); playing = false; queue.length = 0; setCur(-1, -1);
   if (A?.sess) {
     const { dry, wet } = A.sess, t = A.ctx.currentTime;
@@ -1306,7 +1311,7 @@ document.addEventListener('click', (e) => { // Step: put a loop into ONE instrum
 
 // ---------------------------------------------------------------- views (one instrument at a time) and the Step accordion
 const phone = matchMedia('(max-width: 680px)');
-const TABS = ['loops', 'pads', 'keys', 'fx', 'step', 'lab'];
+const TABS = ['loops', 'song', 'pads', 'keys', 'fx', 'step', 'lab'];
 const UI = { tab: TABS.includes(store.get('tab', 'loops')) ? store.get('tab', 'loops') : 'loops', prev: 'loops', seenFx: store.get('seenFx', false) };
 const secs = $$('#sections .sec');
 let labDirty = true;
@@ -1318,6 +1323,8 @@ function showView(id) {
   $$('.view').forEach((v) => (v.hidden = v.dataset.view !== id));
   $$('#tabs [data-tab]').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.tab === id)));
   if (id === 'lab') labDirty = true;
+  if (id === 'song') song.show();
+  if (id === 'fx') fx.redraw();
   if (id === 'fx') { UI.seenFx = true; store.set('seenFx', true); paintMixer(); }
   paintGuide(); window.scrollTo({ top: 0 });
 }
@@ -1358,6 +1365,7 @@ function renderLabPanel() {
     : `<label class="pn-row"><span>${q.label}</span><output id="o_${q.k}">${p[q.k]} ${q.unit}</output>` +
       `<input type="range" data-k="${q.k}" min="${q.min}" max="${q.max}" step="1" value="${p[q.k]}" aria-label="${s.name} ${q.label}"><small>${q.desc}</small></label>`).join('');
   $('#soloBtn').setAttribute('aria-pressed', String(S.solo === s.id));
+  if (typeof paintHarmLink === 'function') paintHarmLink();
 }
 // ---------------------------------------------------------------- app (PWA): installable and offline
 {
@@ -1384,7 +1392,7 @@ function buildStem(group, tapIn) {
   const conv = c.createConvolver(); conv.buffer = A.conv.buffer; const rev = G(S.fx.rev / 100); conv.connect(rev); rev.connect(sum);
   const dry = G(LOOP_TRIM); dry.connect(sum);
   const dl = c.createDelay(0.05); dl.delayTime.value = 0.006; // the master compressor looks 6 ms ahead: the stems get the same delay, so all tracks line up in a DAW
-  sum.connect(hp); hp.connect(lp); lp.connect(dl); dl.connect(out); out.connect(tapIn);
+  sum.connect(hp); hp.connect(lp); dl.connect(out); out.connect(tapIn);
   const fx = buildFx(c, lp, dl);
   const link = (a, b) => { a.connect(b); links.push([a, b]); };
   for (const sd of SOUNDS) if (GROUP[sd.id] === group) {
@@ -1420,10 +1428,10 @@ function recBar(T) { // called by the scheduler at every bar line, with the exac
   if (x.state === 'armed') { x.state = 'rec'; x.t0 = Math.round(T * x.sr); x.bar = 0; return; }
   if (x.state === 'rec') { x.bar++; if ((x.n && x.bar >= x.n) || (T * x.sr - x.t0) / x.sr >= MAX_REC) finishExport(false, Math.round(T * x.sr)); }
 }
-async function startExport() {
+async function startExport(bars = EXP.bars) {
   if (xrec) return;
   const b = engine(), sr = b.ctx.sampleRate;
-  xrec = { state: 'prep', n: EXP.bars, bar: 0, t0: 0, t1: 0, sr, taps: {}, stems: [], fxs: [], fmt: EXP.fmt, trk: [...EXP.trk], timer: 0 }; paintExp();
+  xrec = { state: 'prep', n: bars, bar: 0, t0: 0, t1: 0, sr, taps: {}, stems: [], fxs: [], fmt: EXP.fmt, trk: [...EXP.trk], timer: 0 }; paintExp();
   try { await prepareRecorder(b.ctx); } catch (e) { xrec = null; expMsg(e.message); paintExp(); return; }
   const x = xrec; for (const t of x.trk) x.taps[t] = new Tap(b.ctx);
   if (x.taps.master) b.master.connect(x.taps.master.input);
@@ -1492,12 +1500,29 @@ function paintHarm() {
   $('#harmEq').textContent = `y = ${terms.join(' + ') || '0'}  ·  peak-normalised, 2 periods shown`;
   if (harmTone) setWave(A.ctx, harmTone.o, 'custom');
   const chip = $('#harmChip'); if (chip) chip.textContent = S.harm.filter((a) => a > 0.004).length + ' harmonics';
+  paintHarmLink();
+}
+/** The harmonics only sound through a sound whose Waveform is Custom: this row says which one, and links to it. */
+function paintHarmLink() {
+  const row = $('#harmLink'); if (!row) return; const s = byId(S.sel), q = s.params.find((x) => x.choice), p = S.params[s.id];
+  if (!q) row.innerHTML = `<span>The selected sound (${s.name}) has no waveform: choose a synth sound (bass, chords, low, arp, pads…) in the Sound lab above.</span>`;
+  else if (p[q.k] === 'custom') row.innerHTML = `<span>✓ <b>${s.name}</b> uses this waveform: the Sound lab chart above follows the sliders.</span><button data-hl="spec">▮ See the spectrum</button><button data-hl="full">∿ See the wave</button>`;
+  else row.innerHTML = `<span><b>${s.name}</b> uses <b>${p[q.k]}</b>, so these sliders are not heard yet.</span><button data-hl="use">Use Custom on ${s.name}</button>`;
+}
+function harmChanged() { // the harmonics changed: if the selected sound uses them, the Lab chart redraws (grey = before)
+  const s = byId(S.sel), q = s.params.find((x) => x.choice); if (q && S.params[s.id][q.k] === 'custom') { lab.ghost = lab.buf; renderLab(); }
+  fx.chebChanged();
 }
 {
   $('#harmSliders').innerHTML = S.harm.map((_, i) => `<label><output>0.00</output><input type="range" min="0" max="100" step="1" data-n="${i}" aria-label="Amplitude of harmonic ${i + 1}"><b>${i + 1}</b></label>`).join('');
   $('#harmPresets').innerHTML = HARM_PRESETS.map(([n], i) => `<button data-hp="${i}">${n}</button>`).join('');
-  $('#harmSliders').addEventListener('input', (e) => { const r = e.target.closest('input[data-n]'); if (!r) return; S.harm[+r.dataset.n] = +r.value / 100; paintHarm(); saveAll(); });
-  $('#harmPresets').addEventListener('click', (e) => { const b = e.target.closest('[data-hp]'); if (!b) return; const a = HARM_PRESETS[+b.dataset.hp][1], m = Math.max(...a); S.harm = a.map((v) => Math.round((v / m) * 100) / 100); paintHarm(); saveAll(); });
+  $('#harmSliders').addEventListener('input', (e) => { const r = e.target.closest('input[data-n]'); if (!r) return; S.harm[+r.dataset.n] = +r.value / 100; paintHarm(); saveAll(); harmChanged(); });
+  $('#harmPresets').addEventListener('click', (e) => { const b = e.target.closest('[data-hp]'); if (!b) return; const a = HARM_PRESETS[+b.dataset.hp][1], m = Math.max(...a); S.harm = a.map((v) => Math.round((v / m) * 100) / 100); paintHarm(); saveAll(); harmChanged(); });
+  $('#harmLink').addEventListener('click', (e) => {
+    const b = e.target.closest('[data-hl]'); if (!b) return; const s = byId(S.sel), q = s.params.find((x) => x.choice);
+    if (b.dataset.hl === 'use' && q) { lab.ghost = lab.buf; S.params[s.id][q.k] = 'custom'; renderLabPanel(); saveAll(); paintBass(); renderLab(); preview(S.sel); paintHarmLink(); }
+    else if (b.dataset.hl === 'spec' || b.dataset.hl === 'full') { S.labView = b.dataset.hl; paintLabView(); saveAll(); drawLab(); $('#sec-lab').open = true; $('#sec-lab').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  });
   const hb = $('#harmHear'), stop = () => { hb.setAttribute('aria-pressed', 'false'); if (!harmTone) return; const { o, g } = harmTone, t = A.ctx.currentTime; harmTone = null; g.gain.cancelScheduledValues(t); g.gain.setTargetAtTime(0, t, 0.04); o.stop(t + 0.3); };
   hb.addEventListener('pointerdown', (e) => { e.preventDefault(); engine(); stop(); hb.setPointerCapture?.(e.pointerId); hb.setAttribute('aria-pressed', 'true'); const c = A.ctx, o = c.createOscillator(), g = c.createGain(); setWave(c, o, 'custom'); o.frequency.value = 220; g.gain.value = 0; g.gain.setTargetAtTime(0.22, c.currentTime, 0.02); o.connect(g).connect(A.aud.keys.vol); o.start(); harmTone = { o, g }; });
   for (const ev of ['pointerup', 'pointercancel', 'lostpointercapture']) hb.addEventListener(ev, stop);
@@ -2029,6 +2054,17 @@ function frame() {
 }
 
 buildGrids(); buildLoad(); buildArp(); buildProg(); buildLoops(); buildPads(); buildMixer(); buildKb(); buildKeySounds(); paintKeysUi(); renderLabPanel(); paintLabView(); paintScopeButtons(); paintXyUi();
+// ---------------------------------------------------------------- Song: multitrack timeline (gb-song.js)
+const song = initSong({
+  $, $$, store, SLOTS, CLIPS, CLIP_BY_ID, SCENES, SL, S, TRACKS, SLOT_OF,
+  isPlaying: () => playing, play: () => play(), stop: () => stop(), now: () => (A ? A.ctx.currentTime : 0), audioSupported,
+  setTempoFromClip: (id) => { const c = CLIP_BY_ID[id]; if (c && c.bpm) { S.bpm = c.bpm; S.swing = c.swing; paintReadout(); } },
+  startExport: (n) => startExport(n), status: (t) => { $('#status').textContent = t; },
+});
+const fx = initFx({
+  $, $$, store, S, engine: () => engine(), A: () => A, status: (t) => { $('#status').textContent = t; },
+  fxList: () => (A ? [A.fx, ...(xrec ? xrec.fxs : [])] : []), bpm: () => S.bpm, isPlaying: () => playing, tabIsFx: () => UI.tab === 'fx',
+});
 $('#vol').value = Math.round(S.vol * 100); paintReadout(); paintLoops(); paintTransport(); showView(UI.tab);
 renderLab();
 requestAnimationFrame(frame);

@@ -3,7 +3,7 @@
 // network is slower than 4 s, the stored copy is used. No version number to bump after a publish.
 const CACHE = 'groovebox-app';
 const FILES = [
-  'groovebox.html', 'groovebox.js', 'gb-export.js', 'lame.min.js', 'toolbox.css', 'toolbox.js', 'groovebox.webmanifest',
+  'groovebox.html', 'groovebox.js', 'gb-export.js', 'gb-song.js', 'gb-fx.js', 'lame.min.js', 'toolbox.css', 'toolbox.js', 'groovebox.webmanifest',
   '../mosaicus/app/js/audio.js', '../mosaicus/app/js/screen.js', '../mosaicus/app/js/dsp.js',
   '../img/groovebox-192.png', '../img/groovebox-512.png', '../img/groovebox-maskable-512.png', '../img/groovebox-apple-180.png',
 ].map((f) => new URL(f, self.location).href);

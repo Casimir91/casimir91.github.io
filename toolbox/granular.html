@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Waveshaper &amp; Granular · Toolbox</title>
+<link rel="stylesheet" href="toolbox.css">
+<script src="toolbox.js"></script>
+<style>
+  :root { --gap: .8rem; }
+  .gs { width: min(100%, 68rem); margin: 0 auto; padding: .25rem 1rem 3rem; display: flex; flex-direction: column; gap: 1.1rem; align-items: stretch; justify-content: flex-start; }
+  h1 { font-size: 1.5rem; font-weight: 500; margin: 0; letter-spacing: -.01em; }
+  h2 { font-size: 1.15rem; font-weight: 500; margin: 0 0 .2rem; }
+  h2 small { color: var(--muted); font-weight: 400; margin-left: .4rem; font-family: ui-monospace, Menlo, monospace; }
+  h3 { font-size: .8rem; font-weight: 500; margin: 0 0 .3rem; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+  .sub { color: var(--muted); margin: .15rem 0 0; font-size: .95rem; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: .8rem; padding: 1rem; display: flex; flex-direction: column; gap: var(--gap); }
+  .note { color: var(--muted); font-size: .9rem; margin: 0; line-height: 1.5; }
+  .note b, .note code { color: var(--fg); font-weight: 500; }
+  code { font-family: ui-monospace, Menlo, monospace; font-size: .86em; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap); }
+  .grid2 .wide { grid-column: 1 / -1; }
+  @media (max-width: 760px) { .grid2 { grid-template-columns: 1fr; } }
+  canvas { width: 100%; display: block; background: var(--bg); border: 1px solid var(--border); border-radius: .5rem; touch-action: none; }
+  #curve { aspect-ratio: 1 / 1; width: min(100%, 26rem); margin: 0 auto; cursor: crosshair; }
+  #scope { height: 12rem; } #spec { height: 11rem; } #wave { height: 9rem; cursor: ew-resize; }
+  .chips { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; }
+  .chips > span { color: var(--muted); font-size: .85rem; margin-right: .2rem; }
+  .chips button { padding: .35rem .8rem; min-height: 2.3rem; font-size: .92rem; }
+  .chips button[aria-pressed="true"] { border-color: var(--primary); box-shadow: inset 0 0 0 1px var(--primary); }
+  .sl { display: grid; grid-template-columns: 8.5rem 1fr 5rem; gap: .5rem; align-items: center; font-size: .9rem; }
+  .sl output { color: var(--muted); font-variant-numeric: tabular-nums; text-align: right; font-size: .85rem; }
+  .sl input[type=range] { width: 100%; accent-color: var(--primary); min-height: 1.6rem; }
+  .sls { display: grid; gap: .35rem 1.6rem; grid-template-columns: 1fr 1fr; }
+  @media (max-width: 760px) { .sls { grid-template-columns: 1fr; } .sl { grid-template-columns: 7rem 1fr 4.4rem; } }
+  .cheb { display: grid; grid-template-columns: repeat(8, 1fr); gap: .3rem; text-align: center; font-size: .78rem; }
+  .cheb label { display: grid; gap: .2rem; justify-items: center; }
+  .cheb input { writing-mode: vertical-lr; direction: rtl; height: 6.5rem; width: 1.7rem; accent-color: var(--primary); }
+  .cheb output { color: var(--muted); font-variant-numeric: tabular-nums; }
+  details > summary { cursor: pointer; font-size: .92rem; color: var(--muted); }
+  button.go { background: var(--primary); color: var(--primary-fg); border-color: var(--primary); font-weight: 500; }
+  button.go[aria-pressed="true"] { background: #c0392b; border-color: #c0392b; color: #fff; }
+  .read { font-variant-numeric: tabular-nums; color: var(--fg); font-size: .9rem; margin: 0; overflow-wrap: anywhere; }
+  .row { display: flex; flex-wrap: wrap; gap: .6rem 1rem; align-items: center; }
+  select { font: inherit; color: inherit; background: var(--surface); border: 1px solid var(--border); border-radius: .5rem; padding: .45rem .6rem; min-height: 2.5rem; }
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <a href="index.html">← Toolbox</a>
+    <span class="status" id="status">Press a Play button to start the sound</span>
+    <div class="themebar" id="themebar"></div>
+  </div>
+
+  <main class="gs">
+    <header>
+      <h1>Waveshaper &amp; Granular</h1>
+      <p class="sub">Two ways to sculpt a sound: bend the waveform with a curve, or cut it into thousands of tiny grains.</p>
+    </header>
+
+    <!-- ======================================================= WAVESHAPER -->
+    <section class="card" id="ws">
+      <h2>1 · Waveshaper <small>y = f(x)</small></h2>
+      <p class="note">Every sample <code>x</code> of the input goes through the curve and comes out as <code>y = f(x)</code>. A straight line changes nothing; a bent line adds <b>harmonics</b> (look at the spectrum). <b>Draw the curve</b> with finger or mouse, pick a preset, or build it from <b>Chebyshev polynomials</b>: with a full-scale sine in, <code>T<sub>n</sub>(cos θ) = cos nθ</code>, so each coefficient is exactly the amplitude of one harmonic.</p>
+
+      <div class="chips" id="wsSrc"><span>Input</span>
+        <button data-src="sine" aria-pressed="true">Sine</button><button data-src="triangle" aria-pressed="false">Triangle</button><button data-src="sawtooth" aria-pressed="false">Saw</button><button data-src="grain" aria-pressed="false">Granular cloud</button>
+      </div>
+      <div class="row"><button class="go" id="wsPlay" aria-pressed="false">▶ Play</button><span class="read" id="wsRead"></span></div>
+
+      <div class="grid2">
+        <div><h3>Transfer function · draw me</h3><canvas id="curve" aria-label="Transfer function y = f(x), drawable"></canvas></div>
+        <div style="display:grid;gap:var(--gap);align-content:start">
+          <div><h3>Input (grey) and output (colour)</h3><canvas id="scope" aria-label="Waveform before and after the shaper"></canvas></div>
+          <div class="chips" id="wsPresets"><span>Curve</span></div>
+          <div class="sls" style="grid-template-columns:1fr" id="wsSliders"></div>
+        </div>
+        <div class="wide"><h3>Spectrum <span id="harmRead" style="text-transform:none;letter-spacing:0"></span></h3><canvas id="spec" aria-label="Spectrum of the output"></canvas></div>
+      </div>
+
+      <details id="chebBox"><summary>Harmonic recipe · Chebyshev polynomials T<sub>1</sub>…T<sub>8</sub></summary>
+        <p class="note" style="margin:.5rem 0">Set the amplitude of each harmonic: the curve becomes <code>f(x) = Σ aₙ·Tₙ(x)</code>, with <code>T₀=1, T₁=x, T₂=2x²−1, Tₙ₊₁=2x·Tₙ−Tₙ₋₁</code>. Keep the input <b>level at 100 %</b> and a <b>sine</b> input for the exact result.</p>
+        <div class="cheb" id="cheb"></div>
+      </details>
+    </section>
+
+    <!-- ======================================================= GRANULAR -->
+    <section class="card" id="gr">
+      <h2>2 · Granular synthesis <small>g(t) = w(t)·s(t+τ)</small></h2>
+      <p class="note">The sound is cut into <b>grains</b> a few milliseconds long, each shaped by a <b>window</b> <code>w(t)</code> and played back from a chosen <b>position</b> in the source. Thousands of grains per second blend into a continuous cloud. Move the position to scan through the source, scatter it with <b>spray</b>, change <b>pitch</b> without changing speed. Short grains blur the pitch: the uncertainty relation <code>Δf ≈ 1/Δt</code>.</p>
+
+      <div class="chips" id="grSrc"><span>Source</span>
+        <button data-src="sweep" aria-pressed="true">Sine sweep</button><button data-src="chord" aria-pressed="false">Plucked chords</button><button data-src="mic" aria-pressed="false">● Microphone 4 s</button>
+        <button id="grFileBtn" aria-pressed="false">Audio file…</button><input type="file" id="grFile" accept="audio/*" hidden>
+      </div>
+      <p class="note" id="srcNote"></p>
+      <canvas id="wave" aria-label="Source waveform with the grain position. Click or drag to move the position."></canvas>
+
+      <div class="row"><button class="go" id="grPlay" aria-pressed="false">▶ Start cloud</button><span class="read" id="grRead"></span></div>
+      <div class="sls" id="grSliders"></div>
+      <div class="row">
+        <div class="chips" id="grWin"><span>Window</span><button data-w="hann" aria-pressed="true">Hann</button><button data-w="gauss" aria-pressed="false">Gauss</button><button data-w="tri" aria-pressed="false">Triangle</button><button data-w="tukey" aria-pressed="false">Tukey</button><button data-w="rect" aria-pressed="false" title="No fade: every grain starts and ends with a click">Rectangle</button></div>
+        <div class="chips" id="grTime"><span>Timing</span><button data-t="reg" aria-pressed="true">Regular</button><button data-t="rnd" aria-pressed="false">Random</button></div>
+      </div>
+    </section>
+
+    <p class="note">Everything is computed live in your browser with the Web Audio API: no samples, no server. Distortion can be loud, so start with the volume low.</p>
+  </main>
+  <script type="module" src="granular.js"></script>
+</body>
+</html>
