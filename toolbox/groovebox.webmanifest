@@ -1,0 +1,18 @@
+{
+  "id": "groovebox",
+  "name": "Groovebox",
+  "short_name": "Groovebox",
+  "description": "A physics-and-music playground: loops, pads, keys, XY effects and export.",
+  "lang": "en",
+  "start_url": "groovebox.html?source=pwa",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#071d19",
+  "theme_color": "#071d19",
+  "icons": [
+    { "src": "../img/groovebox-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "../img/groovebox-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "../img/groovebox-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

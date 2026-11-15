@@ -6,8 +6,16 @@
 <title>Groovebox · Toolbox</title>
 <link rel="stylesheet" href="toolbox.css">
 <script src="toolbox.js"></script>
+<link rel="manifest" href="groovebox.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="../img/groovebox-192.png">
+<link rel="apple-touch-icon" href="../img/groovebox-apple-180.png">
+<meta name="theme-color" content="#071d19">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Groovebox">
 <style>
-  .chips[hidden] { display: none; }
+  .chips[hidden], #pwaInstall[hidden] { display: none; }
+  #pwaInstall { padding: .3rem .8rem; min-height: 2.25rem; }
   :root { --barh: 3.6rem; }
   .grv { width: min(100%, 62rem); margin: 0 auto; padding: .25rem 1rem 2.5rem; display: flex; flex-direction: column; gap: .8rem; }
   h1 { font-size: 1.5rem; font-weight: 500; margin: 0; letter-spacing: -.01em; }
@@ -112,6 +120,16 @@
   .lab-tools button[aria-pressed="true"] { background: var(--primary); border-color: var(--primary); color: var(--primary-fg); }
   #labHint { margin: 0; color: var(--muted); font-size: .92rem; }
   #labParams { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: .8rem 1.6rem; }
+  #expGo[aria-pressed="true"] { background: #c0392b; border-color: #c0392b; color: #fff; }
+  #expStatus { color: var(--muted); font-size: .9rem; margin-left: .6rem; font-variant-numeric: tabular-nums; }
+  .exp-out { list-style: none; margin: 0; padding: 0; font-size: .88rem; overflow-wrap: anywhere; }
+  .harm-wrap { display: grid; gap: .6rem; }
+  #harmScope { width: 100%; height: 7rem; }
+  .harm-sliders { display: grid; grid-template-columns: repeat(8, 1fr); gap: .25rem; text-align: center; }
+  .harm-sliders label { display: grid; gap: .2rem; justify-items: center; font-size: .78rem; }
+  .harm-sliders input { writing-mode: vertical-lr; direction: rtl; height: 9rem; width: 1.8rem; accent-color: var(--primary); }
+  .harm-sliders output { font-variant-numeric: tabular-nums; color: var(--muted); }
+  .harm-eq { font-size: .82rem; color: var(--muted); overflow-wrap: anywhere; margin: 0; }
   .pn-row { display: grid; grid-template-columns: 1fr auto; gap: 0 .5rem; align-items: center; font-size: .92rem; }
   .pn-row span { font-weight: 500; }
   .pn-row output { font-variant-numeric: tabular-nums; }
@@ -258,6 +276,7 @@
   <div class="topbar">
     <a href="index.html">← Toolbox</a>
     <span class="status" id="status" aria-live="polite">Pick a drum loop to start</span>
+    <button id="pwaInstall" class="toggle" hidden title="Install Groovebox as an app (works offline)">⤓ Install</button>
     <div class="themebar" id="themebar"></div>
   </div>
 
@@ -339,10 +358,21 @@
       <div class="chips scroll" id="perfScenes"></div>
       <div class="perf" id="perf"></div>
       <div class="chips" id="perfChords"></div>
-      <p class="note">Chords: each bar plays one degree of the scale, so bass, guitar and keys follow the scale. <b>Colour</b> = triad, 7th or 9th chords. <b>Stay</b> = the same chord for the 4 bars. A scene may choose its own progression: press Stay to flatten it.</p>
+      <p class="note">Chords: each bar plays one degree of the scale, so bass, guitar and keys follow the scale. With a 🔒 on, a scene changes only the unlocked layers and leaves key, scale and chords alone. <b>Colour</b> = triad, 7th or 9th chords. <b>Stay</b> = the same chord for the 4 bars. A scene may choose its own progression: press Stay to flatten it.</p>
       <p class="note" id="xyNote"></p>
       <div class="vh"><h2>Mixer</h2><button id="mixReset">↺ Reset</button></div>
       <div class="mixer" id="mixer"></div>
+      <details class="sec" id="sec-export">
+        <summary>Export · record <span class="chip" id="expChip"></span></summary>
+        <div class="sec-body">
+          <p class="note">Records what you hear and saves it. Press <b>Rec</b>: it starts on the next bar line (or with Play), and <b>Stop &amp; save</b> ends it. Or pick a number of bars and it stops by itself, perfect for loops. The ZIP holds the <b>Master</b> (the whole mix) plus <b>Drums</b> and <b>Bass</b> on their own, each with its fader, mute, filter, reverb and XY effects as you played them. The final compressor acts only on the Master.</p>
+          <div class="chips" id="expFmt"><span>Format</span><button data-fmt="wav" aria-pressed="true">WAV 16-bit</button><button data-fmt="mp3" aria-pressed="false">MP3 320 kbps</button><button data-fmt="both" aria-pressed="false">Both</button></div>
+          <div class="chips" id="expTrk"><span>Tracks</span><button data-trk="master" aria-pressed="true">Master</button><button data-trk="drums" aria-pressed="true">Drums</button><button data-trk="bass" aria-pressed="true">Bass</button></div>
+          <div class="chips" id="expBars"><span>Length</span><button data-bars="0" aria-pressed="true">Rec / Stop</button><button data-bars="4" aria-pressed="false">4 bars</button><button data-bars="8" aria-pressed="false">8</button><button data-bars="16" aria-pressed="false">16</button><button data-bars="32" aria-pressed="false">32</button></div>
+          <div class="lab-tools"><button id="expGo" class="toggle" aria-pressed="false">● Rec</button><output id="expStatus" role="status"></output></div>
+          <ul class="exp-out" id="expOut"></ul>
+        </div>
+      </details>
     </section>
 
     <!-- STEP -->
@@ -450,6 +480,20 @@
           <p id="labHint"></p>
           <div id="labParams"></div>
           <p class="note">Move a slider: the white trace is the sound before, the green one is the sound now.</p>
+        </div>
+      </details>
+
+      <details class="sec" id="sec-harm">
+        <summary>Custom waveform · harmonics <span class="chip" id="harmChip">8 harmonics</span></summary>
+        <div class="sec-body">
+          <p class="note">Every steady sound is a sum of sine waves: the fundamental (ω) and its harmonics (2ω, 3ω…). Slide the harmonics to build your own timbre, or start from an instrument. Then pick <b>Custom</b> as the Waveform of any sound (Sound lab, Arp, Chords, Low, Bass) or in the Keys sound list.</p>
+          <div class="harm-wrap">
+            <canvas class="scr" id="harmScope" aria-label="Waveform built from the harmonics"></canvas>
+            <div class="harm-sliders" id="harmSliders"></div>
+          </div>
+          <div class="chips" id="harmPresets"></div>
+          <p class="harm-eq" id="harmEq"></p>
+          <div class="lab-tools"><button id="harmHear" class="toggle" aria-pressed="false">▶ Hold to hear (A3)</button></div>
         </div>
       </details>
 
