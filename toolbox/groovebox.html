@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="toolbox.css">
 <script src="toolbox.js"></script>
 <style>
+  .chips[hidden] { display: none; }
   :root { --barh: 3.6rem; }
   .grv { width: min(100%, 62rem); margin: 0 auto; padding: .25rem 1rem 2.5rem; display: flex; flex-direction: column; gap: .8rem; }
   h1 { font-size: 1.5rem; font-weight: 500; margin: 0; letter-spacing: -.01em; }
@@ -17,17 +18,6 @@
   body.idle .topbar { opacity: 1; pointer-events: auto; }
   select { font: inherit; color: inherit; padding: .4rem .6rem; min-height: 2.5rem; background: var(--bg); border: 1px solid var(--border); border-radius: .5rem; }
   input[type="range"] { width: 100%; accent-color: var(--primary); min-height: 1.8rem; }
-
-  /* sticky transport: Play is always under your thumb */
-  .bar { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; gap: .8rem; padding: .5rem .8rem; min-height: var(--barh);
-         background: var(--surface); border: 1px solid var(--border); border-radius: .8rem; box-shadow: 0 2px 8px rgba(0,0,0,.12); }
-  .bar .play { min-width: 6.5rem; min-height: 2.75rem; font-size: 1.1rem; }
-  .bar .tempo { display: flex; align-items: center; gap: .4rem; }
-  .bar .tempo button { min-width: 2.5rem; padding: 0; font-size: 1.2rem; }
-  .bar .tempo output { min-width: 4.6rem; text-align: center; font-variant-numeric: tabular-nums; }
-  .bar .tempo small { color: var(--muted); }
-  .bar .solo-flag { margin-left: auto; color: var(--accent); font-size: .85rem; display: none; }
-  body.has-solo .bar .solo-flag { display: block; }
 
   /* collapsible sections */
   .sec { background: var(--surface); border: 1px solid var(--border); border-radius: .8rem; scroll-margin-top: calc(var(--barh) + .8rem); }
@@ -42,6 +32,8 @@
   .selrow b { color: var(--fg); font-weight: 500; }
   .selrow button { padding: .35rem .9rem; min-height: 2.4rem; }
   .chips { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; }
+  .cg { grid-column: 1 / -1; flex-basis: 100%; color: var(--muted); font-size: .78rem; margin: .3rem 0 0; }
+  #chordNow { margin-left: .4rem; font-variant-numeric: tabular-nums; color: var(--muted); font-size: .9rem; }
   .chips > span { color: var(--muted); font-size: .85rem; margin-right: .2rem; }
   .chips button { padding: .3rem .8rem; min-height: 2.25rem; font-size: .92rem; }
   .chips button[aria-pressed="true"], .seg button[aria-pressed="true"] { border-color: var(--primary); box-shadow: inset 0 0 0 1px var(--primary); }
@@ -139,10 +131,108 @@
   .foot { color: var(--muted); font-size: .85rem; text-align: center; }
   .foot a { color: var(--primary); }
 
+
+  /* ---- strip (tempo, bar counter) and dock (Play + tabs) ---- */
+  .strip { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; gap: .8rem; padding: .4rem .8rem; min-height: 3rem; background: var(--surface); border: 1px solid var(--border); border-radius: .8rem; box-shadow: 0 2px 8px rgba(0,0,0,.12); }
+  .tempo { display: flex; align-items: center; gap: .4rem; }
+  .tempo button { min-width: 2.5rem; padding: 0; font-size: 1.2rem; }
+  .tempo output { min-width: 4.6rem; text-align: center; font-variant-numeric: tabular-nums; }
+  .tempo small { color: var(--muted); }
+  .bardots { display: flex; gap: .35rem; margin-left: auto; align-items: center; }
+  .bardots i { width: .7rem; height: .7rem; border-radius: 50%; border: 2px solid var(--muted); opacity: .6; }
+  .bardots i.on { background: var(--accent); border-color: var(--accent); opacity: 1; }
+  .solo-flag { color: var(--accent); font-size: .85rem; display: none; }
+  body.has-solo .solo-flag { display: block; }
+  .dock { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; display: flex; align-items: stretch; gap: .4rem; padding: .4rem .6rem calc(.4rem + env(safe-area-inset-bottom)); background: var(--surface); border-top: 1px solid var(--border); box-shadow: 0 -2px 10px rgba(0,0,0,.18); }
+  .dock .play { min-width: 4.8rem; min-height: 3.2rem; font-size: 1rem; }
+  .tabs { display: flex; flex: 1; gap: .25rem; min-width: 0; max-width: 40rem; margin: 0 auto; }
+  .tabs button { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .05rem; padding: .15rem 0; min-height: 3.2rem; font-size: .72rem; border-radius: .6rem; }
+  .tabs button .ic { font-size: 1.15rem; line-height: 1; }
+  .tabs button[aria-selected="true"] { border-color: var(--primary); background: color-mix(in srgb, var(--primary) 20%, var(--surface)); }
+  @keyframes pulse { 50% { box-shadow: 0 0 0 .4rem color-mix(in srgb, var(--accent) 40%, transparent); } }
+  .next { animation: pulse 1.4s ease-in-out infinite; border-color: var(--accent) !important; }
+  @keyframes blink { 50% { opacity: .45; } }
+  .view[hidden] { display: none; }
+  .view { display: flex; flex-direction: column; gap: .8rem; }
+  .grv { padding-bottom: 6.5rem; }
+  .guide { padding: .7rem 1rem; border-radius: .8rem; background: color-mix(in srgb, var(--accent) 14%, var(--surface)); border: 1px solid color-mix(in srgb, var(--accent) 50%, var(--border)); font-weight: 500; }
+  .vh { display: flex; flex-wrap: wrap; gap: .4rem .8rem; align-items: baseline; justify-content: space-between; }
+  .vh h2 { margin: 0; font-size: 1.1rem; font-weight: 500; }
+  details.more { border: 1px dashed var(--border); border-radius: .6rem; padding: .2rem .8rem; }
+  details.more > summary { cursor: pointer; min-height: 2.4rem; display: flex; align-items: center; color: var(--muted); }
+  details.more[open] > summary { margin-bottom: .4rem; }
+
+  /* ---- Loops: clip launcher ---- */
+  .slot { --h: 24; display: flex; flex-direction: column; gap: .35rem; padding: .6rem .7rem .7rem; background: var(--surface); border: 1px solid var(--border); border-left: 6px solid hsl(var(--h) 65% 52%); border-radius: .8rem; }
+  .slot-h { display: flex; justify-content: space-between; align-items: baseline; gap: .5rem; }
+  .slot-h small { color: var(--muted); }
+  .slot-h .tm { min-height: 2rem; padding: 0 .6rem; font-size: .8rem; margin-left: auto; border-color: var(--accent); }
+  .clip small { color: inherit; opacity: .6; font-weight: 400; font-size: .72rem; }
+  .clips { display: grid; grid-template-columns: repeat(auto-fill, minmax(7.4rem, 1fr)); gap: .4rem; }
+  .clip { min-height: 3.2rem; padding: .35rem .55rem; text-align: left; font-weight: 500; display: flex; flex-direction: column; justify-content: center; gap: .15rem; }
+  .clip .mini { display: grid; grid-template-columns: repeat(16, 1fr); gap: 1px; height: .4rem; width: 100%; }
+  .clip .mini b { background: currentColor; opacity: .16; }
+  .clip .mini b.on { opacity: .85; }
+  .clip[aria-pressed="true"] { background: hsl(var(--h) 65% 52%); border-color: hsl(var(--h) 65% 52%); color: #111; }
+  .clip.q { animation: blink .55s steps(2, jump-none) infinite; border-color: hsl(var(--h) 65% 52%); box-shadow: inset 0 0 0 2px hsl(var(--h) 65% 52%); }
+  .clip.off { color: var(--muted); }
+  .keyrow { display: flex; flex-wrap: wrap; gap: .5rem 1rem; align-items: center; }
+  .keyrow label { display: flex; align-items: center; gap: .4rem; color: var(--muted); font-size: .9rem; }
+
+  /* ---- Pads (MPC style) ---- */
+  .mpads { display: grid; grid-template-columns: repeat(4, 1fr); gap: .5rem; width: min(100%, 34rem); margin: 0 auto; }
+  .mp { --h: 24; position: relative; aspect-ratio: 1; min-height: 4.2rem; padding: .3rem; display: flex; align-items: flex-start; justify-content: flex-start; text-align: left; font-size: .8rem; font-weight: 500; touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; overflow: hidden;
+        border-radius: .8rem; background: color-mix(in srgb, hsl(var(--h) 60% 50%) 22%, var(--bg)); border: 2px solid hsl(var(--h) 60% 50%); }
+  .mp small { position: absolute; right: .4rem; bottom: .25rem; color: var(--muted); font-size: .7rem; }
+  .mp .v { position: absolute; left: 0; right: 0; bottom: 0; height: 0; background: hsl(var(--h) 70% 55%); opacity: .0; pointer-events: none; }
+  .mp.hit { background: color-mix(in srgb, hsl(var(--h) 70% 55%) 60%, var(--bg)); }
+  .mp.hit .v { opacity: .55; height: var(--v); }
+
+  /* ---- Mix & FX ---- */
+  .mixer { display: flex; justify-content: space-between; gap: .35rem; padding: .6rem .7rem; background: var(--surface); border: 1px solid var(--border); border-radius: .8rem; }
+  .fd { --h: 24; flex: 1; display: flex; flex-direction: column; align-items: center; gap: .3rem; min-width: 0; }
+  .fd .gm { min-height: 2rem; min-width: 2.4rem; padding: 0; font-size: .85rem; }
+  .gm[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #000; }
+  .fd .fl { font-size: .8rem; color: var(--muted); letter-spacing: .02em; }
+  .fd output { font-size: .72rem; font-variant-numeric: tabular-nums; min-height: 1.1em; color: var(--muted); }
+  .fd.scale { flex: 0 0 1.8rem; }
+  .fwrap { display: flex; gap: .35rem; align-items: stretch; height: 10rem; }
+  .dbs { position: relative; width: 1.8rem; margin: .8rem 0; }
+  .dbs span { position: absolute; right: 0; transform: translateY(50%); font-size: .62rem; color: var(--muted); font-variant-numeric: tabular-nums; line-height: 1; }
+  .ftrack { position: relative; width: 3rem; height: 100%; touch-action: none; cursor: ns-resize; }
+  .ftrack:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: .3rem; }
+  .travel { position: absolute; left: 0; right: 0; top: .8rem; bottom: .8rem; }
+  .travel::before { content: ""; position: absolute; left: 50%; width: 6px; margin-left: -3px; top: -.2rem; bottom: -.2rem; border-radius: 3px; background: #0c0c0d; box-shadow: inset 0 1px 3px #000, 0 0 0 1px rgba(128,128,128,.35); }
+  .travel .tk { position: absolute; left: .2rem; right: .2rem; border-top: 1px solid rgba(128,128,128,.55); }
+  .travel .knob { position: absolute; left: 50%; width: 2.7rem; height: 1.6rem; margin-left: -1.35rem; bottom: calc(var(--v) * 1% - .8rem); border-radius: .2rem; border: 1px solid #000;
+                  background: linear-gradient(#6a6a70, #36363a 46%, #121214 54%, #2c2c30); box-shadow: 0 3px 5px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.28); }
+  .travel .knob::after { content: ""; position: absolute; left: .25rem; right: .25rem; top: 50%; height: 3px; margin-top: -1.5px; background: hsl(var(--h) 80% 62%); border-radius: 2px; box-shadow: 0 0 4px hsl(var(--h) 80% 62%); }
+  .fd.off .ftrack { opacity: .45; }
+  .meter { --mh: 10rem; width: .55rem; margin: .8rem 0; border-radius: 2px; background: #0c0c0d; position: relative; overflow: hidden; box-shadow: 0 0 0 1px rgba(128,128,128,.35); }
+  .meter i { position: absolute; left: 0; right: 0; bottom: 0; height: 0; background: linear-gradient(to top, #3c9 0 62%, #fc3 62% 84%, #e44 84%); background-size: 100% calc(10rem - 1.6rem); background-position: bottom; }
+  .meter::after { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(to top, transparent 0 .22rem, #0c0c0d .22rem .3rem); pointer-events: none; }
+  .xywrap { position: relative; }
+  canvas.xy { width: 100%; height: clamp(14rem, 40vh, 24rem); display: block; border-radius: .8rem; border: 1px solid var(--border); touch-action: none; cursor: crosshair; user-select: none; -webkit-user-select: none; }
+  .xybar { display: flex; flex-wrap: wrap; gap: .5rem 1rem; align-items: center; justify-content: space-between; }
+  .xybar output { font-variant-numeric: tabular-nums; color: var(--muted); font-size: .9rem; }
+  #xyHold[aria-pressed="true"] { background: var(--primary); border-color: var(--primary); color: var(--primary-fg); }
+
+  .chips.scroll { flex-wrap: nowrap; overflow-x: auto; padding-bottom: .2rem; scrollbar-width: thin; }
+  .chips.scroll button { flex: none; }
+  .perf { display: flex; flex-direction: column; gap: .35rem; }
+  .prow { --h: 24; display: grid; grid-template-columns: 2.8rem 2.8rem 1fr 2.8rem 2.6rem; gap: .35rem; align-items: stretch; padding: .3rem .4rem; background: var(--surface); border: 1px solid var(--border); border-left: 6px solid hsl(var(--h) 65% 52%); border-radius: .6rem; }
+  .prow button { min-height: 2.7rem; padding: 0 .3rem; }
+  .prow .pa { font-size: 1.3rem; }
+  .lk { min-height: 2rem; padding: 0 .4rem; font-size: .85rem; opacity: .55; } .lk[aria-pressed="true"] { opacity: 1; } .prow .lk { min-height: 2.7rem; } .slot.locked .slot-h b::after, .prow.locked .pname::after { content: ' 🔒'; font-size: .75em; }
+  .prow .pname { font-weight: 500; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .prow .pname.q { animation: blink .55s steps(2, jump-none) infinite; box-shadow: inset 0 0 0 2px hsl(var(--h) 65% 52%); }
+  .prow .pname.offc { color: var(--muted); }
+  .prow.off .pname { opacity: .5; }
+  canvas.xy { height: clamp(11rem, 30vh, 20rem); }
   @media (max-width: 680px) {
-    .bar { gap: .5rem; padding: .4rem .6rem; }
-    .bar .play { min-width: 5.6rem; }
-    .bar .tempo small { display: none; }
+    header .sub { display: none; }
+    .strip { gap: .5rem; padding: .35rem .6rem; }
+    .tempo small { display: none; }
     .trk { grid-template-columns: 1fr; gap: .3rem; }
     .steps { grid-template-columns: repeat(8, 1fr); gap: 4px; }
     .st { height: 2.9rem; }
@@ -152,40 +242,113 @@
     #bgrid[data-page="0"] .st.hi, #bgrid[data-page="1"] .st:not(.hi) { display: none; }
     .grove, .grove.fx { grid-template-columns: 1fr; }
     .prog { grid-template-columns: repeat(2, 1fr); }
-    .mixrow { grid-template-columns: 4.6rem 1fr 1fr; gap: .3rem .6rem; }
     canvas.scr { height: 11rem; }
     #bassHead { min-width: 0; }
+    .dock { gap: .3rem; padding-left: .4rem; padding-right: .4rem; }
+    .dock .play { min-width: 4rem; padding: 0 .4rem; }
+    .tabs button { font-size: .66rem; }
+    .mixer { padding: .5rem .3rem; gap: .15rem; } .fwrap { height: 8.5rem; gap: .25rem; } .ftrack { width: 2.1rem; } .meter i { background-size: 100% calc(8.5rem - 1.6rem); } .travel .knob { width: 2rem; margin-left: -1rem; } .dbs { width: 1.3rem; } .fd.scale { flex-basis: 1.4rem; }
+    .clips { grid-template-columns: repeat(auto-fill, minmax(6.2rem, 1fr)); }
   }
   @media (min-width: 681px) { #bgrid .st.hi { display: block; } }
+  @media (prefers-reduced-motion: reduce) { .next { animation: none; outline: 3px solid var(--accent); } .clip.q { animation: none; } }
 </style>
 </head>
 <body>
   <div class="topbar">
     <a href="index.html">← Toolbox</a>
-    <span class="status" id="status" aria-live="polite">Tap Play, or tap a pad to hear a sound</span>
+    <span class="status" id="status" aria-live="polite">Pick a drum loop to start</span>
     <div class="themebar" id="themebar"></div>
   </div>
 
   <main class="grv">
     <header>
       <h1>Groovebox</h1>
-      <p class="sub">Build a beat: drums, a bassline that holds its notes, guitar and funk. Then look at the sound on the oscilloscope.</p>
-      <p class="how"><b>1</b> Pick a style · <b>2</b> Press Play · <b>3</b> Paint steps, drag the bass notes longer, shape any sound</p>
+      <p class="sub">A small rack of electronic instruments: launch loops, play pads and keys, bend the sound with the XY pad.</p>
     </header>
 
-    <div class="bar" id="bar">
-      <button class="primary play" aria-pressed="false">▶ Play</button>
+    <div class="strip" id="bar">
       <div class="tempo"><button id="bpmDown" aria-label="Slower">−</button><output><span id="bpmBar">120</span> <small>BPM</small></output><button id="bpmUp" aria-label="Faster">+</button></div>
       <span class="solo-flag">Solo on</span>
+      <div class="bardots" id="bardots" aria-label="Bar of the 4-bar loop"><i></i><i></i><i></i><i></i></div>
     </div>
 
-    <div class="chips styles" id="presets"><span>Style</span>
-      <button data-preset="House">House</button><button data-preset="Hip-hop">Hip-hop</button><button data-preset="Trap">Trap</button><button data-preset="Funk">Funk</button><button data-preset="Breakbeat">Breakbeat</button>
-      <button data-preset="Surprise">🎲 Surprise</button><button data-preset="Clear">Clear</button>
-    </div>
+    <!-- LOOPS -->
+    <section class="view" id="v-loops" data-view="loops">
+      <div class="guide" id="guide"></div>
+      <div class="chips" id="scenes">
+        <button data-scene="House">House</button><button data-scene="Hip-hop">Hip-hop</button><button data-scene="Trap">Trap</button><button data-scene="Funk">Funk</button><button data-scene="Breakbeat">Breakbeat</button>
+        <button data-scene="Surprise">🎲 Surprise</button>
+      </div>
+      <div id="deck" style="display:contents"></div>
+      <p class="note">A new loop starts at the <b>next bar</b>, so everything stays in time. <b>★ Mine</b> plays what you painted in <b>Step</b>.</p>
+      <div class="keyrow">
+        <label>Key <select id="key" aria-label="Key"></select></label>
+        <label>Scale <select id="scale" aria-label="Scale"></select></label>
+      </div>
+      <details class="more" id="chords"><summary>Chords: the 4-bar progression <span class="chip" id="sum-prog" style="margin-left:.5rem"></span></summary>
+        <div class="chips" id="progPresets"></div>
+        <p class="note">The loop is <b>4 bars</b>. Each bar plays one <b>degree of the scale</b> (I, II, III…): bass, guitar and keys move along the scale, so the chord quality (major, minor, diminished…) comes from the scale itself. Change the scale and the whole progression changes colour.</p>
+        <div class="prog" id="prog"></div>
+      </details>
+    </section>
 
-    <div id="sections" style="display:contents">
+    <!-- PADS -->
+    <section class="view" id="v-pads" data-view="pads" hidden>
+      <div class="vh"><h2>Pads</h2><span class="note">Touch the <b>centre</b> of a pad for a loud hit, the <b>edge</b> for a soft one (like a real drum skin).</span></div>
+      <div class="chips" id="bank"><span>Bank</span><button data-bank="0" aria-pressed="true">A · Chords &amp; instruments</button><button data-bank="1" aria-pressed="false">B · Voices</button></div>
+      <div class="chips" id="vnote" hidden><span>Voice note</span><button data-vn="0" aria-pressed="true">Root</button><button data-vn="2" aria-pressed="false">3rd</button><button data-vn="4" aria-pressed="false">5th</button><button data-vn="6" aria-pressed="false">7th</button></div>
+      <div class="chips" id="repeat"><span>Note Repeat</span>
+        <button data-rep="0" aria-pressed="true">Off</button><button data-rep="2" aria-pressed="false">1/8</button><button data-rep="1" aria-pressed="false">1/16</button><button data-rep="0.5" aria-pressed="false">1/32</button><button data-rep="0.6667" aria-pressed="false">1/16 triplet</button>
+      </div>
+      <div class="mpads" id="mpads" role="group" aria-label="16 pads"></div>
+      <div class="lab-tools"><button id="pRec" class="toggle" aria-pressed="false">● Rec</button><button id="pMute" class="toggle" aria-pressed="true">🔇 Loop muted</button><button id="pUndo">⌫ Undo last pass</button><button id="pClear">🗑 Clear</button><button id="padShape">Shape this sound →</button></div>
+      <p class="note" id="pInfo"></p>
+      <p class="note">Bank <b>A</b> has chords in several colours (organ, Rhodes, strings, stabs; <b>V</b> is the keyboard sound), guitar and bass. Bank <b>B</b> has sung phrases (soul, gospel, R&amp;B style). They are <b>synthesised</b> by the browser with formant synthesis, not recordings of real singers; the pitch follows the key and the chord of the bar, and the <b>Voice note</b> chips choose which note of the scale. With <b>Note Repeat</b> on, hold a pad: it re-triggers in time with the beat (like the MPC). <b>Rec</b> records your hits over the 4 bars and loops them. On a computer the pads are the keys <b>1 2 3 4 / Q W E R / A S D F / Z X C V</b>.</p>
+    </section>
 
+    <!-- KEYS -->
+    <section class="view" id="v-keys" data-view="keys" hidden>
+      <div class="bctl">
+        <div class="trk-head" id="keysHead">
+          <button class="pad" data-pad="keys" aria-label="Keys: select and hear">Keys</button>
+          <button class="solo toggle" data-solo="keys" aria-pressed="false" title="Solo" aria-label="Solo Keys">S</button>
+          <button class="mute toggle" data-mute="keys" aria-pressed="false" title="Mute the recorded loop" aria-label="Mute Keys">M</button>
+        </div>
+        <div class="kctl"><button id="kOctDown" aria-label="Octave down">−</button><output>Octave <b id="kOctOut">C4</b></output><button id="kOctUp" aria-label="Octave up">+</button></div>
+      </div>
+      <div class="chips" id="keySounds"></div>
+      <div id="kb" class="kb" role="group" aria-label="Piano keyboard"></div>
+      <p class="note">Dots mark the notes of the current key and scale. On a computer: <b>A S D F G H J K L</b> are the white keys, <b>W E T Y U O P</b> the black ones, <b>Z</b>/<b>X</b> change octave. Slide a finger across the keys for a glissando.</p>
+      <div class="lab-tools"><button id="kRec" class="toggle" aria-pressed="false">● Rec</button><button id="kUndo">⌫ Undo last pass</button><button id="kClear">🗑 Clear loop</button><button data-open="lab">Shape this sound →</button></div>
+      <p class="note" id="kInfo"></p>
+      <canvas id="kroll" class="kroll" aria-label="The recorded loop as a piano roll"></canvas>
+      <p class="note"><b>Loop station:</b> Rec starts the loop if it is stopped and records every note exactly when you play it, over the 4 bars. Press Rec again to stop recording: the notes keep looping with the beat. Rec again to overdub more.</p>
+    </section>
+
+    <!-- MIX & FX -->
+    <section class="view" id="v-fx" data-view="fx" hidden>
+      <div class="vh"><h2>XY pad</h2><span class="note" id="xyHelp">Touch and slide: it plays while your finger is down.</span></div>
+      <div class="chips" id="xyKind"><span>Effect</span>
+        <button data-xy="filter" aria-pressed="true">Filter</button><button data-xy="reverb" aria-pressed="false">Reverb</button><button data-xy="echo" aria-pressed="false">Echo</button><button data-xy="flanger" aria-pressed="false">Flanger</button>
+      </div>
+      <div class="xywrap"><canvas id="xy" class="xy" aria-label="XY effects pad: touch and slide"></canvas></div>
+      <div class="xybar"><output id="xyRead">&nbsp;</output><button id="xyHold" class="toggle" aria-pressed="false">⏸ Hold</button></div>
+      <div class="chips" id="dropRow"><span>Kick boost on return from Filter</span><button data-drop="0" aria-pressed="false">Off</button><button data-drop="3" aria-pressed="false">+3</button><button data-drop="6" aria-pressed="false">+6</button><button data-drop="9" aria-pressed="false">+9 dB</button><button id="kickHold" class="toggle" aria-pressed="false">Hold: kick +</button></div>
+      <div class="vh"><h2>Beat</h2><span class="note">Change the beat while you play the pad: loops and scenes land on the <b>next bar</b>, <b>M</b> mutes at once.</span></div>
+      <div class="chips scroll" id="perfScenes"></div>
+      <div class="perf" id="perf"></div>
+      <div class="chips" id="perfChords"></div>
+      <p class="note">Chords: each bar plays one degree of the scale, so bass, guitar and keys follow the scale. <b>Colour</b> = triad, 7th or 9th chords. <b>Stay</b> = the same chord for the 4 bars. A scene may choose its own progression: press Stay to flatten it.</p>
+      <p class="note" id="xyNote"></p>
+      <div class="vh"><h2>Mixer</h2><button id="mixReset">↺ Reset</button></div>
+      <div class="mixer" id="mixer"></div>
+    </section>
+
+    <!-- STEP -->
+    <section class="view" id="v-step" data-view="step" hidden>
+      <p class="note">The loops you launch in <b>Loops</b> land here: change them step by step. Painting switches that instrument to <b>★ Mine</b>. «Load a loop» changes one instrument only.</p>
+      <div id="sections" style="display:contents">
       <details class="sec" id="sec-drums" open>
         <summary>Drums <span class="chip" id="sum-drums"></span></summary>
         <div class="sec-body">
@@ -194,7 +357,9 @@
             <button data-brush="3" aria-pressed="false">⁞ Roll ×2</button><button data-brush="4" aria-pressed="false">⋮ Roll ×3</button>
           </div>
           <p class="note">Ghost = a soft hit (funk snare). Roll = the step is split in two or three quick hits (trap hi-hat). Tap a filled step with the same brush to clear it.</p>
+          <div class="chips" data-load="drums"></div>
           <div id="seq"></div>
+          <details class="more"><summary>More drums (open hat, cowbell)</summary><div id="seqMore"></div></details>
           <div class="selrow"><span>Selected: <b class="sel-name">Kick</b></span><button data-open="lab">Shape this sound →</button></div>
         </div>
       </details>
@@ -208,9 +373,8 @@
               <button class="solo toggle" data-solo="bass" aria-pressed="false" title="Solo" aria-label="Solo Bass">S</button>
               <button class="mute toggle" data-mute="bass" aria-pressed="false" title="Mute" aria-label="Mute Bass">M</button>
             </div>
-            <label>Key <select id="key" aria-label="Key"></select></label>
-            <label>Scale <select id="scale" aria-label="Scale"></select></label>
           </div>
+          <div class="chips" data-load="bass"></div>
           <div class="chips" id="bassSounds"></div>
           <div class="chips" id="noteLens"></div>
           <p class="note">Each row is a note of the scale. Tap to place a note of the chosen length, or <b>drag to the right</b> to hold it longer: the note keeps sounding (sustain) until its end. A new note cuts the previous one.</p>
@@ -220,65 +384,52 @@
         </div>
       </details>
 
-      <details class="sec" id="sec-prog">
-        <summary>Chord progression <span class="chip" id="sum-prog"></span></summary>
-        <div class="sec-body">
-          <div class="chips" id="progPresets"></div>
-          <p class="note">The loop is <b>4 bars</b>. Each bar shifts <b>Bass</b>, <b>Chord stab</b>, <b>Pluck</b> and the <b>Chank</b> string by some semitones: same pattern, another chord. After bar 4 it returns to bar 1. (Transposing by n semitones multiplies every frequency by 2<sup>n/12</sup>.)</p>
-          <div class="prog" id="prog"></div>
-        </div>
-      </details>
-
       <details class="sec" id="sec-gtr">
-        <summary>Guitar, funk &amp; arp <span class="chip" id="sum-gtr"></span></summary>
+        <summary>Guitar <span class="chip" id="sum-gtr"></span></summary>
         <div class="sec-body">
           <p class="note"><b>Chord stab</b> and <b>Pluck</b> follow the bass: they play the note under the step (the key note when the bass is silent). Use the brush of the Drums section for ghost notes and rolls.</p>
+          <div class="chips" data-load="guitar"></div>
           <div id="gseq"></div>
-          <div class="chips" id="arpCtl"></div>
-          <p class="note"><b>Arp</b> plays the chord of the bass note one note at a time: each active step takes the next note. Order, number of notes and octaves are the chips above; the pitches follow the chord progression.</p>
           <div class="selrow"><span>Selected: <b class="sel-name">Kick</b></span><button data-open="lab">Shape this sound →</button></div>
         </div>
       </details>
 
-      <details class="sec" id="sec-keys">
-        <summary>Keys · live synth <span class="chip" id="sum-keys"></span></summary>
+      <details class="sec" id="sec-kchord">
+        <summary>Keys · chords <span class="chip" id="sum-kchord"></span></summary>
         <div class="sec-body">
-          <div class="bctl">
-            <div class="trk-head" id="keysHead">
-              <button class="pad" data-pad="keys" aria-label="Keys: select and hear">Keys</button>
-              <button class="solo toggle" data-solo="keys" aria-pressed="false" title="Solo" aria-label="Solo Keys">S</button>
-              <button class="mute toggle" data-mute="keys" aria-pressed="false" title="Mute the recorded loop" aria-label="Mute Keys">M</button>
-            </div>
-            <div class="kctl"><button id="kOctDown" aria-label="Octave down">−</button><output>Octave <b id="kOctOut">C4</b></output><button id="kOctUp" aria-label="Octave up">+</button></div>
-          </div>
-          <div class="chips" id="keySounds"></div>
-          <div id="kb" class="kb" role="group" aria-label="Piano keyboard"></div>
-          <p class="note">Dots mark the notes of the current key and scale. On a computer: <b>A S D F G H J K L</b> are the white keys, <b>W E T Y U O P</b> the black ones, <b>Z</b>/<b>X</b> change octave. Slide a finger across the keys for a glissando.</p>
-          <div class="lab-tools"><button id="kRec" class="toggle" aria-pressed="false">● Rec</button><button id="kUndo">⌫ Undo last pass</button><button id="kClear">🗑 Clear loop</button><button data-open="lab">Shape this sound →</button></div>
-          <p class="note" id="kInfo"></p>
-          <canvas id="kroll" class="kroll" aria-label="The recorded loop as a piano roll"></canvas>
-          <p class="note"><b>Loop station:</b> Rec starts the loop if it is stopped and records every note exactly when you play it, over the 4 bars of the progression. Press Rec again to stop recording: the notes keep looping with the beat and follow the tempo. Rec again to overdub more.</p>
+          <div class="chips" data-load="kchords"></div>
+          <div id="aseq-kchord"></div>
+          <div class="chips arpctl" data-t="kchord"></div>
+          <p class="note"><b>Chords</b>: each active step plays the whole chord. The notes are stacked thirds taken from the scale you chose (Key and Scale), on the bass note of the step. Chords, Low and Arp play at the same time.</p>
+          <div class="selrow"><span>Selected: <b class="sel-name">Kick</b></span><button data-open="lab">Shape this sound →</button></div>
         </div>
       </details>
-
-      <details class="sec" id="sec-mix">
-        <summary>Mixer &amp; filters <span class="chip" id="sum-mix"></span></summary>
+      <details class="sec" id="sec-klow">
+        <summary>Keys · low &amp; static <span class="chip" id="sum-klow"></span></summary>
         <div class="sec-body">
-          <div id="strips"></div>
-          <p class="note">Volume sets the loudness of each channel; <b>Reverb send</b> sends part of it into a virtual room.</p>
-          <div class="grove fx">
-            <label class="ctl"><span>High-pass <output id="hpOut"></output></span><input id="fxhp" type="range" min="0" max="100" step="1" aria-label="Master high-pass filter"></label>
-            <label class="ctl"><span>Low-pass <output id="lpOut"></output></span><input id="fxlp" type="range" min="0" max="100" step="1" aria-label="Master low-pass filter"></label>
-            <label class="ctl"><span>Resonance <output id="resOut"></output></span><input id="fxres" type="range" min="0" max="100" step="1" aria-label="Filter resonance"></label>
-            <label class="ctl"><span>Reverb return <output id="revOut"></output></span><input id="fxrev" type="range" min="0" max="100" step="1" aria-label="Reverb level"></label>
-            <label class="ctl"><span>Room decay <output id="rtOut"></output></span><input id="fxrt" type="range" min="4" max="30" step="1" aria-label="Reverb decay time"></label>
-          </div>
-          <p class="note">Filters act on the whole mix. <b>High-pass</b> removes the lows (raise it for a thin, telephone sound), <b>low-pass</b> removes the highs (lower it for a muffled, underwater sound); resonance boosts the band around the cutoff. <b>Reverb</b> = the sound convolved with the “impulse response” of a room: noise that fades to −60 dB in the decay time. The oscilloscope shows the result.</p>
-          <div class="lab-tools"><button id="mixReset">↺ Reset mixer</button></div>
+          <div class="chips" data-load="klow"></div>
+          <div id="aseq-klow"></div>
+          <div class="chips arpctl" data-t="klow"></div>
+          <p class="note"><b>Low</b>: a quiet line underneath: Root, Fifths, Octaves, or a slow walk (Up / Scale). It fills the bottom without taking the lead.</p>
+          <div class="selrow"><span>Selected: <b class="sel-name">Kick</b></span><button data-open="lab">Shape this sound →</button></div>
         </div>
       </details>
+      <details class="sec" id="sec-arp">
+        <summary>Keys · arpeggio <span class="chip" id="sum-arp"></span></summary>
+        <div class="sec-body">
+          <div class="chips" data-load="keys"></div>
+          <div id="aseq-arp"></div>
+          <div class="chips arpctl" data-t="arp"></div>
+          <p class="note"><b>Arp</b> plays the notes of the chord one at a time: each active step takes the next note. <b>Up/Down/Random</b> use the chord; <b>Scale ↑ ↓ ↕</b> climb the notes of the chosen scale one by one. The pitches always follow the Scale, the Key and the chord progression.</p>
+          <div class="selrow"><span>Selected: <b class="sel-name">Kick</b></span><button data-open="lab">Shape this sound →</button></div>
+        </div>
+      </details>
+      </div>
+    </section>
 
-      <details class="sec" id="sec-lab">
+    <!-- LAB -->
+    <section class="view" id="v-lab" data-view="lab" hidden>
+      <details class="sec" id="sec-lab" open>
         <summary>Sound lab <span class="chip" id="sum-lab"></span></summary>
         <div class="sec-body">
           <div class="chips" id="labChips"></div>
@@ -294,7 +445,7 @@
             <button id="hearBtn">▶ Hear</button>
             <button id="soloBtn" class="toggle" aria-pressed="false" title="While the loop plays, hear only this sound">Solo in the loop</button>
             <button id="resetBtn">↺ Reset</button>
-            <button data-open="drums">↑ Back to the beat</button>
+            <button data-open="back">↑ Back</button>
           </div>
           <p id="labHint"></p>
           <div id="labParams"></div>
@@ -319,7 +470,7 @@
         </div>
       </details>
 
-      <details class="sec" id="sec-groove" open>
+      <details class="sec" id="sec-groove">
         <summary>Tempo &amp; swing <span class="chip" id="sum-groove"></span></summary>
         <div class="sec-body">
           <div class="grove">
@@ -331,10 +482,23 @@
           <p class="note" id="phys"></p>
         </div>
       </details>
-    </div>
+
+    </section>
 
     <p class="foot">Sound engine shared with <a href="../mosaicus/">Mosaicus</a> · works on smartphone, also with the silent switch on</p>
   </main>
+
+  <nav class="dock" aria-label="Instruments">
+    <button class="primary play" aria-pressed="false">▶ Play</button>
+    <div class="tabs" id="tabs" role="tablist">
+      <button role="tab" data-tab="loops" aria-selected="true"><span class="ic">▦</span>Loops</button>
+      <button role="tab" data-tab="pads" aria-selected="false"><span class="ic">◼</span>Pads</button>
+      <button role="tab" data-tab="keys" aria-selected="false"><span class="ic">♪</span>Keys</button>
+      <button role="tab" data-tab="fx" aria-selected="false"><span class="ic">◉</span>Mix&nbsp;FX</button>
+      <button role="tab" data-tab="step" aria-selected="false"><span class="ic">▤</span>Step</button>
+      <button role="tab" data-tab="lab" aria-selected="false"><span class="ic">∿</span>Lab</button>
+    </div>
+  </nav>
 
 <script type="module" src="groovebox.js"></script>
 </body>
