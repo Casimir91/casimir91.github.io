@@ -440,13 +440,18 @@
           <div class="ws-wrap"><canvas id="wsCurve" class="scr ws-curve" aria-label="Transfer function: draw it with your finger"></canvas><canvas id="wsSpec" class="scr ws-spec" aria-label="Spectrum of the shaped signal"></canvas></div>
           <div class="chips" id="wsPresets"><span>Curve</span></div>
           <div id="wsParams"></div>
+          <div class="chips"><span>Test</span><button id="wsTone" aria-pressed="false">▶ Sine test tone</button></div>
+          <div class="harm-wrap"><p class="note"><b>Chebyshev sliders.</b> f(x) = Σ aₙ·Tₙ(x), with Tₙ(cos θ) = cos nθ. Start the test tone (a quiet sine of amplitude exactly 1, sent through the same curve, independent of Drive and Mix) and raise <b>H3</b>: a sine through T₃ comes out as its 3rd harmonic only. The dotted lines on the spectrum mark k·f₀.</p>
+            <div class="harm-sliders" id="wsCheb"></div>
+            <div class="chips"><button id="wsChebLab">Copy the Lab harmonics</button><button id="wsChebReset">Only H1 (clean)</button></div>
+            <p class="harm-eq" id="wsChebEq"></p></div>
         </div>
       </details>
       <details class="sec" id="sec-gr">
         <summary>Granular cloud <span class="chip" id="grChip">no sample</span></summary>
         <div class="sec-body">
-          <p class="note">The sample is cut into tiny <b>grains</b> (3–500 ms), each with a smooth window, scattered around a <b>position</b> and played hundreds per second: a cloud. Short grains of Δt ms smear the pitch by about Δf ≈ 1/Δt. Grab what the groove is playing, or load a file of yours: it is decoded inside your browser, <b>never uploaded and never saved</b> (it disappears when you reload). Use only audio you have the right to use. The cloud goes into the mix before the master filter and effects, so it is in the master recording but not in the Drums / Bass stems.</p>
-          <div class="chips" id="grGrab"><span>Sample</span><button data-bars="2">● Grab 2 bars</button><button data-bars="4">● Grab 4 bars</button><button id="grFileBtn" type="button">Load a file…</button><input id="grFile" type="file" accept="audio/*" hidden></div>
+          <p class="note">The sample is cut into tiny <b>grains</b> (3–500 ms), each with a smooth window, scattered around a <b>position</b> and played hundreds per second: a cloud. Short grains of Δt ms smear the pitch by about Δf ≈ 1/Δt. Grab what the groove is playing, use a test sound (sine sweep: position = pitch; plucked chords), record 4 s from the microphone, or load a file of yours: everything is decoded inside your browser, <b>never uploaded and never saved</b> (it disappears when you reload). Use only audio you have the right to use. The cloud goes into the mix before the master filter and effects, so it is in the master recording but not in the Drums / Bass stems.</p>
+          <div class="chips" id="grGrab"><span>Sample</span><button data-bars="2">● Grab 2 bars</button><button data-bars="4">● Grab 4 bars</button><button id="grSweep" type="button">∿ Sine sweep</button><button id="grChord" type="button">♪ Plucked chords</button><button id="grMic" type="button">● Microphone 4 s</button><button id="grFileBtn" type="button">Load a file…</button><input id="grFile" type="file" accept="audio/*" hidden></div>
           <p class="note" id="grSrcName">No sample yet: press Play, then grab the groove.</p>
           <canvas id="grWave" class="scr gr-wave" aria-label="Sample waveform: tap to move the position"></canvas>
           <div class="lab-tools"><button id="grPlay" class="toggle" aria-pressed="false">▶ Start cloud</button></div>

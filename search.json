@@ -4,14 +4,14 @@
     "href": "toolbox/index.html",
     "title": "Toolbox",
     "section": "",
-    "text": "00:00:00\n    \n      Clock\n      Large HH:MM:SS display that adapts to any screen and orientation. Optional synchronisation with a network time reference.\n      Fullscreen · light green and dark lime\n      Open the clock →\n    \n  \n\n  \n    01:00\n    \n      Timer\n      Countdown with presets, visual and audible alarm at zero. Ideal for tests and group activities.\n      Presets from 1 to 60 min · alarm · +/− 1 min\n      Open the timer →"
+    "text": "00:00:00\n    \n      Clock\n      Large HH:MM:SS display that adapts to any screen and orientation. Optional synchronisation with a network time reference.\n      Fullscreen · light green and dark lime\n      Open the clock →\n    \n  \n\n  \n    01:00\n    \n      Timer\n      Countdown with presets, visual and audible alarm at zero. Ideal for tests and group activities.\n      Presets from 1 to 60 min · alarm · +/− 1 min\n      Open the timer →\n    \n  \n\n  \n    12+13=56\n    \n      Calculator\n      A scientific calculator with real stacked fractions, like the textbook: write operations in the numerator and denominator, then see the result as a fraction, decimal (with repeating period) or standard form.\n      Fractions · radicals · decimal · standard form · works on smartphone\n      Open the calculator →"
   },
   {
     "objectID": "toolbox/index.html#basic-tools",
     "href": "toolbox/index.html#basic-tools",
     "title": "Toolbox",
     "section": "",
-    "text": "00:00:00\n    \n      Clock\n      Large HH:MM:SS display that adapts to any screen and orientation. Optional synchronisation with a network time reference.\n      Fullscreen · light green and dark lime\n      Open the clock →\n    \n  \n\n  \n    01:00\n    \n      Timer\n      Countdown with presets, visual and audible alarm at zero. Ideal for tests and group activities.\n      Presets from 1 to 60 min · alarm · +/− 1 min\n      Open the timer →"
+    "text": "00:00:00\n    \n      Clock\n      Large HH:MM:SS display that adapts to any screen and orientation. Optional synchronisation with a network time reference.\n      Fullscreen · light green and dark lime\n      Open the clock →\n    \n  \n\n  \n    01:00\n    \n      Timer\n      Countdown with presets, visual and audible alarm at zero. Ideal for tests and group activities.\n      Presets from 1 to 60 min · alarm · +/− 1 min\n      Open the timer →\n    \n  \n\n  \n    12+13=56\n    \n      Calculator\n      A scientific calculator with real stacked fractions, like the textbook: write operations in the numerator and denominator, then see the result as a fraction, decimal (with repeating period) or standard form.\n      Fractions · radicals · decimal · standard form · works on smartphone\n      Open the calculator →"
   },
   {
     "objectID": "toolbox/index.html#games",
@@ -25,7 +25,7 @@
     "href": "toolbox/index.html#music",
     "title": "Toolbox",
     "section": "Music",
-    "text": "Music\n\n\n  \n    \n    \n      Groovebox\n      A small rack of electronic instruments: launch ready-made loops (drums, bass, guitar, keys) that change at the next bar, play 16 MPC-style pads and a keyboard, and bend the whole mix with a Kaoss-style XY pad (filter, reverb, echo, flanger). Shape each sound and watch it on the oscilloscope.\n      Loops · pads · keys · XY effects pad · mixer · oscilloscope · works on smartphone\n      Open the Groovebox →\n    \n  \n\n  \n    \n      \n      \n      \n      \n    \n    \n      Waveshaper & Granular\n      Two ways to sculpt a sound. Draw the transfer curve y = f(x) and watch the harmonics appear in the spectrum, or build them from Chebyshev polynomials. Then cut a sound (sweep, chords, microphone or your own file) into grains and play with position, spray, size, density and pitch.\n      Drawable curve · live spectrum · grain cloud · microphone and audio file · works on smartphone\n      Open the lab →"
+    "text": "Music\n\n\n  \n    \n    \n      Groovebox\n      A small rack of electronic instruments: launch ready-made loops (drums, bass, guitar, keys) that change at the next bar, play 16 MPC-style pads and a keyboard, and bend the whole mix with a Kaoss-style XY pad (filter, reverb, echo, flanger). Shape each sound and watch it on the oscilloscope.\n      Loops · song timeline · pads · keys · XY effects · waveshaper · granular · export WAV/MP3 · works on smartphone\n      Open the Groovebox →"
   },
   {
     "objectID": "toolbox/index.html#lab-tools",

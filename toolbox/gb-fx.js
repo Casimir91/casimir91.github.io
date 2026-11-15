@@ -10,7 +10,7 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 export const N = 513;                                            // points of the transfer function, x = −1 … +1
 const xOf = (i) => -1 + (2 * i) / (N - 1);
 const curve = new Float32Array(N);
-export const WS = { on: false, mix: 0.5, drive: 6, preset: 'tanh' };   // drive in dB
+export const WS = { on: false, mix: 0.5, drive: 6, preset: 'tanh', cheb: [1, 0, 0, 0, 0, 0, 0, 0], f0: 220 };   // drive in dB; cheb = own Chebyshev weights; f0 = test tone
 export const PRESETS = {
   identity: ['Linear', (x) => x],
   tanh: ['Soft clip', (x) => Math.tanh(3 * x) / Math.tanh(3)],
@@ -24,6 +24,7 @@ const fill = (f) => { for (let i = 0; i < N; i++) curve[i] = f(xOf(i)); };
 fill(PRESETS.tanh[1]);
 /** f(x) = Σ aₙ Tₙ(x) (Chebyshev), scaled to |f| ≤ 1. Tₙ(cos θ) = cos nθ: a full-scale sine comes out as the harmonics a₁ … aₙ. */
 function chebFill(a) {
+  if (!a.some((v) => v > 0.004)) { fill((x) => x); return; }
   const s = a.reduce((t, v) => t + v, 0) || 1;
   for (let i = 0; i < N; i++) { const x = xOf(i); let t0 = 1, t1 = x, y = a[0] * t1; for (let n = 2; n <= a.length; n++) { const t2 = 2 * x * t1 - t0; y += a[n - 1] * t2; t0 = t1; t1 = t2; } curve[i] = y / s; }
 }
@@ -63,25 +64,56 @@ export function initFx(api) {
 
   // ======================================================================= waveshaper
   const saved = store.get('ws1', null);
-  if (saved) { Object.assign(WS, { on: !!saved.on, mix: clamp(+saved.mix || 0, 0, 1), drive: clamp(+saved.drive || 0, 0, 24), preset: saved.preset || 'tanh' });
-    if (Array.isArray(saved.curve) && saved.curve.length === N) curve.set(saved.curve); else if (PRESETS[WS.preset]) fill(PRESETS[WS.preset][1]); else if (WS.preset === 'cheb') chebFill(S.harm); }
-  const wsSave = () => store.set('ws1', { on: WS.on, mix: WS.mix, drive: WS.drive, preset: WS.preset, curve: Array.from(curve, (v) => Math.round(v * 1000) / 1000) });
-  const wsApply = (withCurve) => { const a = A(); if (!a) return; for (const f of fxList()) if (f.ws) { setShaper(f.ws, a.ctx); if (withCurve) setCurve(f.ws); } };
+  if (saved) { Object.assign(WS, { on: !!saved.on, mix: clamp(+saved.mix || 0, 0, 1), drive: clamp(+saved.drive || 0, 0, 24), preset: saved.preset || 'tanh', f0: clamp(+saved.f0 || 220, 40, 2000) });
+    if (Array.isArray(saved.cheb) && saved.cheb.length === 8) WS.cheb = saved.cheb.map((v) => clamp(+v || 0, 0, 1));
+    if (Array.isArray(saved.curve) && saved.curve.length === N) curve.set(saved.curve); else if (PRESETS[WS.preset]) fill(PRESETS[WS.preset][1]); else if (WS.preset === 'cheb') chebFill(S.harm); else if (WS.preset === 'chebx') chebFill(WS.cheb); }
+  const wsSave = () => store.set('ws1', { on: WS.on, mix: WS.mix, drive: WS.drive, preset: WS.preset, cheb: WS.cheb, f0: WS.f0, curve: Array.from(curve, (v) => Math.round(v * 1000) / 1000) });
+  const wsApply = (withCurve) => { const a = A(); if (!a) return; for (const f of fxList()) if (f.ws) { setShaper(f.ws, a.ctx); if (withCurve) setCurve(f.ws); } if (withCurve && toneSh) toneSh.curve = new Float32Array(curve); };
   const wsPaint = () => {
     $('#wsOn').setAttribute('aria-pressed', String(WS.on)); $('#wsOn').textContent = WS.on ? '● Waveshaper on' : '○ Waveshaper off';
     $$('#wsPresets [data-p]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.p === WS.preset)));
-    $('#wsChip').textContent = WS.on ? `${WS.preset === 'drawn' ? 'drawn' : WS.preset === 'cheb' ? 'harmonics' : PRESETS[WS.preset]?.[0] || ''} · ${Math.round(WS.mix * 100)} %` : 'off';
+    $('#wsChip').textContent = WS.on ? `${WS.preset === 'drawn' ? 'drawn' : WS.preset === 'cheb' ? 'Lab harmonics' : WS.preset === 'chebx' ? 'Chebyshev' : PRESETS[WS.preset]?.[0] || ''} · ${Math.round(WS.mix * 100)} %` : 'off';
   };
-  $('#wsPresets').innerHTML = Object.entries(PRESETS).map(([k, [n]]) => `<button data-p="${k}" aria-pressed="false">${n}</button>`).join('') + '<button data-p="cheb" aria-pressed="false" title="Chebyshev curve built from the harmonics of the Lab: a full-scale sine comes out with exactly that spectrum">From Lab harmonics</button>';
+  $('#wsPresets').innerHTML = Object.entries(PRESETS).map(([k, [n]]) => `<button data-p="${k}" aria-pressed="false">${n}</button>`).join('') + '<button data-p="cheb" aria-pressed="false" title="Chebyshev curve built from the harmonics of the Lab: a full-scale sine comes out with exactly that spectrum">From Lab harmonics</button><button data-p="chebx" aria-pressed="false" title="Your own Chebyshev weights (sliders below)">Chebyshev sliders</button>';
   $('#wsPresets').addEventListener('click', (e) => {
     const b = e.target.closest('[data-p]'); if (!b) return; const k = b.dataset.p; WS.preset = k;
-    if (k === 'cheb') chebFill(S.harm); else fill(PRESETS[k][1]);
+    if (k === 'cheb') chebFill(S.harm); else if (k === 'chebx') chebFill(WS.cheb); else fill(PRESETS[k][1]);
     if (!WS.on) WS.on = true; wsApply(true); wsPaint(); wsSave(); drawCurve();
   });
   $('#wsOn').addEventListener('click', () => { WS.on = !WS.on; engine(); wsApply(true); wsPaint(); wsSave(); });
   const wsS = $('#wsParams');
   const drv = slider(wsS, { label: 'Drive (level into the curve)', min: 0, max: 24, value: WS.drive, step: 0.5, fmt: (v) => '+' + v.toFixed(1) + ' dB', onInput: (v) => { WS.drive = v; wsApply(); drawCurve(); }, onChange: wsSave });
   const mix = slider(wsS, { label: 'Mix (dry ⇄ shaped)', min: 0, max: 1, value: WS.mix, fmt: (v) => Math.round(v * 100) + ' %', onInput: (v) => { WS.mix = v; wsApply(); wsPaint(); }, onChange: wsSave });
+
+  // Chebyshev sliders: f(x) = Σ aₙ Tₙ(x). A sine of amplitude 1 through Tₙ comes out as the n-th harmonic alone.
+  const chebBox = $('#wsCheb'); chebBox.innerHTML = WS.cheb.map((v, i) => `<label>H${i + 1}<input type="range" min="0" max="100" value="${Math.round(v * 100)}" data-n="${i}" aria-label="Chebyshev harmonic ${i + 1}"><output>${Math.round(v * 100)}</output></label>`).join('');
+  const chebEq = () => { const t = WS.cheb.map((v, i) => (v > 0.004 ? `${v.toFixed(2)}·T${i + 1}(x)` : '')).filter(Boolean).join(' + '); $('#wsChebEq').textContent = 'f(x) = ' + (t || 'x') + (t ? '   (scaled so that |f| ≤ 1)' : ''); };
+  const chebPaint = () => { $$('input', chebBox).forEach((r) => { r.value = Math.round(WS.cheb[+r.dataset.n] * 100); r.nextElementSibling.textContent = r.value; }); chebEq(); };
+  const chebSet = () => { WS.preset = 'chebx'; if (!WS.on) { WS.on = true; engine(); } chebFill(WS.cheb); wsApply(true); wsPaint(); drawCurve(); chebEq(); };
+  chebBox.addEventListener('input', (e) => { const r = e.target.closest('input'); if (!r) return; WS.cheb[+r.dataset.n] = +r.value / 100; r.nextElementSibling.textContent = r.value; chebSet(); });
+  chebBox.addEventListener('change', wsSave);
+  $('#wsChebLab').addEventListener('click', () => { WS.cheb = S.harm.slice(0, 8).map((v) => clamp(v, 0, 1)); while (WS.cheb.length < 8) WS.cheb.push(0); chebPaint(); chebSet(); wsSave(); });
+  $('#wsChebReset').addEventListener('click', () => { WS.cheb = [1, 0, 0, 0, 0, 0, 0, 0]; chebPaint(); chebSet(); wsSave(); });
+  chebEq();
+  // test tone: a pure sine into the insert, so the harmonics of the curve stand out in the spectrum
+  let osc = null, toneSh = null, toneNodes = [];
+  const toneBtn = $('#wsTone');
+  /** The tone does not go through Drive or Mix: a sine of amplitude exactly 1 meets the same curve, so Tₙ gives pure harmonics. Quiet (−15 dB). */
+  function tone(on) {
+    toneBtn.setAttribute('aria-pressed', String(on)); toneBtn.textContent = on ? '■ Stop test tone' : '▶ Sine test tone';
+    if (on) {
+      if (osc) return; const a = engine(), c = a.ctx;
+      osc = c.createOscillator(); osc.frequency.value = WS.f0; toneSh = c.createWaveShaper(); toneSh.oversample = '4x'; toneSh.curve = new Float32Array(curve);
+      const dc = c.createBiquadFilter(); dc.type = 'highpass'; dc.frequency.value = 18; dc.Q.value = 0.5; const out = c.createGain(); out.gain.value = 0;
+      osc.connect(toneSh); toneSh.connect(dc); dc.connect(out); out.connect(a.lp); if (a.fx.ws.an) dc.connect(a.fx.ws.an); osc.start(); out.gain.setTargetAtTime(0.18, c.currentTime, 0.03);
+      toneNodes = [toneSh, dc, out]; status('Sine test tone: look at the spectrum for the harmonics of the curve');
+    } else if (osc) {
+      const o = osc, nodes = toneNodes, c = A().ctx; osc = toneSh = null; toneNodes = []; nodes[2].gain.setTargetAtTime(0, c.currentTime, 0.03);
+      setTimeout(() => { try { o.stop(); o.disconnect(); nodes.forEach((n) => n.disconnect()); } catch {} }, 200);
+    }
+  }
+  toneBtn.addEventListener('click', () => tone(!osc));
+  slider(wsS, { label: 'Test tone frequency', min: 40, max: 2000, value: WS.f0, log: true, step: 1, fmt: (v) => Math.round(v) + ' Hz', onInput: (v) => { WS.f0 = v; if (osc) osc.frequency.setTargetAtTime(v, A().ctx.currentTime, 0.02); }, onChange: wsSave });
   // drawing the curve
   const cvC = $('#wsCurve'); let dragging = false, lastI = -1, lastY = 0;
   const pt = (e) => { const r = cvC.getBoundingClientRect(); return [clamp(Math.round(((e.clientX - r.left) / r.width) * (N - 1)), 0, N - 1), clamp(1 - 2 * ((e.clientY - r.top) / r.height), -1, 1)]; };
@@ -109,6 +141,7 @@ export function initFx(api) {
     g.strokeStyle = css('--border'); g.lineWidth = 1; g.fillStyle = css('--muted'); g.font = '10px system-ui';
     const fx = (hz) => (Math.log(hz / 40) / Math.log(16000 / 40)) * W;
     for (const hz of [100, 1000, 10000]) { g.beginPath(); g.moveTo(fx(hz), 0); g.lineTo(fx(hz), H); g.stroke(); g.fillText(hz >= 1000 ? hz / 1000 + 'k' : hz, fx(hz) + 3, H - 3); }
+    if (osc) { g.fillStyle = css('--muted'); g.strokeStyle = css('--primary'); g.setLineDash([3, 4]); for (let k = 1; k * WS.f0 < 16000 && k <= 24; k++) { const x = fx(k * WS.f0); g.beginPath(); g.moveTo(x, 0); g.lineTo(x, H - 14); g.stroke(); g.fillText(k, x + 2, 11); } g.setLineDash([]); }
     const an = a?.fx.ws?.an; if (!an) { g.fillText('Press Play: the spectrum of the shaped signal appears here', 10, 16); return; }
     const d = new Float32Array(an.frequencyBinCount); an.getFloatFrequencyData(d); const sr = a.ctx.sampleRate, bin = sr / an.fftSize;
     g.strokeStyle = css('--accent'); g.lineWidth = 1.6; g.beginPath(); let first = true;
@@ -122,10 +155,10 @@ export function initFx(api) {
   const WIN = (() => { const n = 128, mk = (f) => Float32Array.from({ length: n }, (_, k) => f(k / (n - 1)));
     return { hann: mk((u) => 0.5 - 0.5 * Math.cos(2 * Math.PI * u)), gauss: mk((u) => (u === 0 || u === 1 ? 0 : Math.exp(-0.5 * ((u - 0.5) / 0.17) ** 2))), tri: mk((u) => 1 - Math.abs(2 * u - 1)),
       tukey: mk((u) => (u < 0.25 ? 0.5 - 0.5 * Math.cos((Math.PI * u) / 0.25) : u > 0.75 ? 0.5 - 0.5 * Math.cos((Math.PI * (1 - u)) / 0.25) : 1)), rect: mk(() => 1) }; })();
-  const setMono = (mono, sr, name) => {
+  const setMono = (mono, sr, name, note) => {
     buf = new AudioBuffer({ length: mono.length, sampleRate: sr }); buf.copyToChannel(mono, 0);
     revBuf = new AudioBuffer({ length: mono.length, sampleRate: sr }); revBuf.copyToChannel(Float32Array.from(mono).reverse(), 0);
-    srcName = name; peaks = null; $('#grSrcName').textContent = `${name} · ${buf.duration.toFixed(1)} s`; status(name + ' ready: start the cloud');
+    srcName = name; peaks = null; $('#grSrcName').textContent = `${name} · ${buf.duration.toFixed(1)} s${note ? ' — ' + note : ''}`; $('#grChip').textContent = timer ? 'playing' : 'ready'; status(name + ' ready: start the cloud');
   };
   async function grab(bars) {
     const btns = $$('#grGrab button'); if (!isPlaying()) { status('Press Play first: the cloud grabs what the groove is playing.'); return; }
@@ -142,15 +175,33 @@ export function initFx(api) {
     } catch (e) { status('Could not grab the audio: ' + (e.message || e)); } finally { btns.forEach((b) => (b.disabled = false)); }
   }
   $('#grGrab').addEventListener('click', (e) => { const b = e.target.closest('[data-bars]'); if (b) grab(+b.dataset.bars); });
-  $('#grFileBtn').addEventListener('click', () => $('#grFile').click());
-  $('#grFile').addEventListener('change', async (e) => {
-    const f = e.target.files[0]; if (!f) return; e.target.value = '';
+
+  const SR = 44100, gen = (secs, fn) => { const d = new Float32Array(Math.round(secs * SR)); fn(d, SR); return d; };
+  const useSweep = () => setMono(gen(6, (d, sr) => { let ph = 0; for (let i = 0; i < d.length; i++) { const p = i / d.length, f = 110 * 2 ** (5 * p); ph += (2 * Math.PI * f) / sr; d[i] = 0.5 * Math.sin(ph) * Math.min(1, i / 400, (d.length - i) / 400); } }), SR, 'Sine sweep', 'a pure sine rising from 110 Hz to 3520 Hz (5 octaves) in 6 s: the position is the pitch, f = 110·2^(5·position). With a big spray you hear a band of frequencies.');
+  const useChord = () => setMono(gen(5, (d, sr) => {
+    const chords = [[130.81, 196, 233.08, 311.13], [155.56, 233.08, 311.13, 392], [130.81, 196, 233.08, 293.66, 349.23], [116.54, 174.61, 233.08, 293.66]];
+    chords.forEach((ch, s) => { const t0 = Math.round(s * 1.2 * sr); ch.forEach((f, n) => { const ts = t0 + Math.round(n * 0.045 * sr); for (let k = 1; k <= 9; k++) { const a = 0.12 / k ** 1.1, tau = 1.6 / (1 + 0.5 * k), w = (2 * Math.PI * f * k) / sr; for (let i = ts; i < d.length; i++) { const t = (i - ts) / sr; if (t > 4 * tau) break; d[i] += a * Math.exp(-t / tau) * Math.sin(w * (i - ts)); } } }); });
+    let pk = 0; for (const v of d) pk = Math.max(pk, Math.abs(v)); for (let i = 0; i < d.length; i++) d[i] *= 0.6 / pk;
+  }), SR, 'Plucked chords', 'four strummed chords (additive synthesis, nine decaying harmonics per note). Scan the position: bright attacks and dark tails come apart.');
+  async function decode(ab, name) {
     try {
-      const a = engine(), b = await a.ctx.decodeAudioData(await f.arrayBuffer()), max = Math.round(b.sampleRate * 60), n = Math.min(b.length, max), mono = new Float32Array(n);
+      const a = engine(), b = await a.ctx.decodeAudioData(ab), max = Math.round(b.sampleRate * 60), n = Math.min(b.length, max), mono = new Float32Array(n);
       for (let c = 0; c < b.numberOfChannels; c++) { const x = b.getChannelData(c); for (let i = 0; i < n; i++) mono[i] += x[i] / b.numberOfChannels; }
-      setMono(mono, b.sampleRate, f.name.length > 28 ? f.name.slice(0, 25) + '…' : f.name);
-    } catch { status('This file could not be decoded (try WAV, MP3 or M4A).'); }
-  });
+      setMono(mono, b.sampleRate, name.length > 28 ? name.slice(0, 25) + '…' : name, b.length > max ? 'first 60 s' : ''); return true;
+    } catch { status('This audio could not be decoded (try WAV, MP3 or M4A).'); return false; }
+  }
+  async function recordMic() {
+    const btn = $('#grMic'); if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) { status('This browser cannot record from the microphone.'); return; }
+    try {
+      const st = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } }), rec = new MediaRecorder(st), parts = [];
+      rec.ondataavailable = (e) => parts.push(e.data); btn.disabled = true; btn.textContent = '● Recording…'; status('Recording 4 seconds…');
+      rec.onstop = async () => { st.getTracks().forEach((t) => t.stop()); btn.disabled = false; btn.textContent = '● Microphone 4 s'; await decode(await new Blob(parts).arrayBuffer(), 'Microphone'); };
+      rec.start(); setTimeout(() => rec.state !== 'inactive' && rec.stop(), 4000);
+    } catch (e) { btn.disabled = false; status('Microphone not available: ' + (e.message || e.name)); }
+  }
+  $('#grSweep').addEventListener('click', useSweep); $('#grChord').addEventListener('click', useChord); $('#grMic').addEventListener('click', recordMic);
+  $('#grFileBtn').addEventListener('click', () => $('#grFile').click());
+  $('#grFile').addEventListener('change', async (e) => { const f = e.target.files[0]; if (!f) return; e.target.value = ''; await decode(await f.arrayBuffer(), f.name); });
   const gs = $('#grSliders'), SL = {};
   const rd = () => { const ov = (G.dens * G.size) / 1000, df = 1000 / G.size; $('#grRead').textContent = `overlap ≈ ${ov.toFixed(ov < 10 ? 1 : 0)} grains sounding · Δt = ${G.size.toFixed(G.size < 10 ? 1 : 0)} ms → Δf ≈ 1/Δt ≈ ${df < 1000 ? df.toFixed(0) + ' Hz' : (df / 1000).toFixed(1) + ' kHz'}`; };
   const S1 = (k, o) => (SL[k] = slider(gs, { ...o, onChange: grSave }));
