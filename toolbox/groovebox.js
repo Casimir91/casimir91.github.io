@@ -682,6 +682,7 @@ const CLIPS = {
     padClip('d-lazy95', 'Lazy swing 95', { kick: '1000000100100000', snare: '0000100000001000', hat: '1010101010101010', ohat: '0000000000000010' }, { bpm: 95, swing: 22 }, true),
     padClip('d-cosmic', 'Cosmic funk 104', { kick: '1000100010010001', snare: '0200100200201000', hat: '1212121212121212', ohat: '0000000000100000', cow: '0000000010000000' }, { bpm: 104, swing: 6 }, true),
     padClip('d-deep130', 'Deep house 130', { kick: '1000100010001000', clap: '0000100000001000', hat: '0212021202120212', ohat: '0010001000100010' }, { bpm: 130, swing: 0 }, true),
+    padClip('d-beach', 'Beach swing 116', { kick: '1000001000100010', snare: '0000100000001000', hat: '1212121212121212', ohat: '0000000000100000', rim: '0010000000000100' }, { bpm: 116, swing: 18 }, true),
     padClip('d-clave', 'Salsa clave 3-2', { kick: '0000100000001000', cow: '1001001000101000', hat: '1010101010101010' }, { bpm: 100, swing: 0 }, true),
     padClip('d-rock', 'Rock', { kick: '1000001010100000', snare: '0000100000001000', hat: '1010101010101010' }, { bpm: 110, swing: 0 }, true),
     padClip('d-afro', 'Afrobeat', { kick: '1000001000100100', snare: '0000100000001000', hat: '1212121212121212', cow: '1001001000101000' }, { bpm: 105, swing: 10 }, true),
@@ -705,6 +706,7 @@ const CLIPS = {
     bassClipN('b-funkleg', 'Funk legato', [[[0, 0, 2], [2, 2, 1], [3, 0, 2], [6, 3, 1], [7, 4, 2], [10, 2, 1], [11, 0, 2], [13, 2, 1], [14, 3, 2]], [[0, 0, 2], [2, 0, 1], [3, 2, 2], [6, 3, 1], [7, 2, 2], [10, 0, 1], [11, 4, 2], [13, 3, 1], [14, 2, 2]]], 'Finger'),
     bassClipN('b-rolling', 'Rolling', [[[0, 0, 3], [3, 0, 1], [4, 2, 2], [6, 3, 2], [8, 0, 3], [11, 4, 1], [12, 3, 2], [14, 2, 1], [15, 3, 1]], [[0, 0, 3], [3, 0, 1], [4, 2, 2], [6, 3, 2], [8, 4, 3], [11, 3, 1], [12, 2, 2], [14, 0, 1], [15, 2, 1]]], 'Finger'),
     bassClipN('b-soulline', 'Soul line', [[[0, 0, 4], [4, 2, 2], [6, 3, 2], [8, 4, 3], [11, 3, 1], [12, 2, 2], [14, 0, 2]], [[0, 0, 4], [4, 2, 2], [6, 0, 2], [8, 3, 3], [11, 2, 1], [12, 0, 4]]], 'Sub+'),
+    bassClipN('b-beach', 'Beach bass', [[[0, 0, 3], [3, 2, 1], [4, 3, 2], [6, 4, 2], [8, 0, 3], [11, 2, 1], [12, 3, 2], [14, 4, 2]], [[0, 0, 3], [3, 0, 1], [4, 2, 2], [6, 3, 2], [8, 4, 3], [11, 3, 1], [12, 2, 2], [14, 0, 2]]], 'Round'),
     bassClip('b-neosoul', 'Neo-soul', [[0, 0, 3], [3, 0, 1], [6, 2, 2], [10, 0, 2], [12, 3, 3]], 'Soft'),
   ],
   guitar: [
@@ -1571,12 +1573,13 @@ Object.assign(SCENES, { // inspired by the reference tracks (degrees; 7th chords
   'Boom-bap': { c: ['d-break92', 'b-subslow', 'g-soul', 'k-rhodes'], key: 0, scale: 'minore', prog: [2, 0, 0, 2], bpm: 92, swing: 8 },
   'Lazy soul': { c: ['d-lazy95', 'b-soulline', 'g-muted', 'k-rhodes'], key: 0, scale: 'maggiore', prog: [0, 5, 1, 2], bpm: 95, swing: 22 },
   Cosmic: { c: ['d-cosmic', 'b-funkleg', 'g-wahlfo', 'k-rhodes'], key: 10, scale: 'dorica', prog: [0, 0, 3, 0], bpm: 104, swing: 6 },
+  'Beach jazz': { c: ['d-beach', 'b-beach', 'g-muted', 'k-jazz'], key: 1, scale: 'maggiore', prog: [0, 1, 2, 1], bpm: 116, swing: 18 },
   'Deep house': { c: ['d-deep130', 'b-rolling', 'g-disco', 'k-pad'], key: 9, scale: 'maggiore', prog: [4, 1, 2, 3], bpm: 130, swing: 0 },
 });
 for (const sc of Object.values(SCENES)) { // [drums, bass, guitar, chords, low, arp]
   const k = sc.c[3], g = k ? KGRP[k] : null; sc.c = [sc.c[0], sc.c[1], sc.c[2], g === 'Chords' ? k : null, g === 'Low' ? k : null, k && !g ? k : null];
 }
-Object.assign(SCENES.Soul.c, { 4: 'k-lowslow' }); Object.assign(SCENES.Jazz.c, { 4: 'k-lowjazz' }); Object.assign(SCENES.Gospel.c, { 4: 'k-drone' }); Object.assign(SCENES.Motown.c, { 4: 'k-lowwalk' });
+Object.assign(SCENES['Beach jazz'].c, { 4: 'k-lowjazz' }); Object.assign(SCENES.Soul.c, { 4: 'k-lowslow' }); Object.assign(SCENES.Jazz.c, { 4: 'k-lowjazz' }); Object.assign(SCENES.Gospel.c, { 4: 'k-drone' }); Object.assign(SCENES.Motown.c, { 4: 'k-lowwalk' });
 Object.assign(SCENES['Afro house'].c, { 4: 'k-lowfill' }); Object.assign(SCENES.Roots.c, { 4: 'k-root' }); Object.assign(SCENES['Lo-fi'].c, { 3: 'k-rhodes', 4: 'k-lowslow', 5: null });
 function miniOf(slot, c) { // 16 little cells: where the loop sounds in its first bar
   const on = Array(STEPS).fill(0);
