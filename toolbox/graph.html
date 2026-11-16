@@ -8,12 +8,14 @@
 <link rel="stylesheet" href="vendor/mathlive/mathlive-fonts.css">
 <link rel="stylesheet" href="vendor/mathlive/mathlive-static.css">
 <link rel="stylesheet" href="graph.css">
+<link rel="stylesheet" href="guide.css">
 <script src="toolbox.js"></script>
 </head>
 <body>
   <div class="topbar">
     <a href="index.html">← Toolbox</a>
     <span class="status">Graphs · tables · sliders</span>
+    <details class="guide" id="guide" data-kind="graph"></details>
     <div class="themebar" id="themebar"></div>
   </div>
 
@@ -63,5 +65,6 @@
 
   <noscript><p class="status">This tool needs JavaScript.</p></noscript>
   <script type="module" src="graph.js"></script>
+  <script type="module" src="guide.js"></script>
 </body>
 </html>

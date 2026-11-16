@@ -437,6 +437,7 @@ function parse(src, ctx = {}) {
     if (c === "-") { i++; return neg(parseFnArg()); }
     if (c === "+") { i++; return parseFnArg(); }
     if (c === undefined) fail("incomplete", "Complete the expression");
+    if (c === "(") return parsePrimary();        // sin(x)² means (sin x)², not sin(x²)
     return parsePower();
   }
 

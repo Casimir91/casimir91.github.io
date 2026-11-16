@@ -1,6 +1,6 @@
 /* Graph page: function cards (MathLive) + our own keypad + canvas + numeric analysis. */
 import { MathfieldElement } from "./vendor/mathlive/mathlive.min.mjs";
-import { verticalAsymptotes, horizontalAsymptotes, parseExpr, compile, zeros, extrema, intersections, niceNumber, niceStep, fmtValue, GraphError, PARAM_NAMES } from "./graph-engine.js";
+import { derivativeAt, lineEquation, verticalAsymptotes, horizontalAsymptotes, parseExpr, compile, zeros, extrema, intersections, niceNumber, niceStep, fmtValue, GraphError, PARAM_NAMES } from "./graph-engine.js";
 
 MathfieldElement.fontsDirectory = "vendor/mathlive/fonts";
 MathfieldElement.soundsDirectory = null;
@@ -61,6 +61,29 @@ function compileFn(fn) {
   }
 }
 
+const TAN_ICON = '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M3 19C9 19 13 12 21 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".55"/><path d="M5 20L21 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="13" cy="13.6" r="2.6" fill="currentColor"/></svg>';
+
+/* tangent line: fn.tan = { x0 } while on */
+function setTangent(fn, on) {
+  fn.tgEl.setAttribute("aria-pressed", String(on));
+  fn.tanEl.hidden = !on; fn.el.classList.toggle("has-tan", on);
+  if (!on) { fn.tan = null; requestDraw(); save(); return; }
+  let x0 = 1, found = false;
+  if (fn.f) for (const c of [V.cx + W / 10 / V.s, V.cx, V.cx - W / 10 / V.s, V.cx + W / 5 / V.s, V.cx - W / 5 / V.s]) {
+    const y = fn.f(c, P);
+    if (finite(y) && toPy(y) > 20 && toPy(y) < H - 20) { x0 = snapX(fn, c); found = true; break; }
+  }
+  if (!found && fn.f) { const c = V.cx + W / 10 / V.s; if (finite(fn.f(c, P))) x0 = snapX(fn, c); }
+  fn.tan = { x0 }; requestDraw(); save();
+}
+function snapX(fn, x) {
+  const w = toX(W) - toX(0);
+  const step = niceStep(w, 8) / 20;
+  let best = Math.round(x / step) * step;
+  for (const p of state.pois) if (p.fn === fn && (p.kind === "max" || p.kind === "min") && Math.abs(toPx(p.x) - toPx(x)) < 10) best = p.x;
+  return +best.toPrecision(12);
+}
+
 function makeCard(fn) {
   const card = document.createElement("div");
   card.className = "fn";
@@ -94,10 +117,21 @@ function makeCard(fn) {
   const del = document.createElement("button");
   del.type = "button"; del.className = "del"; del.setAttribute("aria-label", "Delete function"); del.textContent = "✕";
   del.addEventListener("click", () => removeFn(fn));
+  const tg = document.createElement("button");
+  tg.type = "button"; tg.className = "tg"; tg.setAttribute("aria-pressed", "false");
+  tg.title = "Tangent line: drag the point along the curve"; tg.setAttribute("aria-label", "Tangent line");
+  tg.innerHTML = TAN_ICON;
+  tg.addEventListener("click", () => setTangent(fn, !fn.tan));
+  const tan = document.createElement("div"); tan.className = "tan"; tan.hidden = true;
+  tan.innerHTML = '<label>x₀ <input type="number" step="any" inputmode="decimal" aria-label="Tangent point x"></label><span class="tm"></span><span class="teq"></span>';
+  tan.querySelector("input").addEventListener("input", (e) => {
+    const v = parseFloat(e.target.value);
+    if (fn.tan && finite(v)) { fn.tan.x0 = v; requestDraw(); save(); }
+  });
   const err = document.createElement("div"); err.className = "err"; err.hidden = true;
   const eq = document.createElement("span"); eq.className = "nm"; eq.textContent = "(x) =";
-  card.append(vis, nm, eq, mf, del, err);
-  Object.assign(fn, { el: card, mf, nmEl: nm, errEl: err, visEl: vis });
+  card.append(vis, nm, eq, mf, tg, del, tan, err);
+  Object.assign(fn, { el: card, mf, nmEl: nm, errEl: err, visEl: vis, tgEl: tg, tanEl: tan });
   return card;
 }
 
@@ -404,6 +438,43 @@ function drawAsymptotes() {
   ctx.restore();
 }
 
+function tangentOf(fn) {
+  if (!fn.tan || !fn.f || !fn.visible) return null;
+  const x0 = fn.tan.x0, g = (x) => fn.f(x, P);
+  const d = derivativeAt(g, x0);
+  return { fn, x0, d };
+}
+function drawTangents() {
+  const bg = css("--plot-bg");
+  for (const fn of state.fns) {
+    const t = tangentOf(fn); if (!t) continue;
+    const col = colorOf(fn), { x0, d } = t;
+    if (d.kind !== "undefined") {
+      ctx.strokeStyle = col; ctx.lineWidth = 2; ctx.globalAlpha = 0.9; ctx.beginPath();
+      if (d.kind === "ok") { ctx.moveTo(-5, toPy(d.y + d.m * (toX(-5) - x0))); ctx.lineTo(W + 5, toPy(d.y + d.m * (toX(W + 5) - x0))); }
+      else if (d.kind === "vertical") { const px = toPx(x0); ctx.moveTo(px, 0); ctx.lineTo(px, H); }
+      ctx.stroke(); ctx.globalAlpha = 1;
+      const px = toPx(x0), py = toPy(d.y);
+      ctx.beginPath(); ctx.arc(px, py, 7.5, 0, 7); ctx.fillStyle = col; ctx.fill(); ctx.lineWidth = 2.5; ctx.strokeStyle = bg; ctx.stroke();
+      ctx.beginPath(); ctx.arc(px, py, 12, 0, 7); ctx.lineWidth = 1.5; ctx.strokeStyle = col; ctx.globalAlpha = 0.5; ctx.stroke(); ctx.globalAlpha = 1;
+    }
+  }
+}
+function updateTanInfo() {
+  for (const fn of state.fns) {
+    if (!fn.tan) continue;
+    const input = fn.tanEl.querySelector("input"), tm = fn.tanEl.querySelector(".tm"), teq = fn.tanEl.querySelector(".teq");
+    if (document.activeElement !== input) input.value = +fn.tan.x0.toFixed(4);
+    const t = tangentOf(fn);
+    if (!t) { tm.textContent = fn.visible ? "" : "(hidden)"; teq.textContent = ""; continue; }
+    const d = t.d;
+    if (d.kind === "ok") { tm.innerHTML = `m = ${niceNumber(d.m)}`; teq.textContent = lineEquation(d.m, t.x0, d.y); }
+    else if (d.kind === "vertical") { tm.textContent = "vertical tangent"; teq.textContent = "x = " + niceNumber(t.x0); }
+    else if (d.kind === "corner") { tm.textContent = "not differentiable (corner)"; teq.textContent = `slopes ${niceNumber(d.left)} | ${niceNumber(d.right)}`; }
+    else { tm.textContent = "f is not defined here"; teq.textContent = ""; }
+  }
+}
+
 function drawMarked() {
   if (state.marked == null) return;
   const px = toPx(state.marked);
@@ -432,8 +503,9 @@ function draw() {
   state.pois = analyse();
   drawAsymptotes();
   for (const fn of state.fns) if (fn.f && fn.visible) drawCurve(fn, colorOf(fn));
-  drawMarked(); drawPois(); drawTrace();
+  drawTangents(); drawMarked(); drawPois(); drawTrace();
   ctx.restore();
+  updateTanInfo();
   updateTip();
 }
 
@@ -480,6 +552,15 @@ function traceAt(px, py) {
 }
 
 /* ---------- pointer interaction ---------- */
+function tanHit(px, py) {                          // the function whose tangent point is under the pointer
+  let best = null, bd = coarse ? 30 : 18;
+  for (const fn of state.fns) {
+    const t = tangentOf(fn); if (!t || t.d.kind === "undefined") continue;
+    const d = Math.hypot(toPx(t.x0) - px, toPy(t.d.y) - py);
+    if (d < bd) { bd = d; best = fn; }
+  }
+  return best;
+}
 const ptrs = new Map();
 let gesture = null;
 const rectPos = (e) => { const r = cv.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; };
@@ -492,13 +573,20 @@ function zoomAt(px, py, f) {
 cv.addEventListener("pointerdown", (e) => {
   cv.setPointerCapture(e.pointerId);
   const p = rectPos(e); ptrs.set(e.pointerId, p);
-  gesture = { moved: ptrs.size > 1, sx: p.x, sy: p.y };
+  gesture = { moved: ptrs.size > 1, sx: p.x, sy: p.y, drag: ptrs.size === 1 ? tanHit(p.x, p.y) : null };
+  if (gesture.drag) { cv.classList.add("dragging"); state.trace = null; pinned = false; }
   if (ptrs.size === 2) { const [a, b] = [...ptrs.values()]; gesture.d = Math.hypot(a.x - b.x, a.y - b.y); gesture.mx = (a.x + b.x) / 2; gesture.my = (a.y + b.y) / 2; }
 });
 cv.addEventListener("pointermove", (e) => {
   const p = rectPos(e);
-  if (!ptrs.has(e.pointerId)) { if (e.pointerType === "mouse" && !pinned) traceAt(p.x, p.y); return; }
+  if (!ptrs.has(e.pointerId)) {
+    if (e.pointerType === "mouse") { cv.style.cursor = tanHit(p.x, p.y) ? "ew-resize" : ""; if (!pinned) traceAt(p.x, p.y); }
+    return;
+  }
   const prev = ptrs.get(e.pointerId); ptrs.set(e.pointerId, p);
+  if (ptrs.size === 1 && gesture.drag) {
+    gesture.moved = true; gesture.drag.tan.x0 = snapX(gesture.drag, toX(p.x)); requestDraw(); return;
+  }
   if (ptrs.size === 1) {
     if (!gesture.moved && Math.hypot(p.x - gesture.sx, p.y - gesture.sy) < 5) return;
     gesture.moved = true; cv.classList.add("dragging"); pinned = false; state.trace = null;
@@ -671,7 +759,7 @@ function save() {
   clearTimeout(saveT);
   saveT = setTimeout(() => {
     store.set("graph-v1", JSON.stringify({
-      fns: state.fns.map((f) => ({ latex: f.latex, visible: f.visible, ci: f.ci })),
+      fns: state.fns.map((f) => ({ latex: f.latex, visible: f.visible, ci: f.ci, tan: f.tan ? f.tan.x0 : null })),
       params: PARAMS, view: V, angle: state.angle, kb: state.kb,
     }));
   }, 300);
@@ -690,6 +778,7 @@ function restore() {
     const fn = addFn(String(f.latex || ""), { visible: f.visible !== false });
     if (Number.isInteger(f.ci)) fn.ci = Math.abs(f.ci) % 6;
     fn.visEl.setAttribute("aria-pressed", String(fn.visible));
+    if (finite(f.tan)) { fn.tan = { x0: f.tan }; fn.tgEl.setAttribute("aria-pressed", "true"); fn.tanEl.hidden = false; fn.el.classList.add("has-tan"); }
   }
   return state.fns.length > 0;
 }

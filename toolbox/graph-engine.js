@@ -394,3 +394,43 @@ export function horizontalAsymptotes(f) {
   for (const L of [lim(1), lim(-1)]) if (L !== null && !out.some((u) => Math.abs(u - L) < 1e-6 * (1 + Math.abs(L)))) out.push(L);
   return out;
 }
+
+/* ---------------- derivative at a point (numeric) ---------------- */
+/* → { kind: "ok", y, m } | { kind: "corner", y, left, right } | { kind: "vertical", y } | { kind: "undefined" } */
+export function derivativeAt(f, x) {
+  const y = f(x);
+  if (!finite(y)) return { kind: "undefined" };
+  const sc = Math.max(1, Math.abs(x));
+  const slope = (d) => (f(x + d) - y) / d;                  // difference quotient on one side (d < 0: left)
+  const diverges = (sg) => { const a = slope(sg * 1e-3 * sc), b = slope(sg * 1e-7 * sc); return finite(b) && Math.abs(b) > 50 && Math.abs(b) > 5 * Math.abs(a || 0); };
+  if (diverges(1) || diverges(-1)) return { kind: "vertical", y };                          // x^(1/3), √x at 0
+  const h = 1e-5 * sc;
+  const f1 = f(x + h), f2 = f(x + 2 * h), g1 = f(x - h), g2 = f(x - 2 * h);
+  const right = finite(f1) && finite(f2) ? (-3 * y + 4 * f1 - f2) / (2 * h) : NaN;
+  const left = finite(g1) && finite(g2) ? (3 * y - 4 * g1 + g2) / (2 * h) : NaN;
+  const big = (v) => Math.abs(v) > 1e5;
+  if (finite(left) && finite(right)) {
+    if (big(left) && big(right) && left * right > 0) return { kind: "vertical", y };            // x^(1/3) at 0
+    if (Math.abs(left - right) > 1e-3 * (1 + Math.max(Math.abs(left), Math.abs(right)))) {
+      if (big(left) || big(right)) return { kind: "vertical", y };
+      return { kind: "corner", y, left, right };
+    }
+    // 4th-order central difference when all four neighbours exist
+    const m = (8 * (f1 - g1) - (f2 - g2)) / (12 * h);
+    return { kind: "ok", y, m: finite(m) ? m : (left + right) / 2 };
+  }
+  const one = finite(right) ? right : left;                                                   // only one side exists (domain edge)
+  if (!finite(one) || big(one)) return { kind: "vertical", y };
+  return { kind: "ok", y, m: one };
+}
+
+/* "y = 2x − 1.5": equation of the line through (x0, y0) with slope m */
+export function lineEquation(m, x0, y0) {
+  if (Math.abs(m) < 1e-6) return "y = " + niceNumber(y0);
+  const q = y0 - m * x0;
+  const am = Math.abs(m);
+  const coef = Math.abs(am - 1) < 1e-9 ? "" : /\//.test(niceNumber(am)) ? `(${niceNumber(am)})` : niceNumber(am);
+  let s = "y = " + (m < 0 ? "−" : "") + coef + "x";
+  if (Math.abs(q) >= 1e-9) s += (q < 0 ? " − " : " + ") + niceNumber(Math.abs(q));
+  return s;
+}
