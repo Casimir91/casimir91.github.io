@@ -353,7 +353,7 @@ ul.task-list li input[type="checkbox"] {
 
 
 <section id="basic-tools" class="level2">
-<h2 class="anchored" data-anchor-id="basic-tools">Basic tools</h2>
+<h2 class="anchored" data-anchor-id="basic-tools">Basic Tools</h2>
 <div class="tb-grid">
 
   <a class="tb-card" href="clock.html" target="_blank" rel="noopener">
@@ -361,7 +361,7 @@ ul.task-list li input[type="checkbox"] {
     <div class="tb-body">
       <div class="tb-title">Clock</div>
       <p>Large HH:MM:SS display that adapts to any screen and orientation. Optional synchronisation with a network time reference.</p>
-      <div class="tb-meta">Fullscreen · light green and dark lime</div>
+      <div class="tb-meta">Fullscreen · 5 palettes · light and dark · animated scenes</div>
       <div class="tb-open">Open the clock →</div>
     </div>
   </a>
@@ -371,7 +371,7 @@ ul.task-list li input[type="checkbox"] {
     <div class="tb-body">
       <div class="tb-title">Timer</div>
       <p>Countdown with presets, visual and audible alarm at zero. Ideal for tests and group activities.</p>
-      <div class="tb-meta">Presets from 1 to 60 min · alarm · +/− 1 min</div>
+      <div class="tb-meta">Presets from 1 to 60 min · alarm · 5 palettes · animated scenes</div>
       <div class="tb-open">Open the timer →</div>
     </div>
   </a>
@@ -386,6 +386,22 @@ ul.task-list li input[type="checkbox"] {
     </div>
   </a>
 
+</div>
+</section>
+<section id="advanced-tools" class="level2">
+<h2 class="anchored" data-anchor-id="advanced-tools">Advanced Tools</h2>
+<div class="tb-grid">
+
+  <a class="tb-card" href="../mosaicus/">
+    <div class="tb-preview" style="background:#00302A"><svg viewbox="0 0 220 110" width="220" height="110" aria-hidden="true"><g stroke="rgba(198,244,50,.18)" stroke-width="1"><path d="M0 22H220M0 44H220M0 66H220M0 88H220M44 0V110M88 0V110M132 0V110M176 0V110"></path></g><path d="M0 55 C14 10 26 10 40 55 S66 100 80 55 S106 10 120 55 S146 100 160 55 S186 10 200 55 S214 80 220 70" fill="none" stroke="#C6F432" stroke-width="3" style="filter:drop-shadow(0 0 4px #C6F432)"></path><path d="M0 55 C10 30 18 25 30 48 S50 85 66 60 S88 18 104 52 S130 92 150 58 S178 22 196 50 S214 70 220 62" fill="none" stroke="#FFC531" stroke-width="2.4"></path></svg></div>
+    <div class="tb-body">
+      <div class="tb-title">Mosaicus <span class="tb-ver" data-mz-ver="" style="display:none;margin-left:.35rem;padding:.05rem .45rem;border-radius:999px;font-size:.8rem;background:#C6F432;color:#00302A;vertical-align:.15rem"></span></div>
+      <p>Physics micro-lab. Arduino sensors, phone sensors and sound in one app: live graphs, oscilloscope with spectrum, tone generator, a sensor-driven musical instrument, data analysis and Excel export.</p>
+      <div class="tb-meta">Computer · smartphone · whiteboard · offline · MIT licence · guide in Italian</div>
+      <div class="tb-open">Open the guide →</div>
+    </div>
+  </a>
+
   <a class="tb-card" href="graph.html" target="_blank" rel="noopener">
     <div class="tb-preview"><svg class="tb-graph" viewbox="0 0 120 70" aria-hidden="true"><path class="ax" d="M6 35h108M60 4v62"></path><path class="c1" d="M26 4Q60 100 94 4"></path><path class="c2" d="M6 35C20 5 34 5 48 35S76 65 90 35s14-30 24-30"></path><circle cx="60" cy="52" r="3"></circle></svg></div>
     <div class="tb-body">
@@ -393,6 +409,27 @@ ul.task-list li input[type="checkbox"] {
       <p>Write a function with real fractions, powers and roots, and see its graph at once. Zeros, maxima, minima and intersections appear on their own; sliders for a, b, c let you watch a parameter change the curve.</p>
       <div class="tb-meta">y = f(x) · table of values · sliders · zeros and extrema · works on smartphone</div>
       <div class="tb-open">Open the graphs →</div>
+    </div>
+  </a>
+
+</div>
+<script>
+fetch('../mosaicus/app/version.json', { cache: 'no-cache' }).then((r) => r.json()).then((v) => {
+  document.querySelectorAll('[data-mz-ver]').forEach((e) => { e.textContent = `v${v.app}`; e.title = `firmware v${v.firmware}`; e.style.display = 'inline-block'; });
+}).catch(() => {});
+</script>
+</section>
+<section id="creative-tools" class="level2">
+<h2 class="anchored" data-anchor-id="creative-tools">Creative Tools</h2>
+<div class="tb-grid">
+
+  <a class="tb-card" href="groovebox.html" target="_blank" rel="noopener">
+    <div class="tb-preview"><div class="tb-seq" aria-hidden="true"><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><b class="tb-head"></b></div></div>
+    <div class="tb-body">
+      <div class="tb-title">Groovebox</div>
+      <p>A small rack of electronic instruments: launch ready-made loops (drums, bass, guitar, keys) that change at the next bar, play 16 MPC-style pads and a keyboard, and bend the whole mix with a Kaoss-style XY pad (filter, reverb, echo, flanger). Shape each sound and watch it on the oscilloscope.</p>
+      <div class="tb-meta">Loops · song timeline · pads · keys · XY effects · waveshaper · granular · export WAV/MP3 · works on smartphone</div>
+      <div class="tb-open">Open the Groovebox →</div>
     </div>
   </a>
 
@@ -413,43 +450,6 @@ ul.task-list li input[type="checkbox"] {
   </a>
 
 </div>
-</section>
-<section id="music" class="level2">
-<h2 class="anchored" data-anchor-id="music">Music</h2>
-<div class="tb-grid">
-
-  <a class="tb-card" href="groovebox.html" target="_blank" rel="noopener">
-    <div class="tb-preview"><div class="tb-seq" aria-hidden="true"><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><b class="tb-head"></b></div></div>
-    <div class="tb-body">
-      <div class="tb-title">Groovebox</div>
-      <p>A small rack of electronic instruments: launch ready-made loops (drums, bass, guitar, keys) that change at the next bar, play 16 MPC-style pads and a keyboard, and bend the whole mix with a Kaoss-style XY pad (filter, reverb, echo, flanger). Shape each sound and watch it on the oscilloscope.</p>
-      <div class="tb-meta">Loops · song timeline · pads · keys · XY effects · waveshaper · granular · export WAV/MP3 · works on smartphone</div>
-      <div class="tb-open">Open the Groovebox →</div>
-    </div>
-  </a>
-
-</div>
-</section>
-<section id="lab-tools" class="level2">
-<h2 class="anchored" data-anchor-id="lab-tools">Lab tools</h2>
-<div class="tb-grid">
-
-  <a class="tb-card" href="../mosaicus/">
-    <div class="tb-preview" style="background:#00302A"><svg viewbox="0 0 220 110" width="220" height="110" aria-hidden="true"><g stroke="rgba(198,244,50,.18)" stroke-width="1"><path d="M0 22H220M0 44H220M0 66H220M0 88H220M44 0V110M88 0V110M132 0V110M176 0V110"></path></g><path d="M0 55 C14 10 26 10 40 55 S66 100 80 55 S106 10 120 55 S146 100 160 55 S186 10 200 55 S214 80 220 70" fill="none" stroke="#C6F432" stroke-width="3" style="filter:drop-shadow(0 0 4px #C6F432)"></path><path d="M0 55 C10 30 18 25 30 48 S50 85 66 60 S88 18 104 52 S130 92 150 58 S178 22 196 50 S214 70 220 62" fill="none" stroke="#FFC531" stroke-width="2.4"></path></svg></div>
-    <div class="tb-body">
-      <div class="tb-title">Mosaicus <span class="tb-ver" data-mz-ver="" style="display:none;margin-left:.35rem;padding:.05rem .45rem;border-radius:999px;font-size:.8rem;background:#C6F432;color:#00302A;vertical-align:.15rem"></span></div>
-      <p>Physics micro-lab. Arduino sensors, phone sensors and sound in one app: live graphs, oscilloscope with spectrum, tone generator, a sensor-driven musical instrument, data analysis and Excel export.</p>
-      <div class="tb-meta">Computer · smartphone · whiteboard · offline · MIT licence · guide in Italian</div>
-      <div class="tb-open">Open the guide →</div>
-    </div>
-  </a>
-
-</div>
-<script>
-fetch('../mosaicus/app/version.json', { cache: 'no-cache' }).then((r) => r.json()).then((v) => {
-  document.querySelectorAll('[data-mz-ver]').forEach((e) => { e.textContent = `v${v.app}`; e.title = `firmware v${v.firmware}`; e.style.display = 'inline-block'; });
-}).catch(() => {});
-</script>
 <script>
 (() => {
   const pad = n => String(n).padStart(2, "0");

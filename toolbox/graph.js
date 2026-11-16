@@ -1,6 +1,6 @@
 /* Graph page: function cards (MathLive) + our own keypad + canvas + numeric analysis. */
 import { MathfieldElement } from "./vendor/mathlive/mathlive.min.mjs";
-import { parseExpr, compile, zeros, extrema, intersections, niceNumber, niceStep, fmtValue, GraphError, PARAM_NAMES } from "./graph-engine.js";
+import { verticalAsymptotes, horizontalAsymptotes, parseExpr, compile, zeros, extrema, intersections, niceNumber, niceStep, fmtValue, GraphError, PARAM_NAMES } from "./graph-engine.js";
 
 MathfieldElement.fontsDirectory = "vendor/mathlive/fonts";
 MathfieldElement.soundsDirectory = null;
@@ -24,6 +24,7 @@ const state = {
   marked: null,       // x chosen in the table
   trace: null,        // { px, py, color, html }
   pois: [],
+  asym: { v: [], h: [] },
 };
 const V = { cx: 0, cy: 0, s: 40 };                 // view: centre (world) and pixels per unit
 const PARAMS = {};                                  // name → { v, min, max }
@@ -353,6 +354,15 @@ function analyse() {
       if (finite(y0) && !dup) list.push({ kind: "yint", x: 0, y: y0, fn });
     }
   }
+  const asym = { v: [], h: [] };
+  const addUnique = (arr, val, tol) => { if (!arr.some((u) => Math.abs(u - val) < tol)) arr.push(val); };
+  for (const { fn } of live) {
+    const g = bound.get(fn);
+    for (const x of verticalAsymptotes(g, xmin, xmax, ySpan)) addUnique(asym.v, x, (xmax - xmin) * 1e-4);
+    for (const y of horizontalAsymptotes(g)) addUnique(asym.h, y, ySpan * 1e-4);
+  }
+  asym.v = asym.v.slice(0, 16); asym.h = asym.h.slice(0, 4);
+  state.asym = asym;
   let nCross = 0;
   for (let i = 0; i < live.length; i++) for (let j = i + 1; j < live.length; j++) {
     const fa = bound.get(live[i].fn), fb = bound.get(live[j].fn);
@@ -375,6 +385,23 @@ function drawPois() {
     else if (p.kind === "zero" || p.kind === "yint") { ctx.arc(px, py, r, 0, 7); ctx.fillStyle = bg; ctx.fill(); ctx.lineWidth = 2.4; ctx.strokeStyle = col; ctx.stroke(); }
     else { ctx.arc(px, py, r, 0, 7); ctx.fillStyle = col; ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = bg; ctx.stroke(); }
   }
+}
+
+function drawAsymptotes() {
+  const { v, h } = state.asym;
+  if (!v.length && !h.length) return;
+  const col = css("--asym"), bg = css("--plot-bg");
+  ctx.save();
+  ctx.strokeStyle = col; ctx.lineWidth = 1.8; ctx.setLineDash([8, 6]); ctx.lineCap = "butt";
+  ctx.beginPath();
+  for (const x of v) { const px = Math.round(toPx(x)) + 0.5; ctx.moveTo(px, 0); ctx.lineTo(px, H); }
+  for (const y of h) { const py = Math.round(toPy(y)) + 0.5; if (py > -2 && py < H + 2) { ctx.moveTo(0, py); ctx.lineTo(W, py); } }
+  ctx.stroke(); ctx.setLineDash([]);
+  ctx.font = "600 12px Roboto, system-ui, sans-serif"; ctx.fillStyle = col; ctx.textBaseline = "alphabetic";
+  if (v.length <= 5) { ctx.textAlign = "left"; for (const x of v) halo("x = " + niceNumber(x), toPx(x) + 5, 16, bg); }
+  ctx.textAlign = "right";
+  for (const y of h) { const py = toPy(y); if (py > 14 && py < H - 4) halo("y = " + niceNumber(y), W - 56, py - 5, bg); }
+  ctx.restore();
 }
 
 function drawMarked() {
@@ -402,8 +429,9 @@ function draw() {
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   drawGrid();
   ctx.save(); ctx.beginPath(); ctx.rect(0, 0, W, H); ctx.clip();
-  for (const fn of state.fns) if (fn.f && fn.visible) drawCurve(fn, colorOf(fn));
   state.pois = analyse();
+  drawAsymptotes();
+  for (const fn of state.fns) if (fn.f && fn.visible) drawCurve(fn, colorOf(fn));
   drawMarked(); drawPois(); drawTrace();
   ctx.restore();
   updateTip();

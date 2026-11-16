@@ -329,3 +329,68 @@ export function fmtValue(y, digits = 6) {  // table cells and trace labels
   const s = Number(y.toPrecision(digits)).toString();
   return (/e/.test(s) ? y.toExponential(Math.max(1, digits - 3)) : s).replace("-", "−");
 }
+
+/* ---------------- asymptotes ---------------- */
+/* |f| must grow without bound when approaching x0 from `side` (±1): ln, 1/x, tan, 1/√x yes; √x, smooth peaks no. */
+function blowsUp(f, x0, side) {
+  const a = [1e-2, 1e-4, 1e-6, 1e-8].map((h) => Math.abs(f(x0 + side * h)));
+  if (!a.every(finite)) return false;
+  return a[1] > 1.25 * a[0] && a[2] > 1.25 * a[1] && a[3] > 1.2 * a[2] && a[3] > 2.5 * a[0] && a[3] > 8;
+}
+
+/* vertical asymptotes in [x0, x1]: x-values where f blows up (poles) or at the edge of the domain (ln, 1/√x) */
+export function verticalAsymptotes(f, x0, x1, ySpan = Infinity, n = 800) {
+  const { xs, ys } = sample(f, x0, x1, n);
+  const found = [];
+  const test = (x, sides) => { if (sides.length && sides.every((s) => blowsUp(f, x, s))) found.push(x); };
+  for (let i = 0; i < n; i++) {
+    const a = ys[i], b = ys[i + 1];
+    if (finite(a) && finite(b)) {
+      if (a * b < 0) {                                           // sign change: zero or odd pole
+        let lo = xs[i], hi = xs[i + 1], flo = a;
+        for (let k = 0; k < 60; k++) {
+          const m = (lo + hi) / 2, fm = f(m);
+          if (!finite(fm)) break;
+          if ((fm < 0) === (flo < 0)) { lo = m; flo = fm; } else hi = m;
+        }
+        test((lo + hi) / 2, [-1, 1]);
+      }
+    } else if (finite(a) !== finite(b)) {                        // domain edge (or a pole sitting exactly on the grid)
+      let lo = finite(a) ? xs[i] : xs[i + 1], hi = finite(a) ? xs[i + 1] : xs[i];
+      for (let k = 0; k < 60; k++) { const m = (lo + hi) / 2; if (finite(f(m))) lo = m; else hi = m; }
+      test((lo + hi) / 2, [Math.sign(finite(a) ? xs[i] - xs[i + 1] : xs[i + 1] - xs[i])]);
+    }
+  }
+  for (let i = 1; i < n; i++) {                                  // even poles (1/x²): a tall isolated peak of |f|
+    const a = ys[i - 1], b = ys[i], c = ys[i + 1];
+    if (!finite(a) || !finite(b) || !finite(c) || a * b <= 0 || b * c <= 0) continue;
+    const m = Math.abs(b);
+    if (m < Math.abs(a) || m < Math.abs(c) || m < ySpan || m < 1.5 * Math.max(Math.abs(a), Math.abs(c))) continue;
+    let lo = xs[i - 1], hi = xs[i + 1];
+    const phi = (Math.sqrt(5) - 1) / 2;
+    let p = hi - phi * (hi - lo), q = lo + phi * (hi - lo), gp = Math.abs(f(p)), gq = Math.abs(f(q));
+    for (let k = 0; k < 70; k++) {
+      if (!(gp <= Infinity) || !finite(gp)) { hi = q; } else if (gp > gq) { hi = q; } else { lo = p; }
+      p = hi - phi * (hi - lo); q = lo + phi * (hi - lo); gp = Math.abs(f(p)); gq = Math.abs(f(q));
+    }
+    test((lo + hi) / 2, [-1, 1]);
+  }
+  found.sort((u, v) => u - v);
+  const tol = (x1 - x0) * 1e-6 + 1e-9, out = [];
+  for (const x of found) if (!out.length || x - out[out.length - 1] > tol) out.push(x);
+  return out;
+}
+
+/* horizontal asymptotes: finite limits of f at +∞ and −∞ */
+export function horizontalAsymptotes(f) {
+  const lim = (sgn) => {
+    const v = [1e3, 1e5, 1e7, 1e9].map((x) => f(sgn * x));
+    if (!v.every(finite)) return null;
+    const L = v[3], d1 = Math.abs(v[1] - L), d2 = Math.abs(v[2] - L), d0 = Math.abs(v[0] - L);
+    if (d2 <= 1e-3 * (1 + Math.abs(L)) && d2 <= d1 && d1 <= d0 + 1e-12 && Math.abs(L) < 1e8) return L;
+    return null;
+  };
+  const out = [];
+  for (const L of [lim(1), lim(-1)]) if (L !== null && !out.some((u) => Math.abs(u - L) < 1e-6 * (1 + Math.abs(L)))) out.push(L);
+  return out;
+}

@@ -4,7 +4,8 @@
   --key: #fbf9f3; --key-border: #ddd6c3; --key-shadow: 0 1.5px 0 #d3ccb8;
   --fn: #ece7d9; --op: #dde7da; --op-fg: #3f5a45; --hero: #f3e3c3; --hero-fg: #7a5518; --hero-border: #dcc08a;
   --grid: rgba(74,90,78,.10); --grid2: rgba(74,90,78,.22); --axis: rgba(74,90,78,.65); --plot-bg: #fbf9f3;
-  --c1: #2f6fb0; --c2: #c2562e; --c3: #3f8f5a; --c4: #8a55b8; --c5: #b8860b; --c6: #1f8f93;
+  --c1: #2f6fb0; --c2: #c2562e; --c3: #c23f87; --c4: #6f4fc0; --c5: #b8860b; --c6: #1f8f93;
+  --asym: #7a9a00;                       /* asymptotes: dark lime, never used by the curves */
 }
 :root[data-mode="dark"] {
   --card: #071d19; --card-border: rgba(255,255,255,.22);
@@ -12,7 +13,8 @@
   --fn: rgba(255,255,255,.09); --op: rgba(198,244,50,.12); --op-fg: #c6f432;
   --hero: rgba(198,244,50,.16); --hero-fg: #c6f432; --hero-border: rgba(198,244,50,.6);
   --grid: rgba(255,255,255,.07); --grid2: rgba(255,255,255,.16); --axis: rgba(255,255,255,.7); --plot-bg: #071d19;
-  --c1: #6cb4ff; --c2: #ff8a5c; --c3: #c6f432; --c4: #d2a2ff; --c5: #ffd166; --c6: #5eead4;
+  --c1: #6cb4ff; --c2: #ff8a5c; --c3: #ff7ac6; --c4: #b79cff; --c5: #ffd166; --c6: #5eead4;
+  --asym: #c6f432;                       /* lime: reserved for asymptotes */
 }
 
 /* ---------- layout ---------- */

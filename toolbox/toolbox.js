@@ -1,17 +1,27 @@
-/* Toolbox shared script: light/dark theme (Zen green / Lime), optional motion,
-   zoom buttons, screen wake lock.
+/* Toolbox shared script: light/dark mode, palettes (Clock and Timer only: <body data-palettes>),
+   optional motion, Zen auto-hide of controls, zoom buttons, screen wake lock.
+   Pages without data-palettes (Groovebox, Calculator, Graphs, Wordle) have two themes only:
+   light = Zen green, dark = Lime.
    Load it in <head> (no defer) so the theme is applied before first paint. */
 (() => {
   const root = document.documentElement;
   const get = (k, d) => { try { return localStorage.getItem(k) || d; } catch (e) { return d; } };
   const set = (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} };
 
+  const PALETTES = ["light", "zen", "ocean", "amber", "lime"];
+  const NAMES = { light: "Light", zen: "Zen", ocean: "Ocean", amber: "Amber", lime: "Lime" };
+  // data-palettes is on <body>, which does not exist yet while this script runs in <head>:
+  // the page declares it on <html> too, or we read it once the DOM is ready (see below).
+  let withPalettes = root.hasAttribute("data-palettes");
+
+  let pal = get("toolbox-palette", "lime");
+  if (!PALETTES.includes(pal)) pal = "lime";
   let mode = get("toolbox-mode", "dark");   // dark (lime) is the default; a choice made with the ☀/☾ button is remembered
   if (mode !== "light" && mode !== "dark") mode = "dark";
   let anim = get("toolbox-anim", "off") === "on";
 
   function apply() {
-    root.dataset.palette = mode === "dark" ? "lime" : "zen"; // kept for old selectors
+    root.dataset.palette = withPalettes ? pal : (mode === "dark" ? "lime" : "zen");
     root.dataset.mode = mode;
     if (anim) root.dataset.anim = "on"; else delete root.dataset.anim;
   }
@@ -20,17 +30,27 @@
   document.addEventListener("DOMContentLoaded", () => {
     /* ---------- theme bar ---------- */
     const bar = document.getElementById("themebar");
+    if (document.body.hasAttribute("data-palettes") && !withPalettes) { withPalettes = true; root.setAttribute("data-palettes", ""); apply(); }
+    const dots = [];
     let modeBtn, animBtn;
     const refresh = () => {
+      dots.forEach(d => d.setAttribute("aria-pressed", String(d.dataset.p === pal)));
       if (modeBtn) modeBtn.textContent = mode === "dark" ? "☾" : "☀";
       if (animBtn) animBtn.setAttribute("aria-pressed", String(anim));
     };
     if (bar) {
+      if (withPalettes) PALETTES.forEach(p => {
+        const b = document.createElement("button");
+        b.className = "dot"; b.dataset.p = p; b.type = "button";
+        b.title = NAMES[p]; b.setAttribute("aria-label", "Palette: " + NAMES[p]);
+        b.onclick = () => { pal = p; set("toolbox-palette", p); apply(); refresh(); wake(); };
+        dots.push(b); bar.appendChild(b);
+      });
       modeBtn = document.createElement("button");
       modeBtn.className = "mode"; modeBtn.type = "button";
-      modeBtn.title = "Switch light (green) / dark (lime)";
+      modeBtn.title = withPalettes ? "Switch light / dark" : "Switch light (green) / dark (lime)";
       modeBtn.setAttribute("aria-label", "Switch between light and dark mode");
-      modeBtn.onclick = () => { mode = mode === "dark" ? "light" : "dark"; set("toolbox-mode", mode); apply(); refresh(); };
+      modeBtn.onclick = () => { mode = mode === "dark" ? "light" : "dark"; set("toolbox-mode", mode); apply(); refresh(); wake(); };
       bar.appendChild(modeBtn);
 
       // Pages with ambient.js (data-ambient on <body>) have canvas scenes instead of CSS Motion.
@@ -38,11 +58,26 @@
         animBtn = document.createElement("button");
         animBtn.className = "toggle"; animBtn.type = "button"; animBtn.textContent = "Motion";
         animBtn.title = "Slow background and digit animation";
-        animBtn.onclick = () => { anim = !anim; set("toolbox-anim", anim ? "on" : "off"); apply(); refresh(); };
+        animBtn.onclick = () => { anim = !anim; set("toolbox-anim", anim ? "on" : "off"); apply(); refresh(); wake(); };
         bar.appendChild(animBtn);
       }
       refresh();
     }
+
+    /* ---------- Zen (Clock and Timer): hide controls after a few seconds of inactivity ---------- */
+    let idleTimer;
+    function wake() {
+      document.body.classList.remove("idle");
+      clearTimeout(idleTimer);
+      if (withPalettes && root.dataset.palette === "zen") {
+        idleTimer = setTimeout(() => {
+          if (!document.body.classList.contains("done")) document.body.classList.add("idle");
+        }, 4000);
+      }
+    }
+    ["pointermove", "pointerdown", "keydown", "touchstart", "focusin"].forEach(ev =>
+      document.addEventListener(ev, wake, { passive: true }));
+    wake();
 
     /* ---------- zoom buttons (CSS variable only) ---------- */
     const zin = document.getElementById("zoomIn"), zout = document.getElementById("zoomOut");

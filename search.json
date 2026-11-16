@@ -4,14 +4,28 @@
     "href": "toolbox/index.html",
     "title": "Toolbox",
     "section": "",
-    "text": "00:00:00\n    \n      Clock\n      Large HH:MM:SS display that adapts to any screen and orientation. Optional synchronisation with a network time reference.\n      Fullscreen · light green and dark lime\n      Open the clock →\n    \n  \n\n  \n    01:00\n    \n      Timer\n      Countdown with presets, visual and audible alarm at zero. Ideal for tests and group activities.\n      Presets from 1 to 60 min · alarm · +/− 1 min\n      Open the timer →\n    \n  \n\n  \n    12+13=56\n    \n      Calculator\n      A scientific calculator with real stacked fractions, like the textbook: write operations in the numerator and denominator, then see the result as a fraction, decimal (with repeating period) or standard form.\n      Fractions · radicals · decimal · standard form · works on smartphone\n      Open the calculator →\n    \n  \n\n  \n    \n    \n      Graphs\n      Write a function with real fractions, powers and roots, and see its graph at once. Zeros, maxima, minima and intersections appear on their own; sliders for a, b, c let you watch a parameter change the curve.\n      y = f(x) · table of values · sliders · zeros and extrema · works on smartphone\n      Open the graphs →"
+    "text": "00:00:00\n    \n      Clock\n      Large HH:MM:SS display that adapts to any screen and orientation. Optional synchronisation with a network time reference.\n      Fullscreen · 5 palettes · light and dark · animated scenes\n      Open the clock →\n    \n  \n\n  \n    01:00\n    \n      Timer\n      Countdown with presets, visual and audible alarm at zero. Ideal for tests and group activities.\n      Presets from 1 to 60 min · alarm · 5 palettes · animated scenes\n      Open the timer →\n    \n  \n\n  \n    12+13=56\n    \n      Calculator\n      A scientific calculator with real stacked fractions, like the textbook: write operations in the numerator and denominator, then see the result as a fraction, decimal (with repeating period) or standard form.\n      Fractions · radicals · decimal · standard form · works on smartphone\n      Open the calculator →"
   },
   {
     "objectID": "toolbox/index.html#basic-tools",
     "href": "toolbox/index.html#basic-tools",
     "title": "Toolbox",
     "section": "",
-    "text": "00:00:00\n    \n      Clock\n      Large HH:MM:SS display that adapts to any screen and orientation. Optional synchronisation with a network time reference.\n      Fullscreen · light green and dark lime\n      Open the clock →\n    \n  \n\n  \n    01:00\n    \n      Timer\n      Countdown with presets, visual and audible alarm at zero. Ideal for tests and group activities.\n      Presets from 1 to 60 min · alarm · +/− 1 min\n      Open the timer →\n    \n  \n\n  \n    12+13=56\n    \n      Calculator\n      A scientific calculator with real stacked fractions, like the textbook: write operations in the numerator and denominator, then see the result as a fraction, decimal (with repeating period) or standard form.\n      Fractions · radicals · decimal · standard form · works on smartphone\n      Open the calculator →\n    \n  \n\n  \n    \n    \n      Graphs\n      Write a function with real fractions, powers and roots, and see its graph at once. Zeros, maxima, minima and intersections appear on their own; sliders for a, b, c let you watch a parameter change the curve.\n      y = f(x) · table of values · sliders · zeros and extrema · works on smartphone\n      Open the graphs →"
+    "text": "00:00:00\n    \n      Clock\n      Large HH:MM:SS display that adapts to any screen and orientation. Optional synchronisation with a network time reference.\n      Fullscreen · 5 palettes · light and dark · animated scenes\n      Open the clock →\n    \n  \n\n  \n    01:00\n    \n      Timer\n      Countdown with presets, visual and audible alarm at zero. Ideal for tests and group activities.\n      Presets from 1 to 60 min · alarm · 5 palettes · animated scenes\n      Open the timer →\n    \n  \n\n  \n    12+13=56\n    \n      Calculator\n      A scientific calculator with real stacked fractions, like the textbook: write operations in the numerator and denominator, then see the result as a fraction, decimal (with repeating period) or standard form.\n      Fractions · radicals · decimal · standard form · works on smartphone\n      Open the calculator →"
+  },
+  {
+    "objectID": "toolbox/index.html#advanced-tools",
+    "href": "toolbox/index.html#advanced-tools",
+    "title": "Toolbox",
+    "section": "Advanced Tools",
+    "text": "Advanced Tools\n\n\n  \n    \n    \n      Mosaicus \n      Physics micro-lab. Arduino sensors, phone sensors and sound in one app: live graphs, oscilloscope with spectrum, tone generator, a sensor-driven musical instrument, data analysis and Excel export.\n      Computer · smartphone · whiteboard · offline · MIT licence · guide in Italian\n      Open the guide →\n    \n  \n\n  \n    \n    \n      Graphs\n      Write a function with real fractions, powers and roots, and see its graph at once. Zeros, maxima, minima and intersections appear on their own; sliders for a, b, c let you watch a parameter change the curve.\n      y = f(x) · table of values · sliders · zeros and extrema · works on smartphone\n      Open the graphs →"
+  },
+  {
+    "objectID": "toolbox/index.html#creative-tools",
+    "href": "toolbox/index.html#creative-tools",
+    "title": "Toolbox",
+    "section": "Creative Tools",
+    "text": "Creative Tools\n\n\n  \n    \n    \n      Groovebox\n      A small rack of electronic instruments: launch ready-made loops (drums, bass, guitar, keys) that change at the next bar, play 16 MPC-style pads and a keyboard, and bend the whole mix with a Kaoss-style XY pad (filter, reverb, echo, flanger). Shape each sound and watch it on the oscilloscope.\n      Loops · song timeline · pads · keys · XY effects · waveshaper · granular · export WAV/MP3 · works on smartphone\n      Open the Groovebox →"
   },
   {
     "objectID": "toolbox/index.html#games",
@@ -19,20 +33,6 @@
     "title": "Toolbox",
     "section": "Games",
     "text": "Games\n\n\n  \n    LASERQUASIQUARK\n    \n      Physics Wordle\n      Guess the physics word of the day in six tries: particles, units, scientists, optics, astronomy — from quark to laser to milky.\n      New word every day · works on smartphone\n      Play Wordle →"
-  },
-  {
-    "objectID": "toolbox/index.html#music",
-    "href": "toolbox/index.html#music",
-    "title": "Toolbox",
-    "section": "Music",
-    "text": "Music\n\n\n  \n    \n    \n      Groovebox\n      A small rack of electronic instruments: launch ready-made loops (drums, bass, guitar, keys) that change at the next bar, play 16 MPC-style pads and a keyboard, and bend the whole mix with a Kaoss-style XY pad (filter, reverb, echo, flanger). Shape each sound and watch it on the oscilloscope.\n      Loops · song timeline · pads · keys · XY effects · waveshaper · granular · export WAV/MP3 · works on smartphone\n      Open the Groovebox →"
-  },
-  {
-    "objectID": "toolbox/index.html#lab-tools",
-    "href": "toolbox/index.html#lab-tools",
-    "title": "Toolbox",
-    "section": "Lab tools",
-    "text": "Lab tools\n\n\n  \n    \n    \n      Mosaicus \n      Physics micro-lab. Arduino sensors, phone sensors and sound in one app: live graphs, oscilloscope with spectrum, tone generator, a sensor-driven musical instrument, data analysis and Excel export.\n      Computer · smartphone · whiteboard · offline · MIT licence · guide in Italian\n      Open the guide →"
   },
   {
     "objectID": "stories/luna.html",

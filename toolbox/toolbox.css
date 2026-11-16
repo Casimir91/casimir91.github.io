@@ -1,6 +1,8 @@
 /* Toolbox shared styles.
-   Two themes only, switched by the ☀ / ☾ button (data-mode = light | dark):
-   LIGHT = Zen green (paper and ink-green), DARK = Lime (dark green and lime, the Mosaicus colours).
+   Two independent choices: palette (data-palette) and mode (data-mode = light | dark).
+   Clock and Timer (body[data-palettes]) show five palettes: Light, Zen, Ocean, Amber, Lime.
+   The other tools (Groovebox, Calculator, Graphs, Wordle) keep two themes only: the ☀ / ☾ button
+   maps light -> Zen green and dark -> Lime (toolbox.js sets data-palette accordingly).
    To change a colour, edit the variable in the matching block below. */
 
 :root {
@@ -8,23 +10,76 @@
   --danger: #d9534f;
 }
 
-/* ---------- LIGHT: Zen green, paper and ink-green ---------- */
-:root, :root[data-mode="light"] {
+/* Default (before toolbox.js runs): Zen light. */
+:root {
   --bg: #f3efe6; --fg: #4a5a4e; --muted: #7d8a7f;
   --surface: #e9e4d6; --border: #d3ccb8;
   --primary: #5f7a63; --primary-fg: #ffffff; --accent: #b0803a;
 }
 
-/* ---------- DARK: dark green and lime (the Mosaicus colours) ---------- */
+/* ---------- LIGHT palette: black on white / white on black ---------- */
+:root[data-palette="light"][data-mode="light"] {
+  --bg: #ffffff; --fg: #000000; --muted: #666666;
+  --surface: #f2f2f2; --border: #cfcfcf;
+  --primary: #325d88; --primary-fg: #ffffff; --accent: #f47c3c;
+}
+:root[data-palette="light"][data-mode="dark"] {
+  --bg: #000000; --fg: #ffffff; --muted: #aaaaaa;
+  --surface: #1a1a1a; --border: #444444;
+  --primary: #8fb8e0; --primary-fg: #000000; --accent: #f47c3c;
+}
+
+/* ---------- ZEN palette: paper and ink-green (light = the light theme of every tool) ---------- */
+:root[data-palette="zen"][data-mode="light"] {
+  --bg: #f3efe6; --fg: #4a5a4e; --muted: #7d8a7f;
+  --surface: #e9e4d6; --border: #d3ccb8;
+  --primary: #5f7a63; --primary-fg: #ffffff; --accent: #b0803a;
+}
+:root[data-palette="zen"][data-mode="dark"] {
+  --bg: #1f2a24; --fg: #cfe3cf; --muted: #93a899;
+  --surface: #28362e; --border: #3b4c41;
+  --primary: #9fc5a3; --primary-fg: #14201a; --accent: #d9b36a;
+}
+
+/* ---------- OCEAN palette ---------- */
+:root[data-palette="ocean"][data-mode="light"] {
+  --bg: #eaf4fb; --fg: #0b3d66; --muted: #4f7595;
+  --surface: #d9eaf6; --border: #b7d3e8;
+  --primary: #1b6aa5; --primary-fg: #ffffff; --accent: #e07b39;
+}
+:root[data-palette="ocean"][data-mode="dark"] {
+  --bg: #0a1b2e; --fg: #cfeaff; --muted: #86a9c6;
+  --surface: #112a44; --border: #1f4468;
+  --primary: #6bb6ee; --primary-fg: #06182a; --accent: #f0a05a;
+}
+
+/* ---------- AMBER palette ---------- */
+:root[data-palette="amber"][data-mode="light"] {
+  --bg: #fbf3e2; --fg: #6b3a00; --muted: #9a7a45;
+  --surface: #f3e6c8; --border: #e0cfa6;
+  --primary: #b45f06; --primary-fg: #ffffff; --accent: #3a6ea5;
+}
+:root[data-palette="amber"][data-mode="dark"] {
+  --bg: #000000; --fg: #ffb000; --muted: #b08a2e;
+  --surface: #1a1200; --border: #4a3500;
+  --primary: #ffb000; --primary-fg: #000000; --accent: #ffd27a;
+}
+
+/* ---------- LIME palette: dark green and lime (the Mosaicus colours; dark = the dark theme of every tool) ---------- */
 /* Dark follows Mosaicus' dark theme: one green (the page background), lime and white;
    surfaces share the background and are told apart by thin translucent white borders. */
-:root[data-mode="dark"] {
+:root[data-palette="lime"][data-mode="light"] {
+  --bg: #f2f8d8; --fg: #00302a; --muted: #4d6b63;
+  --surface: #e6f0bc; --border: #c9d98a;
+  --primary: #004d43; --primary-fg: #c6f432; --accent: #6b9400;
+}
+:root[data-palette="lime"][data-mode="dark"] {
   --bg: #071d19; --fg: #ffffff; --muted: #b7c4c0;
   --surface: #071d19; --border: rgba(255,255,255,.22);
   --primary: #c6f432; --primary-fg: #00302a; --accent: #c6f432;
 }
-/* In dark the digits are lime (the timer alarm sets --primary to white, so it stays readable). */
-:root[data-mode="dark"] .digits { color: var(--primary); }
+/* In Lime dark the digits are lime (the timer alarm sets --primary to white, so it stays readable). */
+:root[data-palette="lime"][data-mode="dark"] .digits { color: var(--primary); }
 
 /* ---------- base ---------- */
 * { box-sizing: border-box; }
@@ -59,7 +114,7 @@ body {
   white-space: nowrap;
   text-align: center;
 }
-:root[data-mode="light"] .digits { font-weight: 300; }
+:root[data-palette="zen"] .digits { font-weight: 300; }
 
 .controls {
   display: flex; flex-wrap: wrap; gap: .5rem;
@@ -81,8 +136,23 @@ button:focus-visible, input:focus-visible { outline: 3px solid var(--accent); ou
 
 /* ---------- theme bar (built by toolbox.js) ---------- */
 .themebar { display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; }
+.themebar .dot {
+  width: 2.25rem; height: 2.25rem; min-width: 0; min-height: 0; padding: 0; border-radius: 50%;
+  border: 2px solid var(--border);
+  background: linear-gradient(135deg, var(--d1) 50%, var(--d2) 50%);
+}
+.themebar .dot[aria-pressed="true"] { outline: 3px solid var(--primary); outline-offset: 2px; }
+.dot[data-p="light"] { --d1: #ffffff; --d2: #000000; }
+.dot[data-p="zen"]   { --d1: #f3efe6; --d2: #5f7a63; }
+.dot[data-p="ocean"] { --d1: #eaf4fb; --d2: #1b6aa5; }
+.dot[data-p="amber"] { --d1: #fbf3e2; --d2: #ffb000; }
+.dot[data-p="lime"]  { --d1: #c6f432; --d2: #071d19; }
 .themebar .mode { font-size: 1.2rem; line-height: 1; padding: .4rem .7rem; min-height: 2.25rem; }
 .themebar .toggle { padding: .35rem .8rem; min-height: 2.25rem; font-size: .9rem; }
+
+/* ---------- Zen (Clock and Timer only): controls fade away when idle, leaving only the digits ---------- */
+.topbar, .controls, .setup { transition: opacity .8s ease; }
+body.idle .topbar, body.idle .controls, body.idle .setup { opacity: 0; pointer-events: none; }
 
 /* ---------- optional slow animations (off by default, CSS only) ---------- */
 /* Diagonal wave: soft bands of colour travelling from top-left to bottom-right.
