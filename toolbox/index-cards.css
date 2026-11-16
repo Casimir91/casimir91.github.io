@@ -117,3 +117,21 @@
 .tb-graph .c1 { stroke: var(--pv-accent); }
 .tb-graph .c2 { stroke: var(--pv-fg); opacity: .75; }
 .tb-graph circle { fill: var(--pv-bg); stroke: var(--pv-accent); stroke-width: 2.4; }
+
+/* ---------- Thumb Calculator preview: a key with two petals, one gets picked (pure CSS) ---------- */
+.tb-sub { font-weight: 400; font-size: .85em; opacity: .7; }
+.tb-thumb { position: relative; width: 9rem; height: 5.4rem; }
+.tb-tk { position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); width: 3.6rem; height: 2.3rem; border-radius: .8rem; display: flex; align-items: center; justify-content: center;
+  background: var(--pv-line); color: var(--pv-fg); font: 1rem ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+.tb-pt { position: absolute; bottom: 2.6rem; min-width: 2.5rem; height: 2.5rem; padding: 0 .4rem; border-radius: 999px; display: flex; align-items: center; justify-content: center;
+  background: var(--pv-bg); border: 1.5px solid var(--pv-line); color: var(--pv-fg); font-size: .9rem; box-shadow: 0 3px 8px rgba(0,0,0,.15); }
+.tb-pt sup { font-size: .62em; position: relative; top: -.25em; }
+.tb-pt.p1 { left: calc(50% - 3.7rem); animation: tb-p1 3.6s ease-in-out infinite; }
+.tb-pt.p2 { left: calc(50% + 1.15rem); animation: tb-p2 3.6s ease-in-out infinite; }
+.tb-fg { position: absolute; left: 50%; bottom: .1rem; width: 1.9rem; height: 1.9rem; margin-left: -.95rem; border-radius: 50%; border: 2px solid var(--pv-accent);
+  background: color-mix(in srgb, var(--pv-accent) 30%, transparent); animation: tb-fg 3.6s ease-in-out infinite; }
+@keyframes tb-p1 { 0%,15% { opacity: 0; transform: scale(.5); } 28% { opacity: 1; transform: scale(1); } 55% { background: var(--pv-bg); color: var(--pv-fg); }
+  65%,82% { opacity: 1; background: var(--pv-accent); color: var(--pv-bg); border-color: var(--pv-accent); transform: scale(1.18); } 92%,100% { opacity: 0; } }
+@keyframes tb-p2 { 0%,15% { opacity: 0; transform: scale(.5); } 28%,82% { opacity: 1; transform: scale(1); } 92%,100% { opacity: 0; } }
+@keyframes tb-fg { 0%,8% { opacity: 0; transform: translateY(10px); } 18%,45% { opacity: 1; transform: none; } 62%,82% { opacity: 1; transform: translate(-2.6rem, -2.9rem); } 92%,100% { opacity: 0; transform: translate(-2.6rem, -2.9rem); } }
+@media (prefers-reduced-motion: reduce) { .tb-pt, .tb-fg { animation: none; } .tb-fg { opacity: 0; } }

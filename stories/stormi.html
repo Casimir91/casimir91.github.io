@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Stormi: simulazione</title>
-<meta name="description" content="Simulazione di uno stormo (boids): allineamento, coesione, separazione, rumore. Interazione topologica contro metrica.">
+<meta name="description" content="Simulazione di uno stormo (boids): trova il limite oltre il quale l'ordine compare o sparisce. Rumore, allineamento, raggio di percezione.">
 <link rel="stylesheet" href="/fonts/pagine.css">
 <style>
   :root{
@@ -29,93 +29,99 @@
   }
   *{ box-sizing: border-box; }
   html,body{ margin:0; padding:0; background: transparent; }
-  body{
-    color: var(--ink);
-    font-family: 'Work Sans', ui-sans-serif, system-ui, sans-serif;
-    font-size: 14px;
-    -webkit-font-smoothing: antialiased;
-  }
+  body{ color: var(--ink); font-family: 'Work Sans', ui-sans-serif, system-ui, sans-serif; font-size: 14px; -webkit-font-smoothing: antialiased; }
   [hidden]{ display:none!important; }
-  .mono{ font-family: 'IBM Plex Mono', ui-monospace, monospace; }
 
   .page{ max-width: 760px; margin: 0 auto; padding: 8px 20px 28px; }
-
   .diagram{ border: 1px solid var(--line); border-radius: 4px; padding: 20px 20px 24px; }
 
   .viz-frame{ position: relative; aspect-ratio: 8 / 5; }
   canvas#sim{ display:block; width:100%; height:100%; touch-action:none; cursor:crosshair; }
-  .legend{
-    position:absolute; right:2px; top:0; display:flex; align-items:center; gap:6px;
-    font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--ink-soft); pointer-events:none;
-  }
+  .legend{ position:absolute; right:2px; top:0; display:flex; align-items:center; gap:6px;
+    font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--ink-soft); pointer-events:none; }
   .wheel{ width:11px; height:11px; border-radius:50%; background: conic-gradient(red,yellow,lime,cyan,blue,magenta,red); }
-  .hint{
-    position:absolute; left:2px; bottom:0; font-family:'IBM Plex Mono',monospace; font-size:10.5px;
-    color:var(--ink-faint); pointer-events:none;
-  }
+  .hint{ position:absolute; left:2px; bottom:0; font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--ink-faint); pointer-events:none; }
 
-  .readout{
-    margin-top: 14px; display:flex; justify-content:space-between; align-items:center;
-    flex-wrap:wrap; gap:8px 18px;
-    font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--ink-soft);
-  }
-  .readout b{ color: var(--ink); font-weight:500; }
+  .readout{ margin-top:14px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px 18px;
+    font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--ink-soft); }
+  .readout b{ color:var(--ink); font-weight:500; }
   .readout .items{ display:flex; flex-wrap:wrap; gap:4px 18px; }
-  canvas#spark{ width:140px; height:30px; display:block; }
+  .badge{ font-size:11px; letter-spacing:.1em; padding:2px 9px; border:1px solid var(--line); border-radius:2px; color:var(--ink-soft); min-width:7.5em; text-align:center; }
+  .badge.ord{ color:var(--card); background:var(--accent); border-color:var(--accent); }
+  .badge.tra{ color:var(--ink); border-color:var(--accent); }
+  .badge.dis{ color:var(--ink-faint); }
 
-  .presets{ display:flex; gap:6px 18px; margin-top:16px; flex-wrap:wrap; }
-  .preset-btn{
-    font-family:'Work Sans',sans-serif; font-size:13px; color:var(--ink-soft);
-    background:none; border:none; border-bottom:1px solid transparent; padding:2px 0; cursor:pointer;
-  }
+  .bar{ display:flex; flex-wrap:wrap; gap:6px 18px; align-items:center; margin-top:10px; }
+  .preset-btn{ font-family:'Work Sans',sans-serif; font-size:13px; color:var(--ink-soft); background:none; border:none;
+    border-bottom:1px solid transparent; padding:2px 0; cursor:pointer; }
   .preset-btn:hover{ color:var(--ink); border-bottom-color:var(--accent); }
   .preset-btn:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
   .preset-btn.on{ color:var(--ink); border-bottom-color:var(--accent); }
-  .presets.sep{ margin-top:10px; padding-top:10px; border-top:1px solid var(--line); }
+  .preset-btn small{ color:var(--ink-faint); font-size:12px; margin-left:4px; }
+  .preset-btn.on small{ color:var(--ink-soft); }
 
-  .status{
-    margin:14px 0 0; min-height:3em; max-width:62ch;
-    font-family:'Source Serif 4',Georgia,serif; font-style:italic; font-size:16px; line-height:1.5; color:var(--ink-soft);
-  }
+  /* passi numerati */
+  .step{ display:flex; align-items:center; gap:9px; margin:22px 0 8px; font-family:'IBM Plex Mono',monospace; font-size:11px;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft); }
+  .step .n{ width:18px; height:18px; border:1px solid var(--accent); border-radius:50%; display:inline-flex; align-items:center; justify-content:center;
+    color:var(--accent); font-size:10px; letter-spacing:0; }
+  .step.sub{ margin:12px 0 6px; font-size:10.5px; color:var(--ink-faint); }
+  .step.sub .n{ visibility:hidden; width:0; margin-left:27px; }
+  .presets{ display:flex; gap:6px 20px; flex-wrap:wrap; }
 
-  .controls{ margin-top:18px; display:grid; grid-template-columns:1fr 1fr; gap:18px 32px; }
-  .sl.off{ opacity:.35; }
-  .slider-label{
-    display:flex; justify-content:space-between;
-    font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.08em; text-transform:uppercase;
-    color:var(--ink-soft); margin-bottom:8px;
-  }
+  /* grafico + slider protagonista */
+  .hero{ margin-top:4px; }
+  canvas#chart{ display:block; width:100%; height:150px; }
+  .hero .slider-label{ margin-top:10px; }
+  .slider-label{ display:flex; justify-content:space-between; font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.08em;
+    text-transform:uppercase; color:var(--ink-soft); margin-bottom:8px; }
   .slider-label .val{ color:var(--accent); letter-spacing:normal; text-transform:none; font-weight:500; }
+  .trackwrap{ position:relative; padding:4px 0; }
+  .tick{ position:absolute; top:0; width:2px; height:100%; background:var(--warn); border-radius:1px; pointer-events:none; transform:translateX(-1px); }
   input[type="range"]{ -webkit-appearance:none; appearance:none; width:100%; height:1px; background:var(--ink-faint); outline:none; margin:6px 0; }
-  input[type="range"]::-webkit-slider-thumb{
-    -webkit-appearance:none; width:13px; height:13px; border-radius:50%;
-    background:var(--card); border:2px solid var(--accent); cursor:pointer; margin-top:-6px;
-  }
+  input[type="range"]::-webkit-slider-thumb{ -webkit-appearance:none; width:13px; height:13px; border-radius:50%; background:var(--card); border:2px solid var(--accent); cursor:pointer; margin-top:-6px; }
   input[type="range"]::-moz-range-thumb{ width:13px; height:13px; border-radius:50%; background:var(--card); border:2px solid var(--accent); cursor:pointer; }
   input[type="range"]::-moz-range-track{ height:1px; background:var(--ink-faint); }
   input[type="range"]:focus-visible::-webkit-slider-thumb{ outline:2px solid var(--accent); outline-offset:3px; }
   input[type="range"]:disabled{ cursor:default; }
+  #heroSlider{ height:8px; border-radius:4px; margin:0; background:var(--line); display:block; }
+  #heroSlider::-webkit-slider-thumb{ width:22px; height:22px; margin-top:0; border-width:3px; cursor:grab; box-shadow:0 1px 4px rgba(0,0,0,.25); }
+  #heroSlider::-webkit-slider-thumb:active{ cursor:grabbing; }
+  #heroSlider::-moz-range-thumb{ width:16px; height:16px; border-width:3px; cursor:grab; }
+  #heroSlider::-moz-range-track{ height:8px; background:transparent; border-radius:4px; }
+  .hero.pulse #heroSlider::-webkit-slider-thumb{ animation:pulse 1.5s infinite; }
+  .hero.pulse #heroSlider::-moz-range-thumb{ animation:pulse 1.5s infinite; }
+  @keyframes pulse{ 0%{ box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 60%,transparent); } 70%{ box-shadow:0 0 0 13px transparent; } 100%{ box-shadow:0 0 0 0 transparent; } }
+  .pulsebtn{ animation:pulsebtn 1.5s infinite; }
+  @keyframes pulsebtn{ 0%{ box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 55%,transparent); } 70%{ box-shadow:0 0 0 9px transparent; } 100%{ box-shadow:0 0 0 0 transparent; } }
+  @media (prefers-reduced-motion: reduce){
+    .hero.pulse #heroSlider::-webkit-slider-thumb{ animation:none; box-shadow:0 0 0 5px color-mix(in srgb,var(--accent) 35%,transparent); }
+    .hero.pulse #heroSlider::-moz-range-thumb{ animation:none; }
+    .pulsebtn{ animation:none; outline:2px solid var(--accent); outline-offset:3px; }
+  }
+  .ref-ticks{ display:flex; justify-content:space-between; align-items:center; font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--ink-faint); margin-top:6px; }
+  .refnote{ margin:8px 0 0; font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--ink-faint); line-height:1.5; }
 
+  .status{ margin:0; min-height:3em; max-width:62ch; font-family:'Source Serif 4',Georgia,serif; font-style:italic; font-size:16px; line-height:1.5; color:var(--ink-soft); }
+  .status.hot{ color:var(--ink); font-style:normal; font-weight:600; }
+
+  details.params{ margin-top:20px; border-top:1px solid var(--line); padding-top:12px; }
+  details summary{ cursor:pointer; font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-soft); }
+  details summary:hover{ color:var(--ink); }
+  details summary:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
+  .controls{ margin-top:16px; display:grid; grid-template-columns:1fr 1fr; gap:16px 32px; }
+  .sl.off{ opacity:.35; }
+  .sl.foc .slider-label label::before{ content:"● "; color:var(--accent); }
+  .gloss{ margin:2px 0 0; font-family:'Source Serif 4',Georgia,serif; font-style:italic; font-size:13px; color:var(--ink-faint); line-height:1.35; }
   .chk{ display:inline-flex; align-items:center; gap:7px; font-size:13px; color:var(--ink-soft); cursor:pointer; }
   .chk input{ accent-color: var(--accent); margin:0; }
 
   details.lex{ margin-top:22px; }
-  details.lex summary{
-    cursor:pointer; font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.08em;
-    text-transform:uppercase; color:var(--ink-soft);
-  }
-  details.lex summary:hover{ color:var(--ink); }
-  details.lex summary:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
-  dl{ margin:14px 0 0; display:grid; grid-template-columns:max-content 1fr; gap:8px 18px;
-      font-family:'Source Serif 4',Georgia,serif; font-size:15.5px; line-height:1.55; }
+  dl{ margin:14px 0 0; display:grid; grid-template-columns:max-content 1fr; gap:8px 18px; font-family:'Source Serif 4',Georgia,serif; font-size:15.5px; line-height:1.55; }
   dt{ font-weight:600; color:var(--ink); }
   dd{ margin:0; color:var(--ink-soft); max-width:58ch; }
   .limits{ font-family:'Source Serif 4',Georgia,serif; font-size:15.5px; line-height:1.55; color:var(--ink-soft); max-width:60ch; margin:14px 0 0; }
-
-  footer.note{
-    margin-top:24px; padding-top:12px; border-top:1px solid var(--line);
-    font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--ink-faint);
-  }
+  footer.note{ margin-top:24px; padding-top:12px; border-top:1px solid var(--line); font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--ink-faint); }
 
   @media (max-width:560px){
     .page{ padding:4px 12px 24px; }
@@ -123,6 +129,7 @@
     .controls{ grid-template-columns:1fr; }
     dl{ grid-template-columns:1fr; gap:2px; }
     dd{ margin-bottom:8px; }
+    canvas#chart{ height:125px; }
   }
 </style>
 </head>
@@ -141,39 +148,55 @@
         <span>vicini <b id="mNb">—</b></span>
         <span>gruppi <b id="mGr">—</b></span>
       </div>
-      <canvas id="spark" aria-hidden="true" title="φ nel tempo; tratteggio = 1/√N (il caso)"></canvas>
+      <span class="badge" id="badge" title="ORDINE: φ > 0,65 · DISORDINE: φ < 0,30 · in mezzo: TRANSIZIONE">—</span>
     </div>
 
-    <div class="presets" id="presets" role="group" aria-label="Esperimenti"></div>
-    <p class="status" id="status" aria-live="polite"></p>
-
-    <div class="presets sep" role="group" aria-label="Tipo di interazione">
-      <button class="preset-btn mode" data-mode="topo" type="button">Topologica · k vicini</button>
-      <button class="preset-btn mode" data-mode="metric" type="button">Metrica · raggio</button>
-      <label class="chk"><input type="checkbox" id="track"> mostra cosa vede un uccello</label>
+    <div class="bar">
+      <button class="preset-btn" id="play" type="button">❚❚ Pausa</button>
+      <button class="preset-btn" id="reset" type="button" title="Ricarica l'esperimento con i suoi valori iniziali">↺ Ricomincia</button>
+      <button class="preset-btn" id="eye" type="button" aria-pressed="false">◎ cosa vede un uccello</button>
       <button class="preset-btn" id="nextBird" type="button" hidden>cambia uccello</button>
     </div>
 
-    <div class="controls" id="sliders"></div>
+    <div class="step"><span class="n">1</span>Scegli un limite da cercare</div>
+    <div class="presets" id="limits" role="group" aria-label="Limiti da cercare"></div>
+    <div class="step sub">oppure confronta</div>
+    <div class="presets" id="compares" role="group" aria-label="Confronti"></div>
 
-    <div class="presets sep">
-      <button class="preset-btn" id="play" type="button">❚❚ Pausa</button>
-      <button class="preset-btn" id="reset" type="button">↺ Ricomincia</button>
-      <label class="chk"><input type="checkbox" id="trails"> scie</label>
+    <div class="step"><span class="n">2</span><span id="step2">Trascina lo slider</span></div>
+    <div class="hero pulse" id="hero">
+      <canvas id="chart" aria-label="Grafico della polarizzazione φ in funzione del parametro scelto" role="img"></canvas>
+      <div class="slider-label"><label for="heroSlider" id="heroLabel">—</label><span class="val" id="heroVal"></span></div>
+      <div class="trackwrap"><input type="range" id="heroSlider"><span class="tick" id="heroTick" hidden></span></div>
+      <div class="ref-ticks"><span id="heroMin"></span><button class="preset-btn" id="scan" type="button" title="Muove da solo lo slider da un estremo all'altro">▶ scansione automatica</button><span id="heroMax"></span></div>
+      <p class="refnote" id="refNote"></p>
     </div>
+
+    <div class="step"><span class="n">3</span>Osserva</div>
+    <p class="status" id="status" aria-live="polite"></p>
+
+    <details class="params">
+      <summary>Tutti i parametri</summary>
+      <div class="bar" role="group" aria-label="Tipo di interazione" style="margin-top:14px">
+        <button class="preset-btn mode" data-mode="topo" type="button">Topologica · k vicini</button>
+        <button class="preset-btn mode" data-mode="metric" type="button">Metrica · raggio</button>
+        <label class="chk"><input type="checkbox" id="trails"> scie</label>
+      </div>
+      <div class="controls" id="sliders"></div>
+    </details>
   </div>
 
   <details class="lex">
     <summary>Lessico e limiti del modello</summary>
     <dl>
       <dt>Polarizzazione φ</dt><dd>Lunghezza della velocità media divisa per la velocità: vale 1 se tutti vanno nella stessa direzione, circa 1/√N se le direzioni sono a caso. È un <em>parametro d'ordine</em>.</dd>
+      <dt>Soglia</dt><dd>Qui è definita in modo operativo: il valore del parametro per cui φ attraversa 0,5. Con 200 uccelli il passaggio è una curva ripida ma non un salto: solo con moltissimi uccelli diventa una vera transizione di fase.</dd>
       <dt>Emergenza</dt><dd>Una proprietà (lo stormo ordinato) che nessuna regola individuale contiene: compare solo dall'insieme delle interazioni.</dd>
-      <dt>Transizione di fase</dt><dd>Aumentando il rumore, φ scende da valori vicini a 1 fino al valore del caso. Nel modello di Vicsek il passaggio è una transizione ordine-disordine.</dd>
       <dt>Interazione topologica</dt><dd>Ogni uccello segue un numero fisso di vicini, i più vicini, a qualunque distanza siano. Per gli storni le misure del gruppo STARFLAG indicano circa 6–7 vicini.</dd>
       <dt>Interazione metrica</dt><dd>Ogni uccello segue chi sta entro un raggio fisso. Il numero di vicini dipende dalla densità: se lo stormo si dirada, qualcuno resta senza vicini.</dd>
-      <dt>Toro</dt><dd>Il mondo è un rettangolo con i bordi incollati: chi esce a destra rientra a sinistra. Variare N cambia la densità senza cambiare l'area.</dd>
+      <dt>Toro</dt><dd>Il mondo è un rettangolo con i bordi incollati: chi esce a destra rientra a sinistra.</dd>
     </dl>
-    <p class="limits">Che cosa <em>non</em> dice questo modello: le misure su storni reali indicano l'interazione topologica, ma qui nessuna delle due è «migliore» in assoluto (confronta gli esperimenti sul rado e sul fitto) e la topologica da sola non evita che lo stormo si spezzi in sottogruppi.</p>
+    <p class="limits">Che cosa <em>non</em> dice questo modello: le misure su storni reali indicano l'interazione topologica, ma qui nessuna delle due è «migliore» in assoluto (confronta gli esperimenti sul rado e sul fitto) e la topologica da sola non evita che lo stormo si spezzi in sottogruppi. Le curve di riferimento sono medie di 4 simulazioni, calcolate con lo stesso codice di questa pagina.</p>
   </details>
 
   <footer class="note">Modello giocattolo, non una riproduzione dei dati. Boids di Reynolds (1987) con velocità costante come nel modello di Vicsek et al. (1995); interazione topologica: Ballerini et al., PNAS 2008.</footer>
@@ -190,9 +213,8 @@ function parentDark(){
 }
 var col={};
 function readColors(){
-  var cs=getComputedStyle(root);
-  col.ink=cs.getPropertyValue('--ink').trim(); col.accent=cs.getPropertyValue('--accent').trim();
-  col.warn=cs.getPropertyValue('--warn').trim(); col.soft=cs.getPropertyValue('--ink-soft').trim();
+  var cs=getComputedStyle(root), g=function(n){ return cs.getPropertyValue(n).trim(); };
+  col.ink=g('--ink'); col.accent=g('--accent'); col.warn=g('--warn'); col.soft=g('--ink-soft'); col.faint=g('--ink-faint'); col.line=g('--line');
   col.pal=[]; var l=root.classList.contains('dark')?64:40;
   for(var h=0;h<360;h+=6) col.pal.push('hsl('+h+' 70% '+l+'%)');
 }
@@ -208,15 +230,23 @@ var W=800,H=500,HW=W/2,HH=H/2;
 var MAXN=400,V0=60,DT=1/60;
 var RSEP=14,LINK=38,PRED_R=110;
 var GAIN=8,MAXTURN=9;
+var reduced=!!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+/* curve di riferimento: media di 4 simulazioni (N=200), 40 s di assestamento + 20 s di media */
+var REF={"noise":{"x":[0.0,5.0,10.0,15.0,20.0,25.0,30.0,35.0,40.0,45.0,50.0,55.0,60.0,65.0,70.0,75.0,80.0,85.0,90.0,95.0,100.0],"phi":[0.936,0.99,0.963,0.895,0.845,0.777,0.65,0.667,0.446,0.368,0.278,0.227,0.174,0.161,0.136,0.126,0.095,0.1,0.083,0.093,0.092],"sd":[0.105,0.002,0.008,0.026,0.042,0.032,0.03,0.028,0.1,0.028,0.055,0.033,0.043,0.023,0.018,0.014,0.02,0.016,0.007,0.013,0.001],"nb":[7.0,7.0,7.0,7.0,7.0,7.0,7.0,7.0,7.0,7.0,7.0,7.0,7.0,7.0,7.0,7.0,7.0,7.0,7.0,7.0,7.0]},"align":{"x":[0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0,1.1,1.2,1.3,1.4,1.5],"phi":[0.06,0.107,0.191,0.318,0.56,0.597,0.626,0.644,0.653,0.55,0.607,0.547,0.717,0.678,0.66,0.625],"sd":[0.001,0.015,0.031,0.076,0.082,0.074,0.107,0.06,0.091,0.107,0.151,0.227,0.036,0.046,0.062,0.042],"nb":[7.0,7.0,7.0,7.0,7.0,7.0,7.0,7.0,7.0,7.0,7.0,7.0,7.0,7.0,7.0,7.0]},"radius":{"x":[10.0,15.0,20.0,25.0,30.0,35.0,40.0,45.0,50.0,55.0,60.0,65.0,70.0,75.0,80.0,85.0,90.0,95.0,100.0],"phi":[0.077,0.094,0.138,0.221,0.32,0.38,0.504,0.619,0.648,0.793,0.762,0.797,0.828,0.832,0.836,0.858,0.859,0.871,0.867],"sd":[0.011,0.007,0.014,0.042,0.125,0.099,0.038,0.056,0.135,0.024,0.03,0.017,0.014,0.01,0.016,0.004,0.016,0.002,0.009],"nb":[0.24,0.79,1.77,2.86,4.34,5.32,6.39,8.07,9.35,9.35,11.38,11.77,13.62,14.56,14.7,15.0,19.63,19.93,21.49]}};
 
 /* ---------- stato ---------- */
+var BASE={N:150,mode:'topo',k:7,R:40,wA:1,wC:.3,wS:.8,noise:10,speed:1};
 var st={N:150,mode:'topo',k:7,R:40,wA:1,wC:.3,wS:.8,noise:10,speed:1,trails:false,track:false,running:true};
 var x=new Float32Array(MAXN),y=new Float32Array(MAXN),th=new Float32Array(MAXN),nth=new Float32Array(MAXN);
 var nb=new Int16Array(MAXN),nd=new Float32Array(MAXN);
 var sx=0,sy=0,tracked=0,oldN=st.N;
 var pred={on:false,x:0,y:0};
-var phi=0,avgNb=0,groups=0,bigFrac=0,frame=0,tick=0,trackedCnt=-1;
+var phi=0,phis=0,avgNb=0,groups=0,bigFrac=0,frame=0,tick=0,trackedCnt=-1;
 var hist=new Float32Array(300),hN=0;
+var tx=new Float32Array(800),ty=new Float32Array(800),tN=0;
+var cur=null,hintOn=true,interacted=false,side=0,flash=0;
+var scan={on:false,s:0,n:120*60,mult:5};
 
 function randn(){ var u=0,v=Math.random(); while(!u)u=Math.random(); return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v); }
 function wrapA(a){ while(a>Math.PI)a-=2*Math.PI; while(a<-Math.PI)a+=2*Math.PI; return a; }
@@ -250,6 +280,7 @@ function gather(i){
 function step(){
   var N=st.N,Dr=Math.pow(st.noise/100*4,2),sig=Math.sqrt(2*Dr*DT);
   var sc=0,ss=0,nbTot=0,i,m;
+  if(scan.on){ scan.s++; var f=scan.s/scan.n; if(f>=1) stopScan(); else setParam(cur.foc,cur.from+(cur.to-cur.from)*f,true); }
   for(i=0;i<N;i++){
     var cnt=gather(i); nbTot+=cnt;
     var ax=Math.cos(th[i]),ay=Math.sin(th[i]),cx=0,cy=0;
@@ -285,9 +316,11 @@ function step(){
     if(y[i]<0)y[i]+=H; else if(y[i]>=H)y[i]-=H;
     sc+=Math.cos(th[i]); ss+=Math.sin(th[i]);
   }
-  phi=Math.hypot(sc,ss)/N; avgNb=nbTot/N;
-  if(++tick%4===0){ if(hN<hist.length) hist[hN++]=phi; else { hist.copyWithin(0,1); hist[hist.length-1]=phi; } }
+  phi=Math.hypot(sc,ss)/N; avgNb=nbTot/N; phis+=(phi-phis)*0.011;
+  tick++;
+  if(tick%4===0){ if(hN<hist.length) hist[hN++]=phi; else { hist.copyWithin(0,1); hist[hist.length-1]=phi; } }
   if(tick%12===0) clusters();
+  if(cur&&cur.foc&&tick%15===0){ pushTrace(); checkCross(); }
 }
 
 /* ---------- gruppi (componenti connesse a distanza LINK) ---------- */
@@ -306,16 +339,81 @@ function clusters(){
   for(i=0;i<N;i++){ var r=find(i); if(size[r]===0) g++; size[r]++; if(size[r]>big) big=size[r]; }
   groups=g; bigFrac=big/N;
 }
+function warm(n){ for(var i=0;i<n;i++) step(); clusters(); phis=phi; tN=0; hN=0; side=0; }
+
+/* ---------- soglia: dalla curva di riferimento ---------- */
+function interp(ref,v){
+  var X=ref.x,P=ref.phi,n=X.length;
+  if(v<=X[0]) return P[0]; if(v>=X[n-1]) return P[n-1];
+  for(var i=0;i<n-1;i++) if(v<=X[i+1]) return P[i]+(P[i+1]-P[i])*(v-X[i])/(X[i+1]-X[i]);
+  return P[n-1];
+}
+function crossing(ref){
+  var X=ref.x,P=ref.phi;
+  for(var i=0;i<X.length-1;i++){
+    if((P[i]-.5)*(P[i+1]-.5)<=0 && P[i]!==P[i+1]) return X[i]+(.5-P[i])*(X[i+1]-X[i])/(P[i+1]-P[i]);
+  }
+  return null;
+}
+function refValid(){
+  if(!cur||!cur.ref||!REF[cur.ref]) return false;
+  var c=Object.assign({},BASE,cur.set),keys=['N','mode','k','R','wA','wC','wS','noise'];
+  for(var i=0;i<keys.length;i++){ if(keys[i]!==cur.foc && st[keys[i]]!==c[keys[i]]) return false; }
+  return true;
+}
+
+/* ---------- esperimenti ---------- */
+var SL=[
+  ['k','Vicini k',1,20,1,function(v){return v;},'quanti vicini ascolta ogni uccello (interazione topologica)'],
+  ['R','Raggio R',10,200,1,function(v){return v;},'fino a che distanza ascolta (interazione metrica)'],
+  ['wA','Allineamento',0,2,.05,function(v){return (+v).toFixed(2);},'quanto imita la direzione dei vicini'],
+  ['wC','Coesione',0,2,.05,function(v){return (+v).toFixed(2);},'quanto si avvicina ai vicini'],
+  ['wS','Separazione',0,2,.05,function(v){return (+v).toFixed(2);},'quanto evita chi è troppo vicino'],
+  ['noise','Rumore',0,100,1,function(v){return v+'%';},'quanto sbaglia direzione, a caso'],
+  ['N','Uccelli N',20,400,10,function(v){return v;},'quanti uccelli: la densità'],
+  ['speed','Velocità',.25,3,.25,function(v){return '×'+v;},'solo la velocità della simulazione']
+];
+var SLD={}; SL.forEach(function(s){ SLD[s[0]]={label:s[1],min:s[2],max:s[3],step:s[4],fmt:s[5],gloss:s[6]}; });
+function fmtv(id,v){ return SLD[id].fmt(v); }
+function rnd(id,v){ return id==='wA'?Math.round(v*100)/100:Math.round(v); }
+
+var EXPS=[
+  {id:'noise',grp:'limit',label:'Rumore',sub:'l\'ordine sparisce',foc:'noise',ref:'noise',from:0,to:100,rng:[0,100],
+   set:{N:200,mode:'topo',k:7,wA:1,wC:0,wS:.8,noise:5},
+   start:'Trascina «Rumore» verso destra: più gli uccelli sbagliano, meno si seguono.',
+   up:'Sotto la soglia (rumore ≈ {x}) l\'ordine ricompare.',
+   down:'Soglia superata (rumore ≈ {x}): lo stormo si scioglie in un gas di uccelli.'},
+  {id:'align',grp:'limit',label:'Allineamento',sub:'l\'ordine nasce',foc:'wA',ref:'align',from:0,to:1.5,rng:[0,1.5],
+   set:{N:200,mode:'topo',k:7,wA:0,wC:0,wS:.8,noise:30},
+   start:'Trascina «Allineamento» verso destra: quanto devono imitarsi i vicini perché nasca uno stormo?',
+   up:'Soglia superata (allineamento ≈ {x}): compare lo stormo.',
+   down:'Sotto la soglia (allineamento ≈ {x}) l\'ordine sparisce di nuovo.'},
+  {id:'radius',grp:'limit',label:'Raggio',sub:'l\'ordine compare',foc:'R',ref:'radius',from:10,to:100,rng:[10,100],
+   set:{N:200,mode:'metric',wA:1,wC:0,wS:.8,noise:30,R:10},
+   start:'Trascina «Raggio R» verso destra e guarda «vicini»: l\'ordine compare quando ogni uccello ne ha circa 6.',
+   up:'Soglia superata (R ≈ {x}): ogni uccello ha circa {nb} vicini e compare l\'ordine.',
+   down:'Sotto la soglia (R ≈ {x}) ogni uccello ha meno di {nb} vicini: l\'ordine sparisce.'},
+  {id:'stormo',grp:'cmp',label:'Stormo libero',set:{N:150,mode:'topo',k:7,wA:1,wC:.3,wS:.8,noise:10},
+   start:'Partono in disordine: con le tre regole si formano gruppi che si fondono. Spaventali tenendo premuto sul disegno.'},
+  {id:'rado-topo',grp:'cmp',label:'Rado · 7 vicini',set:{N:30,mode:'topo',k:7,wA:1,wC:.3,wS:.8,noise:10},pulse:'eye',
+   start:'Pochi uccelli, 7 vicini a testa: φ sale in pochi secondi. Premi ◎ per vedere chi ascolta un uccello.'},
+  {id:'rado-metrico',grp:'cmp',label:'Rado · raggio fisso',set:{N:30,mode:'metric',R:40,wA:1,wC:.3,wS:.8,noise:10},pulse:'eye',
+   start:'Stessa densità, raggio fisso: all\'inizio quasi nessuno ha vicini e φ sale lentamente. Premi ◎ e guarda «vicini».'},
+  {id:'fitto-topo',grp:'cmp',label:'Fitto · 7 vicini',set:{N:300,mode:'topo',k:7,wA:1,wC:.3,wS:.8,noise:10},
+   start:'Tanti uccelli, sempre 7 vicini: l\'ordine c\'è ma resta a gruppi separati. Confrontalo con il raggio fisso.'},
+  {id:'fitto-metrico',grp:'cmp',label:'Fitto · raggio fisso',set:{N:300,mode:'metric',R:40,wA:1,wC:.3,wS:.8,noise:10},
+   start:'Tanti uccelli, raggio fisso: decine di vicini a testa e ordine più alto. Nessuna interazione vince sempre.'}
+];
 
 /* ---------- disegno ---------- */
 var cv=document.getElementById('sim'),ctx=cv.getContext('2d');
-var sp=document.getElementById('spark'),sctx=sp.getContext('2d');
+var ch=document.getElementById('chart'),cctx=ch.getContext('2d');
 var scale=1,dpr=1;
 function resize(){
   dpr=Math.min(window.devicePixelRatio||1,2);
   var r=cv.getBoundingClientRect();
   cv.width=Math.max(1,Math.round(r.width*dpr)); cv.height=Math.max(1,Math.round(r.height*dpr)); scale=cv.width/W;
-  var q=sp.getBoundingClientRect(); sp.width=Math.max(1,Math.round(q.width*dpr)); sp.height=Math.max(1,Math.round(q.height*dpr));
+  var q=ch.getBoundingClientRect(); ch.width=Math.max(1,Math.round(q.width*dpr)); ch.height=Math.max(1,Math.round(q.height*dpr));
 }
 function draw(){
   ctx.setTransform(1,0,0,1,0,0);
@@ -355,33 +453,130 @@ function draw(){
     ctx.beginPath(); ctx.arc(pred.x,pred.y,9,0,2*Math.PI); ctx.stroke();
     ctx.globalAlpha=.35; ctx.beginPath(); ctx.arc(pred.x,pred.y,PRED_R,0,2*Math.PI); ctx.setLineDash([4,5]); ctx.stroke(); ctx.setLineDash([]); ctx.globalAlpha=1;
   }
-  drawSpark(); drawMeasures();
+  drawChart(); drawMeasures();
 }
-function drawSpark(){
-  var w=sp.width,h=sp.height; sctx.clearRect(0,0,w,h);
-  var base=1/Math.sqrt(st.N),yb=h-base*h;
-  sctx.strokeStyle=col.soft; sctx.lineWidth=1*dpr; sctx.setLineDash([4*dpr,4*dpr]); sctx.beginPath(); sctx.moveTo(0,yb); sctx.lineTo(w,yb); sctx.stroke(); sctx.setLineDash([]);
-  if(hN<2) return;
-  sctx.strokeStyle=col.accent; sctx.lineWidth=1.6*dpr; sctx.beginPath();
-  for(var i=0;i<hN;i++){ var px=i/(hist.length-1)*w,py=h-hist[i]*h*0.96-1; if(i) sctx.lineTo(px,py); else sctx.moveTo(px,py); }
-  sctx.stroke();
+
+/* grafico: φ contro il parametro (limiti) oppure φ nel tempo (confronti) */
+function drawChart(){
+  var w=ch.width,h=ch.height,d=dpr; cctx.clearRect(0,0,w,h);
+  var pad=11*d,pl=pad,pr=w-pad,pt=14*d,pb=h-10*d;
+  var Y=function(p){ return pb-p*(pb-pt); };
+  cctx.font=(9.5*d)+'px "IBM Plex Mono",monospace'; cctx.textBaseline='middle';
+  /* righe guida */
+  cctx.lineWidth=1*d; cctx.strokeStyle=col.line;
+  [0,1].forEach(function(p){ cctx.beginPath(); cctx.moveTo(pl,Y(p)); cctx.lineTo(pr,Y(p)); cctx.stroke(); });
+  cctx.setLineDash([3*d,4*d]); cctx.beginPath(); cctx.moveTo(pl,Y(.5)); cctx.lineTo(pr,Y(.5)); cctx.stroke(); cctx.setLineDash([]);
+  cctx.fillStyle=col.faint; cctx.textAlign='left';
+  cctx.fillText('φ = 1',pl+2*d,Y(1)-7*d); cctx.fillText('0,5',pl+2*d,Y(.5)-6*d); cctx.fillText('0',pl+2*d,Y(0)-6*d);
+
+  if(!cur||!cur.foc){            /* ---- φ nel tempo ---- */
+    var base=1/Math.sqrt(st.N);
+    cctx.setLineDash([4*d,4*d]); cctx.strokeStyle=col.soft; cctx.beginPath(); cctx.moveTo(pl,Y(base)); cctx.lineTo(pr,Y(base)); cctx.stroke(); cctx.setLineDash([]);
+    cctx.fillStyle=col.soft; cctx.textAlign='right'; cctx.fillText('caso 1/√N',pr,Y(base)-7*d);
+    if(hN>1){
+      cctx.strokeStyle=col.accent; cctx.lineWidth=2*d; cctx.beginPath();
+      for(var i=0;i<hN;i++){ var px=pl+i/(hist.length-1)*(pr-pl),py=Y(hist[i]); if(i) cctx.lineTo(px,py); else cctx.moveTo(px,py); }
+      cctx.stroke();
+    }
+    cctx.fillStyle=col.faint; cctx.textAlign='right'; cctx.fillText('tempo →',pr,Y(1)-7*d);
+    return;
+  }
+  /* ---- φ contro il parametro ---- */
+  var mn=cur.rng[0],mx=cur.rng[1];
+  var X=function(v){ return pl+(v-mn)/(mx-mn)*(pr-pl); };
+  var valid=refValid(),ref=valid?REF[cur.ref]:null,xs=ref?crossing(ref):null;
+  if(ref){
+    /* zone: dove c'è lo stormo e dove no */
+    if(xs!==null){
+      var hiLeft=ref.phi[0]>.5;
+      cctx.fillStyle=col.accent; cctx.globalAlpha=.09;
+      if(hiLeft) cctx.fillRect(pl,pt,X(xs)-pl,pb-pt); else cctx.fillRect(X(xs),pt,pr-X(xs),pb-pt);
+      cctx.fillStyle=col.faint; cctx.globalAlpha=.10;
+      if(hiLeft) cctx.fillRect(X(xs),pt,pr-X(xs),pb-pt); else cctx.fillRect(pl,pt,X(xs)-pl,pb-pt);
+      cctx.globalAlpha=1;
+      cctx.fillStyle=col.soft; cctx.font=(10*d)+'px "IBM Plex Mono",monospace';
+      var cl=(pl+X(xs))/2,cr=(X(xs)+pr)/2;
+      cctx.textAlign='center';
+      cctx.fillText(hiLeft?'STORMO':'GAS DI UCCELLI',cl,hiLeft?Y(.14):Y(.86));
+      cctx.fillText(hiLeft?'GAS DI UCCELLI':'STORMO',cr,hiLeft?Y(.86):Y(.14));
+    }
+    /* banda ±sd e curva media */
+    cctx.fillStyle=col.accent; cctx.globalAlpha=.18; cctx.beginPath();
+    var n=ref.x.length,i2;
+    for(i2=0;i2<n;i2++){ var qx=X(ref.x[i2]),qy=Y(Math.min(1,ref.phi[i2]+ref.sd[i2])); if(i2) cctx.lineTo(qx,qy); else cctx.moveTo(qx,qy); }
+    for(i2=n-1;i2>=0;i2--) cctx.lineTo(X(ref.x[i2]),Y(Math.max(0,ref.phi[i2]-ref.sd[i2])));
+    cctx.closePath(); cctx.fill(); cctx.globalAlpha=1;
+    cctx.strokeStyle=col.accent; cctx.lineWidth=2.2*d; cctx.beginPath();
+    for(i2=0;i2<n;i2++){ var cx2=X(ref.x[i2]),cy2=Y(ref.phi[i2]); if(i2) cctx.lineTo(cx2,cy2); else cctx.moveTo(cx2,cy2); }
+    cctx.stroke();
+    /* soglia */
+    if(xs!==null){
+      var xl=X(xs); cctx.strokeStyle=col.warn; cctx.lineWidth=(flash>0?3.2:1.6)*d; cctx.setLineDash([5*d,4*d]);
+      cctx.beginPath(); cctx.moveTo(xl,pt-6*d); cctx.lineTo(xl,pb); cctx.stroke(); cctx.setLineDash([]);
+      cctx.fillStyle=col.warn; cctx.font=(10.5*d)+'px "IBM Plex Mono",monospace';
+      var lbl='soglia ≈ '+fmtv(cur.foc,rnd(cur.foc,xs)),tw=cctx.measureText(lbl).width;
+      cctx.textAlign=(xl+tw+8*d>pr)?'right':'left'; cctx.fillText(lbl,(xl+tw+8*d>pr)?xl-5*d:xl+5*d,pt-5*d);
+    }
+  } else {
+    cctx.fillStyle=col.faint; cctx.textAlign='center';
+    cctx.fillText('curva di riferimento non valida: hai cambiato altri parametri',(pl+pr)/2,Y(.5)+14*d);
+  }
+  /* traccia dal vivo + punto */
+  if(tN>1){
+    cctx.strokeStyle=col.ink; cctx.globalAlpha=.55; cctx.lineWidth=1.6*d; cctx.beginPath();
+    for(var k2=0;k2<tN;k2++){ var tx2=X(tx[k2]),ty2=Y(ty[k2]); if(k2) cctx.lineTo(tx2,ty2); else cctx.moveTo(tx2,ty2); }
+    cctx.stroke(); cctx.globalAlpha=1;
+  }
+  var dx0=X(st[cur.foc]),dy0=Y(phis);
+  cctx.fillStyle=col.accent; cctx.strokeStyle=col.ink; cctx.lineWidth=2*d;
+  cctx.beginPath(); cctx.arc(dx0,dy0,5.5*d,0,2*Math.PI); cctx.fill(); cctx.stroke();
+  if(hintOn){
+    cctx.fillStyle=col.ink; cctx.font=(11*d)+'px "IBM Plex Mono",monospace'; cctx.textAlign='left';
+    var hx=Math.min(dx0+14*d,pr-150*d),pulse=(frame%60<30);
+    cctx.globalAlpha=pulse?1:.55; cctx.fillText('trascina lo slider →',hx,Math.max(pt+10*d,Math.min(pb-10*d,dy0+(dy0<Y(.5)?22*d:-22*d)))); cctx.globalAlpha=1;
+  }
+  if(flash>0) flash--;
 }
-var mPhi=document.getElementById('mPhi'),mNb=document.getElementById('mNb'),mGr=document.getElementById('mGr');
+
+var mPhi=document.getElementById('mPhi'),mNb=document.getElementById('mNb'),mGr=document.getElementById('mGr'),badge=document.getElementById('badge');
 function drawMeasures(){
   if(frame%4) return;
   mPhi.textContent=phi.toFixed(2);
   mNb.textContent=(st.track&&trackedCnt>=0)?avgNb.toFixed(1)+' (lui '+trackedCnt+')':avgNb.toFixed(1);
   mGr.textContent=groups?groups+' · '+Math.round(bigFrac*100)+'%':'—';
+  var c=phis>.65?'ord':(phis<.3?'dis':'tra');
+  badge.className='badge '+c; badge.textContent=c==='ord'?'ORDINE':(c==='dis'?'DISORDINE':'TRANSIZIONE');
 }
+
+/* ---------- traccia, soglia attraversata ---------- */
+function pushTrace(){
+  if(tN>=tx.length){ tx.copyWithin(0,1); ty.copyWithin(0,1); tN=tx.length-1; }
+  tx[tN]=st[cur.foc]; ty[tN]=phis; tN++;
+}
+function checkCross(){
+  /* isteresi ampia: φ fluttua molto vicino alla soglia (N finito), annuncia solo un passaggio netto */
+  var s=phis>.62?1:(phis<.38?-1:0);
+  if(s===0) return;
+  if(side!==0&&s!==side&&(interacted||scan.on)){
+    var ok=refValid(),ref=ok?REF[cur.ref]:null,xs=ref?crossing(ref):null;
+    var xr=xs!==null?rnd(cur.foc,xs):st[cur.foc];
+    var nbv=xs!==null?Math.round(interp({x:ref.x,phi:ref.nb},xs)):Math.round(avgNb);
+    var msg=(s>0?cur.up:cur.down).replace('{x}',fmtv(cur.foc,xr)).replace('{nb}',nbv);
+    setStatus(msg,true); flash=90; hintOn=false;
+  }
+  side=s;
+}
+function setStatus(t,hot){ var el=$('status'); el.textContent=t; el.classList.toggle('hot',!!hot); }
 
 /* ---------- ciclo ---------- */
 var last=performance.now(),acc=0;
 function loop(now){
   var dt=Math.min(.1,(now-last)/1000); last=now;
   if(st.running){
-    acc+=dt*st.speed; var n=0;
-    while(acc>=DT&&n<8){ step(); acc-=DT; n++; }
-    if(n===8) acc=0;
+    acc+=dt*st.speed*(scan.on?scan.mult:1); var n=0;
+    while(acc>=DT&&n<12){ step(); acc-=DT; n++; }
+    if(n===12) acc=0;
+    if(scan.on) updateHero();
   }
   frame++; draw();
   requestAnimationFrame(loop);
@@ -389,65 +584,95 @@ function loop(now){
 
 /* ---------- interfaccia ---------- */
 var $=function(id){ return document.getElementById(id); };
-var SL=[
-  ['k','Vicini k',1,20,1,function(v){return v;}],
-  ['R','Raggio R',10,200,1,function(v){return v;}],
-  ['wA','Allineamento',0,2,.05,function(v){return (+v).toFixed(2);}],
-  ['wC','Coesione',0,2,.05,function(v){return (+v).toFixed(2);}],
-  ['wS','Separazione',0,2,.05,function(v){return (+v).toFixed(2);}],
-  ['noise','Rumore',0,100,1,function(v){return v+'%';}],
-  ['N','Uccelli N',20,400,10,function(v){return v;}],
-  ['speed','Velocità',.25,3,.25,function(v){return '×'+v;}]
-];
-var fmt={};
+var fmt={}; SL.forEach(function(s){ fmt[s[0]]=s[5]; });
 SL.forEach(function(s){
-  fmt[s[0]]=s[5];
   var d=document.createElement('div'); d.className='sl'; d.id='sl-'+s[0];
   d.innerHTML='<div class="slider-label"><label for="'+s[0]+'">'+s[1]+'</label><span class="val" id="val-'+s[0]+'"></span></div>'+
-              '<input type="range" id="'+s[0]+'" min="'+s[2]+'" max="'+s[3]+'" step="'+s[4]+'">';
+              '<input type="range" id="'+s[0]+'" min="'+s[2]+'" max="'+s[3]+'" step="'+s[4]+'"><p class="gloss">'+s[6]+'</p>';
   $('sliders').appendChild(d);
-  d.querySelector('input').addEventListener('input',function(e){
-    var v=+e.target.value; st[s[0]]=v; $('val-'+s[0]).textContent=fmt[s[0]](v);
-    if(s[0]==='N'){ for(var i=oldN;i<v;i++) addBird(i); oldN=v; hN=0; }
-  });
+  d.querySelector('input').addEventListener('input',function(e){ userSet(s[0],+e.target.value); });
 });
+function setParam(id,v,fine){
+  var D=SLD[id]; if(!fine) v=Math.round(v/D.step)*D.step; v=+v.toFixed(3); v=Math.max(D.min,Math.min(D.max,v));
+  st[id]=v;
+  if(id==='N'&&v>oldN){ for(var i=oldN;i<v;i++) addBird(i); }
+  if(id==='N') oldN=v;
+}
+function userSet(id,v){          /* chi muove uno slider interrompe la scansione */
+  if(scan.on) stopScan();
+  interacted=true; hintOn=false; $('hero').classList.remove('pulse');
+  setParam(id,v); if(id==='N') hN=0;
+  syncUI();
+}
+function updateHero(){
+  if(!cur||!cur.foc) return;
+  var id=cur.foc,D=SLD[id];
+  $('heroSlider').value=st[id]; $('heroVal').textContent=fmtv(id,id==='wA'?+st[id].toFixed(2):Math.round(st[id]));
+  var el=$(id); if(el){ el.value=st[id]; $('val-'+id).textContent=fmtv(id,id==='wA'?+st[id].toFixed(2):Math.round(st[id])); }
+}
 function syncUI(){
   SL.forEach(function(s){ $(s[0]).value=st[s[0]]; $('val-'+s[0]).textContent=fmt[s[0]](st[s[0]]); });
   document.querySelectorAll('.mode').forEach(function(b){ var on=b.dataset.mode===st.mode; b.classList.toggle('on',on); b.setAttribute('aria-pressed',on); });
   $('sl-k').classList.toggle('off',st.mode!=='topo'); $('k').disabled=st.mode!=='topo';
   $('sl-R').classList.toggle('off',st.mode!=='metric'); $('R').disabled=st.mode!=='metric';
-  $('track').checked=st.track; $('nextBird').hidden=!st.track; $('trails').checked=st.trails;
+  $('trails').checked=st.trails;
+  $('eye').classList.toggle('on',st.track); $('eye').setAttribute('aria-pressed',st.track); $('nextBird').hidden=!st.track;
   $('play').textContent=st.running?'❚❚ Pausa':'▶ Avvia';
+  SL.forEach(function(s){ $('sl-'+s[0]).classList.toggle('foc',!!cur&&cur.foc===s[0]); });
+  updateHero();
 }
-document.querySelectorAll('.mode').forEach(function(b){ b.addEventListener('click',function(){ st.mode=b.dataset.mode; syncUI(); }); });
-$('track').addEventListener('change',function(e){ st.track=e.target.checked; syncUI(); });
+function setHero(){
+  var hero=$('hero'),e=cur;
+  if(!e||!e.foc){ hero.querySelectorAll('.slider-label,.trackwrap,.ref-ticks,.refnote').forEach(function(n){ n.hidden=true; }); $('step2').textContent='Guarda φ nel tempo'; return; }
+  hero.querySelectorAll('.slider-label,.trackwrap,.ref-ticks,.refnote').forEach(function(n){ n.hidden=false; });
+  var D=SLD[e.foc],sl=$('heroSlider');
+  sl.min=e.rng[0]; sl.max=e.rng[1]; sl.step=D.step/10; sl.value=st[e.foc];
+  $('heroLabel').textContent=D.label; $('heroMin').textContent=fmtv(e.foc,e.rng[0]); $('heroMax').textContent=fmtv(e.foc,e.rng[1]);
+  $('step2').textContent='Trascina lo slider «'+D.label+'»';
+  /* binario colorato dalla curva di riferimento + tacca della soglia */
+  var ref=REF[e.ref],tk=$('heroTick'); sl.style.background='';
+  if(ref){
+    var stops=[],n=24;
+    for(var i=0;i<=n;i++){ var f=i/n,p=interp(ref,e.rng[0]+f*(e.rng[1]-e.rng[0])); stops.push('color-mix(in srgb, var(--accent) '+Math.round(p*100)+'%, var(--line)) '+Math.round(f*100)+'%'); }
+    sl.style.background='linear-gradient(to right,'+stops.join(',')+')';
+    var xs=crossing(ref);
+    if(xs!==null){ tk.hidden=false; tk.style.left='calc(11px + (100% - 22px) * '+((xs-e.rng[0])/(e.rng[1]-e.rng[0])).toFixed(4)+')'; } else tk.hidden=true;
+    $('refNote').textContent='Colore del binario e curva: media di 4 simulazioni con N = 200 (banda = scarto tipico), con gli altri parametri di questo esperimento. Linea tratteggiata: soglia, dove φ attraversa 0,5.';
+  } else { tk.hidden=true; $('refNote').textContent=''; }
+}
+function stopScan(){ scan.on=false; $('scan').textContent='▶ scansione automatica'; }
+function startScan(){
+  if(!cur||!cur.foc) return;
+  if(scan.on){ stopScan(); return; }
+  setParam(cur.foc,cur.from); warm(900);          /* parte da uno stato già assestato */
+  scan.s=0; scan.on=true; interacted=true; hintOn=false; $('hero').classList.remove('pulse');
+  st.running=true; $('scan').textContent='■ ferma la scansione'; setStatus('Scansione accelerata (×5): lo slider si muove da solo e il punto disegna la curva. φ segue con un piccolo ritardo.',false);
+  syncUI();
+}
+function applyExp(e,first){
+  stopScan(); cur=e;
+  Object.assign(st,BASE,e.set); st.trails=false; st.track=false; if(!(first&&reduced)) st.running=true;
+  oldN=st.N; randomize(); tN=0; hN=0; side=0; flash=0; interacted=false; hintOn=!!e.foc;
+  if(e.foc) warm(900);
+  $('hero').classList.toggle('pulse',!!e.foc);
+  $('eye').classList.toggle('pulsebtn',e.pulse==='eye');
+  document.querySelectorAll('[data-exp]').forEach(function(b){ b.classList.toggle('on',b.dataset.exp===e.id); });
+  setHero(); syncUI(); setStatus(e.start,false);
+}
+EXPS.forEach(function(e){
+  var b=document.createElement('button'); b.type='button'; b.className='preset-btn'; b.dataset.exp=e.id;
+  b.innerHTML=e.label+(e.sub?'<small>'+e.sub+'</small>':'');
+  b.addEventListener('click',function(){ applyExp(e); });
+  $(e.grp==='limit'?'limits':'compares').appendChild(b);
+});
+$('heroSlider').addEventListener('input',function(ev){ userSet(cur.foc,+ev.target.value); });
+document.querySelectorAll('.mode').forEach(function(b){ b.addEventListener('click',function(){ st.mode=b.dataset.mode; interacted=true; syncUI(); }); });
+$('eye').addEventListener('click',function(){ st.track=!st.track; $('eye').classList.remove('pulsebtn'); syncUI(); });
 $('trails').addEventListener('change',function(e){ st.trails=e.target.checked; });
 $('nextBird').addEventListener('click',function(){ tracked=Math.floor(Math.random()*st.N); });
 $('play').addEventListener('click',function(){ st.running=!st.running; syncUI(); });
-$('reset').addEventListener('click',function(){ randomize(); });
-
-/* esperimenti: ognuno dice che cosa guardare */
-var PRESETS=[
-  {id:'gas',label:'Gas di uccelli',set:{N:150,mode:'topo',k:7,wA:0,wC:0,wS:.6,noise:10},
-   note:'Nessuna regola di gruppo: ognuno va per conto suo e φ resta vicino a 1/√N, il valore del caso. Porta Allineamento da 0 a 1 e guarda φ salire: è l\'emergenza.'},
-  {id:'stormo',label:'Stormo',set:{N:150,mode:'topo',k:7,wA:1,wC:.3,wS:.8,noise:10},
-   note:'Partono in disordine; con allineamento, coesione e separazione si formano gruppi che si fondono, φ sale e i colori si uniformano. Alza il rumore: φ scende fino al valore del caso.'},
-  {id:'rado-topo',label:'Rado · 7 vicini',set:{N:30,mode:'topo',k:7,wA:1,wC:.3,wS:.8,noise:10},
-   note:'Pochi uccelli: ognuno vede sempre i suoi 7 vicini, anche lontani, e dopo pochi secondi φ è già alta. Attiva «mostra cosa vede un uccello»: il cerchio si allarga finché dentro ce ne sono 7.'},
-  {id:'rado-metrico',label:'Rado · raggio fisso',set:{N:30,mode:'metric',R:40,wA:1,wC:.3,wS:.8,noise:10},
-   note:'Stessa densità, ma ognuno vede solo chi sta entro R = 40: all\'inizio quasi nessuno ha vicini e φ sale lentamente, solo quando i gruppi si incontrano. Guarda i vicini.'},
-  {id:'fitto-topo',label:'Fitto · 7 vicini',set:{N:300,mode:'topo',k:7,wA:1,wC:.3,wS:.8,noise:10},
-   note:'Tanti uccelli, ma ognuno ascolta sempre e solo 7 vicini: lo stormo si ordina ma resta diviso in gruppi più piccoli. Confrontalo con l\'esperimento successivo.'},
-  {id:'fitto-metrico',label:'Fitto · raggio fisso',set:{N:300,mode:'metric',R:40,wA:1,wC:.3,wS:.8,noise:10},
-   note:'Con molti uccelli il raggio fisso comprende decine di vicini: la media è più stabile e in questo modello l\'ordine è più alto. Nessuna delle due interazioni vince sempre: dipende dalla densità.'}
-];
-PRESETS.forEach(function(p){
-  var b=document.createElement('button'); b.type='button'; b.className='preset-btn'; b.textContent=p.label;
-  b.addEventListener('click',function(){ applyPreset(p); }); $('presets').appendChild(b);
-});
-function applyPreset(p){
-  Object.assign(st,p.set); oldN=st.N; syncUI(); randomize(); $('status').textContent=p.note;
-}
+$('reset').addEventListener('click',function(){ applyExp(cur); });
+$('scan').addEventListener('click',startScan);
 
 /* predatore: puntatore premuto */
 function toWorld(e){ var r=cv.getBoundingClientRect(); pred.x=(e.clientX-r.left)/r.width*W; pred.y=(e.clientY-r.top)/r.height*H; }
@@ -460,17 +685,17 @@ function postH(){
   try{ if(window.parent!==window) window.parent.postMessage({type:'stormi-height',h:Math.ceil(document.body.getBoundingClientRect().height)},'*'); }catch(e){}
 }
 
-/* avvio */
-randomize(); syncUI(); resize();
-if(window.ResizeObserver){ new ResizeObserver(resize).observe(cv); new ResizeObserver(postH).observe(document.body); }
+/* avvio: si apre già sul primo limite, con lo slider che pulsa */
+resize(); applyExp(EXPS[0],true);
+if(window.ResizeObserver){ new ResizeObserver(resize).observe(cv); new ResizeObserver(resize).observe(ch); new ResizeObserver(postH).observe(document.body); }
 window.addEventListener('load',postH);
-if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches){ st.running=false; syncUI(); }
-$('status').textContent='Scegli un esperimento, oppure muovi gli slider. Tieni premuto sul disegno per spaventare lo stormo.';
 requestAnimationFrame(loop);
 
 /* API minima per collaudi e per OJS: window.stormi */
 window.stormi={state:st,run:function(n){ for(var i=0;i<n;i++) step(); clusters(); return {phi:phi,avgNb:avgNb,groups:groups,bigFrac:bigFrac}; },
-  preset:function(id){ applyPreset(PRESETS.filter(function(p){return p.id===id;})[0]); },reset:randomize};
+  preset:function(id){ applyExp(EXPS.filter(function(p){return p.id===id;})[0]); },reset:randomize,
+  info:function(){ return {cur:cur&&cur.id,phis:phis,tN:tN,valid:refValid(),thr:cur&&cur.ref&&REF[cur.ref]?crossing(REF[cur.ref]):null,hint:hintOn}; },
+  scan:startScan,setParam:userSet};
 })();
 </script>
 </body></html>

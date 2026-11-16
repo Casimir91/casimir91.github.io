@@ -16,10 +16,10 @@ const state = {
   dec: store.get("calc-dec", "."),           // decimal separator shown in results
   pref: store.get("calc-pref", "exact"),      // exact | mixed | decimal | sci
   angle: store.get("calc-angle", "deg"),      // deg | rad (for sin, cos, tan and their inverses)
-  second: false,                              // "2nd" layer armed
   ans: null,                                  // last committed value
   committed: null,                            // value currently shown after "="
   live: null,                                 // value of the expression being typed
+  second: false,                              // "2nd" layer armed (one shot)
   history: [],                                // [{ latex, value }]
 };
 if (!["exact", "mixed", "decimal", "sci"].includes(state.pref)) state.pref = "exact";
@@ -185,14 +185,13 @@ const FRAC_ICON = '<svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="
 const SQRT_ICON = '<svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M2.5 12.5l3.2-1.6 3.6 8.1 6-15.5h6.2" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
 /* kind: num | op | fn | hero | eq | ctl;  ans: insert "Ans" first when the field is empty after "=".
-   alt: what the key becomes while "2nd" is armed (label, aria and/or inserted LaTeX).             */
+   alt: what the key does (and shows) while "2nd" is armed.                                           */
 const KEYS = [
   { l: FRAC_ICON, aria: "Fraction", kind: "hero", ins: "\\frac{#@}{#?}" },
   { l: "x<sup>n</sup>", aria: "Power", kind: "fn", ins: "#@^{#?}", ans: true },
   { l: SQRT_ICON, aria: "Square root", kind: "fn", ins: "\\sqrt{#?}",
     alt: { l: "<sup class=\"n\">n</sup>√", aria: "Nth root", ins: "\\sqrt[#?]{#?}" } },
-  { l: "π", aria: "Pi", kind: "fn", ins: "\\pi",
-    alt: { l: "e", aria: "Euler's number e", ins: "\\exponentialE" } },
+  { l: "π", aria: "Pi", kind: "fn", ins: "\\pi", alt: { l: "e", aria: "Euler's number e", ins: "\\exponentialE" } },
   { l: "⌫", aria: "Delete", kind: "ctl", cmd: "deleteBackward" },
 
   { l: "(", aria: "Open bracket", kind: "fn", ins: "\\left(#?\\right)" },
@@ -218,9 +217,9 @@ const KEYS = [
   { l: "+", aria: "Add", kind: "op", ins: "+", ans: true },
 ];
 
-/* function row: "2nd" flips every key that has an alt (sin → sin⁻¹, log → 10ˣ, ln → eˣ, √ → ⁿ√, π → e) */
+/* function row: 2nd arms the alternate (inverse) functions for the next key only */
 const FN_KEYS = [
-  { l: "2nd", aria: "Second function: inverse functions", kind: "fn second", act: "second" },
+  { l: "2nd", aria: "Second function", kind: "fn second", act: "second" },
   { l: "sin", aria: "Sine", kind: "fn", ins: "\\sin\\left(#?\\right)",
     alt: { l: "sin<sup>−1</sup>", aria: "Inverse sine", ins: "\\sin^{-1}\\left(#?\\right)" } },
   { l: "cos", aria: "Cosine", kind: "fn", ins: "\\cos\\left(#?\\right)",
@@ -233,34 +232,34 @@ const FN_KEYS = [
     alt: { l: "e<sup>x</sup>", aria: "e to the power", ins: "\\exponentialE^{#?}" } },
 ];
 
-const built = [];                         // [{ el, key }]
-const specOf = (key) => (state.second && key.alt ? { ...key, ...key.alt } : key);
+const specOf = (k) => (state.second && k.alt ? { ...k, ...k.alt } : k);
+const padKeys = [];                                  // [{ k, el }]
 
 function paint() {
-  for (const { el, key } of built) {
-    const sp = specOf(key);
+  for (const { k, el } of padKeys) {
+    if (k.act === "second") { el.setAttribute("aria-pressed", String(state.second)); continue; }
+    const sp = specOf(k), on = sp !== k;
+    if (el.dataset.on === String(on)) continue;
+    el.dataset.on = String(on);
     el.innerHTML = sp.l;
     el.setAttribute("aria-label", sp.aria || sp.l.replace(/<[^>]+>/g, ""));
-    if (key.act === "second") el.setAttribute("aria-pressed", String(state.second));
-    if (key.alt) {
-      el.classList.toggle("alt", state.second);
-      el.classList.remove("flip"); void el.offsetWidth; el.classList.add("flip");
-    }
+    el.classList.toggle("alt", on);
+    el.classList.remove("flip"); void el.offsetWidth; el.classList.add("flip");
   }
 }
 
-function press(key) {
-  if (key.act === "second") { state.second = !state.second; paint(); return; }
-  const k = specOf(key);
-  if (state.second) { state.second = false; paint(); }                 // 2nd is one-shot
-  if (k.act === "equals") return equals();
-  if (k.act === "clear") {
+function press(k) {
+  if (k.act === "second") { state.second = !state.second; paint(); return; }
+  const sp = specOf(k);
+  if (state.second) { state.second = false; paint(); }
+  if (sp.act === "equals") return equals();
+  if (sp.act === "clear") {
     mf.setValue(""); state.live = null; state.committed = null; refresh(); return;
   }
-  if (k.ans && isEmpty() && state.ans) mf.insert("\\mathrm{Ans}", { focus: !coarse });
-  if (k.act === "point") mf.insert(state.dec === "," ? "{,}" : ".", { focus: !coarse });
-  else if (k.cmd) mf.executeCommand(k.cmd);
-  else if (k.ins) mf.insert(k.ins, { focus: !coarse, selectionMode: "placeholder" });
+  if (sp.ans && isEmpty() && state.ans) mf.insert("\\mathrm{Ans}", { focus: !coarse });
+  if (sp.act === "point") mf.insert(state.dec === "," ? "{,}" : ".", { focus: !coarse });
+  else if (sp.cmd) mf.executeCommand(sp.cmd);
+  else if (sp.ins) mf.insert(sp.ins, { focus: !coarse, selectionMode: "placeholder" });
   if (!coarse) mf.focus({ preventScroll: true });
   onInput();
 }
@@ -271,14 +270,15 @@ function buildPad() {
       const b = document.createElement("button");
       b.type = "button";
       b.className = "key " + k.kind;
+      b.innerHTML = k.l;
+      b.setAttribute("aria-label", k.aria || k.l.replace(/<[^>]+>/g, ""));
+      if (k.act === "second") b.setAttribute("aria-pressed", "false");
       b.addEventListener("pointerdown", (e) => e.preventDefault());     // keep focus (and the caret) in the field
       b.addEventListener("click", () => press(k));
       host.appendChild(b);
-      built.push({ el: b, key: k });
+      padKeys.push({ k, el: b });
     }
   }
-  paint();
-  for (const { el } of built) el.classList.remove("flip");
 }
 buildPad();
 

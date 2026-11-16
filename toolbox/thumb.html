@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+<title>Thumb Calculator · Toolbox</title>
+<link rel="stylesheet" href="toolbox.css">
+<link rel="stylesheet" href="vendor/mathlive/mathlive-fonts.css">
+<link rel="stylesheet" href="vendor/mathlive/mathlive-static.css">
+<link rel="stylesheet" href="thumb.css">
+<link rel="stylesheet" href="radial.css">
+<script src="toolbox.js"></script>
+</head>
+<body>
+  <div class="topbar">
+    <a href="index.html">← Toolbox</a>
+    <span class="status">Thumb Calculator · hold, swipe, release</span>
+    <div class="themebar" id="themebar"></div>
+  </div>
+
+  <div class="stage">
+    <main class="thumb" id="thumb">
+      <section class="screen" aria-label="Display">
+        <div class="sc-top">
+          <button type="button" class="angle" id="angleBtn"></button>
+          <button type="button" class="angle" id="handBtn"></button>
+          <button type="button" class="angle q" id="tourBtn" aria-label="How it works" title="How it works">?</button>
+        </div>
+        <ol class="history" id="history" aria-label="Previous calculations"></ol>
+        <div class="entry" id="entry"></div>
+        <div class="result" id="result" aria-live="polite">
+          <div class="res-main" id="resMain"></div>
+          <div class="res-note" id="resNote"></div>
+        </div>
+        <div class="formats" id="formats" role="group" aria-label="Show the result as"></div>
+      </section>
+      <section class="pad" id="pad" aria-label="Keypad"></section>
+    </main>
+    <p class="desk-hint">Made for phones. On a computer: press and hold a key with the mouse, then slide.</p>
+  </div>
+
+  <div class="tour" id="tour" hidden role="dialog" aria-modal="true" aria-labelledby="tourTitle">
+    <div class="tour-card">
+      <div class="tour-dots" id="tourDots"></div>
+      <div class="tour-stage" id="tourStage"></div>
+      <h2 id="tourTitle"></h2>
+      <p id="tourText"></p>
+      <div class="tour-actions">
+        <button type="button" id="tourSkip">Skip</button>
+        <button type="button" id="tourNext" class="go">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <noscript><p class="status">This calculator needs JavaScript.</p></noscript>
+  <script type="module" src="thumb.js"></script>
+</body>
+</html>
