@@ -1,13 +1,13 @@
 /* Groovebox · Song: a multitrack timeline (like the playlist of ACID or FL Studio) built on the 4-bar loops.
    Six lanes (Drums, Bass, Guitar, Chords, Low, Arp); a block = one loop repeated for 1…N cycles of 4 bars.
    The scheduler asks `cycle(t)` at every 4-bar line and the loops of that cycle are queued, so everything stays in time. */
-const LANE_COL = { drums: '#d9742b', bass: '#3f8fd2', guitar: '#c4a22a', kchords: '#8b5cc7', klow: '#35a089', keys: '#d0507e' };
+const LANE_COL = { drums: '#d9742b', bass: '#3f8fd2', guitar: '#c4a22a', kchords: '#8b5cc7', klow: '#35a089', keys: '#d0507e', lpads: '#2fb5c7', lkeys: '#8fcf3a' };
 const MAXLEN = 32, ZOOMS = [3.2, 4.2, 5.4, 7, 9];
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 
 export function initSong(api) {
-  const { $, $$, store, SLOTS, CLIPS, CLIP_BY_ID, SCENES, SL, S, TRACKS, SLOT_OF } = api;
-  const KEYS = SLOTS.map(([k]) => k), NAME = Object.fromEntries(SLOTS);
+  const { $, $$, store, SLOTS, CLIPS, CLIP_BY_ID, SCENES, SL, S, TRACKS, SLOT_OF } = api, LANES = api.LANES || SLOTS;
+  const KEYS = LANES.map(([k]) => k), NAME = Object.fromEntries(LANES), isLive = (k) => k === 'lpads' || k === 'lkeys';
 
   // ------------------------------------------------------------ data
   const SONG = { len: 8, lanes: Object.fromEntries(KEYS.map((k) => [k, []])), mute: {}, loop: true, zoom: 2, cursor: 0 };
@@ -84,6 +84,15 @@ export function initSong(api) {
     cv.width = Math.round(w * d); cv.height = Math.round(h * d); const g = cv.getContext('2d'); g.scale(d, d);
     const c = CLIP_BY_ID[id]; if (!c) return; const fg = css('--fg'), cyc = w / n, sw = cyc / 64;
     g.fillStyle = fg; g.strokeStyle = fg;
+    if (c.ev) { // a loop you recorded: pads = one row per pad, keys = pitch
+      const rows = k === 'lkeys' ? null : [...new Set(c.ev.map((e) => e.m))].sort((a, b) => a - b); let lo = 1e9, hi = -1e9; if (!rows) for (const e of c.ev) { lo = Math.min(lo, e.m); hi = Math.max(hi, e.m); }
+      for (let rep = 0; rep < n; rep++) {
+        const x0 = rep * cyc; g.globalAlpha = 0.22; g.lineWidth = 1; for (let b = 1; b < 4; b++) { g.beginPath(); g.moveTo(x0 + b * 16 * sw, 0); g.lineTo(x0 + b * 16 * sw, h); g.stroke(); }
+        if (rep) { g.globalAlpha = 0.4; g.beginPath(); g.moveTo(x0, 0); g.lineTo(x0, h); g.stroke(); }
+        g.globalAlpha = 0.9; for (const e of c.ev) { const y = rows ? 4 + (rows.indexOf(e.m) / Math.max(1, rows.length - 1)) * (h - 11) : 4 + (1 - (e.m - lo) / Math.max(1, hi - lo)) * (h - 11); g.fillRect(x0 + e.p * sw, y, Math.max(1.5, (rows ? 1 : e.d) * sw - 0.6), 3); }
+      }
+      g.globalAlpha = 1; return;
+    }
     let lo = 99, hi = -99; if (k === 'bass') for (const o of c.bars) for (const r of o.b) if (r >= 0) { lo = Math.min(lo, r); hi = Math.max(hi, r); }
     const used = k === 'bass' ? [] : TRACKS.map((t, ti) => ti).filter((ti) => SLOT_OF[ti] === k && c.bars.some((bb) => bb[ti] && bb[ti].some((v) => v))), band = (h - 8) / Math.max(1, used.length);
     for (let rep = 0; rep < n; rep++) {
@@ -111,7 +120,10 @@ export function initSong(api) {
   }
   function renderBin() {
     const a = armed && armed.k === selLane ? armed.id : null;
-    binEl.innerHTML = `<h3>${NAME[selLane]} loops <small>tap one, then tap or drag in the ${NAME[selLane]} lane to place it</small></h3><div class="chips">` + (CLIPS[selLane] || []).map((c) => `<button data-clip="${c.id}" aria-pressed="${c.id === a}">${c.name}</button>`).join('') + '</div>';
+    const items = CLIPS[selLane] || [], live = isLive(selLane), nm = selLane === 'lpads' ? 'Pads' : 'Keys';
+    binEl.innerHTML = `<h3>${NAME[selLane]} loops <small>${live ? 'the loops you recorded live and saved: ' : ''}tap one, then tap or drag in the ${NAME[selLane]} lane to place it</small></h3>` +
+      (live && !items.length ? `<p class="note">Nothing saved yet. Record a loop in <b>${nm}</b> with ● Rec, then press <b>＋ Save in Song</b>.</p>` : `<div class="chips">${items.map((c) => `<button data-clip="${c.id}" aria-pressed="${c.id === a}">${c.name}</button>`).join('')}</div>`) +
+      (live && items.length ? `<div class="chips"><button data-lib="rename" ${a ? '' : 'disabled'}>✎ Rename</button><button data-lib="del" ${a ? '' : 'disabled'}>🗑 Delete this loop</button></div>` : '');
   }
   function renderAct() {
     if (!sel) { actEl.innerHTML = '<span class="note">Tap a block to move, lengthen, copy or delete it. Drag its right edge to repeat the loop for more cycles.</span>'; return; }
@@ -161,6 +173,13 @@ export function initSong(api) {
     const h = e.target.closest('.sg-head'); if (h) { selLane = h.dataset.slot; render(); }
   });
   binEl.addEventListener('click', (e) => {
+    const lb = e.target.closest('[data-lib]');
+    if (lb && armed) {
+      const c = CLIP_BY_ID[armed.id];
+      if (lb.dataset.lib === 'rename') { const v = prompt('Name of this loop', c.name); if (v && v.trim()) { api.libOp.rename(armed.id, v.trim()); save(); render(); } }
+      else if (confirm(`Delete “${c.name}”? Its blocks leave the timeline too.`)) { const id = armed.id; api.libOp.remove(id); for (const k of KEYS) SONG.lanes[k] = lane(k).filter((x) => x.id !== id); armed = null; select(null); save(); render(); }
+      return;
+    }
     const b = e.target.closest('[data-clip]'); if (!b) return;
     armed = armed && armed.id === b.dataset.clip ? null : { k: selLane, id: b.dataset.clip }; render();
     if (armed) api.status(`Picked “${CLIP_BY_ID[armed.id].name}”: tap or drag in the ${NAME[armed.k]} lane`);

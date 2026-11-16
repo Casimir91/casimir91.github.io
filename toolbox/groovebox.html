@@ -232,9 +232,31 @@
 
   /* ---- Loops: clip launcher ---- */
   .slot { --h: 24; display: flex; flex-direction: column; gap: .35rem; padding: .6rem .7rem .7rem; background: var(--surface); border: 1px solid var(--border); border-left: 6px solid hsl(var(--h) 65% 52%); border-radius: .8rem; }
-  .slot-h { display: flex; justify-content: space-between; align-items: baseline; gap: .5rem; }
   .slot-h small { color: var(--muted); }
   .slot-h .tm { min-height: 2rem; padding: 0 .6rem; font-size: .8rem; margin-left: auto; border-color: var(--accent); }
+  /* rack: all the instruments in one view; the list of loops opens under the instrument you tap */
+  .slot { gap: .3rem; padding: .4rem .5rem .5rem; }
+  .slot:not(.open) .clips { display: none; }
+  .slot-h { display: grid; grid-template-columns: 2.5rem 1fr 2.5rem 2.5rem 2.5rem; gap: .3rem; align-items: stretch; justify-content: stretch; }
+  .slot-h button { min-height: 2.6rem; padding: 0 .3rem; }
+  .slot-h .pa { font-size: 1.3rem; }
+  .slot-h .lk { opacity: .55; } .slot-h .lk[aria-pressed="true"] { opacity: 1; }
+  .sl-toggle { display: flex; align-items: center; gap: .5rem; text-align: left; padding: 0 .6rem !important; min-width: 0; }
+  .sl-toggle b { flex: none; } .sl-toggle .slot-s { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted); font-size: .85rem; text-align: right; }
+  .sl-toggle .chev::before { content: '▾'; opacity: .7; } .sl-toggle[aria-expanded="true"] .chev::before { content: '▴'; }
+  .slot.off .sl-toggle { opacity: .55; }
+  .slot > .tm { min-height: 2rem; padding: 0 .6rem; font-size: .8rem; border-color: var(--accent); }
+  #scenes.scroll { flex-wrap: nowrap; overflow-x: auto; padding-bottom: .25rem; } #scenes.scroll > * { flex: 0 0 auto; }
+  /* descriptions: folded behind an ⓘ */
+  details.help { margin: .15rem 0; }
+  details.help > summary { display: inline-flex; align-items: center; gap: .3rem; list-style: none; cursor: pointer; color: var(--muted); font-size: .8rem; min-height: 1.9rem; padding: 0 .65rem; border: 1px solid var(--border); border-radius: 1rem; user-select: none; }
+  details.help > summary::-webkit-details-marker { display: none; }
+  details.help[open] > summary { color: var(--fg); border-color: var(--primary); }
+  details.help > :not(summary) { margin-top: .4rem; }
+  #helpAll { padding: .3rem .7rem; min-height: 2.25rem; }
+  .grv header { display: flex; align-items: center; flex-wrap: wrap; gap: .2rem .6rem; } .grv header h1 { margin: 0; }
+  details.help[open] { flex: 1 1 100%; }
+  @media (max-width: 680px) { .slot { padding: .3rem .4rem; gap: .25rem; } .slot-h button { min-height: 2.35rem; } .slot-h { gap: .25rem; } .main-gap-fix { display: none; } }
   .clip small { color: inherit; opacity: .6; font-weight: 400; font-size: .72rem; }
   .clips { display: grid; grid-template-columns: repeat(auto-fill, minmax(7.4rem, 1fr)); gap: .4rem; }
   .clip { min-height: 3.2rem; padding: .35rem .55rem; text-align: left; font-weight: 500; display: flex; flex-direction: column; justify-content: center; gap: .15rem; }
@@ -326,6 +348,7 @@
   <div class="topbar">
     <a href="index.html">← Toolbox</a>
     <span class="status" id="status" aria-live="polite">Pick a drum loop to start</span>
+    <button id="helpAll" class="toggle" aria-pressed="false" title="Show or hide all the descriptions" aria-label="Show or hide all the descriptions">ⓘ</button>
     <button id="pwaInstall" class="toggle" hidden title="Install Groovebox as an app (works offline)">⤓ Install</button>
     <div class="themebar" id="themebar"></div>
   </div>
@@ -345,7 +368,7 @@
     <!-- LOOPS -->
     <section class="view" id="v-loops" data-view="loops">
       <div class="guide" id="guide"></div>
-      <div class="chips" id="scenes">
+      <div class="chips scroll" id="scenes">
         <button data-scene="House">House</button><button data-scene="Hip-hop">Hip-hop</button><button data-scene="Trap">Trap</button><button data-scene="Funk">Funk</button><button data-scene="Breakbeat">Breakbeat</button>
         <button data-scene="Surprise">🎲 Surprise</button>
       </div>
@@ -378,7 +401,7 @@
         <div class="song-act" id="songAct"></div>
         <div class="chips" id="songScenes"></div>
         <div class="song-bin" id="songBin"></div>
-        <p class="note">A block is a <b>4-bar loop</b>; every column of the ruler is one cycle (the bar numbers are the first bar of each). <b>Pick a loop</b> below, then <b>tap or drag</b> in its lane to place it. <b>Scenes</b> drop six loops at the pink cursor (click the ruler to move it). While the song plays you can still edit: changes enter at the next cycle. Key, scale, chords and tempo stay as you set them in Loops.</p>
+        <p class="note">A block is a <b>4-bar loop</b>; every column of the ruler is one cycle (the bar numbers are the first bar of each). <b>Pick a loop</b> below, then <b>tap or drag</b> in its lane to place it. The <b>Pads</b> and <b>Keys</b> lanes hold the loops you recorded live: press <b>＋ Save in Song</b> in Pads or Keys to keep one, then place it here. <b>Scenes</b> drop six loops at the pink cursor (click the ruler to move it). While the song plays you can still edit: changes enter at the next cycle. Key, scale, chords and tempo stay as you set them in Loops.</p>
       </div>
     </section>
 
@@ -391,7 +414,7 @@
         <button data-rep="0" aria-pressed="true">Off</button><button data-rep="2" aria-pressed="false">1/8</button><button data-rep="1" aria-pressed="false">1/16</button><button data-rep="0.5" aria-pressed="false">1/32</button><button data-rep="0.6667" aria-pressed="false">1/16 triplet</button>
       </div>
       <div class="mpads" id="mpads" role="group" aria-label="16 pads"></div>
-      <div class="lab-tools"><button id="pRec" class="toggle" aria-pressed="false">● Rec</button><button id="pMute" class="toggle" aria-pressed="true">🔇 Loop muted</button><button id="pUndo">⌫ Undo last pass</button><button id="pClear">🗑 Clear</button><button id="padShape">Shape this sound →</button></div>
+      <div class="lab-tools"><button id="pRec" class="toggle" aria-pressed="false">● Rec</button><button id="pMute" class="toggle" aria-pressed="true">🔇 Loop muted</button><button id="pUndo">⌫ Undo last pass</button><button id="pSave" title="Keep this loop as a block for the Song timeline">＋ Save in Song</button><button id="pClear">🗑 Clear</button><button id="padShape">Shape this sound →</button></div>
       <p class="note" id="pInfo"></p>
       <p class="note">Bank <b>A</b> has chords in several colours (organ, Rhodes, strings, stabs; <b>V</b> is the keyboard sound), guitar and bass. Bank <b>B</b> has sung phrases (soul, gospel, R&amp;B style). They are <b>synthesised</b> by the browser with formant synthesis, not recordings of real singers; the pitch follows the key and the chord of the bar, and the <b>Voice note</b> chips choose which note of the scale. With <b>Note Repeat</b> on, hold a pad: it re-triggers in time with the beat (like the MPC). <b>Rec</b> records your hits over the 4 bars and loops them. On a computer the pads are the keys <b>1 2 3 4 / Q W E R / A S D F / Z X C V</b>.</p>
     </section>
@@ -409,7 +432,7 @@
       <div class="chips" id="keySounds"></div>
       <div id="kb" class="kb" role="group" aria-label="Piano keyboard"></div>
       <p class="note">Dots mark the notes of the current key and scale. On a computer: <b>A S D F G H J K L</b> are the white keys, <b>W E T Y U O P</b> the black ones, <b>Z</b>/<b>X</b> change octave. Slide a finger across the keys for a glissando.</p>
-      <div class="lab-tools"><button id="kRec" class="toggle" aria-pressed="false">● Rec</button><button id="kUndo">⌫ Undo last pass</button><button id="kClear">🗑 Clear loop</button><button data-open="lab">Shape this sound →</button></div>
+      <div class="lab-tools"><button id="kRec" class="toggle" aria-pressed="false">● Rec</button><button id="kUndo">⌫ Undo last pass</button><button id="kSave" title="Keep this loop as a block for the Song timeline">＋ Save in Song</button><button id="kClear">🗑 Clear loop</button><button data-open="lab">Shape this sound →</button></div>
       <p class="note" id="kInfo"></p>
       <canvas id="kroll" class="kroll" aria-label="The recorded loop as a piano roll"></canvas>
       <p class="note"><b>Loop station:</b> Rec starts the loop if it is stopped and records every note exactly when you play it, over the 4 bars. Press Rec again to stop recording: the notes keep looping with the beat. Rec again to overdub more.</p>

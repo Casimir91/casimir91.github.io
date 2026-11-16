@@ -797,6 +797,21 @@ const grpHead = () => '';
 const CLIP_BY_ID = Object.fromEntries(Object.values(CLIPS).flat().map((c) => [c.id, c]));
 /** SL[slot].cur = what plays now ('mine' = your own step pattern, null = silent); .next = queued for the next bar line (undefined = no change). */
 const SL = Object.fromEntries(SLOTS.map(([k]) => [k, { cur: null, next: undefined }]));
+// The two live loops (Pads, Keys) also have a lane in the Song: 'live' = the loop you are recording, an id = a block you saved, null = silent
+const LIVE_LANES = ['lpads', 'lkeys'], LANES = [...SLOTS, ['lpads', 'Pads'], ['lkeys', 'Keys']];
+for (const k of LIVE_LANES) SL[k] = { cur: 'live', next: undefined };
+const LIB = (() => { const v = store.get('lib1', null) || {}, ok = (a) => (Array.isArray(a) ? a.filter((c) => c && typeof c.id === 'string' && Array.isArray(c.ev)) : []); return { lpads: ok(v.lpads), lkeys: ok(v.lkeys) }; })();
+CLIPS.lpads = LIB.lpads; CLIPS.lkeys = LIB.lkeys; for (const c of [...LIB.lpads, ...LIB.lkeys]) CLIP_BY_ID[c.id] = c;
+const liveEv = (lane) => { const c = SL[lane].cur; if (c === 'live') return lane === 'lpads' ? S.ploop.ev : S.kloop.ev; const x = c && CLIP_BY_ID[c]; return x ? x.ev : []; };
+function saveLive(lane) { // keep the loop you recorded as a block of the Song timeline
+  const src = lane === 'lpads' ? S.ploop.ev : S.kloop.ev, label = lane === 'lpads' ? 'Pad loop' : 'Keys loop', arr = LIB[lane]; if (!src.length) { $('#status').textContent = 'Nothing recorded yet: press Rec first'; return; }
+  const n = 1 + Math.max(0, ...arr.map((c) => +(c.name.match(/(\d+)$/) || [0, 0])[1])), c = { id: `u-${lane}-${Date.now().toString(36)}${arr.length}${Math.floor(Math.random() * 1296).toString(36)}`, name: `${label} ${n}`, lane, ev: src.map((e) => ({ ...e })) };
+  arr.push(c); CLIP_BY_ID[c.id] = c; store.set('lib1', LIB); $('#status').textContent = `Saved as “${c.name}”: place it in Song › ${lane === 'lpads' ? 'Pads' : 'Keys'}`;
+}
+const libOp = {
+  rename(id, name) { const c = CLIP_BY_ID[id]; if (c && c.ev && name) { c.name = String(name).slice(0, 24); store.set('lib1', LIB); } },
+  remove(id) { const c = CLIP_BY_ID[id]; if (!c || !c.lane) return; const a = LIB[c.lane], i = a.indexOf(c); if (i >= 0) a.splice(i, 1); delete CLIP_BY_ID[id]; for (const k of LIVE_LANES) if (SL[k].cur === id) SL[k].cur = 'live'; store.set('lib1', LIB); },
+};
 // every visit starts with everything off: you add one instrument at a time
 S.mute.keys = true; S.mute.pads = true; // the loops you recorded earlier are kept but start muted (M on Keys, the button on Pads)
 let loopsDirty = true;
@@ -883,11 +898,13 @@ function tick() {
       if (pendScene) { Object.assign(S, pendScene); pendScene = null; syncDirty = true; }
       if (bar === 0) song.cycle(nextT);   // the Song timeline queues the loops of the next 4-bar cycle
       for (const [k] of SLOTS) { const sl = SL[k]; if (sl.next !== undefined) { sl.cur = sl.next; sl.next = undefined; loopsDirty = true; if (sl.cur && sl.cur !== 'mine') { clipExtras(k, sl.cur); copyToMine(k, sl.cur); } } }
+      for (const k of LIVE_LANES) { const sl = SL[k]; if (sl.next !== undefined) { sl.cur = sl.next; sl.next = undefined; } }
       curBass = bassOf(bar); curCov = coverOf(curBass.b, curBass.l);
     }
     const tt = nextT + (step % 2 ? (S.swing / 100) * sd : 0), sh = S.prog[bar], idx = bar * STEPS + step;
-    if (S.kloop.ev.length && audible('keys')) for (const e of S.kloop.ev) if (e.p >= idx && e.p < idx + 1) hit('keys', nextT + (e.p - idx) * sd, A.strips, e.m, 1, e.d * sd);
-    if (S.ploop.ev.length && !S.mute.pads) for (const e of S.ploop.ev) if (e.p >= idx && e.p < idx + 1) padHit(e.m, nextT + (e.p - idx) * sd, null, e.v);
+    const kev = liveEv('lkeys'), pev = liveEv('lpads');
+    if (kev.length && audible('keys')) for (const e of kev) if (e.p >= idx && e.p < idx + 1) hit('keys', nextT + (e.p - idx) * sd, A.strips, e.m, 1, e.d * sd);
+    if (pev.length && !S.mute.pads) for (const e of pev) if (e.p >= idx && e.p < idx + 1) padHit(e.m, nextT + (e.p - idx) * sd, null, e.v);
     TRACKS.forEach((tr, ti) => {
       const v = patAt(ti, step, bar);
       if (v && audible(tr.id)) for (const [k, vel] of ROLLS[v]) {
@@ -914,6 +931,7 @@ function stop() {
   if (padRec) stopPadRec();
   if (xrec) finishExport(true);
   song.stopped();
+  for (const k of LIVE_LANES) { SL[k].cur = 'live'; SL[k].next = undefined; } // after a Song the loops you recorded play again
   clearInterval(timer); playing = false; queue.length = 0; setCur(-1, -1);
   if (A?.sess) {
     const { dry, wet } = A.sess, t = A.ctx.currentTime;
@@ -1680,7 +1698,7 @@ function paintKeysUi() {
   $('#kRec').setAttribute('aria-pressed', String(recording)); $('#kRec').textContent = recording ? '■ Stop rec' : '● Rec';
   const n = S.kloop.ev.length;
   $('#kInfo').textContent = recording ? 'Recording: play on the keyboard. Notes are kept exactly as you play them.' : n ? `Loop of 4 bars · ${n} notes${S.mute.keys ? ' · muted: press M to hear it' : ''}. Press Rec again to overdub.` : 'Press Rec, then play: the loop of 4 bars starts from your notes.';
-  $('#kUndo').disabled = !n; $('#kClear').disabled = !n;
+  $('#kUndo').disabled = !n; $('#kClear').disabled = !n; $('#kSave').disabled = !n;
 }
 $('#kRec').addEventListener('click', () => (recording ? stopRec() : startRec()));
 $('#kUndo').addEventListener('click', () => { const last = Math.max(...S.kloop.ev.map((e) => e.s)); S.kloop.ev = S.kloop.ev.filter((e) => e.s !== last); saveAll(); paintKeysUi(); });
@@ -1780,13 +1798,14 @@ function miniOf(slot, c) { // 16 little cells: where the loop sounds in its firs
   else c.bars[0].forEach((row) => row && row.forEach((v, i) => { if (v) on[i] = 1; }));
   return on;
 }
+const RACK = store.get('rack1', {}); // which instruments of the rack show their whole list of loops
 function buildLoops() {
   $('#perfScenes').innerHTML =
     Object.keys(SCENES).map((n) => `<button data-scene="${n}">${n}</button>`).join('') + '<button data-scene="Surprise">🎲</button>';
   $('#perf').innerHTML = SLOTS.map(([k, l]) => `<div class="prow" data-slot="${k}" style="--h:${HUE[k]}"><button class="gm toggle" data-gm="${GMK[k] || k}" aria-pressed="false" aria-label="Mute ${l}">M</button>` +
     `<button class="pa" data-pn="-1" data-slot="${k}" aria-label="${l}: previous loop">‹</button><button class="pname" data-pn="0" data-slot="${k}" aria-label="${l}: on or off"></button><button class="pa" data-pn="1" data-slot="${k}" aria-label="${l}: next loop">›</button><button class="lk toggle" data-lk="${k}" aria-pressed="false" aria-label="Lock ${l}: scenes do not change it">🔒</button></div>`).join('');
   $('#scenes').innerHTML = '<span>Scene</span>' + Object.keys(SCENES).map((n) => `<button data-scene="${n}">${n}</button>`).join('') + '<button data-scene="Surprise">🎲 Surprise</button>';
-  $('#deck').innerHTML = SLOTS.map(([k, l]) => `<div class="slot" data-slot="${k}" style="--h:${HUE[k]}"><div class="slot-h"><b>${l}</b><button class="lk toggle" data-lk="${k}" aria-pressed="false" aria-label="Lock ${l}: scenes do not change it">🔒</button>${k === 'drums' ? '<button class="tm" hidden></button>' : ''}<small class="slot-s"></small></div><div class="clips" role="group" aria-label="${l} loops">` +
+  $('#deck').innerHTML = SLOTS.map(([k, l]) => `<div class="slot${RACK[k] ? ' open' : ''}" data-slot="${k}" style="--h:${HUE[k]}"><div class="slot-h"><button class="gm toggle" data-gm="${GMK[k] || k}" aria-pressed="false" aria-label="Mute ${l}">M</button><button class="sl-toggle" data-rack="${k}" aria-expanded="${!!RACK[k]}" aria-label="${l}: show all the loops"><b>${l}</b><small class="slot-s"></small><i class="chev" aria-hidden="true"></i></button><button class="pa" data-pn="-1" data-slot="${k}" aria-label="${l}: previous loop">‹</button><button class="pa" data-pn="1" data-slot="${k}" aria-label="${l}: next loop">›</button><button class="lk toggle" data-lk="${k}" aria-pressed="false" aria-label="Lock ${l}: scenes do not change it">🔒</button></div>${k === 'drums' ? '<button class="tm" hidden></button>' : ''}<div class="clips" role="group" aria-label="${l} loops">` +
     `<button class="clip" data-slot="${k}" data-clip="mine" aria-pressed="false"><span>★ Mine</span></button>` +
     CLIPS[k].map((c, i) => grpHead(k, c, i, (g) => `<div class="cg">${g}</div>`) + `<button class="clip" data-slot="${k}" data-clip="${c.id}" aria-pressed="false"><span>${c.name}${c.bpm ? ` <small>${c.bpm}</small>` : ''}</span><i class="mini">${miniOf(k, c).map((v) => `<b class="${v ? 'on' : ''}"></b>`).join('')}</i></button>`).join('') +
     `<button class="clip off" data-slot="${k}" data-clip="off" aria-pressed="false"><span>■ Off</span></button></div></div>`).join('');
@@ -1796,13 +1815,16 @@ function paintLocks() { $$('[data-lk]').forEach((b) => { const on = !!S.lock[b.d
 document.addEventListener('click', (e) => { const b = e.target.closest('[data-lk]'); if (b) { S.lock[b.dataset.lk] = !S.lock[b.dataset.lk]; paintLocks(); saveAll(); } });
 function paintPerf() {
   paintLocks();
+  $$('#deck .slot').forEach((row) => { // the rack rows: mute state, and what plays now → what comes at the next bar
+    const k = row.dataset.slot, gk = GMK[k] || k; $('.gm', row).setAttribute('aria-pressed', String(!!S.gmute[gk])); row.classList.toggle('off', !!S.gmute[gk]);
+  });
   $$('#perf .prow').forEach((row) => {
     const k = row.dataset.slot, sl = SL[k], nm = (v) => (v === null ? 'Off' : v === 'mine' ? '★ Mine' : CLIP_BY_ID[v].name), q = sl.next !== undefined && sl.next !== sl.cur;
     const b = $('.pname', row); b.textContent = `${SLOTS.find(([x]) => x === k)[1]} · ${q ? '→ ' + nm(sl.next) : nm(sl.cur)}`; b.classList.toggle('q', q); b.classList.toggle('offc', !q && !sl.cur);
     { const gk = GMK[k] || k; $('.gm', row).setAttribute('aria-pressed', String(!!S.gmute[gk])); row.classList.toggle('off', !!S.gmute[gk]); }
   });
 }
-$('#perf').addEventListener('click', (e) => { // ‹ › step through the loops of one instrument, the name switches it off or on: all land on the next bar
+for (const root of ['#perf', '#deck']) $(root).addEventListener('click', (e) => { // ‹ › step through the loops of one instrument, the name switches it off or on: all land on the next bar
   const b = e.target.closest('[data-pn]'); if (!b) return;
   const k = b.dataset.slot, sl = SL[k], ids = CLIPS[k].map((c) => c.id), dir = +b.dataset.pn, base = sl.next !== undefined ? sl.next : sl.cur;
   let id;
@@ -1833,6 +1855,7 @@ function setSlot(slot, id) {
   loopsDirty = true; saveAll();
 }
 $('#deck').addEventListener('click', (e) => {
+  const op = e.target.closest('[data-rack]'); if (op) { const sl = op.closest('.slot'), on = !sl.classList.contains('open'); sl.classList.toggle('open', on); op.setAttribute('aria-expanded', String(on)); RACK[op.dataset.rack] = on; store.set('rack1', RACK); return; }
   const tm = e.target.closest('.tm'); if (tm) { const c = CLIP_BY_ID[tm.dataset.t]; if (c) { S.bpm = c.bpm; S.swing = c.swing; paintReadout(); saveAll(); loopsDirty = true; } return; }
   const b = e.target.closest('.clip'); if (!b) return;
   const id = clipOf(b), sl = SL[b.dataset.slot];
@@ -1905,12 +1928,14 @@ function paintPadsUi() {
   $$('#repeat [data-rep]').forEach((b) => b.setAttribute('aria-pressed', String(+b.dataset.rep === S.rep)));
   $('#pMute').setAttribute('aria-pressed', String(!!S.mute.pads)); $('#pMute').textContent = S.mute.pads ? '🔇 Loop muted' : '🔊 Loop on';
   $('#pRec').setAttribute('aria-pressed', String(padRec)); $('#pRec').textContent = padRec ? '■ Stop rec' : '● Rec';
-  const n = S.ploop.ev.length; $('#pMute').hidden = false; $('#pUndo').disabled = !n; $('#pClear').disabled = !n;
+  const n = S.ploop.ev.length; $('#pMute').hidden = false; $('#pUndo').disabled = !n; $('#pClear').disabled = !n; $('#pSave').disabled = !n;
   $('#pInfo').textContent = padRec ? 'Recording: hit the pads. They are kept exactly as you play them.' : n ? `Loop of 4 bars · ${n} pad hits. Press Rec again to overdub.` : 'Press Rec, then play: the loop of 4 bars starts from your hits.';
 }
 $('#pMute').addEventListener('click', () => { S.mute.pads = !S.mute.pads; paintPadsUi(); });
 $('#pRec').addEventListener('click', () => (padRec ? stopPadRec() : startPadRec()));
 $('#pUndo').addEventListener('click', () => { const last = Math.max(...S.ploop.ev.map((e) => e.s)); S.ploop.ev = S.ploop.ev.filter((e) => e.s !== last); saveAll(); paintPadsUi(); });
+$('#pSave').addEventListener('click', () => saveLive('lpads'));
+$('#kSave').addEventListener('click', () => saveLive('lkeys'));
 $('#pClear').addEventListener('click', () => { S.ploop.ev = []; saveAll(); paintPadsUi(); });
 $('#padShape').addEventListener('click', () => { select(PADS[lastPad].id); showView('lab'); });
 
@@ -2056,7 +2081,7 @@ function frame() {
 buildGrids(); buildLoad(); buildArp(); buildProg(); buildLoops(); buildPads(); buildMixer(); buildKb(); buildKeySounds(); paintKeysUi(); renderLabPanel(); paintLabView(); paintScopeButtons(); paintXyUi();
 // ---------------------------------------------------------------- Song: multitrack timeline (gb-song.js)
 const song = initSong({
-  $, $$, store, SLOTS, CLIPS, CLIP_BY_ID, SCENES, SL, S, TRACKS, SLOT_OF,
+  $, $$, store, SLOTS, LANES, CLIPS, CLIP_BY_ID, SCENES, SL, S, TRACKS, SLOT_OF, libOp,
   isPlaying: () => playing, play: () => play(), stop: () => stop(), now: () => (A ? A.ctx.currentTime : 0), audioSupported,
   setTempoFromClip: (id) => { const c = CLIP_BY_ID[id]; if (c && c.bpm) { S.bpm = c.bpm; S.swing = c.swing; paintReadout(); } },
   startExport: (n) => startExport(n), status: (t) => { $('#status').textContent = t; },
@@ -2065,6 +2090,16 @@ const fx = initFx({
   $, $$, store, S, engine: () => engine(), A: () => A, status: (t) => { $('#status').textContent = t; },
   fxList: () => (A ? [A.fx, ...(xrec ? xrec.fxs : [])] : []), bpm: () => S.bpm, isPlaying: () => playing, tabIsFx: () => UI.tab === 'fx',
 });
+// ---------------------------------------------------------------- descriptions fold away behind an ⓘ (the ⓘ in the top bar opens or closes all of them)
+{
+  const LIVE = new Set(['xyNote', 'labHint', 'phys']); // descriptions that update themselves: they fold too; status lines (pInfo, kInfo, songInfo…) stay visible
+  const fold = (el) => { if (!el || el.closest('details.help')) return; const d = document.createElement('details'), sm = document.createElement('summary'); d.className = 'help'; sm.textContent = 'ⓘ Info'; el.replaceWith(d); d.append(sm, el); };
+  $$('.grv p.note').forEach((p) => { if (!p.id || LIVE.has(p.id)) fold(p); });
+  fold($('.grv header .sub')); fold($('#guide'));
+  const all = $('#helpAll'), setAll = (on) => { $$('details.help').forEach((d) => (d.open = on)); all.setAttribute('aria-pressed', String(on)); store.set('help1', on); };
+  all.addEventListener('click', () => setAll(all.getAttribute('aria-pressed') !== 'true'));
+  if (store.get('help1', false)) setAll(true);
+}
 $('#vol').value = Math.round(S.vol * 100); paintReadout(); paintLoops(); paintTransport(); showView(UI.tab);
 renderLab();
 requestAnimationFrame(frame);

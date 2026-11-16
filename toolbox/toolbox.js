@@ -6,8 +6,8 @@
   const get = (k, d) => { try { return localStorage.getItem(k) || d; } catch (e) { return d; } };
   const set = (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} };
 
-  let mode = get("toolbox-mode", "light");
-  if (mode !== "light" && mode !== "dark") mode = "light";
+  let mode = get("toolbox-mode", "dark");   // dark (lime) is the default; a choice made with the ☀/☾ button is remembered
+  if (mode !== "light" && mode !== "dark") mode = "dark";
   let anim = get("toolbox-anim", "off") === "on";
 
   function apply() {
