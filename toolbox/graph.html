@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Graphs · Toolbox</title>
+<link rel="stylesheet" href="toolbox.css">
+<link rel="stylesheet" href="vendor/mathlive/mathlive-fonts.css">
+<link rel="stylesheet" href="vendor/mathlive/mathlive-static.css">
+<link rel="stylesheet" href="graph.css">
+<script src="toolbox.js"></script>
+</head>
+<body>
+  <div class="topbar">
+    <a href="index.html">← Toolbox</a>
+    <span class="status">Graphs · tables · sliders</span>
+    <div class="themebar" id="themebar"></div>
+  </div>
+
+  <main class="gr" id="gr">
+    <section class="plot" id="plot" aria-label="Graph">
+      <canvas id="cv" role="img" aria-label="Graph of the functions"></canvas>
+      <div class="tip" id="tip" hidden></div>
+      <div class="plot-tools">
+        <button type="button" id="zin" aria-label="Zoom in">+</button>
+        <button type="button" id="zout" aria-label="Zoom out">−</button>
+        <button type="button" id="zhome" aria-label="Reset view" title="Reset view">⌂</button>
+      </div>
+      <button type="button" class="angle" id="angleBtn"></button>
+    </section>
+
+    <section class="side" id="side">
+      <div class="tabs" role="tablist">
+        <button type="button" role="tab" id="tabFn" aria-selected="true">Functions</button>
+        <button type="button" role="tab" id="tabTbl" aria-selected="false">Table</button>
+        <button type="button" class="kbtoggle" id="kbToggle" aria-pressed="false" aria-label="Show keypad" title="Keypad">⌨</button>
+      </div>
+
+      <div class="panel" id="panelFn" role="tabpanel" aria-labelledby="tabFn">
+        <div id="fnlist" class="fnlist"></div>
+        <div class="empty" id="empty">
+          <p>Write a function of <i>x</i>, or try one:</p>
+          <div class="chips" id="chips"></div>
+        </div>
+        <button type="button" class="add" id="addFn">+ Add function</button>
+        <div class="params" id="params" aria-label="Sliders"></div>
+      </div>
+
+      <div class="panel" id="panelTbl" role="tabpanel" aria-labelledby="tabTbl" hidden>
+        <div class="tbl-ctl">
+          <label>from <input id="tFrom" type="number" step="any" inputmode="decimal"></label>
+          <label>step <input id="tStep" type="number" step="any" min="0" inputmode="decimal"></label>
+        </div>
+        <div class="tbl-wrap"><table id="tbl"></table></div>
+      </div>
+
+      <div class="keys" id="keys" hidden>
+        <div class="ktabs" role="tablist" id="ktabs"></div>
+        <div class="kpad" id="kpad"></div>
+      </div>
+    </section>
+  </main>
+
+  <noscript><p class="status">This tool needs JavaScript.</p></noscript>
+  <script type="module" src="graph.js"></script>
+</body>
+</html>

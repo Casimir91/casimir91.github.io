@@ -109,3 +109,11 @@
 .tb-fr > span:first-child { border-bottom: 2px solid currentColor; padding: 0 .3em .05em; }
 .tb-fr > span:last-child { padding-top: .05em; }
 .tb-res { color: var(--pv-accent); font-weight: 500; }
+
+/* ---------- Graphs preview: parabola and sine with a marked minimum ---------- */
+.tb-graph { width: 8.5rem; height: auto; overflow: visible; }
+.tb-graph path { fill: none; stroke-linecap: round; stroke-width: 2.4; }
+.tb-graph .ax { stroke: var(--pv-line); stroke-width: 1.4; }
+.tb-graph .c1 { stroke: var(--pv-accent); }
+.tb-graph .c2 { stroke: var(--pv-fg); opacity: .75; }
+.tb-graph circle { fill: var(--pv-bg); stroke: var(--pv-accent); stroke-width: 2.4; }

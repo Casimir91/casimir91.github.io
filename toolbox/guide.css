@@ -1,0 +1,23 @@
+/* Keyboard guide popover (collapsed by default). Uses the Toolbox colour variables. */
+.guide { position: static; }
+.guide summary {
+  list-style: none; cursor: pointer; font-size: .9rem; color: var(--primary);
+  padding: .3rem .8rem; border: 1px solid var(--border); border-radius: 999px; background: var(--surface);
+  min-height: 2.25rem; display: inline-flex; align-items: center; user-select: none;
+}
+.guide summary::-webkit-details-marker { display: none; }
+.guide[open] summary { border-color: var(--primary); }
+.guide-body {
+  position: fixed; left: .6rem; right: .6rem; max-width: 520px; margin-left: auto; z-index: 50;
+  max-height: calc(100dvh - 5rem); overflow-y: auto; overscroll-behavior: contain;
+  background: var(--bg); color: var(--fg); border: 1px solid var(--border); border-radius: 1rem;
+  padding: .8rem 1rem 1rem; box-shadow: 0 10px 30px rgba(0,0,0,.25);
+}
+.guide-body p { margin: 0 0 .6rem; color: var(--muted); font-size: .9rem; }
+.guide-body .guide-tail { margin: .7rem 0 0; font-size: .82rem; }
+.guide-body table { border-collapse: collapse; width: 100%; }
+.guide-body th, .guide-body td { text-align: left; vertical-align: top; padding: .4rem .3rem; border-top: 1px solid var(--border); font-weight: 400; }
+.guide-body th { width: 46%; }
+.guide-body code { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: .85rem; background: var(--surface); padding: .1rem .35rem; border-radius: .35rem; white-space: pre-wrap; }
+.guide-body td { font-size: 1.05rem; }
+.guide-body small { display: block; color: var(--muted); font-size: .76rem; margin-top: .1rem; }

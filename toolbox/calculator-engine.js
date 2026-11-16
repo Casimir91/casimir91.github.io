@@ -182,6 +182,111 @@ function nthRoot(a, k) {                  // k exact integer ≥ 1 (index of \sq
   return approx(x < 0 ? -Math.pow(-x, 1 / kk) : Math.pow(x, 1 / kk));
 }
 
+/* ---------- functions: trigonometry, logarithms ---------- */
+const E_CONST = () => approx(Math.E);
+
+/* Float results that are an integer up to rounding noise become exact integers (ln e = 1, log 1000 = 3). */
+function snap(x) {
+  if (!Number.isFinite(x)) return approx(x);
+  const r = Math.round(x);
+  if (Math.abs(r) < 1e15 && Math.abs(x - r) <= 1e-14 * Math.max(1, Math.abs(x))) return exact(BigInt(r));
+  return approx(x);
+}
+
+/* exact (n/d)·√m for the sine of 0°, 30°, 45°, 60°, 90° */
+const SIN_REF = { 0: [0n, 1n, 1n], 30: [1n, 2n, 1n], 45: [1n, 2n, 2n], 60: [1n, 2n, 3n], 90: [1n, 1n, 1n] };
+const TAN_REF = { 0: [0n, 1n, 1n], 30: [1n, 3n, 3n], 45: [1n, 1n, 1n], 60: [1n, 1n, 3n] };
+const ref = (table, a) => exact(...table[a]);
+
+function sinExact(a) {                    // a: integer degrees in [0, 360), multiple of 30 or 45
+  if (a <= 90) return ref(SIN_REF, a);
+  if (a <= 180) return ref(SIN_REF, 180 - a);
+  if (a <= 270) return neg(ref(SIN_REF, a - 180));
+  return neg(ref(SIN_REF, 360 - a));
+}
+
+/* Integer number of degrees (reduced to [0,360)) when the angle is a "special" one, else null. */
+function specialDegrees(v, angle) {
+  let deg;
+  if (angle === "deg") {
+    if (!(isRational(v) && v.d === 1n) || abs(v.n) > 100000000n) return null;
+    deg = Number(v.n);
+  } else {
+    const x = toNumber(v);
+    const d = (x * 180) / Math.PI;
+    deg = Math.round(d);
+    if (Math.abs(d - deg) > 1e-9 * Math.max(1, Math.abs(d)) || Math.abs(deg) > 1e8) return null;
+  }
+  const a = ((deg % 360) + 360) % 360;
+  return a % 30 === 0 || a % 45 === 0 ? a : null;
+}
+
+function toRadians(v, angle) { return angle === "deg" ? (toNumber(v) * Math.PI) / 180 : toNumber(v); }
+function fromRadians(x, angle) { return angle === "deg" ? (x * 180) / Math.PI : x; }
+
+function trig(name, v, angle) {           // name: sin | cos | tan
+  const a = specialDegrees(v, angle);
+  if (a !== null) {
+    const s = sinExact(a), c = sinExact((a + 90) % 360);
+    if (name === "sin") return s;
+    if (name === "cos") return c;
+    if (isZero(c)) throw new CalcError("domain", "tan is not defined for this angle");
+    return div(s, c);
+  }
+  const x = toRadians(v, angle);
+  return snap(name === "sin" ? Math.sin(x) : name === "cos" ? Math.cos(x) : Math.tan(x));
+}
+
+const keyOf = (v) => (v.ex ? `${v.n}/${v.d}/${v.m}` : null);
+const lookup = (table) => {
+  const m = new Map();
+  for (const a of Object.keys(table)) m.set(keyOf(exact(...table[a])), Number(a));
+  return m;
+};
+const ASIN_TABLE = lookup(SIN_REF), ATAN_TABLE = lookup(TAN_REF);
+
+function inverseTrig(name, v, angle) {    // name: sin | cos | tan  (arcsin, arccos, arctan)
+  const out = (deg) => (angle === "deg" ? exact(BigInt(deg)) : approx((deg * Math.PI) / 180));
+  if (v.ex) {
+    const negative = v.n < 0n;
+    const pos = negative ? neg(v) : v;
+    if (name === "tan") {
+      const d = ATAN_TABLE.get(keyOf(pos));
+      if (d !== undefined) return out(negative ? -d : d);
+    } else {
+      const d = ASIN_TABLE.get(keyOf(pos));
+      if (d !== undefined) return out(name === "sin" ? (negative ? -d : d) : 90 - (negative ? -d : d));
+    }
+  }
+  const x = toNumber(v);
+  if (name !== "tan" && Math.abs(x) > 1) throw new CalcError("domain", "Out of range: use a number from −1 to 1");
+  const r = name === "sin" ? Math.asin(x) : name === "cos" ? Math.acos(x) : Math.atan(x);
+  return snap(fromRadians(r, angle));
+}
+
+/* log_b(x) as an exact integer when x is a power of the integer base b (log 1000 = 3, log_2 (1/4) = −2). */
+function exactLog(b, x) {
+  if (!(isRational(b) && b.d === 1n && b.n >= 2n && isRational(x) && x.n > 0n)) return null;
+  const power = (n) => { let k = 0, p = 1n; while (p < n && k < 4096) { p *= b.n; k++; } return p === n ? k : null; };
+  if (x.d === 1n) { const k = power(x.n); return k === null ? null : exact(BigInt(k)); }
+  if (x.n === 1n) { const k = power(x.d); return k === null ? null : exact(BigInt(-k)); }
+  return null;
+}
+
+function logarithm(x, base) {             // base: value, or null for ln (natural)
+  const xv = toNumber(x);
+  if (!(xv > 0)) throw new CalcError("domain", "A logarithm needs a positive number");
+  if (isRational(x) && x.n === x.d) return exact(0n);
+  if (base) {
+    const bv = toNumber(base);
+    if (!(bv > 0) || bv === 1) throw new CalcError("domain", "The base must be positive and not 1");
+    const e = exactLog(base, x);
+    if (e) return e;
+    return snap(bv === 10 ? Math.log10(xv) : Math.log(xv) / Math.log(bv));
+  }
+  return snap(Math.log(xv));
+}
+
 /* ---------- parser (recursive descent over the LaTeX string) ---------- */
 function normalise(src) {
   let s = String(src);
@@ -195,11 +300,19 @@ function normalise(src) {
        .replace(/(\d)\s*\{,\}\s*(\d)/g, "$1.$2")
        .replace(/(\d),(\d)/g, "$1.$2")
        .replace(/\\(?:mathrm|operatorname|text)\{\s*Ans\s*\}/g, "\\Ans ")
+       .replace(/\\(?:mathrm|operatorname|text)\{\s*e\s*\}/g, "\\exponentialE ")
        .replace(/\\placeholder(?:\[[^\]]*\])?\{[^}]*\}/g, "\\EMPTY ")
        .replace(/\s+/g, " ")
        .trim();
   return s;
 }
+
+const FUNCTIONS = {
+  sin: { kind: "trig", name: "sin" }, cos: { kind: "trig", name: "cos" }, tan: { kind: "trig", name: "tan" },
+  arcsin: { kind: "trig", name: "sin", inverse: true }, arccos: { kind: "trig", name: "cos", inverse: true }, arctan: { kind: "trig", name: "tan", inverse: true },
+  ln: { kind: "ln" }, log: { kind: "log" },
+};
+const power_ = (a, e) => power(a, e);
 
 function parse(src, ctx = {}) {
   const s = normalise(src);
@@ -224,7 +337,8 @@ function parse(src, ctx = {}) {
     const c = peek();
     if (c === undefined) return false;
     if (/[0-9.(]/.test(c)) return true;
-    if (c === "\\") { const k = cmdAt(); return ["frac", "sqrt", "pi", "Ans", "EMPTY"].includes(k); }
+    if (c === "e") return true;
+    if (c === "\\") { const k = cmdAt(); return ["frac", "sqrt", "pi", "Ans", "EMPTY", "exponentialE", ...Object.keys(FUNCTIONS)].includes(k); }
     return false;
   };
 
@@ -285,6 +399,8 @@ function parse(src, ctx = {}) {
       return v;
     }
     if (c === "{") return parseArg();
+    if (c === "e") { i++; return E_CONST(); }
+    if (/[A-Za-z]/.test(c)) fail("syntax", "Unknown symbol " + c);
     if (c === "\\") {
       const k = cmdAt();
       i += k.length + 1;
@@ -302,14 +418,46 @@ function parse(src, ctx = {}) {
           return idx ? nthRoot(a, idx) : sqrt(a);
         }
         case "pi": return approx(Math.PI);
+        case "exponentialE": return E_CONST();
         case "Ans":
           if (!ctx.ans) fail("noans", "There is no previous answer yet");
           return ctx.ans;
         case "EMPTY": return fail("incomplete", "Complete the expression");
-        default: return fail("syntax", "Unknown symbol \\" + k);
+        default:
+          if (FUNCTIONS[k]) return parseFunction(k);
+          return fail("syntax", "Unknown symbol \\" + k);
       }
     }
     return fail();
+  }
+
+  // argument of a function: (expr) or a single factor; \\sin 30 and \\sin(30) both work
+  function parseFnArg() {
+    const c = peek();
+    if (c === "-") { i++; return neg(parseFnArg()); }
+    if (c === "+") { i++; return parseFnArg(); }
+    if (c === undefined) fail("incomplete", "Complete the expression");
+    return parsePower();
+  }
+
+  function parseFunction(k) {
+    const fn = FUNCTIONS[k];
+    let base = null, power = null;
+    if (fn.kind === "log" && peek() === "_") { i++; base = parseArg(); }
+    if (peek() === "^") { i++; power = parseArg(true); }
+    const arg = parseFnArg();
+    const angle = ctx.angle === "rad" ? "rad" : "deg";
+    let result;
+    if (fn.kind === "trig") {
+      const minusOne = power && isInteger(power) && power.n === -1n;
+      result = fn.inverse || minusOne ? inverseTrig(fn.name, arg, angle) : trig(fn.name, arg, angle);
+      if (power && !minusOne && !fn.inverse) result = power_(result, power);   // sin²x
+      return result;
+    }
+    if (fn.kind === "ln") result = logarithm(arg, null);
+    else result = logarithm(arg, base || exact(10n));
+    if (power) result = power_(result, power);
+    return result;
   }
 
   function parseNumber() {

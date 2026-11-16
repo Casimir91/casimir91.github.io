@@ -27,7 +27,7 @@
 @media (min-width: 880px) and (min-height: 560px) {
   .calc { max-width: 1080px; flex-direction: row; align-items: stretch; gap: 1.25rem; padding-bottom: .75rem; }
   .screen { flex: 1 1 0; }
-  .pad { flex: 0 0 min(440px, 42vw); align-self: center; }
+  .keys { flex: 0 0 min(440px, 42vw); align-self: center; }
 }
 
 /* ---------- screen ---------- */
@@ -141,8 +141,9 @@ math-field::part(virtual-keyboard-toggle), math-field::part(menu-toggle) { displ
 }
 
 /* short screens (landscape phones): keep the keypad compact */
-@media (max-height: 640px) and (max-width: 879px) {
+@media (max-height: 700px) and (max-width: 879px) {
   .key { --h: 40px; font-size: 1.1rem; }
+  .fnrow .key { --h: 34px; font-size: .95rem; }
   math-field { font-size: 1.6rem; min-height: 2.6rem; }
   .res-main { font-size: 2em; }
   .zoombar { display: none; }
@@ -155,3 +156,30 @@ math-field::part(virtual-keyboard-toggle), math-field::part(menu-toggle) { displ
   .zoombar { display: none; }
   .calc { padding-bottom: .75rem; }
 }
+
+/* ---------- function row (2nd, sin, cos, tan, log, ln) ---------- */
+.keys { display: flex; flex-direction: column; gap: .45rem; }
+.fnrow { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: .35rem; }
+.fnrow .key { --h: clamp(36px, 5.4dvh, 44px); font-size: 1.02rem; border-radius: .75rem; }
+.fnrow .key.second { font-size: .92rem; letter-spacing: .02em; }
+.key.second[aria-pressed="true"] { background: var(--hero); color: var(--hero-fg); border-color: var(--hero-border); }
+.key.alt { color: var(--hero-fg); }                               /* labels that changed with 2nd */
+.key.alt.second { color: var(--hero-fg); }
+.key.flip { animation: flip .2s ease-out; }
+@keyframes flip { from { opacity: .2; transform: translateY(-5px) scale(.94); } to { opacity: 1; transform: none; } }
+.key .n { font-size: .6em; position: relative; top: -.35em; margin-right: .02em; }
+@media (prefers-reduced-motion: reduce) { .key.flip { animation: none; } }
+
+/* ---------- angle unit pill ---------- */
+.screen { position: relative; }
+.angle {
+  position: absolute; left: .75rem; top: .6rem; z-index: 1;
+  display: inline-flex; min-height: 0; min-width: 0; padding: .15rem; gap: .1rem;
+  border-radius: 999px; background: transparent; border: 1px solid var(--border); font-size: .72rem; line-height: 1;
+}
+.angle span { padding: .28rem .55rem; border-radius: 999px; color: var(--muted); letter-spacing: .03em; transition: background-color .15s, color .15s; }
+.angle span.on { background: var(--primary); color: var(--primary-fg); }
+
+/* "ln" must not read as "In": the function row uses a monospace face where l has a foot */
+.fnrow .key { font-family: ui-monospace, "SF Mono", Menlo, Consolas, "DejaVu Sans Mono", monospace; font-size: .98rem; }
+.fnrow .key.second { font-family: inherit; }

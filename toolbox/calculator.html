@@ -19,6 +19,7 @@
 
   <main class="calc" id="calc">
     <section class="screen" aria-label="Display">
+      <button type="button" class="angle" id="angleBtn"></button>
       <ol class="history" id="history" aria-label="Previous calculations"></ol>
       <div class="entry" id="entry"></div>
       <div class="result" id="result" aria-live="polite">
@@ -28,7 +29,10 @@
       <div class="formats" id="formats" role="group" aria-label="Show the result as"></div>
     </section>
 
-    <section class="pad" id="pad" aria-label="Keypad"></section>
+    <div class="keys">
+      <div class="fnrow" id="fnrow" role="group" aria-label="Functions"></div>
+      <section class="pad" id="pad" aria-label="Keypad"></section>
+    </div>
   </main>
 
   <div class="controls zoombar">
