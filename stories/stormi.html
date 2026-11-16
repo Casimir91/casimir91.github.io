@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Stormi: simulazione</title>
+<meta name="description" content="Simulazione di uno stormo (boids): allineamento, coesione, separazione, rumore. Interazione topologica contro metrica.">
+<link rel="stylesheet" href="/fonts/pagine.css">
+<style>
+  :root{
+    color-scheme: light;
+    --card: #ffffff;
+    --ink: #1e2430;
+    --ink-soft: #59637c;
+    --ink-faint: #a9b0bf;
+    --line: #dde1e6;
+    --accent: #2a5aa8;
+    --warn: #c4511f;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top,0px);
+    padding-bottom: env(safe-area-inset-bottom,0px);
+  }
+  /* Modalità scura: segue il tema del sito (se incorporato) o del dispositivo */
+  :root.dark{
+    --card: #1b2230;
+    --ink: #e8ebf2;
+    --ink-soft: #aab3c5;
+    --ink-faint: #6e7789;
+    --line: #3a4252;
+    --accent: #7ba5ee;
+    --warn: #ff8a4c;
+  }
+  *{ box-sizing: border-box; }
+  html,body{ margin:0; padding:0; background: transparent; }
+  body{
+    color: var(--ink);
+    font-family: 'Work Sans', ui-sans-serif, system-ui, sans-serif;
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+  }
+  [hidden]{ display:none!important; }
+  .mono{ font-family: 'IBM Plex Mono', ui-monospace, monospace; }
+
+  .page{ max-width: 760px; margin: 0 auto; padding: 8px 20px 28px; }
+
+  .diagram{ border: 1px solid var(--line); border-radius: 4px; padding: 20px 20px 24px; }
+
+  .viz-frame{ position: relative; aspect-ratio: 8 / 5; }
+  canvas#sim{ display:block; width:100%; height:100%; touch-action:none; cursor:crosshair; }
+  .legend{
+    position:absolute; right:2px; top:0; display:flex; align-items:center; gap:6px;
+    font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--ink-soft); pointer-events:none;
+  }
+  .wheel{ width:11px; height:11px; border-radius:50%; background: conic-gradient(red,yellow,lime,cyan,blue,magenta,red); }
+  .hint{
+    position:absolute; left:2px; bottom:0; font-family:'IBM Plex Mono',monospace; font-size:10.5px;
+    color:var(--ink-faint); pointer-events:none;
+  }
+
+  .readout{
+    margin-top: 14px; display:flex; justify-content:space-between; align-items:center;
+    flex-wrap:wrap; gap:8px 18px;
+    font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--ink-soft);
+  }
+  .readout b{ color: var(--ink); font-weight:500; }
+  .readout .items{ display:flex; flex-wrap:wrap; gap:4px 18px; }
+  canvas#spark{ width:140px; height:30px; display:block; }
+
+  .presets{ display:flex; gap:6px 18px; margin-top:16px; flex-wrap:wrap; }
+  .preset-btn{
+    font-family:'Work Sans',sans-serif; font-size:13px; color:var(--ink-soft);
+    background:none; border:none; border-bottom:1px solid transparent; padding:2px 0; cursor:pointer;
+  }
+  .preset-btn:hover{ color:var(--ink); border-bottom-color:var(--accent); }
+  .preset-btn:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
+  .preset-btn.on{ color:var(--ink); border-bottom-color:var(--accent); }
+  .presets.sep{ margin-top:10px; padding-top:10px; border-top:1px solid var(--line); }
+
+  .status{
+    margin:14px 0 0; min-height:3em; max-width:62ch;
+    font-family:'Source Serif 4',Georgia,serif; font-style:italic; font-size:16px; line-height:1.5; color:var(--ink-soft);
+  }
+
+  .controls{ margin-top:18px; display:grid; grid-template-columns:1fr 1fr; gap:18px 32px; }
+  .sl.off{ opacity:.35; }
+  .slider-label{
+    display:flex; justify-content:space-between;
+    font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--ink-soft); margin-bottom:8px;
+  }
+  .slider-label .val{ color:var(--accent); letter-spacing:normal; text-transform:none; font-weight:500; }
+  input[type="range"]{ -webkit-appearance:none; appearance:none; width:100%; height:1px; background:var(--ink-faint); outline:none; margin:6px 0; }
+  input[type="range"]::-webkit-slider-thumb{
+    -webkit-appearance:none; width:13px; height:13px; border-radius:50%;
+    background:var(--card); border:2px solid var(--accent); cursor:pointer; margin-top:-6px;
+  }
+  input[type="range"]::-moz-range-thumb{ width:13px; height:13px; border-radius:50%; background:var(--card); border:2px solid var(--accent); cursor:pointer; }
+  input[type="range"]::-moz-range-track{ height:1px; background:var(--ink-faint); }
+  input[type="range"]:focus-visible::-webkit-slider-thumb{ outline:2px solid var(--accent); outline-offset:3px; }
+  input[type="range"]:disabled{ cursor:default; }
+
+  .chk{ display:inline-flex; align-items:center; gap:7px; font-size:13px; color:var(--ink-soft); cursor:pointer; }
+  .chk input{ accent-color: var(--accent); margin:0; }
+
+  details.lex{ margin-top:22px; }
+  details.lex summary{
+    cursor:pointer; font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.08em;
+    text-transform:uppercase; color:var(--ink-soft);
+  }
+  details.lex summary:hover{ color:var(--ink); }
+  details.lex summary:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
+  dl{ margin:14px 0 0; display:grid; grid-template-columns:max-content 1fr; gap:8px 18px;
+      font-family:'Source Serif 4',Georgia,serif; font-size:15.5px; line-height:1.55; }
+  dt{ font-weight:600; color:var(--ink); }
+  dd{ margin:0; color:var(--ink-soft); max-width:58ch; }
+  .limits{ font-family:'Source Serif 4',Georgia,serif; font-size:15.5px; line-height:1.55; color:var(--ink-soft); max-width:60ch; margin:14px 0 0; }
+
+  footer.note{
+    margin-top:24px; padding-top:12px; border-top:1px solid var(--line);
+    font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--ink-faint);
+  }
+
+  @media (max-width:560px){
+    .page{ padding:4px 12px 24px; }
+    .diagram{ padding:14px 12px 18px; }
+    .controls{ grid-template-columns:1fr; }
+    dl{ grid-template-columns:1fr; gap:2px; }
+    dd{ margin-bottom:8px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="diagram">
+    <div class="viz-frame">
+      <canvas id="sim" role="img" aria-label="Simulazione di uno stormo di uccelli. Tieni premuto per spaventarli."></canvas>
+      <div class="legend" aria-hidden="true"><span class="wheel"></span>colore = direzione</div>
+      <div class="hint" aria-hidden="true">tieni premuto per spaventarli</div>
+    </div>
+
+    <div class="readout">
+      <div class="items">
+        <span title="Polarizzazione: 1 = tutti nella stessa direzione">φ <b id="mPhi">—</b></span>
+        <span>vicini <b id="mNb">—</b></span>
+        <span>gruppi <b id="mGr">—</b></span>
+      </div>
+      <canvas id="spark" aria-hidden="true" title="φ nel tempo; tratteggio = 1/√N (il caso)"></canvas>
+    </div>
+
+    <div class="presets" id="presets" role="group" aria-label="Esperimenti"></div>
+    <p class="status" id="status" aria-live="polite"></p>
+
+    <div class="presets sep" role="group" aria-label="Tipo di interazione">
+      <button class="preset-btn mode" data-mode="topo" type="button">Topologica · k vicini</button>
+      <button class="preset-btn mode" data-mode="metric" type="button">Metrica · raggio</button>
+      <label class="chk"><input type="checkbox" id="track"> mostra cosa vede un uccello</label>
+      <button class="preset-btn" id="nextBird" type="button" hidden>cambia uccello</button>
+    </div>
+
+    <div class="controls" id="sliders"></div>
+
+    <div class="presets sep">
+      <button class="preset-btn" id="play" type="button">❚❚ Pausa</button>
+      <button class="preset-btn" id="reset" type="button">↺ Ricomincia</button>
+      <label class="chk"><input type="checkbox" id="trails"> scie</label>
+    </div>
+  </div>
+
+  <details class="lex">
+    <summary>Lessico e limiti del modello</summary>
+    <dl>
+      <dt>Polarizzazione φ</dt><dd>Lunghezza della velocità media divisa per la velocità: vale 1 se tutti vanno nella stessa direzione, circa 1/√N se le direzioni sono a caso. È un <em>parametro d'ordine</em>.</dd>
+      <dt>Emergenza</dt><dd>Una proprietà (lo stormo ordinato) che nessuna regola individuale contiene: compare solo dall'insieme delle interazioni.</dd>
+      <dt>Transizione di fase</dt><dd>Aumentando il rumore, φ scende da valori vicini a 1 fino al valore del caso. Nel modello di Vicsek il passaggio è una transizione ordine-disordine.</dd>
+      <dt>Interazione topologica</dt><dd>Ogni uccello segue un numero fisso di vicini, i più vicini, a qualunque distanza siano. Per gli storni le misure del gruppo STARFLAG indicano circa 6–7 vicini.</dd>
+      <dt>Interazione metrica</dt><dd>Ogni uccello segue chi sta entro un raggio fisso. Il numero di vicini dipende dalla densità: se lo stormo si dirada, qualcuno resta senza vicini.</dd>
+      <dt>Toro</dt><dd>Il mondo è un rettangolo con i bordi incollati: chi esce a destra rientra a sinistra. Variare N cambia la densità senza cambiare l'area.</dd>
+    </dl>
+    <p class="limits">Che cosa <em>non</em> dice questo modello: le misure su storni reali indicano l'interazione topologica, ma qui nessuna delle due è «migliore» in assoluto (confronta gli esperimenti sul rado e sul fitto) e la topologica da sola non evita che lo stormo si spezzi in sottogruppi.</p>
+  </details>
+
+  <footer class="note">Modello giocattolo, non una riproduzione dei dati. Boids di Reynolds (1987) con velocità costante come nel modello di Vicsek et al. (1995); interazione topologica: Ballerini et al., PNAS 2008.</footer>
+</div>
+
+<script>
+(function(){
+'use strict';
+/* ---------- tema: segue il sito se incorporato, altrimenti il dispositivo ---------- */
+var root=document.documentElement;
+function parentDark(){
+  try{ if(window.parent!==window) return window.parent.document.body.classList.contains('quarto-dark'); }catch(e){}
+  return !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+}
+var col={};
+function readColors(){
+  var cs=getComputedStyle(root);
+  col.ink=cs.getPropertyValue('--ink').trim(); col.accent=cs.getPropertyValue('--accent').trim();
+  col.warn=cs.getPropertyValue('--warn').trim(); col.soft=cs.getPropertyValue('--ink-soft').trim();
+  col.pal=[]; var l=root.classList.contains('dark')?64:40;
+  for(var h=0;h<360;h+=6) col.pal.push('hsl('+h+' 70% '+l+'%)');
+}
+function sync(){ root.classList.toggle('dark', parentDark()); readColors(); }
+sync();
+try{
+  if(window.parent!==window) new MutationObserver(sync).observe(window.parent.document.body,{attributes:true,attributeFilter:['class']});
+  else if(window.matchMedia) window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',sync);
+}catch(e){}
+
+/* ---------- costanti del mondo ---------- */
+var W=800,H=500,HW=W/2,HH=H/2;
+var MAXN=400,V0=60,DT=1/60;
+var RSEP=14,LINK=38,PRED_R=110;
+var GAIN=8,MAXTURN=9;
+
+/* ---------- stato ---------- */
+var st={N:150,mode:'topo',k:7,R:40,wA:1,wC:.3,wS:.8,noise:10,speed:1,trails:false,track:false,running:true};
+var x=new Float32Array(MAXN),y=new Float32Array(MAXN),th=new Float32Array(MAXN),nth=new Float32Array(MAXN);
+var nb=new Int16Array(MAXN),nd=new Float32Array(MAXN);
+var sx=0,sy=0,tracked=0,oldN=st.N;
+var pred={on:false,x:0,y:0};
+var phi=0,avgNb=0,groups=0,bigFrac=0,frame=0,tick=0,trackedCnt=-1;
+var hist=new Float32Array(300),hN=0;
+
+function randn(){ var u=0,v=Math.random(); while(!u)u=Math.random(); return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v); }
+function wrapA(a){ while(a>Math.PI)a-=2*Math.PI; while(a<-Math.PI)a+=2*Math.PI; return a; }
+function addBird(i){ x[i]=Math.random()*W; y[i]=Math.random()*H; th[i]=Math.random()*2*Math.PI; }
+function randomize(){ for(var i=0;i<MAXN;i++) addBird(i); hN=0; }
+
+/* ---------- vicini: riempie nb/nd, restituisce quanti; calcola anche la separazione (sx,sy) ---------- */
+function gather(i){
+  var xi=x[i],yi=y[i],topo=st.mode==='topo';
+  var k=Math.min(st.k,st.N-1),R2=st.R*st.R,rs2=RSEP*RSEP,cnt=0;
+  sx=0; sy=0;
+  for(var j=0;j<st.N;j++){
+    if(j===i) continue;
+    var dx=x[j]-xi,dy=y[j]-yi;
+    if(dx>HW)dx-=W; else if(dx<-HW)dx+=W;
+    if(dy>HH)dy-=H; else if(dy<-HH)dy+=H;
+    var d2=dx*dx+dy*dy;
+    if(d2<rs2&&d2>1e-6){ var d=Math.sqrt(d2),f=(1-d/RSEP)/d; sx-=dx*f; sy-=dy*f; }
+    if(topo){
+      if(cnt<k||d2<nd[k-1]){
+        var p=cnt<k?cnt:k-1;
+        while(p>0&&nd[p-1]>d2){ nd[p]=nd[p-1]; nb[p]=nb[p-1]; p--; }
+        nd[p]=d2; nb[p]=j; if(cnt<k) cnt++;
+      }
+    } else if(d2<R2){ nb[cnt]=j; nd[cnt]=d2; cnt++; }
+  }
+  return cnt;
+}
+
+/* ---------- un passo di dinamica ---------- */
+function step(){
+  var N=st.N,Dr=Math.pow(st.noise/100*4,2),sig=Math.sqrt(2*Dr*DT);
+  var sc=0,ss=0,nbTot=0,i,m;
+  for(i=0;i<N;i++){
+    var cnt=gather(i); nbTot+=cnt;
+    var ax=Math.cos(th[i]),ay=Math.sin(th[i]),cx=0,cy=0;
+    for(m=0;m<cnt;m++){
+      var j=nb[m]; ax+=Math.cos(th[j]); ay+=Math.sin(th[j]);
+      var dx=x[j]-x[i],dy=y[j]-y[i];
+      if(dx>HW)dx-=W; else if(dx<-HW)dx+=W;
+      if(dy>HH)dy-=H; else if(dy<-HH)dy+=H;
+      cx+=dx; cy+=dy;
+    }
+    var l=Math.hypot(ax,ay); if(l>1e-6){ax/=l;ay/=l;}
+    l=Math.hypot(cx,cy); if(l>1e-6){cx/=l;cy/=l;} else {cx=0;cy=0;}
+    l=Math.hypot(sx,sy); if(l>1.5){sx*=1.5/l;sy*=1.5/l;}
+    var Dx=st.wA*ax+st.wC*cx+st.wS*sx,Dy=st.wA*ay+st.wC*cy+st.wS*sy;
+    if(pred.on){
+      var px=x[i]-pred.x,py=y[i]-pred.y;
+      if(px>HW)px-=W; else if(px<-HW)px+=W;
+      if(py>HH)py-=H; else if(py<-HH)py+=H;
+      var pd=Math.hypot(px,py);
+      if(pd<PRED_R&&pd>1e-6){ var w=5*(1-pd/PRED_R)/pd; Dx+=px*w; Dy+=py*w; }
+    }
+    var mag=Math.hypot(Dx,Dy),t=th[i];
+    if(mag>1e-6){
+      var dth=wrapA(Math.atan2(Dy,Dx)-t),g=Math.min(1,mag),lim=MAXTURN*DT;
+      t+=Math.max(-lim,Math.min(lim,dth*g*GAIN*DT));
+    }
+    nth[i]=t+sig*randn();
+  }
+  for(i=0;i<N;i++){
+    th[i]=wrapA(nth[i]);
+    x[i]+=Math.cos(th[i])*V0*DT; y[i]+=Math.sin(th[i])*V0*DT;
+    if(x[i]<0)x[i]+=W; else if(x[i]>=W)x[i]-=W;
+    if(y[i]<0)y[i]+=H; else if(y[i]>=H)y[i]-=H;
+    sc+=Math.cos(th[i]); ss+=Math.sin(th[i]);
+  }
+  phi=Math.hypot(sc,ss)/N; avgNb=nbTot/N;
+  if(++tick%4===0){ if(hN<hist.length) hist[hN++]=phi; else { hist.copyWithin(0,1); hist[hist.length-1]=phi; } }
+  if(tick%12===0) clusters();
+}
+
+/* ---------- gruppi (componenti connesse a distanza LINK) ---------- */
+var par=new Int16Array(MAXN),size=new Int16Array(MAXN);
+function find(a){ while(par[a]!==a){ par[a]=par[par[a]]; a=par[a]; } return a; }
+function clusters(){
+  var N=st.N,L2=LINK*LINK,i,j;
+  for(i=0;i<N;i++){ par[i]=i; size[i]=0; }
+  for(i=0;i<N;i++) for(j=i+1;j<N;j++){
+    var dx=x[j]-x[i],dy=y[j]-y[i];
+    if(dx>HW)dx-=W; else if(dx<-HW)dx+=W;
+    if(dy>HH)dy-=H; else if(dy<-HH)dy+=H;
+    if(dx*dx+dy*dy<L2){ var a=find(i),b=find(j); if(a!==b) par[a]=b; }
+  }
+  var g=0,big=0;
+  for(i=0;i<N;i++){ var r=find(i); if(size[r]===0) g++; size[r]++; if(size[r]>big) big=size[r]; }
+  groups=g; bigFrac=big/N;
+}
+
+/* ---------- disegno ---------- */
+var cv=document.getElementById('sim'),ctx=cv.getContext('2d');
+var sp=document.getElementById('spark'),sctx=sp.getContext('2d');
+var scale=1,dpr=1;
+function resize(){
+  dpr=Math.min(window.devicePixelRatio||1,2);
+  var r=cv.getBoundingClientRect();
+  cv.width=Math.max(1,Math.round(r.width*dpr)); cv.height=Math.max(1,Math.round(r.height*dpr)); scale=cv.width/W;
+  var q=sp.getBoundingClientRect(); sp.width=Math.max(1,Math.round(q.width*dpr)); sp.height=Math.max(1,Math.round(q.height*dpr));
+}
+function draw(){
+  ctx.setTransform(1,0,0,1,0,0);
+  if(st.trails){ ctx.globalCompositeOperation='destination-out'; ctx.fillStyle='rgba(0,0,0,.16)'; ctx.fillRect(0,0,cv.width,cv.height); ctx.globalCompositeOperation='source-over'; }
+  else ctx.clearRect(0,0,cv.width,cv.height);
+  ctx.setTransform(scale,0,0,scale,0,0);
+  var N=st.N,i;
+  for(i=0;i<N;i++){
+    var a=th[i],c=Math.cos(a),s=Math.sin(a);
+    var h=Math.floor(((a/(2*Math.PI)+1)%1)*60); if(h>59)h=59;
+    ctx.fillStyle=col.pal[h];
+    ctx.beginPath();
+    ctx.moveTo(x[i]+c*7,y[i]+s*7);
+    ctx.lineTo(x[i]-c*5-s*3.4,y[i]-s*5+c*3.4);
+    ctx.lineTo(x[i]-c*5+s*3.4,y[i]-s*5-c*3.4);
+    ctx.closePath(); ctx.fill();
+  }
+  if(st.track){
+    var t=tracked<N?tracked:0,cnt=gather(t);
+    trackedCnt=cnt;
+    var rad=st.mode==='topo'?(cnt?Math.sqrt(nd[cnt-1]):0):st.R;
+    ctx.lineWidth=1.1; ctx.strokeStyle=col.accent; ctx.fillStyle=col.accent;
+    ctx.globalAlpha=.9; ctx.beginPath(); ctx.arc(x[t],y[t],rad,0,2*Math.PI); ctx.setLineDash([5,4]); ctx.stroke(); ctx.setLineDash([]);
+    ctx.globalAlpha=.6;
+    for(var m=0;m<cnt;m++){
+      var j=nb[m],dx=x[j]-x[t],dy=y[j]-y[t];
+      if(dx>HW)dx-=W; else if(dx<-HW)dx+=W;
+      if(dy>HH)dy-=H; else if(dy<-HH)dy+=H;
+      ctx.beginPath(); ctx.moveTo(x[t],y[t]); ctx.lineTo(x[t]+dx,y[t]+dy); ctx.stroke();
+      ctx.beginPath(); ctx.arc(x[t]+dx,y[t]+dy,3.2,0,2*Math.PI); ctx.fill();
+    }
+    ctx.globalAlpha=1; ctx.strokeStyle=col.ink; ctx.lineWidth=1.8;
+    ctx.beginPath(); ctx.arc(x[t],y[t],7.5,0,2*Math.PI); ctx.stroke();
+  } else trackedCnt=-1;
+  if(pred.on){
+    ctx.strokeStyle=col.warn; ctx.lineWidth=2.2;
+    ctx.beginPath(); ctx.arc(pred.x,pred.y,9,0,2*Math.PI); ctx.stroke();
+    ctx.globalAlpha=.35; ctx.beginPath(); ctx.arc(pred.x,pred.y,PRED_R,0,2*Math.PI); ctx.setLineDash([4,5]); ctx.stroke(); ctx.setLineDash([]); ctx.globalAlpha=1;
+  }
+  drawSpark(); drawMeasures();
+}
+function drawSpark(){
+  var w=sp.width,h=sp.height; sctx.clearRect(0,0,w,h);
+  var base=1/Math.sqrt(st.N),yb=h-base*h;
+  sctx.strokeStyle=col.soft; sctx.lineWidth=1*dpr; sctx.setLineDash([4*dpr,4*dpr]); sctx.beginPath(); sctx.moveTo(0,yb); sctx.lineTo(w,yb); sctx.stroke(); sctx.setLineDash([]);
+  if(hN<2) return;
+  sctx.strokeStyle=col.accent; sctx.lineWidth=1.6*dpr; sctx.beginPath();
+  for(var i=0;i<hN;i++){ var px=i/(hist.length-1)*w,py=h-hist[i]*h*0.96-1; if(i) sctx.lineTo(px,py); else sctx.moveTo(px,py); }
+  sctx.stroke();
+}
+var mPhi=document.getElementById('mPhi'),mNb=document.getElementById('mNb'),mGr=document.getElementById('mGr');
+function drawMeasures(){
+  if(frame%4) return;
+  mPhi.textContent=phi.toFixed(2);
+  mNb.textContent=(st.track&&trackedCnt>=0)?avgNb.toFixed(1)+' (lui '+trackedCnt+')':avgNb.toFixed(1);
+  mGr.textContent=groups?groups+' · '+Math.round(bigFrac*100)+'%':'—';
+}
+
+/* ---------- ciclo ---------- */
+var last=performance.now(),acc=0;
+function loop(now){
+  var dt=Math.min(.1,(now-last)/1000); last=now;
+  if(st.running){
+    acc+=dt*st.speed; var n=0;
+    while(acc>=DT&&n<8){ step(); acc-=DT; n++; }
+    if(n===8) acc=0;
+  }
+  frame++; draw();
+  requestAnimationFrame(loop);
+}
+
+/* ---------- interfaccia ---------- */
+var $=function(id){ return document.getElementById(id); };
+var SL=[
+  ['k','Vicini k',1,20,1,function(v){return v;}],
+  ['R','Raggio R',10,200,1,function(v){return v;}],
+  ['wA','Allineamento',0,2,.05,function(v){return (+v).toFixed(2);}],
+  ['wC','Coesione',0,2,.05,function(v){return (+v).toFixed(2);}],
+  ['wS','Separazione',0,2,.05,function(v){return (+v).toFixed(2);}],
+  ['noise','Rumore',0,100,1,function(v){return v+'%';}],
+  ['N','Uccelli N',20,400,10,function(v){return v;}],
+  ['speed','Velocità',.25,3,.25,function(v){return '×'+v;}]
+];
+var fmt={};
+SL.forEach(function(s){
+  fmt[s[0]]=s[5];
+  var d=document.createElement('div'); d.className='sl'; d.id='sl-'+s[0];
+  d.innerHTML='<div class="slider-label"><label for="'+s[0]+'">'+s[1]+'</label><span class="val" id="val-'+s[0]+'"></span></div>'+
+              '<input type="range" id="'+s[0]+'" min="'+s[2]+'" max="'+s[3]+'" step="'+s[4]+'">';
+  $('sliders').appendChild(d);
+  d.querySelector('input').addEventListener('input',function(e){
+    var v=+e.target.value; st[s[0]]=v; $('val-'+s[0]).textContent=fmt[s[0]](v);
+    if(s[0]==='N'){ for(var i=oldN;i<v;i++) addBird(i); oldN=v; hN=0; }
+  });
+});
+function syncUI(){
+  SL.forEach(function(s){ $(s[0]).value=st[s[0]]; $('val-'+s[0]).textContent=fmt[s[0]](st[s[0]]); });
+  document.querySelectorAll('.mode').forEach(function(b){ var on=b.dataset.mode===st.mode; b.classList.toggle('on',on); b.setAttribute('aria-pressed',on); });
+  $('sl-k').classList.toggle('off',st.mode!=='topo'); $('k').disabled=st.mode!=='topo';
+  $('sl-R').classList.toggle('off',st.mode!=='metric'); $('R').disabled=st.mode!=='metric';
+  $('track').checked=st.track; $('nextBird').hidden=!st.track; $('trails').checked=st.trails;
+  $('play').textContent=st.running?'❚❚ Pausa':'▶ Avvia';
+}
+document.querySelectorAll('.mode').forEach(function(b){ b.addEventListener('click',function(){ st.mode=b.dataset.mode; syncUI(); }); });
+$('track').addEventListener('change',function(e){ st.track=e.target.checked; syncUI(); });
+$('trails').addEventListener('change',function(e){ st.trails=e.target.checked; });
+$('nextBird').addEventListener('click',function(){ tracked=Math.floor(Math.random()*st.N); });
+$('play').addEventListener('click',function(){ st.running=!st.running; syncUI(); });
+$('reset').addEventListener('click',function(){ randomize(); });
+
+/* esperimenti: ognuno dice che cosa guardare */
+var PRESETS=[
+  {id:'gas',label:'Gas di uccelli',set:{N:150,mode:'topo',k:7,wA:0,wC:0,wS:.6,noise:10},
+   note:'Nessuna regola di gruppo: ognuno va per conto suo e φ resta vicino a 1/√N, il valore del caso. Porta Allineamento da 0 a 1 e guarda φ salire: è l\'emergenza.'},
+  {id:'stormo',label:'Stormo',set:{N:150,mode:'topo',k:7,wA:1,wC:.3,wS:.8,noise:10},
+   note:'Partono in disordine; con allineamento, coesione e separazione si formano gruppi che si fondono, φ sale e i colori si uniformano. Alza il rumore: φ scende fino al valore del caso.'},
+  {id:'rado-topo',label:'Rado · 7 vicini',set:{N:30,mode:'topo',k:7,wA:1,wC:.3,wS:.8,noise:10},
+   note:'Pochi uccelli: ognuno vede sempre i suoi 7 vicini, anche lontani, e dopo pochi secondi φ è già alta. Attiva «mostra cosa vede un uccello»: il cerchio si allarga finché dentro ce ne sono 7.'},
+  {id:'rado-metrico',label:'Rado · raggio fisso',set:{N:30,mode:'metric',R:40,wA:1,wC:.3,wS:.8,noise:10},
+   note:'Stessa densità, ma ognuno vede solo chi sta entro R = 40: all\'inizio quasi nessuno ha vicini e φ sale lentamente, solo quando i gruppi si incontrano. Guarda i vicini.'},
+  {id:'fitto-topo',label:'Fitto · 7 vicini',set:{N:300,mode:'topo',k:7,wA:1,wC:.3,wS:.8,noise:10},
+   note:'Tanti uccelli, ma ognuno ascolta sempre e solo 7 vicini: lo stormo si ordina ma resta diviso in gruppi più piccoli. Confrontalo con l\'esperimento successivo.'},
+  {id:'fitto-metrico',label:'Fitto · raggio fisso',set:{N:300,mode:'metric',R:40,wA:1,wC:.3,wS:.8,noise:10},
+   note:'Con molti uccelli il raggio fisso comprende decine di vicini: la media è più stabile e in questo modello l\'ordine è più alto. Nessuna delle due interazioni vince sempre: dipende dalla densità.'}
+];
+PRESETS.forEach(function(p){
+  var b=document.createElement('button'); b.type='button'; b.className='preset-btn'; b.textContent=p.label;
+  b.addEventListener('click',function(){ applyPreset(p); }); $('presets').appendChild(b);
+});
+function applyPreset(p){
+  Object.assign(st,p.set); oldN=st.N; syncUI(); randomize(); $('status').textContent=p.note;
+}
+
+/* predatore: puntatore premuto */
+function toWorld(e){ var r=cv.getBoundingClientRect(); pred.x=(e.clientX-r.left)/r.width*W; pred.y=(e.clientY-r.top)/r.height*H; }
+cv.addEventListener('pointerdown',function(e){ cv.setPointerCapture(e.pointerId); pred.on=true; toWorld(e); });
+cv.addEventListener('pointermove',function(e){ if(pred.on) toWorld(e); });
+['pointerup','pointercancel','lostpointercapture'].forEach(function(t){ cv.addEventListener(t,function(){ pred.on=false; }); });
+
+/* altezza: la comunica alla pagina madre, che adatta l'iframe */
+function postH(){
+  try{ if(window.parent!==window) window.parent.postMessage({type:'stormi-height',h:Math.ceil(document.body.getBoundingClientRect().height)},'*'); }catch(e){}
+}
+
+/* avvio */
+randomize(); syncUI(); resize();
+if(window.ResizeObserver){ new ResizeObserver(resize).observe(cv); new ResizeObserver(postH).observe(document.body); }
+window.addEventListener('load',postH);
+if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches){ st.running=false; syncUI(); }
+$('status').textContent='Scegli un esperimento, oppure muovi gli slider. Tieni premuto sul disegno per spaventare lo stormo.';
+requestAnimationFrame(loop);
+
+/* API minima per collaudi e per OJS: window.stormi */
+window.stormi={state:st,run:function(n){ for(var i=0;i<n;i++) step(); clusters(); return {phi:phi,avgNb:avgNb,groups:groups,bigFrac:bigFrac}; },
+  preset:function(id){ applyPreset(PRESETS.filter(function(p){return p.id===id;})[0]); },reset:randomize};
+})();
+</script>
+</body></html>

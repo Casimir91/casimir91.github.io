@@ -173,7 +173,7 @@ math-field::part(virtual-keyboard-toggle), math-field::part(menu-toggle) { displ
 /* ---------- angle unit pill ---------- */
 .screen { position: relative; }
 .angle {
-  position: absolute; left: .75rem; top: .6rem; z-index: 1;
+  position: static; flex: 0 0 auto; align-self: flex-start; margin: .1rem 0 .15rem;   /* in the flow: never covers the entry */
   display: inline-flex; min-height: 0; min-width: 0; padding: .15rem; gap: .1rem;
   border-radius: 999px; background: transparent; border: 1px solid var(--border); font-size: .72rem; line-height: 1;
 }

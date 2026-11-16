@@ -386,6 +386,14 @@ ul.task-list li input[type="checkbox"] {
 <li>l’interazione tra gli uccelli di uno stormo è topologica e non metrica, quindi ogni uccello segue i suoi 6-7 vicini più prossimi indipendentemente dalla distanza</li>
 <li>lo stormo è materia attiva in cui ogni agente spende energia e trasmette informazione (agente: termine tecnico presente nella scienza dei sistemi complessi), mentre la pallina di pelucchi è aggregazione passiva e dissipativa descritta da un modello fisico che poggia sull’equazione di coagulazione di Smoluchowski, adesione da van der Waals e carica triboelettrica e jamming per aggrovigliamento (?!?)</li>
 </ul>
+<p><em>Uno stormo in miniatura: ogni triangolo è un uccello che guarda solo i suoi vicini.</em></p>
+<iframe id="stormi-frame" src="stormi.html" title="Simulazione: stormi" style="width:100%; max-width:760px; height:1050px; border:none; display:block; margin:0 auto; background:transparent;" loading="lazy"></iframe>
+<script>
+window.addEventListener('message', function (e) {
+  var f = document.getElementById('stormi-frame');
+  if (f && e.source === f.contentWindow && e.data && e.data.type === 'stormi-height') { f.style.height = e.data.h + 'px'; }
+});
+</script>
 <p>E qui, sarà per la ripida complicazione arrivata con la matematica degli ultimi modelli citati che mi hanno riportato con la mente – e con lo stomaco – ai banchi universitari, o sarà perché oggigiorno il termine “agente” è largamente usato in materia di AI e LLM di cui sono appassionato, la mia attenzione scivola verso questa apparente omonimia tra l’agent based modeling dei sistemi complessi e gli agenti AI.</p>
 <p>Con mia grande sorpresa scopro che sono molto più simili di quel che immaginassi.</p>
 <p>I due filoni nascono negli stessi anni e condividono la stessa definizione (Russell e Norvig): “un agente è tutto ciò che percepisce l’ambiente tramite sensori e agisce su di esso tramite attuatori”. I due concetti chiave che condividono sono <strong>autonomia</strong> (nessun controllore centrale detta la mossa) e <strong>situatezza</strong> (l’agente ha informazione <em>locale</em>, non la vista dall’alto). Il ciclo percezione-azione è identico.</p>
