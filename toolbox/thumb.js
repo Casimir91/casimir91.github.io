@@ -3,6 +3,7 @@
 import { MathfieldElement, convertLatexToMarkup } from "./vendor/mathlive/mathlive.min.mjs";
 import { evaluate, describe, CalcError } from "./calculator-engine.js";
 import { attachRadial } from "./radial.js";
+import { exitStructures, closeBracketIfAny, trigPower } from "./thumb-edit.js";
 
 MathfieldElement.fontsDirectory = "vendor/mathlive/fonts";
 MathfieldElement.soundsDirectory = null;
@@ -41,7 +42,7 @@ mf.addEventListener("mount", () => {
   refresh();
   if (!coarse) mf.focus({ preventScroll: true });
 }, { once: true });
-mf.setAttribute("placeholder", "\\text{Type a calculation}");
+mf.setAttribute("placeholder", "\\text{Type here}");
 $("entry").appendChild(mf);
 
 const focusField = () => { if (!coarse) mf.focus({ preventScroll: true }); };
@@ -184,58 +185,94 @@ function equals() {
 /* ---------- haptics (Android/Chrome only: iOS Safari has no vibration API) ---------- */
 const tick = (ms = 8) => { try { if (navigator.vibrate) navigator.vibrate(ms); } catch (e) {} };
 
-/* ---------- keypad: 4 columns x 7 rows, hidden keys as petals ---------- */
+/* ---------- keypad: 4 columns x 6 rows. No arrow keys: tap the expression to move the caret; operators leave
+   denominators / exponents / radicands by themselves and ( ) closes a bracket. Hidden keys are petals. ---------- */
 const FRAC_ICON = '<svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><rect x="7.5" y="2.5" width="9" height="6.5" rx="1.6" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 12h17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><rect x="7.5" y="15" width="9" height="6.5" rx="1.6" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>';
 const SQRT_ICON = '<svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path d="M2.5 12.5l3.2-1.6 3.6 8.1 6-15.5h6.2" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-const N = '<sup class="n">n</sup>√', C3 = '<sup class="n">3</sup>√';
 const num = (d) => ({ l: d, kind: "num", ins: d });
-const trig = (name, aria) => ({
-  l: name, aria, kind: "fn mono", ins: `\\${name}\\left(#?\\right)`, alts: [
-    { l: `${name}<sup>−1</sup>`, aria: `Inverse ${aria.toLowerCase()}`, ins: `\\${name}^{-1}\\left(#?\\right)` },
-    { l: `${name}<sup>2</sup>`, aria: `${aria} squared`, ins: `\\${name}^{2}\\left(#?\\right)` } ] });
+const op = (l, aria, ins) => ({ l, aria, kind: "op", ins, ans: true, exit: true });
+/* trig family: inner ring sin cos tan cot, outer ring (slide further out) the inverses */
+const trigItem = (name, aria) => ({
+  l: name, aria, ins: `\\${name}\\left(#?\\right)`,
+  outer: { l: `${name}<sup>−1</sup>`, aria: `Inverse ${aria.toLowerCase()}`, ins: `\\${name}^{-1}\\left(#?\\right)` } });
+const TRIGS = [trigItem("sin", "Sine"), trigItem("cos", "Cosine"), trigItem("tan", "Tangent"), trigItem("cot", "Cotangent")];
 
 const KEYS = [
-  trig("sin", "Sine"), trig("cos", "Cosine"), trig("tan", "Tangent"),
-  { l: "⌫", aria: "Delete", kind: "ctl", cmd: "deleteBackward", alts: [{ l: "AC", aria: "Clear all", act: "clear" }] },
-
-  { l: "log", aria: "Logarithm base 10", kind: "fn mono", ins: "\\log\\left(#?\\right)", alts: [
+  { l: "π", aria: "Pi", kind: "fn", ins: "\\pi", alts: [{ l: "e", aria: "Euler's number e", ins: "\\exponentialE" }] },
+  { ...TRIGS[0], kind: "fn mono", alts: TRIGS },
+  { l: "×10<sup>x</sup>", aria: "Times ten to the power", kind: "fn", ins: "\\times10^{#?}", ans: true, exit: true, alts: [
+    { l: "log", aria: "Logarithm base 10", ins: "\\log\\left(#?\\right)" },
     { l: "ln", aria: "Natural logarithm", ins: "\\ln\\left(#?\\right)" },
     { l: "10<sup>x</sup>", aria: "Ten to the power", ins: "10^{#?}" },
     { l: "e<sup>x</sup>", aria: "e to the power", ins: "\\exponentialE^{#?}" } ] },
-  { l: "π", aria: "Pi", kind: "fn", ins: "\\pi", alts: [
-    { l: "e", aria: "Euler's number e", ins: "\\exponentialE" },
-    { l: "Ans", aria: "Previous answer", ins: "\\mathrm{Ans}" } ] },
-  { l: "◀", aria: "Move left", kind: "ctl", cmd: "moveToPreviousChar" },
-  { l: "▶", aria: "Move right", kind: "ctl", cmd: "moveToNextChar" },
+  { l: "⌫", aria: "Delete", kind: "ctl", cmd: "deleteBackward", alts: [{ l: "AC", aria: "Clear all", act: "clear" }] },
 
   { l: FRAC_ICON, aria: "Fraction", kind: "hero", ins: "\\frac{#@}{#?}" },
-  { l: "x<sup>n</sup>", aria: "Power", kind: "fn", ins: "#@^{#?}", ans: true, alts: [
-    { l: "x<sup>2</sup>", aria: "Square", ins: "#@^{2}" },
-    { l: "x<sup>3</sup>", aria: "Cube", ins: "#@^{3}" },
-    { l: "x<sup>−1</sup>", aria: "Reciprocal", ins: "#@^{-1}" } ] },
+  { l: "x<sup>2</sup>", aria: "Square", kind: "fn", ins: "#@^{2}", pow: 2, ans: true, alts: [
+    { l: "x<sup>n</sup>", aria: "Power", ins: "#@^{#?}", ans: true },
+    { l: "x<sup>3</sup>", aria: "Cube", ins: "#@^{3}", pow: 3, ans: true },
+    { l: "x<sup>−1</sup>", aria: "Reciprocal", ins: "#@^{-1}", ans: true } ] },
   { l: SQRT_ICON, aria: "Square root", kind: "fn", ins: "\\sqrt{#?}", alts: [
-    { l: N, aria: "Nth root", ins: "\\sqrt[#?]{#?}" }, { l: C3, aria: "Cube root", ins: "\\sqrt[3]{#?}" } ] },
-  { l: "( )", aria: "Brackets", kind: "fn", ins: "\\left(#?\\right)" },
+    { l: "<sup class=\"n\">n</sup>√", aria: "Nth root (type the index first)", ins: "\\sqrt[#@]{#?}", nth: true },
+    { l: "<sup class=\"n\">3</sup>√", aria: "Cube root", ins: "\\sqrt[3]{#?}" } ] },
+  { l: "( )", aria: "Brackets", kind: "fn", act: "paren" },
 
-  num("7"), num("8"), num("9"), { l: "÷", aria: "Divide", kind: "op", ins: "\\div ", ans: true },
-  num("4"), num("5"), num("6"), { l: "×", aria: "Multiply", kind: "op", ins: "\\times ", ans: true, alts: [
-    { l: "×10<sup>x</sup>", aria: "Times ten to the power", ins: "\\times10^{#?}", ans: true } ] },
-  num("1"), num("2"), num("3"), { l: "−", aria: "Subtract", kind: "op", ins: "-", ans: true },
+  num("7"), num("8"), num("9"), { ...op("÷", "Divide", "\\div "), alts: [
+    { l: "%", aria: "Percent", ins: "\\%" }, { l: "n!", aria: "Factorial", ins: "!" }] },
+  num("4"), num("5"), num("6"), op("×", "Multiply", "\\times "),
+  num("1"), num("2"), num("3"), op("−", "Subtract", "-"),
   num("0"), { l: ".", aria: "Decimal point", kind: "num", act: "point" },
-  { l: "=", aria: "Equals", kind: "eq", act: "equals" }, { l: "+", aria: "Add", kind: "op", ins: "+", ans: true },
+  { l: "=", aria: "Equals", kind: "eq", act: "equals", alts: [{ l: "Ans", aria: "Previous answer", ins: "\\mathrm{Ans}" }] },
+  op("+", "Add", "+"),
 ];
+
+/* "Cleared · Undo" */
+let undoTimer = null, cleared = null;
+function showUndo(prev) {
+  cleared = prev;
+  const t = $("toast"); t.hidden = false; t.classList.add("show");
+  clearTimeout(undoTimer);
+  undoTimer = setTimeout(() => { t.classList.remove("show"); t.hidden = true; cleared = null; }, 5000);
+}
+$("undoBtn").addEventListener("click", () => {
+  if (cleared == null) return;
+  mf.setValue(cleared); mf.position = mf.lastOffset; cleared = null;
+  $("toast").classList.remove("show"); $("toast").hidden = true;
+  onInput(); tick(10);
+});
 
 function press(k) {
   if (k.act === "equals") return equals();
   if (k.act === "clear") {
-    mf.setValue(""); state.live = null; state.committed = null; refresh(); return;
+    const prev = mf.getValue();
+    mf.setValue(""); state.live = null; state.committed = null; refresh();
+    if (prev && prev.trim()) showUndo(prev);
+    return;
   }
+  if (k.act === "paren") {
+    if (!closeBracketIfAny(mf)) mf.insert("\\left(#?\\right)", { focus: !coarse, selectionMode: "placeholder" });
+    if (!coarse) mf.focus({ preventScroll: true });
+    onInput(); return;
+  }
+  if (k.exit) exitStructures(mf);                                   // 1/3 + …  2³ + …  √9 + …
   if (k.ans && isEmpty() && state.ans) mf.insert("\\mathrm{Ans}", { focus: !coarse });
+  if (k.pow && trigPower(mf, k.pow)) { onInput(); return; }         // sin(x) then x² → sin²(x)
   if (k.act === "point") mf.insert(state.dec === "," ? "{,}" : ".", { focus: !coarse });
   else if (k.cmd) mf.executeCommand(k.cmd);
-  else if (k.ins) mf.insert(k.ins, { focus: !coarse, selectionMode: "placeholder" });
+  else if (k.ins) {
+    let ins = k.ins;
+    if (k.nth) {                                                    // ⁿ√: the number just typed is the index
+      const a = atomAtCaretForNth();
+      if (!a) ins = "\\sqrt[#?]{#?}";
+    }
+    mf.insert(ins, { focus: !coarse, selectionMode: "placeholder" });
+  }
   if (!coarse) mf.focus({ preventScroll: true });
   onInput();
+}
+function atomAtCaretForNth() {
+  try { const a = mf._mathfield.model.at(mf.position); return a && a.type === "mord" && /^[0-9]$/.test(a.value || a.command || ""); }
+  catch (e) { return false; }
 }
 
 const pad = $("pad");
@@ -246,7 +283,7 @@ for (const k of KEYS) {
   b.innerHTML = k.l;
   b.setAttribute("aria-label", k.aria || k.l.replace(/<[^>]+>/g, ""));
   b.addEventListener("pointerdown", (e) => { e.preventDefault(); tick(6); });   // keep focus (and the caret) in the field
-  if (k.alts) attachRadial(b, k.alts, (item) => press({ ans: k.ans, ...item }));
+  if (k.alts) attachRadial(b, k.alts, (item) => press({ ans: k.ans, exit: k.exit, ...item }));
   b.addEventListener("click", () => press(k));
   pad.appendChild(b);
 }
@@ -259,8 +296,8 @@ function paintHand() {
   // left hand: the right-hand column (operators, delete, brackets; the arrows in row 2) moves to the left; digits keep their order
   [...pad.children].forEach((el, i) => {
     const row = Math.floor(i / 4), col = i % 4;
-    let c = col;
-    if (hand === "left") c = row === 1 ? (col < 2 ? col + 2 : col - 2) : (col === 3 ? 0 : col + 1);
+    // left hand: the right-hand column moves to the left; in the top row only π and ⌫ swap, so the two big fans stay central
+    const c = hand !== "left" ? col : row === 0 ? [3, 1, 2, 0][col] : (col === 3 ? 0 : col + 1);
     el.style.order = String(row * 4 + c);
   });
   handBtn.innerHTML = `<span class="${hand === "left" ? "on" : ""}">Left</span><span class="${hand === "left" ? "" : "on"}">Right</span>`;
@@ -306,35 +343,39 @@ bar.appendChild(decBtn);
 
 
 
-/* ---------- tour: tap / hold / your turn ---------- */
+/* ---------- tour: tap / hold / brackets / your turn ---------- */
 const tour = $("tour"), stage = $("tourStage");
 const STEPS = [
   { title: "Tap", text: "A tap types the key, as usual.",
     stage: () => `<div class="demo-key"><span>sin</span></div><div class="finger f-tap"></div><div class="bubble b-tap">sin(▢)</div>` },
-  { title: "Hold", text: "Keys with little dots hide more keys. Press and hold: they fan out around your thumb. Slide to one and let go.",
+  { title: "Hold", text: "Keys with little dots hide more keys. Press and hold: they fan out around your thumb. Slide to one and let go. Some keys have a second, outer ring: pull further for the inverse.",
     stage: () => `<div class="demo-key has-alt" data-alts="2"><span>sin</span></div>
-      <div class="dp dp1">sin<sup>−1</sup></div><div class="dp dp2">sin<sup>2</sup></div>
-      <div class="finger f-hold"></div><div class="bubble b-hold">sin<sup>−1</sup>(▢)</div>` },
-  { title: "Your turn", text: "Hold the key below, slide up-left to sin⁻¹ and release.",
+      <div class="dp dp1">sin</div><div class="dp dp2">cos</div>
+      <div class="finger f-hold"></div><div class="bubble b-hold">sin(▢)</div>` },
+  { title: "Brackets", text: "",
+    stage: () => `<div class="bx"><span class="bfrac"><span class="bn">1</span><span class="bd"><i class="bq">▢</i><i class="b1">(</i><i class="b2">2</i><i class="b3">+</i><i class="b4">3</i><i class="b5">)</i></span></span><i class="b6">+1</i></div>
+      <div class="demo-key sm"><span>( )</span></div><div class="finger f-br"></div>` },
+  { title: "Your turn", text: "Hold the key, slide up-left to the inner ring, then pull further out for sin⁻¹. Release.",
     stage: () => `<button type="button" class="key fn mono demo-live" id="demoKey">sin</button><div class="bubble b-live" id="demoOut">&nbsp;</div>` },
 ];
 let step = 0, demoOk = false;
 function paintTour() {
   const s = STEPS[step];
-  $("tourTitle").textContent = s.title; $("tourText").textContent = s.text;
+  $("tourTitle").textContent = s.title; $("tourText").textContent = s.text; $("tourText").hidden = !s.text;
   stage.innerHTML = s.stage();
   stage.dataset.step = String(step);
   $("tourDots").innerHTML = STEPS.map((_, i) => `<i class="${i === step ? "on" : ""}"></i>`).join("");
   $("tourNext").textContent = step === STEPS.length - 1 ? (demoOk ? "Start" : "Skip") : "Next";
   $("tourSkip").hidden = step === STEPS.length - 1;
-  if (step === 2) {
+  if (step === STEPS.length - 1) {
     demoOk = false;
     const key = $("demoKey");
     key.addEventListener("pointerdown", (e) => e.preventDefault());
     attachRadial(key, [
-      { l: "sin<sup>−1</sup>", ok: true }, { l: "sin<sup>2</sup>" },
+      { l: "sin", outer: { l: "sin<sup>−1</sup>", ok: true } }, { l: "cos", outer: { l: "cos<sup>−1</sup>" } },
+      { l: "tan", outer: { l: "tan<sup>−1</sup>" } }, { l: "cot", outer: { l: "cot<sup>−1</sup>" } },
     ], (item) => {
-      $("demoOut").innerHTML = item.ok ? "sin<sup>−1</sup>(▢) ✓ well done!" : "Nice! Now try sin<sup>−1</sup> (up-left)";
+      $("demoOut").innerHTML = item.ok ? "sin<sup>−1</sup>(▢) ✓ well done!" : "Nice! Now pull further out on the left for sin<sup>−1</sup>";
       demoOk = !!item.ok; $("demoOut").classList.toggle("good", demoOk); tick(item.ok ? [12, 40, 12] : 8);
       $("tourNext").textContent = demoOk ? "Start" : "Skip";
     });

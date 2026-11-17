@@ -230,10 +230,18 @@ function trig(name, v, angle) {           // name: sin | cos | tan
     const s = sinExact(a), c = sinExact((a + 90) % 360);
     if (name === "sin") return s;
     if (name === "cos") return c;
+    if (name === "cot") {
+      if (isZero(s)) throw new CalcError("domain", "cot is not defined for this angle");
+      return div(c, s);
+    }
     if (isZero(c)) throw new CalcError("domain", "tan is not defined for this angle");
     return div(s, c);
   }
   const x = toRadians(v, angle);
+  if (name === "cot") {
+    if (Math.sin(x) === 0) throw new CalcError("domain", "cot is not defined for this angle");
+    return snap(Math.cos(x) / Math.sin(x));
+  }
   return snap(name === "sin" ? Math.sin(x) : name === "cos" ? Math.cos(x) : Math.tan(x));
 }
 
@@ -245,8 +253,13 @@ const lookup = (table) => {
 };
 const ASIN_TABLE = lookup(SIN_REF), ATAN_TABLE = lookup(TAN_REF);
 
-function inverseTrig(name, v, angle) {    // name: sin | cos | tan  (arcsin, arccos, arctan)
+function inverseTrig(name, v, angle) {    // name: sin | cos | tan | cot  (arcsin, arccos, arctan, arccot)
   const out = (deg) => (angle === "deg" ? exact(BigInt(deg)) : approx((deg * Math.PI) / 180));
+  if (name === "cot") {                   // arccot x = arctan(1/x), taken in (0°, 180°)
+    if (isZero(v)) return out(90);
+    const t = inverseTrig("tan", inv(v), angle);
+    return toNumber(v) > 0 ? t : add(t, out(180));
+  }
   if (v.ex) {
     const negative = v.n < 0n;
     const pos = negative ? neg(v) : v;
@@ -287,6 +300,20 @@ function logarithm(x, base) {             // base: value, or null for ln (natura
   return snap(Math.log(xv));
 }
 
+/* ---------- factorial ---------- */
+const MAX_FACT = 3000;                    // 3000! has ~29,000 bits: inside MAX_BITS
+function factorial(v) {
+  let n;
+  if (v.ex && v.m === 1n && v.d === 1n) n = v.n;
+  else if (!v.ex && Number.isInteger(v.x) && v.x >= 0 && v.x <= MAX_FACT) n = BigInt(v.x);
+  else throw new CalcError("domain", "The factorial needs a whole number, 0 or more");
+  if (n < 0n) throw new CalcError("domain", "The factorial needs a whole number, 0 or more");
+  if (n > BigInt(MAX_FACT)) throw new CalcError("range", "Too large: the factorial is limited to " + MAX_FACT + "!");
+  let r = 1n;
+  for (let k = 2n; k <= n; k++) r *= k;
+  return exact(r);
+}
+
 /* ---------- parser (recursive descent over the LaTeX string) ---------- */
 function normalise(src) {
   let s = String(src);
@@ -310,6 +337,7 @@ function normalise(src) {
 const FUNCTIONS = {
   sin: { kind: "trig", name: "sin" }, cos: { kind: "trig", name: "cos" }, tan: { kind: "trig", name: "tan" },
   arcsin: { kind: "trig", name: "sin", inverse: true }, arccos: { kind: "trig", name: "cos", inverse: true }, arctan: { kind: "trig", name: "tan", inverse: true },
+  cot: { kind: "trig", name: "cot" },
   ln: { kind: "ln" }, log: { kind: "log" },
 };
 const power_ = (a, e) => power(a, e);
@@ -360,12 +388,23 @@ function parse(src, ctx = {}) {
     return parsePower();
   }
 
+  // postfix operators: n! (exact, whole numbers ≥ 0) and x% (= x/100)
+  function postfix(v) {
+    for (;;) {
+      const c = peek();
+      if (c === "!") { i++; v = factorial(v); }
+      else if (c === "\\" && s.startsWith("\\%", i)) { i += 2; v = div(v, exact(100n)); }
+      else if (c === "%") { i++; v = div(v, exact(100n)); }
+      else return v;
+    }
+  }
+
   function parsePower() {
-    const base = parsePrimary();
+    const base = postfix(parsePrimary());
     if (peek() === "^") {
       i++;
       const e = parseArg(true);
-      return power(base, e);
+      return postfix(power(base, e));
     }
     return base;
   }

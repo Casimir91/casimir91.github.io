@@ -10,7 +10,8 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 export const N = 513;                                            // points of the transfer function, x = −1 … +1
 const xOf = (i) => -1 + (2 * i) / (N - 1);
 const curve = new Float32Array(N);
-export const WS = { on: false, mix: 0.5, drive: 6, preset: 'tanh', cheb: [1, 0, 0, 0, 0, 0, 0, 0], f0: 220 };   // drive in dB; cheb = own Chebyshev weights; f0 = test tone
+export const TRIM = 0.5; // the master bus peaks at about ±2 before the compressor: half of that fits the curve's range (|x| ≤ 1). Beyond ±1 a WaveShaperNode clamps = hard clip
+export const WS = { on: false, mix: 0.5, drive: 0, preset: 'tanh', cheb: [1, 0, 0, 0, 0, 0, 0, 0], f0: 220 };   // drive in dB; cheb = own Chebyshev weights; f0 = test tone
 export const PRESETS = {
   identity: ['Linear', (x) => x],
   tanh: ['Soft clip', (x) => Math.tanh(3 * x) / Math.tanh(3)],
@@ -37,11 +38,14 @@ export function buildShaper(ctx, input, out, withAnalyser) {
   dc.type = 'highpass'; dc.frequency.value = 18; dc.Q.value = 0.5;        // asymmetric curves make a DC offset: it would only eat headroom
   input.connect(dry); dry.connect(out); input.connect(drive); drive.connect(sh); sh.connect(dc); dc.connect(wet); wet.connect(out);
   let an = null; if (withAnalyser) { an = ctx.createAnalyser(); an.fftSize = 4096; an.smoothingTimeConstant = 0.7; an.minDecibels = -100; an.maxDecibels = -10; dc.connect(an); }
-  const h = { dry, drive, wet, sh, an }; setShaper(h, ctx, true); return h;
+  let anIn = null; if (withAnalyser) { anIn = ctx.createAnalyser(); anIn.fftSize = 2048; drive.connect(anIn); } // what the curve really sees
+  const h = { dry, drive, wet, sh, an, anIn }; setShaper(h, ctx, true); return h;
 }
+/** Level match: a curve with slope s at the origin, fed through the input trim, makes quiet signals TRIM·s times as loud. The shaped path is divided by TRIM·s, so that Mix changes the character and not the loudness. */
+const wetComp = () => { const m = (N - 1) >> 1, d = 8, sl = Math.abs((curve[m + d] - curve[m - d]) / ((2 * d * 2) / (N - 1))); return 1 / (TRIM * clamp(sl, 0.5, 6)); };
 export function setShaper(h, ctx, instant) {
   const t = ctx.currentTime, k = WS.on ? WS.mix : 0, T = 0.02, set = (p, v) => (instant ? (p.value = v) : p.setTargetAtTime(v, t, T));
-  set(h.dry.gain, Math.cos((k * Math.PI) / 2)); set(h.wet.gain, Math.sin((k * Math.PI) / 2)); set(h.drive.gain, 10 ** (WS.drive / 20));
+  set(h.dry.gain, Math.cos((k * Math.PI) / 2)); set(h.wet.gain, Math.sin((k * Math.PI) / 2) * wetComp()); set(h.drive.gain, TRIM * 10 ** (WS.drive / 20));
 }
 const setCurve = (h) => { h.sh.curve = new Float32Array(curve); };
 
@@ -64,10 +68,10 @@ export function initFx(api) {
 
   // ======================================================================= waveshaper
   const saved = store.get('ws1', null);
-  if (saved) { Object.assign(WS, { on: !!saved.on, mix: clamp(+saved.mix || 0, 0, 1), drive: clamp(+saved.drive || 0, 0, 24), preset: saved.preset || 'tanh', f0: clamp(+saved.f0 || 220, 40, 2000) });
+  if (saved) { Object.assign(WS, { on: !!saved.on, mix: clamp(+saved.mix || 0, 0, 1), drive: saved.v === 2 ? clamp(+saved.drive || 0, 0, 24) : 0, preset: saved.preset || 'tanh', f0: clamp(+saved.f0 || 220, 40, 2000) });
     if (Array.isArray(saved.cheb) && saved.cheb.length === 8) WS.cheb = saved.cheb.map((v) => clamp(+v || 0, 0, 1));
     if (Array.isArray(saved.curve) && saved.curve.length === N) curve.set(saved.curve); else if (PRESETS[WS.preset]) fill(PRESETS[WS.preset][1]); else if (WS.preset === 'cheb') chebFill(S.harm); else if (WS.preset === 'chebx') chebFill(WS.cheb); }
-  const wsSave = () => store.set('ws1', { on: WS.on, mix: WS.mix, drive: WS.drive, preset: WS.preset, cheb: WS.cheb, f0: WS.f0, curve: Array.from(curve, (v) => Math.round(v * 1000) / 1000) });
+  const wsSave = () => store.set('ws1', { v: 2, on: WS.on, mix: WS.mix, drive: WS.drive, preset: WS.preset, cheb: WS.cheb, f0: WS.f0, curve: Array.from(curve, (v) => Math.round(v * 1000) / 1000) });
   const wsApply = (withCurve) => { const a = A(); if (!a) return; for (const f of fxList()) if (f.ws) { setShaper(f.ws, a.ctx); if (withCurve) setCurve(f.ws); } if (withCurve && toneSh) toneSh.curve = new Float32Array(curve); };
   const wsPaint = () => {
     $('#wsOn').setAttribute('aria-pressed', String(WS.on)); $('#wsOn').textContent = WS.on ? '● Waveshaper on' : '○ Waveshaper off';
@@ -82,7 +86,7 @@ export function initFx(api) {
   });
   $('#wsOn').addEventListener('click', () => { WS.on = !WS.on; engine(); wsApply(true); wsPaint(); wsSave(); });
   const wsS = $('#wsParams');
-  const drv = slider(wsS, { label: 'Drive (level into the curve)', min: 0, max: 24, value: WS.drive, step: 0.5, fmt: (v) => '+' + v.toFixed(1) + ' dB', onInput: (v) => { WS.drive = v; wsApply(); drawCurve(); }, onChange: wsSave });
+  const drv = slider(wsS, { label: 'Drive (more level into the curve)', min: 0, max: 24, value: WS.drive, step: 0.5, fmt: (v) => '+' + v.toFixed(1) + ' dB', onInput: (v) => { WS.drive = v; wsApply(); drawCurve(); }, onChange: wsSave });
   const mix = slider(wsS, { label: 'Mix (dry ⇄ shaped)', min: 0, max: 1, value: WS.mix, fmt: (v) => Math.round(v * 100) + ' %', onInput: (v) => { WS.mix = v; wsApply(); wsPaint(); }, onChange: wsSave });
 
   // Chebyshev sliders: f(x) = Σ aₙ Tₙ(x). A sine of amplitude 1 through Tₙ comes out as the n-th harmonic alone.
@@ -126,12 +130,18 @@ export function initFx(api) {
   cvC.addEventListener('pointermove', (e) => { if (dragging) draw(e); });
   for (const ev of ['pointerup', 'pointercancel']) cvC.addEventListener(ev, () => { if (dragging) { dragging = false; wsSave(); wsPaint(); } });
   $('#wsSmooth').addEventListener('click', () => { const c = Float32Array.from(curve); for (let i = 1; i < N - 1; i++) curve[i] = (c[i - 1] + 2 * c[i] + c[i + 1]) / 4; WS.preset = 'drawn'; wsApply(true); wsSave(); drawCurve(); wsPaint(); });
+  let pkHold = 0; const lvBuf = new Float32Array(2048);
+  function level() { // peak and RMS of the signal that reaches the curve (after Drive); the peak falls slowly so that it can be read
+    const ai = A()?.fx.ws?.anIn; if (!ai) return null; ai.getFloatTimeDomainData(lvBuf); let pk = 0, s = 0; for (const v of lvBuf) { const a = Math.abs(v); if (a > pk) pk = a; s += v * v; }
+    pkHold = Math.max(pk, pkHold * 0.96); return { pk: pkHold, rms: Math.sqrt(s / lvBuf.length) };
+  }
   function drawCurve() {
     const f = fit(cvC); if (!f) return; const [g, W, H] = f, X = (x) => ((x + 1) / 2) * W, Y = (y) => (1 - (y + 1) / 2) * H;
     g.clearRect(0, 0, W, H); g.strokeStyle = css('--border'); g.lineWidth = 1; g.beginPath(); g.moveTo(0, H / 2); g.lineTo(W, H / 2); g.moveTo(W / 2, 0); g.lineTo(W / 2, H); g.stroke();
     g.setLineDash([4, 4]); g.beginPath(); g.moveTo(0, H); g.lineTo(W, 0); g.stroke(); g.setLineDash([]);
-    const lim = 1 / 10 ** (WS.drive / 20);                      // an input of full scale 1 after the drive is lim in front of it: shown as the band the music really uses
-    g.fillStyle = css('--primary') + '22'; g.fillRect(X(-Math.min(1, lim * 1.6)), 0, X(Math.min(1, lim * 1.6)) - X(-Math.min(1, lim * 1.6)), H);
+    const lv = level(), cl = (v) => Math.min(1, v), band = (v, al) => { g.fillStyle = css('--primary') + al; g.fillRect(X(-cl(v)), 0, X(cl(v)) - X(-cl(v)), H); };
+    if (lv) { band(lv.pk, '1c'); band(lv.rms * 2, '33'); if (lv.pk > 1) { g.fillStyle = '#e5484d'; g.fillRect(0, 0, 3, H); g.fillRect(W - 3, 0, 3, H); } }
+    const m = $('#wsMeter'); if (m) { const t = lv ? `On the curve: typical level ±${lv.rms.toFixed(2)} · peaks ±${lv.pk.toFixed(2)}` + (lv.pk > 1 ? ' · ⚠ above ±1: clipped (lower Drive)' : '') : 'Press Play: the shaded bands show where the music sits on the curve'; if (m.textContent !== t) m.textContent = t; m.classList.toggle('warn', !!lv && lv.pk > 1); }
     g.strokeStyle = css('--primary'); g.lineWidth = 2.4; g.beginPath(); for (let i = 0; i < N; i++) { const px = X(xOf(i)), py = Y(curve[i]); i ? g.lineTo(px, py) : g.moveTo(px, py); } g.stroke();
     g.fillStyle = css('--muted'); g.font = '11px system-ui'; g.fillText('input →', W - 48, H / 2 - 5); g.fillText('output ↑', W / 2 + 5, 12);
   }
@@ -265,7 +275,7 @@ export function initFx(api) {
   const open = (id) => $(id).open;
   const frame = () => {
     if (tabIsFx()) {
-      if (open('#sec-ws')) { drawSpec(); } if (open('#sec-gr')) { if (G.scan && timer) SL.pos.set(G.pos); drawWave(); }
+      if (open('#sec-ws')) { drawSpec(); drawCurve(); } if (open('#sec-gr')) { if (G.scan && timer) SL.pos.set(G.pos); drawWave(); }
     }
     requestAnimationFrame(frame);
   };

@@ -10,6 +10,12 @@
 }
 .has-alt[data-alts="2"]::after { box-shadow: -6px 0 0 var(--hero-fg, var(--primary)); }
 .has-alt[data-alts="3"]::after { box-shadow: -6px 0 0 var(--hero-fg, var(--primary)), -12px 0 0 var(--hero-fg, var(--primary)); }
+.has-alt[data-alts="4"]::after { box-shadow: -6px 0 0 var(--hero-fg, var(--primary)), -12px 0 0 var(--hero-fg, var(--primary)), -18px 0 0 var(--hero-fg, var(--primary)); }
+/* two rings: a small hollow dot too ("pull further for more") */
+.has-alt[data-rings="2"]::before {
+  content: ""; position: absolute; top: 4px; left: 6px; width: 6px; height: 6px; border-radius: 50%; box-sizing: border-box;
+  border: 1.5px solid var(--hero-fg, var(--primary)); opacity: .75; pointer-events: none;
+}
 .has-alt.radial-open { transform: scale(.94); }
 
 .radial { position: fixed; inset: 0; z-index: 200; pointer-events: none; background: color-mix(in srgb, var(--bg) 40%, transparent); animation: rad-fade .12s ease-out; }
@@ -31,3 +37,7 @@
 @keyframes rad-pop { from { opacity: 0; transform: translate(-50%, -50%) scale(.5); } to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
 @keyframes rad-fade { from { opacity: 0; } to { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .petal, .radial { animation: none; } }
+
+/* second ring: slide further out on the same angle */
+.petal.outer { opacity: .9; font-size: .92em; background: color-mix(in srgb, var(--card) 88%, var(--primary) 12%); border-style: dashed; }
+.petal.outer.on { opacity: 1; border-style: solid; }

@@ -21,6 +21,7 @@
   canvas.ws-curve { height: 13rem; touch-action: none; cursor: crosshair; background: color-mix(in srgb, var(--surface) 70%, transparent); }
   canvas.ws-spec { height: 13rem; }
   canvas.gr-wave { height: 6rem; touch-action: none; cursor: pointer; }
+  .ws-meter { margin: .2rem 0; font-size: .85rem; color: var(--muted); font-variant-numeric: tabular-nums; } .ws-meter.warn { color: #e5484d; }
   .harm-link { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; font-size: .9rem; }
   .harm-link span { flex: 1 1 14rem; } .harm-link button { padding: .3rem .8rem; min-height: 2.3rem; }
   #grGrab button[disabled] { opacity: .5; }
@@ -458,8 +459,9 @@
       <details class="sec" id="sec-ws">
         <summary>Waveshaper <span class="chip" id="wsChip">off</span></summary>
         <div class="sec-body">
-          <p class="note">A <b>transfer function</b> y = f(x): every sample of the master goes in as x and comes out as f(x). A straight line leaves the sound alone; a curve that flattens (soft clip) adds <b>harmonics</b>. <b>Draw</b> your own curve on the plot, pick a preset, or build it from the Lab harmonics (Chebyshev: Tₙ(cos θ) = cos nθ). The shaded band is where your music sits on the curve: more drive means a wider band. It also acts on the Drums / Bass stems when you record.</p>
+          <p class="note">A <b>transfer function</b> y = f(x): every sample of the master goes in as x and comes out as f(x). A straight line leaves the sound alone; a curve that flattens (soft clip) adds <b>harmonics</b>. <b>Draw</b> your own curve on the plot, pick a preset, or build it from the Lab harmonics (Chebyshev: Tₙ(cos θ) = cos nθ). The shaded bands are where your music really sits on the curve (typical level and peaks): the more it moves away from the straight line, the more it distorts. Beyond ±1 the curve is clamped, so keep the peaks inside. Chebyshev curves give pure harmonics only for a sine of amplitude exactly 1 (use the test tone below); with real music, Tₙ with n ≥ 2 also makes sum and difference tones, which sound harsh. It also acts on the Drums / Bass stems when you record.</p>
           <div class="lab-tools"><button id="wsOn" class="toggle" aria-pressed="false">○ Waveshaper off</button><button id="wsSmooth">Smooth the curve</button></div>
+          <p class="ws-meter" id="wsMeter" aria-live="off"></p>
           <div class="ws-wrap"><canvas id="wsCurve" class="scr ws-curve" aria-label="Transfer function: draw it with your finger"></canvas><canvas id="wsSpec" class="scr ws-spec" aria-label="Spectrum of the shaped signal"></canvas></div>
           <div class="chips" id="wsPresets"><span>Curve</span></div>
           <div id="wsParams"></div>

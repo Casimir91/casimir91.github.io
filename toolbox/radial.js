@@ -1,16 +1,21 @@
 /* Radial ("pie") menu for keys: hold a key (or flick it), the hidden keys fan out above the thumb,
    slide towards one and release. A short tap is left alone, so the key's own click handler still runs.
-   attachRadial(button, [{ l: "<html label>", aria, ...anything }], (item) => ...)                    */
+   attachRadial(button, [{ l: "<html label>", aria, ...anything }], (item) => ...)
+   Two rings: an item may carry `outer: { l, ... }`. Slide further out (past ~107 px) on the same angle to
+   pick the outer item instead (e.g. sin → sin⁻¹). onPick gets whichever item was chosen.            */
 
-const ARC = { 1: [0], 2: [-26, 26], 3: [-48, 0, 48] };      // degrees around the "up" direction
+const ARC = { 1: [0], 2: [-26, 26], 3: [-48, 0, 48], 4: [-66, -22, 22, 66] };   // degrees around the "up" direction
 let overlay = null;
 
 function buzz(ms) { try { if (navigator.vibrate) navigator.vibrate(ms); } catch (e) {} }
 
 export function attachRadial(btn, items, onPick, opts = {}) {
-  const HOLD = opts.hold ?? 220, R = opts.radius ?? 74, FLICK = 14;
+  const HOLD = opts.hold ?? 220, FLICK = 14;
+  const R = opts.radius ?? (items.length > 3 ? 88 : 74), R2 = opts.radius2 ?? 150;
+  const two = items.some((it) => it.outer), SPLIT = (R + R2) / 2, FAR = two ? 290 : 210;
   btn.classList.add("has-alt");
   btn.dataset.alts = String(items.length);
+  if (items.some((it) => it.outer)) btn.dataset.rings = "2";
   let st = null, skipClick = false;
 
   btn.addEventListener("contextmenu", (e) => e.preventDefault());       // no long-press menu, no text callout
@@ -26,22 +31,25 @@ export function attachRadial(btn, items, onPick, opts = {}) {
     st.open = true; st.c = centre();
     const vw = window.innerWidth;
     let shift = 0;                                                       // near a screen edge: lean the fan inwards
-    if (st.c.x < R + 28) shift = 42; else if (st.c.x > vw - R - 28) shift = -42;
-    const arc = ARC[Math.min(3, items.length)] || ARC[3];
+    const lean = items.length > 3 ? 36 : 42;
+    if (st.c.x < R + 28) shift = lean; else if (st.c.x > vw - R - 28) shift = -lean;
+    const arc = ARC[Math.min(4, items.length)] || ARC[4];
     st.angles = arc.slice(0, items.length).map((a) => a + shift);        // 0 = straight up
     overlay = document.createElement("div");
     overlay.className = "radial";
     overlay.setAttribute("aria-hidden", "true");
-    st.petals = items.map((it, i) => {
+    const mk = (it, i, rad, cls) => {
       const a = (st.angles[i] - 90) * Math.PI / 180;
-      const x = Math.max(30, Math.min(vw - 30, st.c.x + R * Math.cos(a)));
-      const y = Math.max(30, st.c.y + R * Math.sin(a));
+      const x = Math.max(30, Math.min(vw - 30, st.c.x + rad * Math.cos(a)));
+      const y = Math.max(30, st.c.y + rad * Math.sin(a));
       const p = document.createElement("div");
-      p.className = "petal"; p.innerHTML = it.l;
-      p.style.left = x + "px"; p.style.top = y + "px"; p.style.animationDelay = i * 25 + "ms";
+      p.className = "petal" + cls; p.innerHTML = it.l;
+      p.style.left = x + "px"; p.style.top = y + "px"; p.style.animationDelay = i * 25 + (cls ? 90 : 0) + "ms";
       overlay.appendChild(p);
       return p;
-    });
+    };
+    st.petals = items.map((it, i) => mk(it, i, R, ""));
+    st.outers = items.map((it, i) => (it.outer ? mk(it.outer, i, R2, " outer") : null));
     const ring = document.createElement("div");
     ring.className = "radial-origin"; ring.style.left = st.c.x + "px"; ring.style.top = st.c.y + "px";
     overlay.appendChild(ring);
@@ -53,7 +61,7 @@ export function attachRadial(btn, items, onPick, opts = {}) {
   function select(e) {
     const dx = e.clientX - st.c.x, dy = e.clientY - st.c.y, d = Math.hypot(dx, dy);
     let sel = -1;
-    st.cancel = d > 210;
+    st.cancel = d > FAR;
     if (d > 26 && !st.cancel) {
       const ang = Math.atan2(dx, -dy) * 180 / Math.PI;                    // 0 = up, positive = right
       let best = 999;
@@ -63,9 +71,11 @@ export function attachRadial(btn, items, onPick, opts = {}) {
       });
       if (best > 50) sel = -1;
     }
-    if (sel !== st.sel) {
-      st.sel = sel; buzz(6);
-      st.petals.forEach((p, i) => p.classList.toggle("on", i === sel));
+    const out = sel >= 0 && !!items[sel].outer && d >= SPLIT;
+    if (sel !== st.sel || out !== st.out) {
+      st.sel = sel; st.out = out; buzz(out ? 12 : 6);
+      st.petals.forEach((p, i) => p.classList.toggle("on", i === sel && !out));
+      st.outers.forEach((p, i) => p && p.classList.toggle("on", i === sel && out));
     }
     overlay.classList.toggle("cancel", st.cancel);
   }
@@ -80,7 +90,7 @@ export function attachRadial(btn, items, onPick, opts = {}) {
     btn.classList.remove("radial-open");
     if (commit && s.sel >= 0 && !s.cancel) {
       skipClick = true; setTimeout(() => { skipClick = false; }, 450);
-      onPick(items[s.sel]);
+      onPick(s.out ? items[s.sel].outer : items[s.sel]);
     } else if (!commit || s.cancel) {
       skipClick = true; setTimeout(() => { skipClick = false; }, 450);   // cancelled: nothing is typed
     }
@@ -89,7 +99,7 @@ export function attachRadial(btn, items, onPick, opts = {}) {
 
   btn.addEventListener("pointerdown", (e) => {
     if (e.pointerType === "mouse" && e.button !== 0) return;
-    st = { id: e.pointerId, x: e.clientX, y: e.clientY, open: false, sel: -1 };
+    st = { id: e.pointerId, x: e.clientX, y: e.clientY, open: false, sel: -1, out: false };
     st.timer = setTimeout(open, HOLD);
     try { btn.setPointerCapture(e.pointerId); } catch (err) {}
   });
