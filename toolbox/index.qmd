@@ -68,13 +68,23 @@ css: index-cards.css
     </div>
   </a>
 
+  <a class="tb-card" href="python.html">
+    <div class="tb-preview" style="background:#00302A"><svg viewBox="0 0 220 110" width="220" height="110" aria-hidden="true"><g stroke="rgba(198,244,50,.18)" stroke-width="1"><path d="M0 22H220M0 44H220M0 66H220M0 88H220M44 0V110M88 0V110M132 0V110M176 0V110"/></g><path d="M22 26.0 L26 30.6 L30 34.8 L34 38.8 L38 42.4 L42 45.8 L46 48.9 L50 51.8 L54 54.5 L58 57.0 L62 59.3 L66 61.4 L70 63.4 L74 65.2 L78 66.9 L82 68.4 L86 69.9 L90 71.2 L94 72.5 L98 73.6 L102 74.7 L106 75.7 L110 76.6 L114 77.4 L118 78.2 L122 78.9 L126 79.6 L130 80.2 L134 80.8 L138 81.3 L142 81.8 L146 82.3 L150 82.7 L154 83.1 L158 83.5 L162 83.8 L166 84.1 L170 84.4 L174 84.7 L178 84.9 L182 85.1 L186 85.4 L190 85.5 L194 85.7 L198 85.9 L202 86.1" fill="none" stroke="#C6F432" stroke-width="3" style="filter:drop-shadow(0 0 4px #C6F432)"/><circle cx="22" cy="27.4" r="2.6" fill="#FFC531"/><circle cx="36" cy="38.7" r="2.6" fill="#FFC531"/><circle cx="50" cy="52.8" r="2.6" fill="#FFC531"/><circle cx="64" cy="59.7" r="2.6" fill="#FFC531"/><circle cx="78" cy="68.6" r="2.6" fill="#FFC531"/><circle cx="92" cy="70.6" r="2.6" fill="#FFC531"/><circle cx="106" cy="76.2" r="2.6" fill="#FFC531"/><circle cx="120" cy="77.6" r="2.6" fill="#FFC531"/><circle cx="134" cy="82.2" r="2.6" fill="#FFC531"/><circle cx="148" cy="82.0" r="2.6" fill="#FFC531"/><circle cx="162" cy="84.6" r="2.6" fill="#FFC531"/><circle cx="176" cy="83.4" r="2.6" fill="#FFC531"/><circle cx="190" cy="85.9" r="2.6" fill="#FFC531"/><circle cx="204" cy="85.3" r="2.6" fill="#FFC531"/></svg></div>
+    <div class="tb-body">
+      <div class="tb-title">Python Lab</div>
+      <p>Fit Newton's law of cooling with Python, right in the browser. Change the code, press Run, watch the graph change.</p>
+      <div class="tb-meta">Python · NumPy · SciPy · Matplotlib · computer · no install</div>
+      <div class="tb-open">Open the Python Lab →</div>
+    </div>
+  </a>
+
   <a class="tb-card" href="graph.html" target="_blank" rel="noopener">
     <div class="tb-preview"><svg class="tb-graph" viewBox="0 0 120 70" aria-hidden="true"><path class="ax" d="M6 35h108M60 4v62"/><path class="c1" d="M26 4Q60 100 94 4"/><path class="c2" d="M6 35C20 5 34 5 48 35S76 65 90 35s14-30 24-30"/><circle cx="60" cy="52" r="3"/></svg></div>
     <div class="tb-body">
-      <div class="tb-title">Graphs</div>
+      <div class="tb-title">Ipazia · graphs</div>
       <p>Write a function with real fractions, powers and roots, and see its graph at once. Zeros, maxima, minima and intersections appear on their own; sliders for a, b, c let you watch a parameter change the curve.</p>
       <div class="tb-meta">y = f(x) · table of values · sliders · zeros and extrema · works on smartphone</div>
-      <div class="tb-open">Open the graphs →</div>
+      <div class="tb-open">Open Ipazia →</div>
     </div>
   </a>
 

@@ -232,5 +232,5 @@ export function initSong(api) {
   requestAnimationFrame(frame);
   window.addEventListener('resize', () => { if (!root.closest('[hidden]')) render(); });
 
-  return { cycle, stopped, show() { render(); }, SONG };
+  return { cycle, stopped, show() { render(); }, save, SONG };
 }

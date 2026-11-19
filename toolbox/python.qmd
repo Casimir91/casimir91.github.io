@@ -1,0 +1,171 @@
+---
+title: "Python Lab"
+subtitle: "A cup of tea cooling down. Run Python in your browser, change the code, watch the graph change."
+description: "Fit Newton's law of cooling with Python, right here in the browser. Nothing to install."
+toc: false
+engine: markdown
+format:
+  live-html:
+    lang: en
+    theme:
+      light: [sandstone, ../fonts.scss]
+      dark: [darkly, ../custom-dark.scss, ../fonts.scss]
+    respect-user-color-scheme: true
+    include-in-header: ../_includes/pwa-head.html
+    include-after-body: ../brand-link.html
+    pyodide:
+      packages:
+        - numpy
+        - scipy
+        - matplotlib
+      cell-options:
+        autorun: true
+        fig-width: 7
+        fig-height: 4
+---
+
+Press **▶ Run** on any block, or edit the code first and then run it. Blocks run from top to bottom: if you change an early one, run the later ones again.
+
+## 0 · The look
+
+Every graph below takes its colours and fonts from this block. Change a colour, run this block, then run the others again.
+
+```{pyodide}
+#| caption: Style
+import matplotlib.pyplot as plt
+
+plt.rcParams.update({
+    "figure.facecolor": "white", "axes.facecolor": "white",
+    "axes.spines.top": False, "axes.spines.right": False,   # open frame
+    "axes.grid": True, "grid.color": "#e6e6e6", "axes.axisbelow": True,
+    "font.size": 11, "lines.linewidth": 2.2, "lines.markersize": 6,
+    "legend.frameon": False,
+    "axes.prop_cycle": plt.cycler(color=["#004D43", "#E8A200", "#3A86C8", "#C8508B"]),
+})
+```
+
+## 1 · The experiment
+
+A cup of tea cools in a room. One temperature reading every 15 seconds, each with an uncertainty `sigma`. The numbers are simulated with the same model as the Mosaicus simulator; $\tau = 240\ \text{s}$ is the value the simulation uses. Can the fit find it?
+
+```{pyodide}
+#| caption: Data
+import numpy as np
+
+rng = np.random.default_rng(7)             # random numbers, always the same sequence
+t = np.arange(0, 600, 15.0)                # time: 0, 15, 30 ... 585 s
+Ta, T0, tau = 21.0, 78.0, 240.0            # room, start, time constant
+sigma = 0.4                                # uncertainty of each reading (°C)
+T = Ta + (T0 - Ta) * np.exp(-t / tau) + rng.normal(0, sigma, t.size)   # temperature + noise
+
+plt.figure()
+plt.errorbar(t, T, yerr=sigma, fmt="o", capsize=3)   # points with error bars
+plt.xlabel("t (s)")
+plt.ylabel("T (°C)")
+plt.title("Tea cooling")
+plt.show()
+```
+
+*Try:* change `sigma` from `0.4` to `2`, then run. Points scatter more and the error bars grow.
+
+## 2 · Fit Newton's law
+
+$T(t) = T_a + (T_0 - T_a)\,e^{-t/\tau}$. Which values of $T_a$, $T_0$, $\tau$ describe the data best?
+
+```{pyodide}
+#| caption: Fit
+from scipy.optimize import curve_fit
+
+def model(t, Ta, T0, tau):                 # the function we believe in
+    return Ta + (T0 - Ta) * np.exp(-t / tau)
+
+p0 = [20, 80, 100]                         # starting guess: Ta, T0, tau
+par, cov = curve_fit(model, t, T, p0=p0,
+                     sigma=np.full(t.size, sigma), absolute_sigma=True)   # least squares, weighted by the error bars
+err = np.sqrt(np.diag(cov))                # uncertainty of each parameter
+
+print(f"tau = {par[2]:.0f} ± {err[2]:.0f} s")
+print(f"Ta  = {par[0]:.1f} ± {err[0]:.1f} °C")
+
+tt = np.linspace(0, 600, 300)              # many points for a smooth curve
+plt.figure()
+plt.errorbar(t, T, yerr=sigma, fmt="o", capsize=3, label="data")
+plt.plot(tt, model(tt, *par), label="fit")
+plt.legend()
+plt.xlabel("t (s)")
+plt.ylabel("T (°C)")
+plt.show()
+```
+
+*Try:* change the starting guess `p0`, for example the last number from `100` to `5000`. A fit needs a reasonable starting point: with a bad one it can run away to absurd values.
+
+## 3 · Check the model
+
+A good model leaves residuals that look like random noise inside the error bars. The reduced $\chi^2$ puts a number on it: around 1 means the scatter matches the error bars, much larger means the model or the error bars are wrong.
+
+```{pyodide}
+#| caption: Residuals
+res = T - model(t, *par)                   # what the model does not explain
+chi2 = np.sum((res / sigma) ** 2) / (t.size - 3)   # reduced chi-squared (3 parameters)
+print(f"reduced chi² = {chi2:.2f}")
+
+plt.figure()
+plt.axhline(0, color="gray")
+plt.fill_between(t, -sigma, sigma, alpha=0.15)     # the band of one uncertainty
+plt.errorbar(t, res, yerr=sigma, fmt="o", capsize=3)
+plt.xlabel("t (s)")
+plt.ylabel("data − fit (°C)")
+plt.show()
+```
+
+*Try:* in step 2 replace `np.exp(-t / tau)` with `1 / (1 + t / tau)`, a different curve, and run steps 2 and 3 again. The residuals show a pattern and $\chi^2$ jumps far above 1.
+
+## 4 · Straighten it with a logarithm
+
+Taking the logarithm of $T - T_a$ turns the exponential into a straight line with slope $-1/\tau$. It is the same view as $\ln(T - T_a)$ in Mosaicus.
+
+```{pyodide}
+#| caption: Straight line
+Ta_room = 21.0                             # room temperature, measured separately
+y = np.log(T - Ta_room)                    # ln(T − Ta)
+dy = sigma / (T - Ta_room)                 # the logarithm changes the uncertainty of each point
+slope, intercept = np.polyfit(t, y, 1)     # straight line: y = slope·t + intercept
+
+print(f"tau = {-1 / slope:.0f} s  (from the slope)")
+
+plt.figure()
+plt.errorbar(t, y, yerr=dy, fmt="o", capsize=3)
+plt.plot(t, slope * t + intercept)
+plt.xlabel("t (s)")
+plt.ylabel("ln(T − Ta)")
+plt.show()
+```
+
+Look at the error bars: they grow as the tea cools, because the same $\sigma$ weighs more on a smaller $T - T_a$. *Try:* add `, w=1/dy` inside `np.polyfit(...)` and compare $\tau$ with step 2. If $T - T_a$ ever drops to zero or below, the logarithm breaks: a real limit of this method.
+
+## 5 · Make it yours
+
+Change one thing in step 1, then run steps 1 to 4 again:
+
+- the noise: `sigma = 0.4` → `2`. What happens to the uncertainty of $\tau$ in step 2?
+- fewer points: `np.arange(0, 600, 15.0)` → `np.arange(0, 600, 60.0)`
+- a faster cooling: `tau = 240.0` → `tau = 120.0`
+- the look: in step 0 swap a colour, or set `"axes.grid": False`, and run everything again.
+
+::: {.callout-note collapse="true"}
+## Words you just used
+
+- **array**: a list of numbers you can compute with all at once (`t`, `T`).
+- **function**: a recipe with inputs and one result (`model`).
+- **fit**: finding the parameters that bring a function closest to the data.
+- **uncertainty** (`sigma`, error bar): how much a reading can be off.
+- **residual**: data minus model, point by point.
+- **reduced χ²**: residuals measured in uncertainties; around 1 is a good fit.
+- **linearisation**: a change of variable that turns a curve into a straight line.
+:::
+
+::: {.callout-note collapse="true"}
+## About this page
+
+Python runs inside your browser (Pyodide, WebAssembly), so nothing you type is sent to a server. The first visit downloads tens of MB of Python files from a public content delivery network (jsDelivr), which can see your IP address; later visits use the browser cache. The data on this page are simulated. A version that uses real Mosaicus measurements comes next.
+:::

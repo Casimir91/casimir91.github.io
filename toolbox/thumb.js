@@ -197,33 +197,46 @@ const trigItem = (name, aria) => ({
   outer: { l: `${name}<sup>−1</sup>`, aria: `Inverse ${aria.toLowerCase()}`, ins: `\\${name}^{-1}\\left(#?\\right)` } });
 const TRIGS = [trigItem("sin", "Sine"), trigItem("cos", "Cosine"), trigItem("tan", "Tangent"), trigItem("cot", "Cotangent")];
 
-const KEYS = [
-  { l: "π", aria: "Pi", kind: "fn", ins: "\\pi", alts: [{ l: "e", aria: "Euler's number e", ins: "\\exponentialE" }] },
-  { ...TRIGS[0], kind: "fn mono", alts: TRIGS },
-  { l: "×10<sup>x</sup>", aria: "Times ten to the power", kind: "fn", ins: "\\times10^{#?}", ans: true, exit: true, alts: [
+/* Layout (iPhone-keyboard habits: delete on the right edge, equals bottom right):
+     ( )  sin  ×10ˣ  ÷
+     frac x²   √     ×
+     7    8    9     −
+     4    5    6     +
+     1    2    3     ⌫
+     π    0    .     =                                  */
+const K = {
+  paren: { l: "( )", aria: "Brackets", kind: "fn", act: "paren" },
+  trig: { ...TRIGS[0], kind: "fn mono", alts: TRIGS },
+  sci: { l: "×10<sup>x</sup>", aria: "Times ten to the power", kind: "fn", ins: "\\times10^{#?}", ans: true, exit: true, alts: [
     { l: "log", aria: "Logarithm base 10", ins: "\\log\\left(#?\\right)" },
     { l: "ln", aria: "Natural logarithm", ins: "\\ln\\left(#?\\right)" },
     { l: "10<sup>x</sup>", aria: "Ten to the power", ins: "10^{#?}" },
     { l: "e<sup>x</sup>", aria: "e to the power", ins: "\\exponentialE^{#?}" } ] },
-  { l: "⌫", aria: "Delete", kind: "ctl", cmd: "deleteBackward", alts: [{ l: "AC", aria: "Clear all", act: "clear" }] },
-
-  { l: FRAC_ICON, aria: "Fraction", kind: "hero", ins: "\\frac{#@}{#?}" },
-  { l: "x<sup>2</sup>", aria: "Square", kind: "fn", ins: "#@^{2}", pow: 2, ans: true, alts: [
+  div: { ...op("÷", "Divide", "\\div "), alts: [
+    { l: "%", aria: "Percent", ins: "\\%" }, { l: "n!", aria: "Factorial", ins: "!" }] },
+  frac: { l: FRAC_ICON, aria: "Fraction", kind: "hero", ins: "\\frac{#@}{#?}" },
+  sq: { l: "x<sup>2</sup>", aria: "Square", kind: "fn", ins: "#@^{2}", pow: 2, ans: true, alts: [
     { l: "x<sup>n</sup>", aria: "Power", ins: "#@^{#?}", ans: true },
     { l: "x<sup>3</sup>", aria: "Cube", ins: "#@^{3}", pow: 3, ans: true },
     { l: "x<sup>−1</sup>", aria: "Reciprocal", ins: "#@^{-1}", ans: true } ] },
-  { l: SQRT_ICON, aria: "Square root", kind: "fn", ins: "\\sqrt{#?}", alts: [
+  root: { l: SQRT_ICON, aria: "Square root", kind: "fn", ins: "\\sqrt{#?}", alts: [
     { l: "<sup class=\"n\">n</sup>√", aria: "Nth root (type the index first)", ins: "\\sqrt[#@]{#?}", nth: true },
     { l: "<sup class=\"n\">3</sup>√", aria: "Cube root", ins: "\\sqrt[3]{#?}" } ] },
-  { l: "( )", aria: "Brackets", kind: "fn", act: "paren" },
-
-  num("7"), num("8"), num("9"), { ...op("÷", "Divide", "\\div "), alts: [
-    { l: "%", aria: "Percent", ins: "\\%" }, { l: "n!", aria: "Factorial", ins: "!" }] },
-  num("4"), num("5"), num("6"), op("×", "Multiply", "\\times "),
-  num("1"), num("2"), num("3"), op("−", "Subtract", "-"),
-  num("0"), { l: ".", aria: "Decimal point", kind: "num", act: "point" },
-  { l: "=", aria: "Equals", kind: "eq", act: "equals", alts: [{ l: "Ans", aria: "Previous answer", ins: "\\mathrm{Ans}" }] },
-  op("+", "Add", "+"),
+  mul: op("×", "Multiply", "\\times "),
+  sub: op("−", "Subtract", "-"),
+  add: op("+", "Add", "+"),
+  del: { l: "⌫", aria: "Delete", kind: "ctl", cmd: "deleteBackward", alts: [{ l: "AC", aria: "Clear all", act: "clear" }] },
+  pi: { l: "π", aria: "Pi", kind: "fn", ins: "\\pi", alts: [{ l: "e", aria: "Euler's number e", ins: "\\exponentialE" }] },
+  point: { l: ".", aria: "Decimal point", kind: "num", act: "point" },
+  eq: { l: "=", aria: "Equals", kind: "eq", act: "equals", alts: [{ l: "Ans", aria: "Previous answer", ins: "\\mathrm{Ans}" }] },
+};
+const KEYS = [
+  K.paren, K.trig, K.sci, K.div,
+  K.frac, K.sq, K.root, K.mul,
+  num("7"), num("8"), num("9"), K.sub,
+  num("4"), num("5"), num("6"), K.add,
+  num("1"), num("2"), num("3"), K.del,
+  K.pi, num("0"), K.point, K.eq,
 ];
 
 /* "Cleared · Undo" */
@@ -293,10 +306,10 @@ const handBtn = $("handBtn");
 let hand = store.get("thumb-hand", "right") === "left" ? "left" : "right";
 function paintHand() {
   pad.classList.toggle("lefty", hand === "left");
-  // left hand: the right-hand column (operators, delete, brackets; the arrows in row 2) moves to the left; digits keep their order
+  // left hand: the right-hand column (operators, delete, equals) moves to the left; digits keep their order
   [...pad.children].forEach((el, i) => {
     const row = Math.floor(i / 4), col = i % 4;
-    // left hand: the right-hand column moves to the left; in the top row only π and ⌫ swap, so the two big fans stay central
+    // left hand: the right-hand column moves to the left; in the top row only ( ) and ÷ swap, so the two big fans stay central
     const c = hand !== "left" ? col : row === 0 ? [3, 1, 2, 0][col] : (col === 3 ? 0 : col + 1);
     el.style.order = String(row * 4 + c);
   });
@@ -388,3 +401,25 @@ $("tourSkip").addEventListener("click", closeTour);
 $("tourBtn").addEventListener("click", openTour);
 tour.addEventListener("keydown", (e) => { if (e.key === "Escape") closeTour(); });
 if (store.get("thumb-tour", "") !== "1") setTimeout(openTour, 500);
+
+/* ---------- app (PWA): installable and offline ---------- */
+{
+  const btn = $("pwaBtn"), meta = document.querySelector('meta[name="theme-color"]'), root = document.documentElement;
+  const paintTheme = () => meta && meta.setAttribute("content", getComputedStyle(document.body).backgroundColor ? rgbToHex(getComputedStyle(document.body).backgroundColor) : "#071d19");
+  const rgbToHex = (c) => { const m = c.match(/\d+/g); return m ? "#" + m.slice(0, 3).map((n) => (+n).toString(16).padStart(2, "0")).join("") : "#071d19"; };
+  paintTheme(); new MutationObserver(() => requestAnimationFrame(paintTheme)).observe(root, { attributes: true, attributeFilter: ["data-mode"] });
+  if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) addEventListener("load", () => navigator.serviceWorker.register("thumb-sw.js", { scope: "thumb.html" }).catch(() => {}));
+  const standalone = matchMedia("(display-mode: standalone)").matches || navigator.standalone;
+  const ios = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  let ask = null;
+  if (!standalone && ios) btn.hidden = false;                 // iOS has no install prompt: the button explains the steps
+  addEventListener("beforeinstallprompt", (e) => { e.preventDefault(); ask = e; if (!standalone) btn.hidden = false; });
+  addEventListener("appinstalled", () => { ask = null; btn.hidden = true; });
+  btn.addEventListener("click", async () => {
+    if (ask) { ask.prompt(); await ask.userChoice; ask = null; btn.hidden = true; return; }
+    const t = $("toast"), s = t.querySelector("span"), u = $("undoBtn"), was = s.textContent;
+    s.textContent = "Share → Add to Home Screen"; s.style.whiteSpace = "nowrap"; u.hidden = true; t.hidden = false; t.classList.add("show");
+    clearTimeout(undoTimer);
+    undoTimer = setTimeout(() => { t.classList.remove("show"); t.hidden = true; s.textContent = was; s.style.whiteSpace = ""; u.hidden = false; }, 6000);
+  });
+}

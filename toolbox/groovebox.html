@@ -254,7 +254,19 @@
   details.help > summary::-webkit-details-marker { display: none; }
   details.help[open] > summary { color: var(--fg); border-color: var(--primary); }
   details.help > :not(summary) { margin-top: .4rem; }
-  #helpAll { padding: .3rem .7rem; min-height: 2.25rem; }
+  #helpAll, #cfgBtn { padding: .3rem .7rem; min-height: 2.25rem; }
+  /* memory and reset */
+  dialog#cfgDlg { width: min(32rem, calc(100vw - 1.5rem)); max-height: calc(100dvh - 2rem); overflow-y: auto; padding: 1rem 1.1rem; border: 1px solid var(--border); border-radius: 1rem; background: var(--surface); color: var(--fg); }
+  dialog#cfgDlg::backdrop { background: rgba(0, 0, 0, .55); }
+  #cfgDlg h2 { margin: 0 0 .5rem; font-size: 1.15rem; font-weight: 600; } #cfgDlg h3 { margin: .9rem 0 .35rem; font-size: .95rem; font-weight: 600; }
+  #cfgDlg .sw { display: flex; gap: .65rem; align-items: flex-start; padding: .35rem 0; cursor: pointer; }
+  #cfgDlg .sw input { width: 1.35rem; height: 1.35rem; margin-top: .15rem; flex: none; accent-color: var(--accent); }
+  #cfgDlg .sw small { display: block; color: var(--muted); font-size: .84rem; line-height: 1.35; }
+  #cfgDlg .chips button { min-height: 2.4rem; }
+  #cfgWipe { width: 100%; min-height: 2.8rem; margin-top: .4rem; border-color: #e5484d; color: #e5484d; } #cfgWipe.armed { background: #e5484d; color: #fff; }
+  #cfgNote { min-height: 1.3rem; margin: .6rem 0 0; font-size: .86rem; color: var(--accent); }
+  #cfgClose { margin-top: .4rem; width: 100%; min-height: 2.6rem; }
+  .rsbtn { min-height: 2.2rem; padding: 0 .7rem; font-size: .82rem; color: var(--muted); border-style: dashed; grid-column: 1 / -1; }
   .grv header { display: flex; align-items: center; flex-wrap: wrap; gap: .2rem .6rem; } .grv header h1 { margin: 0; }
   details.help[open] { flex: 1 1 100%; }
   @media (max-width: 680px) { .slot { padding: .3rem .4rem; gap: .25rem; } .slot-h button { min-height: 2.35rem; } .slot-h { gap: .25rem; } .main-gap-fix { display: none; } }
@@ -350,9 +362,23 @@
     <a href="index.html">← Toolbox</a>
     <span class="status" id="status" aria-live="polite">Pick a drum loop to start</span>
     <button id="helpAll" class="toggle" aria-pressed="false" title="Show or hide all the descriptions" aria-label="Show or hide all the descriptions">ⓘ</button>
+    <button id="cfgBtn" title="Memory and reset" aria-label="Memory and reset" aria-haspopup="dialog">⚙</button>
     <button id="pwaInstall" class="toggle" hidden title="Install Groovebox as an app (works offline)">⤓ Install</button>
     <div class="themebar" id="themebar"></div>
   </div>
+
+  <dialog id="cfgDlg" aria-labelledby="cfgT">
+    <h2 id="cfgT">Memory &amp; reset</h2>
+    <label class="sw"><input type="checkbox" id="cfgRem"><span><b>Remember my settings</b><small>Sounds, patterns, mixer, effects: your browser keeps them on this device and gives them back at the next visit. Off: every visit starts clean and nothing is saved.</small></span></label>
+    <label class="sw"><input type="checkbox" id="cfgRemSong"><span><b>Remember my Songs and recorded loops</b><small>The Song timeline and the loops you saved from Pads and Keys. Off: they are erased now and not kept.</small></span></label>
+    <h3>Reset one instrument</h3>
+    <div class="chips" id="cfgInst"></div>
+    <h3>Start over</h3>
+    <label class="sw"><input type="checkbox" id="cfgWipeSongs"><span><b>Also erase my Songs and recorded loops</b><small>Unticked, they are kept.</small></span></label>
+    <button id="cfgWipe">↺ Start over</button>
+    <p id="cfgNote" aria-live="polite"></p>
+    <button id="cfgClose">Close</button>
+  </dialog>
 
   <main class="grv">
     <header>
