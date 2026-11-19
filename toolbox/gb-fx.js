@@ -282,5 +282,5 @@ export function initFx(api) {
   $('#sec-ws').addEventListener('toggle', () => { if (open('#sec-ws')) drawCurve(); });
   addEventListener('resize', () => { if (tabIsFx() && open('#sec-ws')) drawCurve(); });
   wsPaint(); $('#grChip').textContent = 'no sample'; requestAnimationFrame(frame);
-  return { redraw: () => { if (open('#sec-ws')) drawCurve(); }, chebChanged: () => { if (WS.preset === 'cheb') { chebFill(S.harm); wsApply(true); wsSave(); drawCurve(); } }, cloud };
+  return { save: () => { wsSave(); grSave(); }, redraw: () => { if (open('#sec-ws')) drawCurve(); }, chebChanged: () => { if (WS.preset === 'cheb') { chebFill(S.harm); wsApply(true); wsSave(); drawCurve(); } }, cloud };
 }

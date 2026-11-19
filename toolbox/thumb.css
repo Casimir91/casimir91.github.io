@@ -112,7 +112,7 @@ math-field::part(virtual-keyboard-toggle), math-field::part(menu-toggle) { displ
 
 .pad {
   height: var(--padh); flex: 0 0 auto;
-  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-template-rows: repeat(6, minmax(0, 1fr)); gap: .4rem;
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 1.3fr); grid-template-rows: repeat(6, minmax(0, 1fr)); gap: .4rem;
   -webkit-user-select: none; user-select: none; touch-action: manipulation;
 }
 .key {
@@ -248,3 +248,10 @@ math-field::part(virtual-keyboard-toggle), math-field::part(menu-toggle) { displ
 .toast.show { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
 .toast button { min-height: 2.1rem; padding: .2rem .9rem; border-radius: 999px; border: 0; background: var(--lime); color: var(--lime-fg); font-weight: 600; font-size: .95rem; }
 @media (min-width: 700px) { .toast { bottom: calc(100dvh - 7rem - var(--h, 800px) + var(--padh, 56dvh) + 5rem); } }
+
+/* installed app: no browser bar, so the "← Toolbox" link has nowhere to go */
+#pwaBtn[hidden] { display: none; }
+@media (display-mode: standalone) { .topbar > a { display: none; } .topbar { justify-content: flex-end; } }
+
+/* the right-hand column (operators, delete, equals) is a little wider, like the return key of the phone keyboard */
+.pad.lefty { grid-template-columns: minmax(0, 1.3fr) repeat(3, minmax(0, 1fr)); }

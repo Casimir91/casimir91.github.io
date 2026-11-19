@@ -18,10 +18,20 @@ const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const STEPS = 16, ROWS = 8;
 const WINS = [20, 100, 400]; // mix oscilloscope windows, ms
+/** What the browser remembers on this device (localStorage). Three kinds of key:
+ *  'ui' (open tab, folded lists, the two switches below) is always kept; 'settings' (sounds, patterns, mixer, effects) and 'songs' (Song timeline, recorded loops) can each be switched off:
+ *  then nothing of that kind is read or written, and what was saved is erased. */
 const store = {
-  get(k, d) { try { const v = localStorage.getItem('groovebox.' + k); return v == null ? d : JSON.parse(v); } catch { return d; } },
-  set(k, v) { try { localStorage.setItem('groovebox.' + k, JSON.stringify(v)); } catch { /* private mode */ } },
+  UI: new Set(['tab', 'help1', 'rack1', 'remember', 'rememberSong']), SONGS: new Set(['song1', 'lib1']),
+  keep: { settings: true, songs: true }, frozen: false,
+  kind(k) { return this.UI.has(k) ? 'ui' : this.SONGS.has(k) ? 'songs' : 'settings'; },
+  raw(k) { try { return JSON.parse(localStorage.getItem('groovebox.' + k)); } catch { return null; } },
+  get(k, d) { try { const kd = this.kind(k); if (kd !== 'ui' && !this.keep[kd]) return d; const v = localStorage.getItem('groovebox.' + k); return v == null ? d : JSON.parse(v); } catch { return d; } },
+  set(k, v) { try { const kd = this.kind(k); if (this.frozen || (kd !== 'ui' && !this.keep[kd])) return; localStorage.setItem('groovebox.' + k, JSON.stringify(v)); } catch { /* private mode */ } },
+  /** erase everything saved of one kind ('settings' or 'songs') */
+  wipe(kind) { try { for (const key of Object.keys(localStorage)) if (key.startsWith('groovebox.') && this.kind(key.slice(10)) === kind) localStorage.removeItem(key); } catch { /* private mode */ } },
 };
+store.keep.settings = store.raw('remember') !== false; store.keep.songs = store.raw('rememberSong') !== false;
 const WAVES = { choice: ['sine', 'sawtooth', 'square', 'triangle', 'custom'], labels: ['Sine', 'Saw', 'Square', 'Triangle', 'Custom'] };
 
 // ---------------------------------------------------------------- sounds and their parameters
@@ -1808,7 +1818,7 @@ function buildLoops() {
   $('#deck').innerHTML = SLOTS.map(([k, l]) => `<div class="slot${RACK[k] ? ' open' : ''}" data-slot="${k}" style="--h:${HUE[k]}"><div class="slot-h"><button class="gm toggle" data-gm="${GMK[k] || k}" aria-pressed="false" aria-label="Mute ${l}">M</button><button class="sl-toggle" data-rack="${k}" aria-expanded="${!!RACK[k]}" aria-label="${l}: show all the loops"><b>${l}</b><small class="slot-s"></small><i class="chev" aria-hidden="true"></i></button><button class="pa" data-pn="-1" data-slot="${k}" aria-label="${l}: previous loop">‹</button><button class="pa" data-pn="1" data-slot="${k}" aria-label="${l}: next loop">›</button><button class="lk toggle" data-lk="${k}" aria-pressed="false" aria-label="Lock ${l}: scenes do not change it">🔒</button></div>${k === 'drums' ? '<button class="tm" hidden></button>' : ''}<div class="clips" role="group" aria-label="${l} loops">` +
     `<button class="clip" data-slot="${k}" data-clip="mine" aria-pressed="false"><span>★ Mine</span></button>` +
     CLIPS[k].map((c, i) => grpHead(k, c, i, (g) => `<div class="cg">${g}</div>`) + `<button class="clip" data-slot="${k}" data-clip="${c.id}" aria-pressed="false"><span>${c.name}${c.bpm ? ` <small>${c.bpm}</small>` : ''}</span><i class="mini">${miniOf(k, c).map((v) => `<b class="${v ? 'on' : ''}"></b>`).join('')}</i></button>`).join('') +
-    `<button class="clip off" data-slot="${k}" data-clip="off" aria-pressed="false"><span>■ Off</span></button></div></div>`).join('');
+    `<button class="clip off" data-slot="${k}" data-clip="off" aria-pressed="false"><span>■ Off</span></button><button class="rsbtn" data-rs="${k}" title="Back to the factory sound, pattern and settings of ${l}">↺ Reset ${l}</button></div></div>`).join('');
 }
 const clipOf = (b) => (b.dataset.clip === 'off' ? null : b.dataset.clip);
 function paintLocks() { $$('[data-lk]').forEach((b) => { const on = !!S.lock[b.dataset.lk]; b.setAttribute('aria-pressed', String(on)); b.closest('.prow, .slot')?.classList.toggle('locked', on); }); }
@@ -2100,6 +2110,55 @@ const fx = initFx({
   all.addEventListener('click', () => setAll(all.getAttribute('aria-pressed') !== 'true'));
   if (store.get('help1', false)) setAll(true);
 }
+// ---------------------------------------------------------------- memory and reset: ⚙ in the top bar, ↺ at the end of each instrument's list
+const SLOT_SOUNDS = { drums: TRACKS.filter((_, i) => SLOT_OF[i] === 'drums').map((t) => t.id), bass: ['bass'], guitar: TRACKS.filter((_, i) => SLOT_OF[i] === 'guitar').map((t) => t.id), kchords: ['kchord'], klow: ['klow'], keys: ['arp'] };
+const ARP_FRESH = { arp: { mode: 'up', n: 3, oct: 2 }, kchord: { mode: 'chord', n: 3, oct: 1 }, klow: { mode: 'root', n: 3, oct: 1 } };
+/** One instrument back to how it is on a first visit: off, factory sound, factory pattern, factory mixer, unmuted, unlocked. The others stay as they are. */
+function resetInstrument(slot) {
+  const house = rowsFrom(STYLES.House.rows);
+  for (const id of SLOT_SOUNDS[slot]) {
+    const snd = SOUNDS.find((x) => x.id === id), p = S.params[id];
+    for (const k of Object.keys(p)) delete p[k];
+    Object.assign(p, Object.fromEntries(snd.params.map((q) => [q.k, q.def])));
+    Object.assign(S.mix[id], { vol: 80, send: 0 }); S.mute[id] = false;
+    const ti = TRACKS.findIndex((t) => t.id === id); if (ti >= 0) S.pat[ti] = [...house[ti]];
+    if (ARP_FRESH[id]) S.arps[id] = { ...ARP_FRESH[id] };
+  }
+  if (slot === 'bass') { const b = bassFrom(STYLES.House.bass); S.bass = b.b; S.bl = b.l; }
+  S.gmute[GMK[slot] || slot] = false; S.lock[slot] = false;
+  SL[slot].cur = null; SL[slot].next = undefined; delete lastClip[slot]; loopsDirty = true;
+  syncAll(); applyMix(); paintMixer(); paintLoops();
+  $('#status').textContent = `${SLOTS.find(([k]) => k === slot)[1]}: back to the factory settings`;
+}
+/** Erase what is saved and start again: the page reloads, so everything is rebuilt from scratch. */
+function startOver(withSongs) {
+  store.frozen = true; try { stop(); } catch { /* nothing playing */ }
+  store.wipe('settings'); if (withSongs) store.wipe('songs');
+  location.reload();
+}
+{
+  const dlg = $('#cfgDlg'), remS = $('#cfgRem'), remL = $('#cfgRemSong'), wipe = $('#cfgWipe'); let armed = 0;
+  $('#cfgInst').innerHTML = SLOTS.map(([k, l]) => `<button data-rs="${k}">↺ ${l}</button>`).join('');
+  const paintCfg = () => { remS.checked = store.keep.settings; remL.checked = store.keep.songs; };
+  const disarm = () => { clearTimeout(armed); wipe.classList.remove('armed'); wipe.textContent = '↺ Start over'; };
+  const setKeep = (kind, on) => {
+    store.keep[kind] = on; store.set(kind === 'settings' ? 'remember' : 'rememberSong', on);
+    if (!on) store.wipe(kind); // what was saved goes now
+    else if (kind === 'settings') { saveAll(); fx.save(); }
+    else { store.set('lib1', LIB); song.save(); }
+    $('#cfgNote').textContent = on ? 'Saving again from now on.' : 'Nothing of this kind is saved any more, and what was saved has been erased. The next visit starts clean.';
+  };
+  $('#cfgBtn').addEventListener('click', () => { paintCfg(); disarm(); $('#cfgNote').textContent = ''; dlg.showModal(); });
+  $('#cfgClose').addEventListener('click', () => dlg.close());
+  dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); }); // tap outside
+  remS.addEventListener('change', () => setKeep('settings', remS.checked));
+  remL.addEventListener('change', () => setKeep('songs', remL.checked));
+  wipe.addEventListener('click', () => { // two taps: the first arms the button
+    if (!wipe.classList.contains('armed')) { wipe.classList.add('armed'); wipe.textContent = $('#cfgWipeSongs').checked ? 'Sure? Tap again: erases everything, Songs too' : 'Sure? Tap again to erase'; armed = setTimeout(disarm, 4000); return; }
+    startOver($('#cfgWipeSongs').checked);
+  });
+}
+document.addEventListener('click', (e) => { const b = e.target.closest('[data-rs]'); if (!b) return; resetInstrument(b.dataset.rs); if (b.closest('#cfgInst')) $('#cfgNote').textContent = `${b.textContent.slice(2)} reset.`; });
 $('#vol').value = Math.round(S.vol * 100); paintReadout(); paintLoops(); paintTransport(); showView(UI.tab);
 renderLab();
 requestAnimationFrame(frame);
