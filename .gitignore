@@ -21,3 +21,6 @@ __pycache__/
 .vscode/
 
 **/*.quarto_ipynb
+
+# Cartella di transito: file da cancellare a mano
+_to_delete/
