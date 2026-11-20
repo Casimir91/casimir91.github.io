@@ -77,10 +77,38 @@ def tea(noise=0.4, interval=15, cooling_time=240, Ta=21.0, T0=78.0, seed=7, memo
     return t, T
 
 
+def newton_fit(t, T):
+    """The fit of chapter 5 packed in one call: returns the three numbers Ta, T0, tau of Newton's law."""
+    from scipy.optimize import curve_fit
+    def model(t, Ta, T0, tau):
+        return Ta + (T0 - Ta) * np.exp(-t / tau)
+    par, _ = curve_fit(model, t, T, p0=[20, T[0], 100])
+    return par
+
+
 # ---------------------------------------------------------------- graphs
 
-def show(t, T, sigma, model, par, cov):
-    """Draw data with error bars, the fitted curve, and the residuals. The chip is the reduced chi-squared."""
+def gauge(T, room=21.0):
+    """A thermometer lying down: the bar is the reading, the dashed line is the room."""
+    fig, a = plt.subplots(figsize=(7, 1.9))
+    a.barh([0], [100], height=0.55, color="#eeeeee")
+    a.barh([0], [T], height=0.55, color=COLORS[3] if T > room else COLORS[2])
+    a.axvline(room, color="gray", linestyle="--")
+    a.text(room, 0.52, "room", ha="center", va="bottom", color="gray", fontsize=10)
+    a.text(min(T, 100) + 1.5, 0, f"{T:g} °C", va="center", fontsize=15, fontweight="bold")
+    a.set_xlim(0, 112)
+    a.set_ylim(-0.5, 0.9)
+    a.set_yticks([])
+    a.grid(False)
+    a.spines["left"].set_visible(False)
+    a.set_xlabel("temperature (°C)")
+    tidy(fig)
+    plt.show()
+
+
+def show(t, T, sigma, model, par, cov, residuals=True):
+    """Draw data with error bars and the fitted curve. With residuals=True add the residual panel and the
+    reduced chi-squared chip (the traffic light)."""
     err = np.sqrt(np.diag(cov))
     res = T - model(t, *par)
     chi2 = np.sum((res / sigma) ** 2) / (t.size - len(par))
@@ -88,20 +116,25 @@ def show(t, T, sigma, model, par, cov):
     colour = GOOD if 0.5 <= chi2 <= 1.6 else WARN if chi2 <= 3 else BAD
 
     tt = np.linspace(t.min(), t.max(), 300)
-    fig, (a, b) = plt.subplots(2, 1, figsize=(7, 5.2), sharex=True,
-                               gridspec_kw={"height_ratios": [3, 1.5]})
+    if residuals:
+        fig, (a, b) = plt.subplots(2, 1, figsize=(7, 5.2), sharex=True,
+                                   gridspec_kw={"height_ratios": [3, 1.5]})
+    else:
+        fig, a = plt.subplots(figsize=(7, 3.8))
     a.errorbar(t, T, yerr=sigma, fmt="o", capsize=3, label="data")
     a.plot(tt, model(tt, *par), label="fit")
     a.set_ylabel("T (°C)")
     a.legend(loc="upper right", bbox_to_anchor=(1, 0.82))
     a.set_title(f"τ = {par[2]:.0f} ± {err[2]:.0f} s", loc="left", fontsize=14)
-    chip(a, f"χ² {chi2:.2f}", colour)
-
-    b.axhline(0, color="gray")
-    b.fill_between(t, -sigma, sigma, alpha=0.15)
-    b.errorbar(t, res, yerr=sigma, fmt="o", capsize=3)
-    b.set_xlabel("t (s)")
-    b.set_ylabel("data − fit")
+    if residuals:
+        chip(a, f"χ² {chi2:.2f}", colour)
+        b.axhline(0, color="gray")
+        b.fill_between(t, -sigma, sigma, alpha=0.15)
+        b.errorbar(t, res, yerr=sigma, fmt="o", capsize=3)
+        b.set_xlabel("t (s)")
+        b.set_ylabel("data − fit")
+    else:
+        a.set_xlabel("t (s)")
     tidy(fig)
     plt.show()
 

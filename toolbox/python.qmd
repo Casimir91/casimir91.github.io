@@ -1,7 +1,7 @@
 ---
 title: "Python Lab"
-subtitle: "Tea, cooling. Touch it."
-description: "Fit Newton's law of cooling with Python, right here in the browser. Drag, type, break. Nothing to install."
+subtitle: "From one thermometer reading to judging a measurement"
+description: "Learn data analysis with Python in eight small steps, right here in the browser. A cup of tea is cooling. Nothing to install."
 toc: false
 page-layout: full
 engine: markdown
@@ -26,24 +26,284 @@ format:
         - scipy
         - matplotlib
       cell-options:
-        autorun: true
+        autorun: false
         fig-dpi: 120
 ---
 
 :::::: {.lab-wrap}
 
 ```{=html}
-<nav class="lab-rail" aria-label="Steps">
-  <a class="lab-step" href="#step-drag"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h18M7 8l-4 4 4 4M17 8l4 4-4 4"/></svg><span>Drag</span></a>
-  <a class="lab-step" href="#step-type"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg><span>Type</span></a>
-  <a class="lab-step" href="#step-break"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg><span>Break</span></a>
+<div class="lab-hero">
+<p class="lab-lede">A cup of tea is cooling on your desk, and you are the one measuring it. In each step you guess first, then try, and the picture grows with you. About 45 minutes. Skip what you already know.</p>
+<figure class="lab-hero-fig"><svg class="lab-scene" data-stage="0" viewBox="0 0 360 210" role="img" aria-label="A cup of tea with a thermometer, and the graph of its cooling that grows as you learn"><rect class="sc-bg" x="0" y="0" width="360" height="210" rx="14"/><path class="sc-table" d="M10 180H350"/><g class="sc-steam"><path d="M46 98q-7-10 0-19q7-9 0-18"/><path d="M62 96q-7-10 0-19q7-9 0-18"/><path d="M78 98q-7-10 0-19q7-9 0-18"/></g><path class="sc-cup" d="M34 112H118L108 168Q106 178 96 178H56Q46 178 44 168Z"/><path class="sc-handle" d="M117 122q22 3 17 21q-4 12-19 10"/><ellipse class="sc-tea" cx="76" cy="113" rx="42" ry="7"/><ellipse class="sc-saucer" cx="76" cy="180" rx="58" ry="5"/><g data-from="1"><rect class="sc-th" x="90" y="60" width="8" height="64" rx="4"/><rect class="sc-hg" x="92" y="74" width="4" height="50" rx="2"/><text class="sc-txt" x="102" y="72">78.3 °C</text></g><g data-from="2"><rect class="sc-cell" x="158" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="172.5" y="26" text-anchor="middle">78.2</text><rect class="sc-cell" x="189" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="203.5" y="26" text-anchor="middle">74.9</text><rect class="sc-cell" x="220" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="234.5" y="26" text-anchor="middle">71.0</text><rect class="sc-cell" x="251" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="265.5" y="26" text-anchor="middle">68.6</text><rect class="sc-cell" x="282" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="296.5" y="26" text-anchor="middle">65.1</text><rect class="sc-cell" x="313" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="327.5" y="26" text-anchor="middle">62.9</text></g><g data-from="3"><path class="sc-axes" d="M158 44V168H350"/><circle class="sc-pt" cx="168" cy="52" r="3.4"/><circle class="sc-pt" cx="187" cy="69.4" r="3.4"/><circle class="sc-pt" cx="206" cy="89.9" r="3.4"/><circle class="sc-pt" cx="225" cy="99.2" r="3.4"/><circle class="sc-pt" cx="244" cy="113.9" r="3.4"/><circle class="sc-pt" cx="263" cy="117.1" r="3.4"/><circle class="sc-pt" cx="282" cy="127.1" r="3.4"/><circle class="sc-pt" cx="301" cy="127.9" r="3.4"/><circle class="sc-pt" cx="320" cy="137.6" r="3.4"/><circle class="sc-pt" cx="339" cy="137.5" r="3.4"/></g><g data-from="4"><path class="sc-err" d="M168 45V59M165 45H171M165 59H171"/><path class="sc-err" d="M187 62.4V76.4M184 62.4H190M184 76.4H190"/><path class="sc-err" d="M206 82.9V96.9M203 82.9H209M203 96.9H209"/><path class="sc-err" d="M225 92.2V106.2M222 92.2H228M222 106.2H228"/><path class="sc-err" d="M244 106.9V120.9M241 106.9H247M241 120.9H247"/><path class="sc-err" d="M263 110.1V124.1M260 110.1H266M260 124.1H266"/><path class="sc-err" d="M282 120.1V134.1M279 120.1H285M279 134.1H285"/><path class="sc-err" d="M301 120.9V134.9M298 120.9H304M298 134.9H304"/><path class="sc-err" d="M320 130.6V144.6M317 130.6H323M317 144.6H323"/><path class="sc-err" d="M339 130.5V144.5M336 130.5H342M336 144.5H342"/></g><g data-from="5"><path class="sc-fit" pathLength="100" d="M168 52 L173 57.7 L178 63 L183 68.1 L188 72.9 L193 77.4 L198 81.6 L203 85.6 L208 89.4 L213 92.9 L218 96.3 L223 99.4 L228 102.4 L233 105.2 L238 107.9 L243 110.4 L248 112.8 L253 115 L258 117.1 L263 119.1 L268 121 L273 122.7 L278 124.4 L283 125.9 L288 127.4 L293 128.8 L298 130.1 L303 131.4 L308 132.6 L313 133.7 L318 134.7 L323 135.7 L328 136.6 L333 137.5 L338 138.3"/><text class="sc-txt" x="232" y="82">τ = 237 ± 3 s</text></g><g data-from="6"><path class="sc-res" d="M168 52V52"/><path class="sc-res" d="M187 69.4V71.9"/><path class="sc-res" d="M206 89.9V87.9"/><path class="sc-res" d="M225 99.2V100.7"/><path class="sc-res" d="M244 113.9V110.9"/><path class="sc-res" d="M263 117.1V119.1"/><path class="sc-res" d="M282 127.1V125.6"/><path class="sc-res" d="M301 127.9V130.9"/><path class="sc-res" d="M320 137.6V135.1"/><path class="sc-res" d="M339 137.5V138.5"/><circle class="sc-light" cx="326" cy="60" r="9"/><text class="sc-small" x="326" y="84" text-anchor="middle">χ² 0.7</text></g><g data-from="7"><path class="sc-rep" d="M168 56 L173 62.6 L178 68.7 L183 74.5 L188 79.8 L193 84.8 L198 89.5 L203 93.9 L208 98 L213 101.8 L218 105.3 L223 108.7 L228 111.8 L233 114.7 L238 117.4 L243 119.9 L248 122.3 L253 124.5 L258 126.6 L263 128.5 L268 130.3 L273 132 L278 133.6 L283 135.1 L288 136.4 L293 137.7 L298 138.9 L303 140.1 L308 141.1 L313 142.1 L318 143 L323 143.9 L328 144.7 L333 145.4 L338 146.1"/><path class="sc-rep" d="M168 49 L173 55.1 L178 60.8 L183 66.2 L188 71.2 L193 76 L198 80.4 L203 84.6 L208 88.5 L213 92.2 L218 95.7 L223 98.9 L228 102 L233 104.8 L238 107.5 L243 110.1 L248 112.4 L253 114.7 L258 116.8 L263 118.7 L268 120.6 L273 122.3 L278 123.9 L283 125.5 L288 126.9 L293 128.2 L298 129.5 L303 130.7 L308 131.8 L313 132.9 L318 133.8 L323 134.8 L328 135.6 L333 136.4 L338 137.2"/><path class="sc-rep" d="M168 55 L173 60.3 L178 65.4 L183 70.1 L188 74.6 L193 78.9 L198 83 L203 86.8 L208 90.4 L213 93.9 L218 97.1 L223 100.2 L228 103.1 L233 105.9 L238 108.5 L243 110.9 L248 113.3 L253 115.5 L258 117.6 L263 119.6 L268 121.5 L273 123.3 L278 125 L283 126.6 L288 128.1 L293 129.5 L298 130.9 L303 132.1 L308 133.4 L313 134.5 L318 135.6 L323 136.6 L328 137.6 L333 138.5 L338 139.4"/><path class="sc-rep" d="M168 48 L173 53 L178 57.8 L183 62.3 L188 66.6 L193 70.6 L198 74.5 L203 78.2 L208 81.7 L213 85 L218 88.1 L223 91.1 L228 94 L233 96.7 L238 99.2 L243 101.7 L248 104 L253 106.2 L258 108.3 L263 110.3 L268 112.2 L273 113.9 L278 115.6 L283 117.3 L288 118.8 L293 120.3 L298 121.7 L303 123 L308 124.2 L313 125.4 L318 126.5 L323 127.6 L328 128.6 L333 129.6 L338 130.5"/><path class="sc-rep" d="M168 58 L173 63.9 L178 69.4 L183 74.5 L188 79.4 L193 84 L198 88.4 L203 92.4 L208 96.3 L213 99.9 L218 103.3 L223 106.5 L228 109.5 L233 112.3 L238 115 L243 117.5 L248 119.9 L253 122.1 L258 124.2 L263 126.2 L268 128.1 L273 129.8 L278 131.5 L283 133 L288 134.5 L293 135.8 L298 137.1 L303 138.4 L308 139.5 L313 140.6 L318 141.6 L323 142.6 L328 143.5 L333 144.3 L338 145.1"/><path class="sc-rep" d="M168 46 L173 51.5 L178 56.7 L183 61.7 L188 66.3 L193 70.7 L198 74.9 L203 78.8 L208 82.5 L213 86 L218 89.3 L223 92.4 L228 95.4 L233 98.2 L238 100.8 L243 103.3 L248 105.7 L253 107.9 L258 110 L263 112 L268 113.9 L273 115.6 L278 117.3 L283 118.9 L288 120.4 L293 121.8 L298 123.1 L303 124.4 L308 125.6 L313 126.7 L318 127.8 L323 128.8 L328 129.7 L333 130.6 L338 131.5"/></g><g data-from="8"><path class="sc-noise" d="M166 158.7 L175.3 157 L184.6 158.3 L193.9 161.4 L203.2 161.2 L212.5 157.8 L221.8 154.1 L231.1 153.9 L240.4 156.4 L249.7 159.3 L259 159 L268.3 155.7 L277.6 152.1 L286.9 152 L296.2 154.6 L305.5 157.3 L314.8 156.7 L324.1 154.5 L333.4 155.4 L342.7 158.2"/><rect class="sc-chip" x="172" y="116" width="62" height="16" rx="8"/><text class="sc-chiptxt" x="203" y="127.5" text-anchor="middle">memory</text></g></svg></figure>
+</div>
+```
+
+```{=html}
+<nav class="lab-rail" aria-label="Chapters">
+  <a class="lab-step" href="#ch1"><span class="lab-n">1</span><span>One reading</span></a>
+  <a class="lab-step" href="#ch2"><span class="lab-n">2</span><span>Many readings</span></a>
+  <a class="lab-step" href="#ch3"><span class="lab-n">3</span><span>See it</span></a>
+  <a class="lab-step" href="#ch4"><span class="lab-n">4</span><span>Wobble</span></a>
+  <a class="lab-step" href="#ch5"><span class="lab-n">5</span><span>Fit</span></a>
+  <a class="lab-step" href="#ch6"><span class="lab-n">6</span><span>Judge</span></a>
+  <a class="lab-step" href="#ch7"><span class="lab-n">7</span><span>Repeat</span></a>
+  <a class="lab-step" href="#ch8"><span class="lab-n">8</span><span>Noise</span></a>
 </nav>
 ```
 
-::::: {#step-drag .lab-section}
+::::: {#ch1 .lab-section}
 
 ```{=html}
-<h2 class="lab-h"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h18M7 8l-4 4 4 4M17 8l4 4-4 4"/></svg>Drag <span class="lab-cue" aria-hidden="true">⇆</span></h2>
+<div class="lab-head">
+  <h2 class="lab-h"><span class="lab-n">1</span>One reading</h2>
+  <a class="lab-skip" href="#ch2">I know this → skip</a>
+</div>
+<div class="lab-intro">
+<div class="lab-intro-text">
+<p class="lab-story">The thermometer shows a number. Let's give it a name.</p>
+<details class="lab-ctx"><summary>Why does this matter?</summary><p>Every measurement is a number with a unit: 78.3 °C. Giving it a name (a variable) is the first step of every analysis, from a school lab to a space probe.</p></details>
+<div class="lab-ask" data-right="2">
+<p class="lab-q"><span class="lab-qm" aria-hidden="true">?</span><span>The tea reads 78.3 °C and the room 21 °C. Which number tells you how fast the tea is cooling right now?</span></p>
+<div class="lab-opts" role="group" aria-label="Your guess">
+<button type="button" class="lab-opt" data-opt="1" aria-pressed="false">78.3, the temperature of the tea</button>
+<button type="button" class="lab-opt" data-opt="2" aria-pressed="false">57.3, how much hotter it is than the room</button>
+<button type="button" class="lab-opt" data-opt="3" aria-pressed="false">21, the temperature of the room</button>
+</div>
+<button type="button" class="lab-justshow">I would rather just see it</button>
+<p class="lab-reveal" hidden><strong class="lab-verdict"></strong> The hotter the tea is above the room, the faster it cools: that gap is what Newton's law is about. You just computed it: 57.3 °C.</p>
+</div>
+<p class="lab-bubble" hidden data-text="Try changing 78.3 to 40, then press Run Code."></p>
+</div>
+<figure class="lab-fig"><svg class="lab-scene" data-stage="1" viewBox="0 0 360 210" role="img" aria-label="A cup of tea with a thermometer, and the graph of its cooling that grows as you learn"><rect class="sc-bg" x="0" y="0" width="360" height="210" rx="14"/><path class="sc-table" d="M10 180H350"/><g class="sc-steam"><path d="M46 98q-7-10 0-19q7-9 0-18"/><path d="M62 96q-7-10 0-19q7-9 0-18"/><path d="M78 98q-7-10 0-19q7-9 0-18"/></g><path class="sc-cup" d="M34 112H118L108 168Q106 178 96 178H56Q46 178 44 168Z"/><path class="sc-handle" d="M117 122q22 3 17 21q-4 12-19 10"/><ellipse class="sc-tea" cx="76" cy="113" rx="42" ry="7"/><ellipse class="sc-saucer" cx="76" cy="180" rx="58" ry="5"/><g data-from="1" data-new="1"><rect class="sc-th" x="90" y="60" width="8" height="64" rx="4"/><rect class="sc-hg" x="92" y="74" width="4" height="50" rx="2"/><text class="sc-txt" x="102" y="72">78.3 °C</text></g><g data-from="2"><rect class="sc-cell" x="158" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="172.5" y="26" text-anchor="middle">78.2</text><rect class="sc-cell" x="189" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="203.5" y="26" text-anchor="middle">74.9</text><rect class="sc-cell" x="220" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="234.5" y="26" text-anchor="middle">71.0</text><rect class="sc-cell" x="251" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="265.5" y="26" text-anchor="middle">68.6</text><rect class="sc-cell" x="282" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="296.5" y="26" text-anchor="middle">65.1</text><rect class="sc-cell" x="313" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="327.5" y="26" text-anchor="middle">62.9</text></g><g data-from="3"><path class="sc-axes" d="M158 44V168H350"/><circle class="sc-pt" cx="168" cy="52" r="3.4"/><circle class="sc-pt" cx="187" cy="69.4" r="3.4"/><circle class="sc-pt" cx="206" cy="89.9" r="3.4"/><circle class="sc-pt" cx="225" cy="99.2" r="3.4"/><circle class="sc-pt" cx="244" cy="113.9" r="3.4"/><circle class="sc-pt" cx="263" cy="117.1" r="3.4"/><circle class="sc-pt" cx="282" cy="127.1" r="3.4"/><circle class="sc-pt" cx="301" cy="127.9" r="3.4"/><circle class="sc-pt" cx="320" cy="137.6" r="3.4"/><circle class="sc-pt" cx="339" cy="137.5" r="3.4"/></g><g data-from="4"><path class="sc-err" d="M168 45V59M165 45H171M165 59H171"/><path class="sc-err" d="M187 62.4V76.4M184 62.4H190M184 76.4H190"/><path class="sc-err" d="M206 82.9V96.9M203 82.9H209M203 96.9H209"/><path class="sc-err" d="M225 92.2V106.2M222 92.2H228M222 106.2H228"/><path class="sc-err" d="M244 106.9V120.9M241 106.9H247M241 120.9H247"/><path class="sc-err" d="M263 110.1V124.1M260 110.1H266M260 124.1H266"/><path class="sc-err" d="M282 120.1V134.1M279 120.1H285M279 134.1H285"/><path class="sc-err" d="M301 120.9V134.9M298 120.9H304M298 134.9H304"/><path class="sc-err" d="M320 130.6V144.6M317 130.6H323M317 144.6H323"/><path class="sc-err" d="M339 130.5V144.5M336 130.5H342M336 144.5H342"/></g><g data-from="5"><path class="sc-fit" pathLength="100" d="M168 52 L173 57.7 L178 63 L183 68.1 L188 72.9 L193 77.4 L198 81.6 L203 85.6 L208 89.4 L213 92.9 L218 96.3 L223 99.4 L228 102.4 L233 105.2 L238 107.9 L243 110.4 L248 112.8 L253 115 L258 117.1 L263 119.1 L268 121 L273 122.7 L278 124.4 L283 125.9 L288 127.4 L293 128.8 L298 130.1 L303 131.4 L308 132.6 L313 133.7 L318 134.7 L323 135.7 L328 136.6 L333 137.5 L338 138.3"/><text class="sc-txt" x="232" y="82">τ = 237 ± 3 s</text></g><g data-from="6"><path class="sc-res" d="M168 52V52"/><path class="sc-res" d="M187 69.4V71.9"/><path class="sc-res" d="M206 89.9V87.9"/><path class="sc-res" d="M225 99.2V100.7"/><path class="sc-res" d="M244 113.9V110.9"/><path class="sc-res" d="M263 117.1V119.1"/><path class="sc-res" d="M282 127.1V125.6"/><path class="sc-res" d="M301 127.9V130.9"/><path class="sc-res" d="M320 137.6V135.1"/><path class="sc-res" d="M339 137.5V138.5"/><circle class="sc-light" cx="326" cy="60" r="9"/><text class="sc-small" x="326" y="84" text-anchor="middle">χ² 0.7</text></g><g data-from="7"><path class="sc-rep" d="M168 56 L173 62.6 L178 68.7 L183 74.5 L188 79.8 L193 84.8 L198 89.5 L203 93.9 L208 98 L213 101.8 L218 105.3 L223 108.7 L228 111.8 L233 114.7 L238 117.4 L243 119.9 L248 122.3 L253 124.5 L258 126.6 L263 128.5 L268 130.3 L273 132 L278 133.6 L283 135.1 L288 136.4 L293 137.7 L298 138.9 L303 140.1 L308 141.1 L313 142.1 L318 143 L323 143.9 L328 144.7 L333 145.4 L338 146.1"/><path class="sc-rep" d="M168 49 L173 55.1 L178 60.8 L183 66.2 L188 71.2 L193 76 L198 80.4 L203 84.6 L208 88.5 L213 92.2 L218 95.7 L223 98.9 L228 102 L233 104.8 L238 107.5 L243 110.1 L248 112.4 L253 114.7 L258 116.8 L263 118.7 L268 120.6 L273 122.3 L278 123.9 L283 125.5 L288 126.9 L293 128.2 L298 129.5 L303 130.7 L308 131.8 L313 132.9 L318 133.8 L323 134.8 L328 135.6 L333 136.4 L338 137.2"/><path class="sc-rep" d="M168 55 L173 60.3 L178 65.4 L183 70.1 L188 74.6 L193 78.9 L198 83 L203 86.8 L208 90.4 L213 93.9 L218 97.1 L223 100.2 L228 103.1 L233 105.9 L238 108.5 L243 110.9 L248 113.3 L253 115.5 L258 117.6 L263 119.6 L268 121.5 L273 123.3 L278 125 L283 126.6 L288 128.1 L293 129.5 L298 130.9 L303 132.1 L308 133.4 L313 134.5 L318 135.6 L323 136.6 L328 137.6 L333 138.5 L338 139.4"/><path class="sc-rep" d="M168 48 L173 53 L178 57.8 L183 62.3 L188 66.6 L193 70.6 L198 74.5 L203 78.2 L208 81.7 L213 85 L218 88.1 L223 91.1 L228 94 L233 96.7 L238 99.2 L243 101.7 L248 104 L253 106.2 L258 108.3 L263 110.3 L268 112.2 L273 113.9 L278 115.6 L283 117.3 L288 118.8 L293 120.3 L298 121.7 L303 123 L308 124.2 L313 125.4 L318 126.5 L323 127.6 L328 128.6 L333 129.6 L338 130.5"/><path class="sc-rep" d="M168 58 L173 63.9 L178 69.4 L183 74.5 L188 79.4 L193 84 L198 88.4 L203 92.4 L208 96.3 L213 99.9 L218 103.3 L223 106.5 L228 109.5 L233 112.3 L238 115 L243 117.5 L248 119.9 L253 122.1 L258 124.2 L263 126.2 L268 128.1 L273 129.8 L278 131.5 L283 133 L288 134.5 L293 135.8 L298 137.1 L303 138.4 L308 139.5 L313 140.6 L318 141.6 L323 142.6 L328 143.5 L333 144.3 L338 145.1"/><path class="sc-rep" d="M168 46 L173 51.5 L178 56.7 L183 61.7 L188 66.3 L193 70.7 L198 74.9 L203 78.8 L208 82.5 L213 86 L218 89.3 L223 92.4 L228 95.4 L233 98.2 L238 100.8 L243 103.3 L248 105.7 L253 107.9 L258 110 L263 112 L268 113.9 L273 115.6 L278 117.3 L283 118.9 L288 120.4 L293 121.8 L298 123.1 L303 124.4 L308 125.6 L313 126.7 L318 127.8 L323 128.8 L328 129.7 L333 130.6 L338 131.5"/></g><g data-from="8"><path class="sc-noise" d="M166 158.7 L175.3 157 L184.6 158.3 L193.9 161.4 L203.2 161.2 L212.5 157.8 L221.8 154.1 L231.1 153.9 L240.4 156.4 L249.7 159.3 L259 159 L268.3 155.7 L277.6 152.1 L286.9 152 L296.2 154.6 L305.5 157.3 L314.8 156.7 L324.1 154.5 L333.4 155.4 L342.7 158.2"/><rect class="sc-chip" x="172" y="116" width="62" height="16" rx="8"/><text class="sc-chiptxt" x="203" y="127.5" text-anchor="middle">memory</text></g></svg></figure>
+</div>
+<p class="lab-hint">Change the number. Press Run Code.</p>
+```
+
+:::: {.lab-pair .lab-lazy}
+
+```{pyodide}
+from tealab import gauge     # a helper that draws a thermometer
+
+T = 78.3      # ← try 40      the thermometer reading (°C)
+gauge(T)
+```
+
+::::
+
+```{=html}
+<p class="lab-sub"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg>Your turn</p>
+<p class="lab-hint">Fill in the blank (<code>___</code>). Press Run Code.</p>
+```
+
+:::: {.lab-pair .lab-turn data-nudge="Replace ___ with a subtraction: the tea minus the room. Then press Run Code."}
+
+```{pyodide}
+T = 78.3          # tea (°C)
+room = 21.0       # room (°C)
+
+gap = ___         # ← how much hotter is the tea than the room?
+print("gap =", round(gap, 1), "°C")
+```
+
+::::
+
+```{=html}
+<details class="lab-solution"><summary>Stuck? Show the answer</summary>
+<pre><code>gap = T - room</code></pre></details>
+```
+
+```{=html}
+<div class="lab-wrapup">
+  <p class="lab-can"><strong>Now you can</strong> store a measurement in a variable and calculate with it.</p>
+  <p class="lab-because" style="margin:0;opacity:.85;max-width:26rem">One reading says nothing about cooling. We need many.</p>
+  <a class="lab-next" href="#ch2"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>2 · Many readings</a>
+</div>
+```
+
+:::::
+
+::::: {#ch2 .lab-section}
+
+```{=html}
+<div class="lab-head">
+  <h2 class="lab-h"><span class="lab-n">2</span>Many readings</h2>
+  <a class="lab-skip" href="#ch3">I know this → skip</a>
+</div>
+<div class="lab-intro">
+<div class="lab-intro-text">
+<p class="lab-story">Every 15 seconds, one more reading. A row of numbers with one name is an array.</p>
+<details class="lab-ctx"><summary>Why does this matter?</summary><p>A data set is a list of readings tied to time. A NumPy array does arithmetic on the whole list at once, which is why scientists use it instead of plain lists.</p></details>
+<div class="lab-ask" data-right="2">
+<p class="lab-q"><span class="lab-qm" aria-hidden="true">?</span><span>The tea starts at 78.2 °C and the last of 6 readings, 75 s later, is 62.9 °C. About how much did it cool in total?</span></p>
+<div class="lab-opts" role="group" aria-label="Your guess">
+<button type="button" class="lab-opt" data-opt="1" aria-pressed="false">About 5 °C</button>
+<button type="button" class="lab-opt" data-opt="2" aria-pressed="false">About 15 °C</button>
+<button type="button" class="lab-opt" data-opt="3" aria-pressed="false">About 40 °C</button>
+</div>
+<button type="button" class="lab-justshow">I would rather just see it</button>
+<p class="lab-reveal" hidden><strong class="lab-verdict"></strong> 15.3 °C in 75 s, and you got it with T[0] - T[-1]. Keep the number: in the next chapters you will see that the cooling slows down.</p>
+</div>
+<p class="lab-bubble" hidden data-text="Change one of the readings and press Run Code. What changes?"></p>
+</div>
+<figure class="lab-fig"><svg class="lab-scene" data-stage="2" viewBox="0 0 360 210" role="img" aria-label="A cup of tea with a thermometer, and the graph of its cooling that grows as you learn"><rect class="sc-bg" x="0" y="0" width="360" height="210" rx="14"/><path class="sc-table" d="M10 180H350"/><g class="sc-steam"><path d="M46 98q-7-10 0-19q7-9 0-18"/><path d="M62 96q-7-10 0-19q7-9 0-18"/><path d="M78 98q-7-10 0-19q7-9 0-18"/></g><path class="sc-cup" d="M34 112H118L108 168Q106 178 96 178H56Q46 178 44 168Z"/><path class="sc-handle" d="M117 122q22 3 17 21q-4 12-19 10"/><ellipse class="sc-tea" cx="76" cy="113" rx="42" ry="7"/><ellipse class="sc-saucer" cx="76" cy="180" rx="58" ry="5"/><g data-from="1"><rect class="sc-th" x="90" y="60" width="8" height="64" rx="4"/><rect class="sc-hg" x="92" y="74" width="4" height="50" rx="2"/><text class="sc-txt" x="102" y="72">78.3 °C</text></g><g data-from="2" data-new="1"><rect class="sc-cell" x="158" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="172.5" y="26" text-anchor="middle">78.2</text><rect class="sc-cell" x="189" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="203.5" y="26" text-anchor="middle">74.9</text><rect class="sc-cell" x="220" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="234.5" y="26" text-anchor="middle">71.0</text><rect class="sc-cell" x="251" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="265.5" y="26" text-anchor="middle">68.6</text><rect class="sc-cell" x="282" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="296.5" y="26" text-anchor="middle">65.1</text><rect class="sc-cell" x="313" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="327.5" y="26" text-anchor="middle">62.9</text></g><g data-from="3"><path class="sc-axes" d="M158 44V168H350"/><circle class="sc-pt" cx="168" cy="52" r="3.4"/><circle class="sc-pt" cx="187" cy="69.4" r="3.4"/><circle class="sc-pt" cx="206" cy="89.9" r="3.4"/><circle class="sc-pt" cx="225" cy="99.2" r="3.4"/><circle class="sc-pt" cx="244" cy="113.9" r="3.4"/><circle class="sc-pt" cx="263" cy="117.1" r="3.4"/><circle class="sc-pt" cx="282" cy="127.1" r="3.4"/><circle class="sc-pt" cx="301" cy="127.9" r="3.4"/><circle class="sc-pt" cx="320" cy="137.6" r="3.4"/><circle class="sc-pt" cx="339" cy="137.5" r="3.4"/></g><g data-from="4"><path class="sc-err" d="M168 45V59M165 45H171M165 59H171"/><path class="sc-err" d="M187 62.4V76.4M184 62.4H190M184 76.4H190"/><path class="sc-err" d="M206 82.9V96.9M203 82.9H209M203 96.9H209"/><path class="sc-err" d="M225 92.2V106.2M222 92.2H228M222 106.2H228"/><path class="sc-err" d="M244 106.9V120.9M241 106.9H247M241 120.9H247"/><path class="sc-err" d="M263 110.1V124.1M260 110.1H266M260 124.1H266"/><path class="sc-err" d="M282 120.1V134.1M279 120.1H285M279 134.1H285"/><path class="sc-err" d="M301 120.9V134.9M298 120.9H304M298 134.9H304"/><path class="sc-err" d="M320 130.6V144.6M317 130.6H323M317 144.6H323"/><path class="sc-err" d="M339 130.5V144.5M336 130.5H342M336 144.5H342"/></g><g data-from="5"><path class="sc-fit" pathLength="100" d="M168 52 L173 57.7 L178 63 L183 68.1 L188 72.9 L193 77.4 L198 81.6 L203 85.6 L208 89.4 L213 92.9 L218 96.3 L223 99.4 L228 102.4 L233 105.2 L238 107.9 L243 110.4 L248 112.8 L253 115 L258 117.1 L263 119.1 L268 121 L273 122.7 L278 124.4 L283 125.9 L288 127.4 L293 128.8 L298 130.1 L303 131.4 L308 132.6 L313 133.7 L318 134.7 L323 135.7 L328 136.6 L333 137.5 L338 138.3"/><text class="sc-txt" x="232" y="82">τ = 237 ± 3 s</text></g><g data-from="6"><path class="sc-res" d="M168 52V52"/><path class="sc-res" d="M187 69.4V71.9"/><path class="sc-res" d="M206 89.9V87.9"/><path class="sc-res" d="M225 99.2V100.7"/><path class="sc-res" d="M244 113.9V110.9"/><path class="sc-res" d="M263 117.1V119.1"/><path class="sc-res" d="M282 127.1V125.6"/><path class="sc-res" d="M301 127.9V130.9"/><path class="sc-res" d="M320 137.6V135.1"/><path class="sc-res" d="M339 137.5V138.5"/><circle class="sc-light" cx="326" cy="60" r="9"/><text class="sc-small" x="326" y="84" text-anchor="middle">χ² 0.7</text></g><g data-from="7"><path class="sc-rep" d="M168 56 L173 62.6 L178 68.7 L183 74.5 L188 79.8 L193 84.8 L198 89.5 L203 93.9 L208 98 L213 101.8 L218 105.3 L223 108.7 L228 111.8 L233 114.7 L238 117.4 L243 119.9 L248 122.3 L253 124.5 L258 126.6 L263 128.5 L268 130.3 L273 132 L278 133.6 L283 135.1 L288 136.4 L293 137.7 L298 138.9 L303 140.1 L308 141.1 L313 142.1 L318 143 L323 143.9 L328 144.7 L333 145.4 L338 146.1"/><path class="sc-rep" d="M168 49 L173 55.1 L178 60.8 L183 66.2 L188 71.2 L193 76 L198 80.4 L203 84.6 L208 88.5 L213 92.2 L218 95.7 L223 98.9 L228 102 L233 104.8 L238 107.5 L243 110.1 L248 112.4 L253 114.7 L258 116.8 L263 118.7 L268 120.6 L273 122.3 L278 123.9 L283 125.5 L288 126.9 L293 128.2 L298 129.5 L303 130.7 L308 131.8 L313 132.9 L318 133.8 L323 134.8 L328 135.6 L333 136.4 L338 137.2"/><path class="sc-rep" d="M168 55 L173 60.3 L178 65.4 L183 70.1 L188 74.6 L193 78.9 L198 83 L203 86.8 L208 90.4 L213 93.9 L218 97.1 L223 100.2 L228 103.1 L233 105.9 L238 108.5 L243 110.9 L248 113.3 L253 115.5 L258 117.6 L263 119.6 L268 121.5 L273 123.3 L278 125 L283 126.6 L288 128.1 L293 129.5 L298 130.9 L303 132.1 L308 133.4 L313 134.5 L318 135.6 L323 136.6 L328 137.6 L333 138.5 L338 139.4"/><path class="sc-rep" d="M168 48 L173 53 L178 57.8 L183 62.3 L188 66.6 L193 70.6 L198 74.5 L203 78.2 L208 81.7 L213 85 L218 88.1 L223 91.1 L228 94 L233 96.7 L238 99.2 L243 101.7 L248 104 L253 106.2 L258 108.3 L263 110.3 L268 112.2 L273 113.9 L278 115.6 L283 117.3 L288 118.8 L293 120.3 L298 121.7 L303 123 L308 124.2 L313 125.4 L318 126.5 L323 127.6 L328 128.6 L333 129.6 L338 130.5"/><path class="sc-rep" d="M168 58 L173 63.9 L178 69.4 L183 74.5 L188 79.4 L193 84 L198 88.4 L203 92.4 L208 96.3 L213 99.9 L218 103.3 L223 106.5 L228 109.5 L233 112.3 L238 115 L243 117.5 L248 119.9 L253 122.1 L258 124.2 L263 126.2 L268 128.1 L273 129.8 L278 131.5 L283 133 L288 134.5 L293 135.8 L298 137.1 L303 138.4 L308 139.5 L313 140.6 L318 141.6 L323 142.6 L328 143.5 L333 144.3 L338 145.1"/><path class="sc-rep" d="M168 46 L173 51.5 L178 56.7 L183 61.7 L188 66.3 L193 70.7 L198 74.9 L203 78.8 L208 82.5 L213 86 L218 89.3 L223 92.4 L228 95.4 L233 98.2 L238 100.8 L243 103.3 L248 105.7 L253 107.9 L258 110 L263 112 L268 113.9 L273 115.6 L278 117.3 L283 118.9 L288 120.4 L293 121.8 L298 123.1 L303 124.4 L308 125.6 L313 126.7 L318 127.8 L323 128.8 L328 129.7 L333 130.6 L338 131.5"/></g><g data-from="8"><path class="sc-noise" d="M166 158.7 L175.3 157 L184.6 158.3 L193.9 161.4 L203.2 161.2 L212.5 157.8 L221.8 154.1 L231.1 153.9 L240.4 156.4 L249.7 159.3 L259 159 L268.3 155.7 L277.6 152.1 L286.9 152 L296.2 154.6 L305.5 157.3 L314.8 156.7 L324.1 154.5 L333.4 155.4 L342.7 158.2"/><rect class="sc-chip" x="172" y="116" width="62" height="16" rx="8"/><text class="sc-chiptxt" x="203" y="127.5" text-anchor="middle">memory</text></g></svg></figure>
+</div>
+<p class="lab-hint">Change a reading. Press Run Code.</p>
+```
+
+:::: {.lab-pair .lab-lazy}
+
+```{pyodide}
+import numpy as np
+
+t = np.array([0, 15, 30, 45, 60, 75])                  # time (s)
+T = np.array([78.2, 74.9, 71.0, 68.6, 65.1, 62.9])     # ← change a reading   temperature (°C)
+
+print("readings:", len(T))
+print("first:", T[0], "  last:", T[-1])
+print("mean:", T.mean())
+```
+
+::::
+
+```{=html}
+<p class="lab-sub"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg>Your turn</p>
+<p class="lab-hint">Fill in the blank. Press Run Code.</p>
+```
+
+:::: {.lab-pair .lab-turn data-nudge="Tip: Python counts from 0, so T[0] is the first reading. How would you reach the last one?"}
+
+```{pyodide}
+import numpy as np
+
+T = np.array([78.2, 74.9, 71.0, 68.6, 65.1, 62.9])
+
+drop = ___        # ← first reading minus last reading
+print("the tea cooled by", round(drop, 1), "°C")
+```
+
+::::
+
+```{=html}
+<details class="lab-solution"><summary>Stuck? Show the answer</summary>
+<pre><code>drop = T[0] - T[-1]</code></pre></details>
+```
+
+```{=html}
+<div class="lab-wrapup">
+  <p class="lab-can"><strong>Now you can</strong> keep many readings in an array and ask it questions.</p>
+  <p class="lab-because" style="margin:0;opacity:.85;max-width:26rem">Numbers in a row are hard to read. Let's look at them.</p>
+  <a class="lab-next" href="#ch3"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>3 · See it</a>
+</div>
+```
+
+:::::
+
+::::: {#ch3 .lab-section}
+
+```{=html}
+<div class="lab-head">
+  <h2 class="lab-h"><span class="lab-n">3</span>See it</h2>
+  <a class="lab-skip" href="#ch4">I know this → skip</a>
+</div>
+<div class="lab-intro">
+<div class="lab-intro-text">
+<p class="lab-story">Our eyes read a picture faster than a column of numbers.</p>
+<details class="lab-ctx"><summary>Why does this matter?</summary><p>Look at your data before you compute anything. A graph shows in a second what a column of numbers hides: trends, outliers, mistakes.</p></details>
+<div class="lab-ask" data-right="2">
+<p class="lab-q"><span class="lab-qm" aria-hidden="true">?</span><span>Plot temperature against time. What shape do you expect?</span></p>
+<div class="lab-opts" role="group" aria-label="Your guess">
+<button type="button" class="lab-opt" data-opt="1" aria-pressed="false">A straight line going down</button>
+<button type="button" class="lab-opt" data-opt="2" aria-pressed="false">A curve that flattens</button>
+<button type="button" class="lab-opt" data-opt="3" aria-pressed="false">A curve that drops faster and faster</button>
+</div>
+<button type="button" class="lab-justshow">I would rather just see it</button>
+<p class="lab-reveal" hidden><strong class="lab-verdict"></strong> A curve that flattens: fast while the tea is hot, slow when it is close to room temperature. A straight line would mean a constant cooling speed.</p>
+</div>
+<p class="lab-bubble" hidden data-text="Replace &quot;o&quot; with &quot;-&quot; and press Run Code."></p>
+</div>
+<figure class="lab-fig"><svg class="lab-scene" data-stage="3" viewBox="0 0 360 210" role="img" aria-label="A cup of tea with a thermometer, and the graph of its cooling that grows as you learn"><rect class="sc-bg" x="0" y="0" width="360" height="210" rx="14"/><path class="sc-table" d="M10 180H350"/><g class="sc-steam"><path d="M46 98q-7-10 0-19q7-9 0-18"/><path d="M62 96q-7-10 0-19q7-9 0-18"/><path d="M78 98q-7-10 0-19q7-9 0-18"/></g><path class="sc-cup" d="M34 112H118L108 168Q106 178 96 178H56Q46 178 44 168Z"/><path class="sc-handle" d="M117 122q22 3 17 21q-4 12-19 10"/><ellipse class="sc-tea" cx="76" cy="113" rx="42" ry="7"/><ellipse class="sc-saucer" cx="76" cy="180" rx="58" ry="5"/><g data-from="1"><rect class="sc-th" x="90" y="60" width="8" height="64" rx="4"/><rect class="sc-hg" x="92" y="74" width="4" height="50" rx="2"/><text class="sc-txt" x="102" y="72">78.3 °C</text></g><g data-from="2"><rect class="sc-cell" x="158" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="172.5" y="26" text-anchor="middle">78.2</text><rect class="sc-cell" x="189" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="203.5" y="26" text-anchor="middle">74.9</text><rect class="sc-cell" x="220" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="234.5" y="26" text-anchor="middle">71.0</text><rect class="sc-cell" x="251" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="265.5" y="26" text-anchor="middle">68.6</text><rect class="sc-cell" x="282" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="296.5" y="26" text-anchor="middle">65.1</text><rect class="sc-cell" x="313" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="327.5" y="26" text-anchor="middle">62.9</text></g><g data-from="3" data-new="1"><path class="sc-axes" d="M158 44V168H350"/><circle class="sc-pt" cx="168" cy="52" r="3.4"/><circle class="sc-pt" cx="187" cy="69.4" r="3.4"/><circle class="sc-pt" cx="206" cy="89.9" r="3.4"/><circle class="sc-pt" cx="225" cy="99.2" r="3.4"/><circle class="sc-pt" cx="244" cy="113.9" r="3.4"/><circle class="sc-pt" cx="263" cy="117.1" r="3.4"/><circle class="sc-pt" cx="282" cy="127.1" r="3.4"/><circle class="sc-pt" cx="301" cy="127.9" r="3.4"/><circle class="sc-pt" cx="320" cy="137.6" r="3.4"/><circle class="sc-pt" cx="339" cy="137.5" r="3.4"/></g><g data-from="4"><path class="sc-err" d="M168 45V59M165 45H171M165 59H171"/><path class="sc-err" d="M187 62.4V76.4M184 62.4H190M184 76.4H190"/><path class="sc-err" d="M206 82.9V96.9M203 82.9H209M203 96.9H209"/><path class="sc-err" d="M225 92.2V106.2M222 92.2H228M222 106.2H228"/><path class="sc-err" d="M244 106.9V120.9M241 106.9H247M241 120.9H247"/><path class="sc-err" d="M263 110.1V124.1M260 110.1H266M260 124.1H266"/><path class="sc-err" d="M282 120.1V134.1M279 120.1H285M279 134.1H285"/><path class="sc-err" d="M301 120.9V134.9M298 120.9H304M298 134.9H304"/><path class="sc-err" d="M320 130.6V144.6M317 130.6H323M317 144.6H323"/><path class="sc-err" d="M339 130.5V144.5M336 130.5H342M336 144.5H342"/></g><g data-from="5"><path class="sc-fit" pathLength="100" d="M168 52 L173 57.7 L178 63 L183 68.1 L188 72.9 L193 77.4 L198 81.6 L203 85.6 L208 89.4 L213 92.9 L218 96.3 L223 99.4 L228 102.4 L233 105.2 L238 107.9 L243 110.4 L248 112.8 L253 115 L258 117.1 L263 119.1 L268 121 L273 122.7 L278 124.4 L283 125.9 L288 127.4 L293 128.8 L298 130.1 L303 131.4 L308 132.6 L313 133.7 L318 134.7 L323 135.7 L328 136.6 L333 137.5 L338 138.3"/><text class="sc-txt" x="232" y="82">τ = 237 ± 3 s</text></g><g data-from="6"><path class="sc-res" d="M168 52V52"/><path class="sc-res" d="M187 69.4V71.9"/><path class="sc-res" d="M206 89.9V87.9"/><path class="sc-res" d="M225 99.2V100.7"/><path class="sc-res" d="M244 113.9V110.9"/><path class="sc-res" d="M263 117.1V119.1"/><path class="sc-res" d="M282 127.1V125.6"/><path class="sc-res" d="M301 127.9V130.9"/><path class="sc-res" d="M320 137.6V135.1"/><path class="sc-res" d="M339 137.5V138.5"/><circle class="sc-light" cx="326" cy="60" r="9"/><text class="sc-small" x="326" y="84" text-anchor="middle">χ² 0.7</text></g><g data-from="7"><path class="sc-rep" d="M168 56 L173 62.6 L178 68.7 L183 74.5 L188 79.8 L193 84.8 L198 89.5 L203 93.9 L208 98 L213 101.8 L218 105.3 L223 108.7 L228 111.8 L233 114.7 L238 117.4 L243 119.9 L248 122.3 L253 124.5 L258 126.6 L263 128.5 L268 130.3 L273 132 L278 133.6 L283 135.1 L288 136.4 L293 137.7 L298 138.9 L303 140.1 L308 141.1 L313 142.1 L318 143 L323 143.9 L328 144.7 L333 145.4 L338 146.1"/><path class="sc-rep" d="M168 49 L173 55.1 L178 60.8 L183 66.2 L188 71.2 L193 76 L198 80.4 L203 84.6 L208 88.5 L213 92.2 L218 95.7 L223 98.9 L228 102 L233 104.8 L238 107.5 L243 110.1 L248 112.4 L253 114.7 L258 116.8 L263 118.7 L268 120.6 L273 122.3 L278 123.9 L283 125.5 L288 126.9 L293 128.2 L298 129.5 L303 130.7 L308 131.8 L313 132.9 L318 133.8 L323 134.8 L328 135.6 L333 136.4 L338 137.2"/><path class="sc-rep" d="M168 55 L173 60.3 L178 65.4 L183 70.1 L188 74.6 L193 78.9 L198 83 L203 86.8 L208 90.4 L213 93.9 L218 97.1 L223 100.2 L228 103.1 L233 105.9 L238 108.5 L243 110.9 L248 113.3 L253 115.5 L258 117.6 L263 119.6 L268 121.5 L273 123.3 L278 125 L283 126.6 L288 128.1 L293 129.5 L298 130.9 L303 132.1 L308 133.4 L313 134.5 L318 135.6 L323 136.6 L328 137.6 L333 138.5 L338 139.4"/><path class="sc-rep" d="M168 48 L173 53 L178 57.8 L183 62.3 L188 66.6 L193 70.6 L198 74.5 L203 78.2 L208 81.7 L213 85 L218 88.1 L223 91.1 L228 94 L233 96.7 L238 99.2 L243 101.7 L248 104 L253 106.2 L258 108.3 L263 110.3 L268 112.2 L273 113.9 L278 115.6 L283 117.3 L288 118.8 L293 120.3 L298 121.7 L303 123 L308 124.2 L313 125.4 L318 126.5 L323 127.6 L328 128.6 L333 129.6 L338 130.5"/><path class="sc-rep" d="M168 58 L173 63.9 L178 69.4 L183 74.5 L188 79.4 L193 84 L198 88.4 L203 92.4 L208 96.3 L213 99.9 L218 103.3 L223 106.5 L228 109.5 L233 112.3 L238 115 L243 117.5 L248 119.9 L253 122.1 L258 124.2 L263 126.2 L268 128.1 L273 129.8 L278 131.5 L283 133 L288 134.5 L293 135.8 L298 137.1 L303 138.4 L308 139.5 L313 140.6 L318 141.6 L323 142.6 L328 143.5 L333 144.3 L338 145.1"/><path class="sc-rep" d="M168 46 L173 51.5 L178 56.7 L183 61.7 L188 66.3 L193 70.7 L198 74.9 L203 78.8 L208 82.5 L213 86 L218 89.3 L223 92.4 L228 95.4 L233 98.2 L238 100.8 L243 103.3 L248 105.7 L253 107.9 L258 110 L263 112 L268 113.9 L273 115.6 L278 117.3 L283 118.9 L288 120.4 L293 121.8 L298 123.1 L303 124.4 L308 125.6 L313 126.7 L318 127.8 L323 128.8 L328 129.7 L333 130.6 L338 131.5"/></g><g data-from="8"><path class="sc-noise" d="M166 158.7 L175.3 157 L184.6 158.3 L193.9 161.4 L203.2 161.2 L212.5 157.8 L221.8 154.1 L231.1 153.9 L240.4 156.4 L249.7 159.3 L259 159 L268.3 155.7 L277.6 152.1 L286.9 152 L296.2 154.6 L305.5 157.3 L314.8 156.7 L324.1 154.5 L333.4 155.4 L342.7 158.2"/><rect class="sc-chip" x="172" y="116" width="62" height="16" rx="8"/><text class="sc-chiptxt" x="203" y="127.5" text-anchor="middle">memory</text></g></svg></figure>
+</div>
+<p class="lab-hint">Change the marker. Press Run Code.</p>
+```
+
+:::: {.lab-pair .lab-lazy}
+
+```{pyodide}
+import matplotlib.pyplot as plt
+from tealab import tea
+
+t, T = tea()                       # 40 simulated readings of the cooling tea
+
+plt.plot(t, T, "o")                # ← try "-" or "o-"
+plt.xlabel("time (s)")
+plt.ylabel("temperature (°C)")
+plt.show()
+```
+
+::::
+
+```{=html}
+<p class="lab-sub"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg>Your turn</p>
+<p class="lab-hint">Fill in both blanks. Press Run Code.</p>
+```
+
+:::: {.lab-pair .lab-turn data-nudge="Tip: t[:5] means the first five values. How many do you want?"}
+
+```{pyodide}
+import matplotlib.pyplot as plt
+from tealab import tea
+
+t, T = tea()
+
+plt.plot(t[:___], T[:___], "o")    # ← draw only the first 10 readings
+plt.xlabel("time (s)")
+plt.ylabel("temperature (°C)")
+plt.show()
+```
+
+::::
+
+```{=html}
+<details class="lab-solution"><summary>Stuck? Show the answer</summary>
+<pre><code>plt.plot(t[:10], T[:10], "o")</code></pre></details>
+```
+
+```{=html}
+<div class="lab-wrapup">
+  <p class="lab-can"><strong>Now you can</strong> turn numbers into a graph with labelled axes, and cut out the part you want.</p>
+  <p class="lab-because" style="margin:0;opacity:.85;max-width:26rem">The points are not exactly on a curve. Each reading wobbles. By how much?</p>
+  <a class="lab-next" href="#ch4"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>4 · Wobble</a>
+</div>
+```
+
+:::::
+
+::::: {#ch4 .lab-section}
+
+```{=html}
+<div class="lab-head">
+  <h2 class="lab-h"><span class="lab-n">4</span>Wobble</h2>
+  <a class="lab-skip" href="#ch5">I know this → skip</a>
+</div>
+<div class="lab-intro">
+<div class="lab-intro-text">
+<p class="lab-story">Read the same temperature twice and you get two numbers. The typical gap between them is σ (sigma).</p>
+<details class="lab-ctx"><summary>Why does this matter?</summary><p>Every instrument wobbles. σ, the standard deviation of repeated readings, is how a physicist puts a number on that wobble. It is the error bar in your lab report.</p></details>
+<div class="lab-ask" data-right="1">
+<p class="lab-q"><span class="lab-qm" aria-hidden="true">?</span><span>Drag the wobble σ to the right. What do you expect to see?</span></p>
+<div class="lab-opts" role="group" aria-label="Your guess">
+<button type="button" class="lab-opt" data-opt="1" aria-pressed="false">Longer bars and more scattered points</button>
+<button type="button" class="lab-opt" data-opt="2" aria-pressed="false">Fewer points on the graph</button>
+<button type="button" class="lab-opt" data-opt="3" aria-pressed="false">A different shape of the curve</button>
+</div>
+<p class="lab-reveal" hidden><strong class="lab-verdict"></strong> The bars are ± σ: more wobble, longer bars, more scatter. The curve behind the points does not change. And repeated readings give you σ: your 30 readings of the bath came out close to the true 0.4 °C.</p>
+</div>
+<p class="lab-bubble" hidden data-text="Drag the slider to the right and watch the bars."></p>
+</div>
+<figure class="lab-fig"><svg class="lab-scene" data-stage="4" viewBox="0 0 360 210" role="img" aria-label="A cup of tea with a thermometer, and the graph of its cooling that grows as you learn"><rect class="sc-bg" x="0" y="0" width="360" height="210" rx="14"/><path class="sc-table" d="M10 180H350"/><g class="sc-steam"><path d="M46 98q-7-10 0-19q7-9 0-18"/><path d="M62 96q-7-10 0-19q7-9 0-18"/><path d="M78 98q-7-10 0-19q7-9 0-18"/></g><path class="sc-cup" d="M34 112H118L108 168Q106 178 96 178H56Q46 178 44 168Z"/><path class="sc-handle" d="M117 122q22 3 17 21q-4 12-19 10"/><ellipse class="sc-tea" cx="76" cy="113" rx="42" ry="7"/><ellipse class="sc-saucer" cx="76" cy="180" rx="58" ry="5"/><g data-from="1"><rect class="sc-th" x="90" y="60" width="8" height="64" rx="4"/><rect class="sc-hg" x="92" y="74" width="4" height="50" rx="2"/><text class="sc-txt" x="102" y="72">78.3 °C</text></g><g data-from="2"><rect class="sc-cell" x="158" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="172.5" y="26" text-anchor="middle">78.2</text><rect class="sc-cell" x="189" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="203.5" y="26" text-anchor="middle">74.9</text><rect class="sc-cell" x="220" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="234.5" y="26" text-anchor="middle">71.0</text><rect class="sc-cell" x="251" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="265.5" y="26" text-anchor="middle">68.6</text><rect class="sc-cell" x="282" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="296.5" y="26" text-anchor="middle">65.1</text><rect class="sc-cell" x="313" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="327.5" y="26" text-anchor="middle">62.9</text></g><g data-from="3"><path class="sc-axes" d="M158 44V168H350"/><circle class="sc-pt" cx="168" cy="52" r="3.4"/><circle class="sc-pt" cx="187" cy="69.4" r="3.4"/><circle class="sc-pt" cx="206" cy="89.9" r="3.4"/><circle class="sc-pt" cx="225" cy="99.2" r="3.4"/><circle class="sc-pt" cx="244" cy="113.9" r="3.4"/><circle class="sc-pt" cx="263" cy="117.1" r="3.4"/><circle class="sc-pt" cx="282" cy="127.1" r="3.4"/><circle class="sc-pt" cx="301" cy="127.9" r="3.4"/><circle class="sc-pt" cx="320" cy="137.6" r="3.4"/><circle class="sc-pt" cx="339" cy="137.5" r="3.4"/></g><g data-from="4" data-new="1"><path class="sc-err" d="M168 45V59M165 45H171M165 59H171"/><path class="sc-err" d="M187 62.4V76.4M184 62.4H190M184 76.4H190"/><path class="sc-err" d="M206 82.9V96.9M203 82.9H209M203 96.9H209"/><path class="sc-err" d="M225 92.2V106.2M222 92.2H228M222 106.2H228"/><path class="sc-err" d="M244 106.9V120.9M241 106.9H247M241 120.9H247"/><path class="sc-err" d="M263 110.1V124.1M260 110.1H266M260 124.1H266"/><path class="sc-err" d="M282 120.1V134.1M279 120.1H285M279 134.1H285"/><path class="sc-err" d="M301 120.9V134.9M298 120.9H304M298 134.9H304"/><path class="sc-err" d="M320 130.6V144.6M317 130.6H323M317 144.6H323"/><path class="sc-err" d="M339 130.5V144.5M336 130.5H342M336 144.5H342"/></g><g data-from="5"><path class="sc-fit" pathLength="100" d="M168 52 L173 57.7 L178 63 L183 68.1 L188 72.9 L193 77.4 L198 81.6 L203 85.6 L208 89.4 L213 92.9 L218 96.3 L223 99.4 L228 102.4 L233 105.2 L238 107.9 L243 110.4 L248 112.8 L253 115 L258 117.1 L263 119.1 L268 121 L273 122.7 L278 124.4 L283 125.9 L288 127.4 L293 128.8 L298 130.1 L303 131.4 L308 132.6 L313 133.7 L318 134.7 L323 135.7 L328 136.6 L333 137.5 L338 138.3"/><text class="sc-txt" x="232" y="82">τ = 237 ± 3 s</text></g><g data-from="6"><path class="sc-res" d="M168 52V52"/><path class="sc-res" d="M187 69.4V71.9"/><path class="sc-res" d="M206 89.9V87.9"/><path class="sc-res" d="M225 99.2V100.7"/><path class="sc-res" d="M244 113.9V110.9"/><path class="sc-res" d="M263 117.1V119.1"/><path class="sc-res" d="M282 127.1V125.6"/><path class="sc-res" d="M301 127.9V130.9"/><path class="sc-res" d="M320 137.6V135.1"/><path class="sc-res" d="M339 137.5V138.5"/><circle class="sc-light" cx="326" cy="60" r="9"/><text class="sc-small" x="326" y="84" text-anchor="middle">χ² 0.7</text></g><g data-from="7"><path class="sc-rep" d="M168 56 L173 62.6 L178 68.7 L183 74.5 L188 79.8 L193 84.8 L198 89.5 L203 93.9 L208 98 L213 101.8 L218 105.3 L223 108.7 L228 111.8 L233 114.7 L238 117.4 L243 119.9 L248 122.3 L253 124.5 L258 126.6 L263 128.5 L268 130.3 L273 132 L278 133.6 L283 135.1 L288 136.4 L293 137.7 L298 138.9 L303 140.1 L308 141.1 L313 142.1 L318 143 L323 143.9 L328 144.7 L333 145.4 L338 146.1"/><path class="sc-rep" d="M168 49 L173 55.1 L178 60.8 L183 66.2 L188 71.2 L193 76 L198 80.4 L203 84.6 L208 88.5 L213 92.2 L218 95.7 L223 98.9 L228 102 L233 104.8 L238 107.5 L243 110.1 L248 112.4 L253 114.7 L258 116.8 L263 118.7 L268 120.6 L273 122.3 L278 123.9 L283 125.5 L288 126.9 L293 128.2 L298 129.5 L303 130.7 L308 131.8 L313 132.9 L318 133.8 L323 134.8 L328 135.6 L333 136.4 L338 137.2"/><path class="sc-rep" d="M168 55 L173 60.3 L178 65.4 L183 70.1 L188 74.6 L193 78.9 L198 83 L203 86.8 L208 90.4 L213 93.9 L218 97.1 L223 100.2 L228 103.1 L233 105.9 L238 108.5 L243 110.9 L248 113.3 L253 115.5 L258 117.6 L263 119.6 L268 121.5 L273 123.3 L278 125 L283 126.6 L288 128.1 L293 129.5 L298 130.9 L303 132.1 L308 133.4 L313 134.5 L318 135.6 L323 136.6 L328 137.6 L333 138.5 L338 139.4"/><path class="sc-rep" d="M168 48 L173 53 L178 57.8 L183 62.3 L188 66.6 L193 70.6 L198 74.5 L203 78.2 L208 81.7 L213 85 L218 88.1 L223 91.1 L228 94 L233 96.7 L238 99.2 L243 101.7 L248 104 L253 106.2 L258 108.3 L263 110.3 L268 112.2 L273 113.9 L278 115.6 L283 117.3 L288 118.8 L293 120.3 L298 121.7 L303 123 L308 124.2 L313 125.4 L318 126.5 L323 127.6 L328 128.6 L333 129.6 L338 130.5"/><path class="sc-rep" d="M168 58 L173 63.9 L178 69.4 L183 74.5 L188 79.4 L193 84 L198 88.4 L203 92.4 L208 96.3 L213 99.9 L218 103.3 L223 106.5 L228 109.5 L233 112.3 L238 115 L243 117.5 L248 119.9 L253 122.1 L258 124.2 L263 126.2 L268 128.1 L273 129.8 L278 131.5 L283 133 L288 134.5 L293 135.8 L298 137.1 L303 138.4 L308 139.5 L313 140.6 L318 141.6 L323 142.6 L328 143.5 L333 144.3 L338 145.1"/><path class="sc-rep" d="M168 46 L173 51.5 L178 56.7 L183 61.7 L188 66.3 L193 70.7 L198 74.9 L203 78.8 L208 82.5 L213 86 L218 89.3 L223 92.4 L228 95.4 L233 98.2 L238 100.8 L243 103.3 L248 105.7 L253 107.9 L258 110 L263 112 L268 113.9 L273 115.6 L278 117.3 L283 118.9 L288 120.4 L293 121.8 L298 123.1 L303 124.4 L308 125.6 L313 126.7 L318 127.8 L323 128.8 L328 129.7 L333 130.6 L338 131.5"/></g><g data-from="8"><path class="sc-noise" d="M166 158.7 L175.3 157 L184.6 158.3 L193.9 161.4 L203.2 161.2 L212.5 157.8 L221.8 154.1 L231.1 153.9 L240.4 156.4 L249.7 159.3 L259 159 L268.3 155.7 L277.6 152.1 L286.9 152 L296.2 154.6 L305.5 157.3 L314.8 156.7 L324.1 154.5 L333.4 155.4 L342.7 158.2"/><rect class="sc-chip" x="172" y="116" width="62" height="16" rx="8"/><text class="sc-chiptxt" x="203" y="127.5" text-anchor="middle">memory</text></g></svg></figure>
+</div>
+<p class="lab-hint">Drag the slider. The bars on the points are ±σ.</p>
 ```
 
 :::: {.lab-split}
@@ -53,26 +313,108 @@ format:
 ::: {.lab-row}
 ```{ojs}
 //| echo: false
-viewof noise = Inputs.range([0.1, 3], {value: 0.4, step: 0.1, label: "noise (°C)"})
+viewof noise = Inputs.range([0.05, 3], {value: 0.4, step: 0.05, label: "wobble σ (°C)"})
 ```
 
 ```{=html}
-<button type="button" class="lab-i" aria-expanded="false" aria-label="What is noise?">i</button>
-<p class="lab-info" hidden>How much each thermometer reading wobbles at random, in °C. More noise: messier points, and a less certain fit.</p>
+<button type="button" class="lab-i" aria-expanded="false" aria-label="What is the wobble?">i</button>
+<p class="lab-info" hidden>How much one reading can be off, in °C. Here every point has a bar of ± σ. More wobble: messier points.</p>
 ```
 :::
 
-::: {.lab-row}
-```{ojs}
-//| echo: false
-viewof interval = Inputs.range([5, 60], {value: 15, step: 5, label: "readings every (s)"})
+:::
+
+::: {.lab-view}
+
+```{pyodide}
+#| echo: false
+#| autorun: true
+#| input:
+#|   - noise
+import matplotlib.pyplot as plt
+from tealab import tea
+
+t, T = tea(noise)
+plt.errorbar(t, T, yerr=noise, fmt="o", capsize=3)
+plt.xlabel("time (s)")
+plt.ylabel("temperature (°C)")
+plt.title(f"σ = {noise:g} °C", loc="left")
+plt.show()
 ```
 
 ```{=html}
-<button type="button" class="lab-i" aria-expanded="false" aria-label="What is the time between readings?">i</button>
-<p class="lab-info" hidden>Seconds between one reading and the next. The longer the wait, the fewer points you get.</p>
+<div class="lab-ghost" aria-hidden="true"><svg viewBox="0 0 100 40"><path d="M4 6 C 24 8, 40 28, 96 34"/></svg></div>
 ```
+
 :::
+
+::::
+
+```{=html}
+<p class="lab-sub"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg>Your turn</p>
+<p class="lab-hint">Fill in the blank. Press Run Code, then again: every run is a new set of readings.</p>
+```
+
+:::: {.lab-pair .lab-turn data-nudge="Tip: a NumPy array can tell you its own spread. One word, then ()."}
+
+```{pyodide}
+import numpy as np
+from tealab import noise_series
+
+T = 50 + noise_series(30, 0.4)     # 30 readings of a bath kept at 50 °C (true wobble: 0.4)
+
+sigma = T.___()                    # ← one word: the spread of the readings (standard deviation)
+print("sigma =", round(sigma, 2), "°C")
+```
+
+::::
+
+```{=html}
+<details class="lab-solution"><summary>Stuck? Show the answer</summary>
+<pre><code>sigma = T.std()</code></pre></details>
+```
+
+```{=html}
+<div class="lab-wrapup">
+  <p class="lab-can"><strong>Now you can</strong> measure the wobble of a reading: σ is the standard deviation of repeated readings.</p>
+  <p class="lab-because" style="margin:0;opacity:.85;max-width:26rem">Now we know how much the points wobble. Which curve passes through them?</p>
+  <a class="lab-next" href="#ch5"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>5 · Fit</a>
+</div>
+```
+
+:::::
+
+::::: {#ch5 .lab-section}
+
+```{=html}
+<div class="lab-head">
+  <h2 class="lab-h"><span class="lab-n">5</span>Fit</h2>
+  <a class="lab-skip" href="#ch6">I know this → skip</a>
+</div>
+<div class="lab-intro">
+<div class="lab-intro-text">
+<p class="lab-story">Newton: the gap between tea and room shrinks by the same fraction every second. Python finds the one number that matters: τ.</p>
+<details class="lab-ctx"><summary>Why does this matter?</summary><p>Newton's law of cooling says the gap to the room shrinks by the same fraction in equal times. The same exponential describes a discharging capacitor, radioactive decay, and caffeine leaving your blood.</p></details>
+<div class="lab-ask" data-right="2">
+<p class="lab-q"><span class="lab-qm" aria-hidden="true">?</span><span>Set the cooling time to 400 s: the tea cools more slowly. What will the fit find?</span></p>
+<div class="lab-opts" role="group" aria-label="Your guess">
+<button type="button" class="lab-opt" data-opt="1" aria-pressed="false">About 240 s, the default</button>
+<button type="button" class="lab-opt" data-opt="2" aria-pressed="false">About 400 s, within its ±</button>
+<button type="button" class="lab-opt" data-opt="3" aria-pressed="false">Something random</button>
+</div>
+<button type="button" class="lab-justshow">I would rather just see it</button>
+<p class="lab-reveal" hidden><strong class="lab-verdict"></strong> The fit finds the τ the tea really had, within its ±. That is what fitting is for. Now use it: how long until the tea is drinkable?</p>
+</div>
+<p class="lab-bubble" hidden data-text="Drag the slider. Does the fit follow?"></p>
+</div>
+<figure class="lab-fig"><svg class="lab-scene" data-stage="5" viewBox="0 0 360 210" role="img" aria-label="A cup of tea with a thermometer, and the graph of its cooling that grows as you learn"><rect class="sc-bg" x="0" y="0" width="360" height="210" rx="14"/><path class="sc-table" d="M10 180H350"/><g class="sc-steam"><path d="M46 98q-7-10 0-19q7-9 0-18"/><path d="M62 96q-7-10 0-19q7-9 0-18"/><path d="M78 98q-7-10 0-19q7-9 0-18"/></g><path class="sc-cup" d="M34 112H118L108 168Q106 178 96 178H56Q46 178 44 168Z"/><path class="sc-handle" d="M117 122q22 3 17 21q-4 12-19 10"/><ellipse class="sc-tea" cx="76" cy="113" rx="42" ry="7"/><ellipse class="sc-saucer" cx="76" cy="180" rx="58" ry="5"/><g data-from="1"><rect class="sc-th" x="90" y="60" width="8" height="64" rx="4"/><rect class="sc-hg" x="92" y="74" width="4" height="50" rx="2"/><text class="sc-txt" x="102" y="72">78.3 °C</text></g><g data-from="2"><rect class="sc-cell" x="158" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="172.5" y="26" text-anchor="middle">78.2</text><rect class="sc-cell" x="189" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="203.5" y="26" text-anchor="middle">74.9</text><rect class="sc-cell" x="220" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="234.5" y="26" text-anchor="middle">71.0</text><rect class="sc-cell" x="251" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="265.5" y="26" text-anchor="middle">68.6</text><rect class="sc-cell" x="282" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="296.5" y="26" text-anchor="middle">65.1</text><rect class="sc-cell" x="313" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="327.5" y="26" text-anchor="middle">62.9</text></g><g data-from="3"><path class="sc-axes" d="M158 44V168H350"/><circle class="sc-pt" cx="168" cy="52" r="3.4"/><circle class="sc-pt" cx="187" cy="69.4" r="3.4"/><circle class="sc-pt" cx="206" cy="89.9" r="3.4"/><circle class="sc-pt" cx="225" cy="99.2" r="3.4"/><circle class="sc-pt" cx="244" cy="113.9" r="3.4"/><circle class="sc-pt" cx="263" cy="117.1" r="3.4"/><circle class="sc-pt" cx="282" cy="127.1" r="3.4"/><circle class="sc-pt" cx="301" cy="127.9" r="3.4"/><circle class="sc-pt" cx="320" cy="137.6" r="3.4"/><circle class="sc-pt" cx="339" cy="137.5" r="3.4"/></g><g data-from="4"><path class="sc-err" d="M168 45V59M165 45H171M165 59H171"/><path class="sc-err" d="M187 62.4V76.4M184 62.4H190M184 76.4H190"/><path class="sc-err" d="M206 82.9V96.9M203 82.9H209M203 96.9H209"/><path class="sc-err" d="M225 92.2V106.2M222 92.2H228M222 106.2H228"/><path class="sc-err" d="M244 106.9V120.9M241 106.9H247M241 120.9H247"/><path class="sc-err" d="M263 110.1V124.1M260 110.1H266M260 124.1H266"/><path class="sc-err" d="M282 120.1V134.1M279 120.1H285M279 134.1H285"/><path class="sc-err" d="M301 120.9V134.9M298 120.9H304M298 134.9H304"/><path class="sc-err" d="M320 130.6V144.6M317 130.6H323M317 144.6H323"/><path class="sc-err" d="M339 130.5V144.5M336 130.5H342M336 144.5H342"/></g><g data-from="5" data-new="1"><path class="sc-fit" pathLength="100" d="M168 52 L173 57.7 L178 63 L183 68.1 L188 72.9 L193 77.4 L198 81.6 L203 85.6 L208 89.4 L213 92.9 L218 96.3 L223 99.4 L228 102.4 L233 105.2 L238 107.9 L243 110.4 L248 112.8 L253 115 L258 117.1 L263 119.1 L268 121 L273 122.7 L278 124.4 L283 125.9 L288 127.4 L293 128.8 L298 130.1 L303 131.4 L308 132.6 L313 133.7 L318 134.7 L323 135.7 L328 136.6 L333 137.5 L338 138.3"/><text class="sc-txt" x="232" y="82">τ = 237 ± 3 s</text></g><g data-from="6"><path class="sc-res" d="M168 52V52"/><path class="sc-res" d="M187 69.4V71.9"/><path class="sc-res" d="M206 89.9V87.9"/><path class="sc-res" d="M225 99.2V100.7"/><path class="sc-res" d="M244 113.9V110.9"/><path class="sc-res" d="M263 117.1V119.1"/><path class="sc-res" d="M282 127.1V125.6"/><path class="sc-res" d="M301 127.9V130.9"/><path class="sc-res" d="M320 137.6V135.1"/><path class="sc-res" d="M339 137.5V138.5"/><circle class="sc-light" cx="326" cy="60" r="9"/><text class="sc-small" x="326" y="84" text-anchor="middle">χ² 0.7</text></g><g data-from="7"><path class="sc-rep" d="M168 56 L173 62.6 L178 68.7 L183 74.5 L188 79.8 L193 84.8 L198 89.5 L203 93.9 L208 98 L213 101.8 L218 105.3 L223 108.7 L228 111.8 L233 114.7 L238 117.4 L243 119.9 L248 122.3 L253 124.5 L258 126.6 L263 128.5 L268 130.3 L273 132 L278 133.6 L283 135.1 L288 136.4 L293 137.7 L298 138.9 L303 140.1 L308 141.1 L313 142.1 L318 143 L323 143.9 L328 144.7 L333 145.4 L338 146.1"/><path class="sc-rep" d="M168 49 L173 55.1 L178 60.8 L183 66.2 L188 71.2 L193 76 L198 80.4 L203 84.6 L208 88.5 L213 92.2 L218 95.7 L223 98.9 L228 102 L233 104.8 L238 107.5 L243 110.1 L248 112.4 L253 114.7 L258 116.8 L263 118.7 L268 120.6 L273 122.3 L278 123.9 L283 125.5 L288 126.9 L293 128.2 L298 129.5 L303 130.7 L308 131.8 L313 132.9 L318 133.8 L323 134.8 L328 135.6 L333 136.4 L338 137.2"/><path class="sc-rep" d="M168 55 L173 60.3 L178 65.4 L183 70.1 L188 74.6 L193 78.9 L198 83 L203 86.8 L208 90.4 L213 93.9 L218 97.1 L223 100.2 L228 103.1 L233 105.9 L238 108.5 L243 110.9 L248 113.3 L253 115.5 L258 117.6 L263 119.6 L268 121.5 L273 123.3 L278 125 L283 126.6 L288 128.1 L293 129.5 L298 130.9 L303 132.1 L308 133.4 L313 134.5 L318 135.6 L323 136.6 L328 137.6 L333 138.5 L338 139.4"/><path class="sc-rep" d="M168 48 L173 53 L178 57.8 L183 62.3 L188 66.6 L193 70.6 L198 74.5 L203 78.2 L208 81.7 L213 85 L218 88.1 L223 91.1 L228 94 L233 96.7 L238 99.2 L243 101.7 L248 104 L253 106.2 L258 108.3 L263 110.3 L268 112.2 L273 113.9 L278 115.6 L283 117.3 L288 118.8 L293 120.3 L298 121.7 L303 123 L308 124.2 L313 125.4 L318 126.5 L323 127.6 L328 128.6 L333 129.6 L338 130.5"/><path class="sc-rep" d="M168 58 L173 63.9 L178 69.4 L183 74.5 L188 79.4 L193 84 L198 88.4 L203 92.4 L208 96.3 L213 99.9 L218 103.3 L223 106.5 L228 109.5 L233 112.3 L238 115 L243 117.5 L248 119.9 L253 122.1 L258 124.2 L263 126.2 L268 128.1 L273 129.8 L278 131.5 L283 133 L288 134.5 L293 135.8 L298 137.1 L303 138.4 L308 139.5 L313 140.6 L318 141.6 L323 142.6 L328 143.5 L333 144.3 L338 145.1"/><path class="sc-rep" d="M168 46 L173 51.5 L178 56.7 L183 61.7 L188 66.3 L193 70.7 L198 74.9 L203 78.8 L208 82.5 L213 86 L218 89.3 L223 92.4 L228 95.4 L233 98.2 L238 100.8 L243 103.3 L248 105.7 L253 107.9 L258 110 L263 112 L268 113.9 L273 115.6 L278 117.3 L283 118.9 L288 120.4 L293 121.8 L298 123.1 L303 124.4 L308 125.6 L313 126.7 L318 127.8 L323 128.8 L328 129.7 L333 130.6 L338 131.5"/></g><g data-from="8"><path class="sc-noise" d="M166 158.7 L175.3 157 L184.6 158.3 L193.9 161.4 L203.2 161.2 L212.5 157.8 L221.8 154.1 L231.1 153.9 L240.4 156.4 L249.7 159.3 L259 159 L268.3 155.7 L277.6 152.1 L286.9 152 L296.2 154.6 L305.5 157.3 L314.8 156.7 L324.1 154.5 L333.4 155.4 L342.7 158.2"/><rect class="sc-chip" x="172" y="116" width="62" height="16" rx="8"/><text class="sc-chiptxt" x="203" y="127.5" text-anchor="middle">memory</text></g></svg></figure>
+</div>
+<p class="lab-hint">Drag the slider: the fit follows. Then read the code.</p>
+```
+
+:::: {.lab-split}
+
+::: {.lab-controls}
 
 ::: {.lab-row}
 ```{ojs}
@@ -92,22 +434,20 @@ viewof cooling_time = Inputs.range([60, 400], {value: 240, step: 10, label: "coo
 
 ```{pyodide}
 #| echo: false
+#| autorun: true
 #| input:
-#|   - noise
-#|   - interval
 #|   - cooling_time
 import numpy as np
 from scipy.optimize import curve_fit
 from tealab import tea, show
 
-t, T = tea(noise, interval, cooling_time)
+t, T = tea(0.4, 15, cooling_time)
 
 def model(t, Ta, T0, tau):
     return Ta + (T0 - Ta) * np.exp(-t / tau)
 
-par, cov = curve_fit(model, t, T, p0=[20, 80, 100],
-                     sigma=np.full(t.size, noise), absolute_sigma=True)
-show(t, T, noise, model, par, cov)
+par, cov = curve_fit(model, t, T, p0=[20, 80, 100])
+show(t, T, 0.4, model, par, cov, residuals=False)
 ```
 
 ```{=html}
@@ -119,55 +459,96 @@ show(t, T, noise, model, par, cov)
 ::::
 
 ```{=html}
-<a class="lab-next" href="#step-type"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg>Type ↓</a>
+<p class="lab-sub"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg>The same thing in code</p>
+<p class="lab-hint">Change a number. Press Run Code.</p>
 ```
 
-:::::
-
-::::: {#step-type .lab-section}
-
-```{=html}
-<h2 class="lab-h"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg>Type</h2>
-<p class="lab-hint">Change a number in the code. Press Run Code.</p>
-```
-
-:::: {.lab-pair}
+:::: {.lab-pair .lab-lazy}
 
 ```{pyodide}
 import numpy as np
 from scipy.optimize import curve_fit
 from tealab import tea, show
 
-noise = 0.4          # ← try 2     wobble of each reading (°C)
-interval = 15        # ← try 60    seconds between two readings
-cooling_time = 240   # ← try 120   how slowly the tea cools (s)
-
-t, T = tea(noise, interval, cooling_time)
-
-def model(t, Ta, T0, tau):
+def model(t, Ta, T0, tau):                              # Newton's law of cooling
     return Ta + (T0 - Ta) * np.exp(-t / tau)
 
-par, cov = curve_fit(model, t, T, p0=[20, 80, 100],
-                     sigma=np.full(t.size, noise), absolute_sigma=True)
-show(t, T, noise, model, par, cov)
+noise = 0.4          # ← try 1.5     wobble of each reading (°C)
+t, T = tea(noise)
+
+par, cov = curve_fit(model, t, T, p0=[20, 80, 100])     # p0: a first guess for Ta, T0, tau
+tau = par[2]
+d_tau = np.sqrt(cov[2, 2])                              # the uncertainty of tau
+print(f"tau = {tau:.0f} ± {d_tau:.0f} s")
+show(t, T, noise, model, par, cov, residuals=False)
 ```
 
 ::::
 
 ```{=html}
-<a class="lab-next" href="#step-break"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>Break ↓</a>
+<p class="lab-sub"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg>Your turn</p>
+<p class="lab-hint">Use the fit to predict. Fill in the blank (use <code>np.log</code>). Press Run Code.</p>
+```
+
+:::: {.lab-pair .lab-turn data-nudge="Tip: solve the equation for t by taking the logarithm of both sides. np.log is the natural log."}
+
+```{pyodide}
+import numpy as np
+from tealab import tea, newton_fit
+
+t, T = tea()
+Ta, T0, tau = newton_fit(t, T)       # the fit from the cell above, in one call
+
+t60 = ___      # ← seconds until the tea reaches 60 °C: solve 60 = Ta + (T0 − Ta)·exp(−t/τ) for t
+print(f"The tea is at 60 °C after {t60:.0f} s")
+```
+
+::::
+
+```{=html}
+<details class="lab-solution"><summary>Stuck? Show the answer</summary>
+<pre><code>t60 = -tau * np.log((60 - Ta) / (T0 - Ta))</code></pre></details>
+```
+
+```{=html}
+<div class="lab-wrapup">
+  <p class="lab-can"><strong>Now you can</strong> fit a law to data, read τ with its uncertainty, and use it to predict.</p>
+  <p class="lab-because" style="margin:0;opacity:.85;max-width:26rem">A fit always returns numbers, even for a wrong law. How do you know it is good?</p>
+  <a class="lab-next" href="#ch6"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>6 · Judge</a>
+</div>
 ```
 
 :::::
 
-::::: {#step-break .lab-section}
+::::: {#ch6 .lab-section}
 
 ```{=html}
-<h2 class="lab-h"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>Break</h2>
+<div class="lab-head">
+  <h2 class="lab-h"><span class="lab-n">6</span>Judge</h2>
+  <a class="lab-skip" href="#ch7">I know this → skip</a>
+</div>
+<div class="lab-intro">
+<div class="lab-intro-text">
+<p class="lab-story">The residuals (data − fit) and χ² tell you whether to believe a fit.</p>
+<details class="lab-ctx"><summary>Why does this matter?</summary><p>A fit with a number is not yet a fit you can trust. χ² compares the scatter of the data with the scatter the error bars promise. Around 1 means they agree.</p></details>
+<div class="lab-ask" data-right="3">
+<p class="lab-q"><span class="lab-qm" aria-hidden="true">?</span><span>You will fit three laws to the same readings. Which one gets the red light?</span></p>
+<div class="lab-opts" role="group" aria-label="Your guess">
+<button type="button" class="lab-opt" data-opt="1" aria-pressed="false">newton</button>
+<button type="button" class="lab-opt" data-opt="2" aria-pressed="false">almost</button>
+<button type="button" class="lab-opt" data-opt="3" aria-pressed="false">wrong</button>
+</div>
+<button type="button" class="lab-justshow">I would rather just see it</button>
+<p class="lab-reveal" hidden><strong class="lab-verdict"></strong> newton gets green (χ² ≈ 0.7). almost gets amber: to the eye the curve looks fine, but the residuals show a pattern. wrong gets red. χ² sees what the eye misses.</p>
+</div>
+<p class="lab-bubble" hidden data-text="Change &quot;newton&quot; to &quot;wrong&quot; in the quotes and press Run Code."></p>
+</div>
+<figure class="lab-fig"><svg class="lab-scene" data-stage="6" viewBox="0 0 360 210" role="img" aria-label="A cup of tea with a thermometer, and the graph of its cooling that grows as you learn"><rect class="sc-bg" x="0" y="0" width="360" height="210" rx="14"/><path class="sc-table" d="M10 180H350"/><g class="sc-steam"><path d="M46 98q-7-10 0-19q7-9 0-18"/><path d="M62 96q-7-10 0-19q7-9 0-18"/><path d="M78 98q-7-10 0-19q7-9 0-18"/></g><path class="sc-cup" d="M34 112H118L108 168Q106 178 96 178H56Q46 178 44 168Z"/><path class="sc-handle" d="M117 122q22 3 17 21q-4 12-19 10"/><ellipse class="sc-tea" cx="76" cy="113" rx="42" ry="7"/><ellipse class="sc-saucer" cx="76" cy="180" rx="58" ry="5"/><g data-from="1"><rect class="sc-th" x="90" y="60" width="8" height="64" rx="4"/><rect class="sc-hg" x="92" y="74" width="4" height="50" rx="2"/><text class="sc-txt" x="102" y="72">78.3 °C</text></g><g data-from="2"><rect class="sc-cell" x="158" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="172.5" y="26" text-anchor="middle">78.2</text><rect class="sc-cell" x="189" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="203.5" y="26" text-anchor="middle">74.9</text><rect class="sc-cell" x="220" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="234.5" y="26" text-anchor="middle">71.0</text><rect class="sc-cell" x="251" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="265.5" y="26" text-anchor="middle">68.6</text><rect class="sc-cell" x="282" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="296.5" y="26" text-anchor="middle">65.1</text><rect class="sc-cell" x="313" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="327.5" y="26" text-anchor="middle">62.9</text></g><g data-from="3"><path class="sc-axes" d="M158 44V168H350"/><circle class="sc-pt" cx="168" cy="52" r="3.4"/><circle class="sc-pt" cx="187" cy="69.4" r="3.4"/><circle class="sc-pt" cx="206" cy="89.9" r="3.4"/><circle class="sc-pt" cx="225" cy="99.2" r="3.4"/><circle class="sc-pt" cx="244" cy="113.9" r="3.4"/><circle class="sc-pt" cx="263" cy="117.1" r="3.4"/><circle class="sc-pt" cx="282" cy="127.1" r="3.4"/><circle class="sc-pt" cx="301" cy="127.9" r="3.4"/><circle class="sc-pt" cx="320" cy="137.6" r="3.4"/><circle class="sc-pt" cx="339" cy="137.5" r="3.4"/></g><g data-from="4"><path class="sc-err" d="M168 45V59M165 45H171M165 59H171"/><path class="sc-err" d="M187 62.4V76.4M184 62.4H190M184 76.4H190"/><path class="sc-err" d="M206 82.9V96.9M203 82.9H209M203 96.9H209"/><path class="sc-err" d="M225 92.2V106.2M222 92.2H228M222 106.2H228"/><path class="sc-err" d="M244 106.9V120.9M241 106.9H247M241 120.9H247"/><path class="sc-err" d="M263 110.1V124.1M260 110.1H266M260 124.1H266"/><path class="sc-err" d="M282 120.1V134.1M279 120.1H285M279 134.1H285"/><path class="sc-err" d="M301 120.9V134.9M298 120.9H304M298 134.9H304"/><path class="sc-err" d="M320 130.6V144.6M317 130.6H323M317 144.6H323"/><path class="sc-err" d="M339 130.5V144.5M336 130.5H342M336 144.5H342"/></g><g data-from="5"><path class="sc-fit" pathLength="100" d="M168 52 L173 57.7 L178 63 L183 68.1 L188 72.9 L193 77.4 L198 81.6 L203 85.6 L208 89.4 L213 92.9 L218 96.3 L223 99.4 L228 102.4 L233 105.2 L238 107.9 L243 110.4 L248 112.8 L253 115 L258 117.1 L263 119.1 L268 121 L273 122.7 L278 124.4 L283 125.9 L288 127.4 L293 128.8 L298 130.1 L303 131.4 L308 132.6 L313 133.7 L318 134.7 L323 135.7 L328 136.6 L333 137.5 L338 138.3"/><text class="sc-txt" x="232" y="82">τ = 237 ± 3 s</text></g><g data-from="6" data-new="1"><path class="sc-res" d="M168 52V52"/><path class="sc-res" d="M187 69.4V71.9"/><path class="sc-res" d="M206 89.9V87.9"/><path class="sc-res" d="M225 99.2V100.7"/><path class="sc-res" d="M244 113.9V110.9"/><path class="sc-res" d="M263 117.1V119.1"/><path class="sc-res" d="M282 127.1V125.6"/><path class="sc-res" d="M301 127.9V130.9"/><path class="sc-res" d="M320 137.6V135.1"/><path class="sc-res" d="M339 137.5V138.5"/><circle class="sc-light" cx="326" cy="60" r="9"/><text class="sc-small" x="326" y="84" text-anchor="middle">χ² 0.7</text></g><g data-from="7"><path class="sc-rep" d="M168 56 L173 62.6 L178 68.7 L183 74.5 L188 79.8 L193 84.8 L198 89.5 L203 93.9 L208 98 L213 101.8 L218 105.3 L223 108.7 L228 111.8 L233 114.7 L238 117.4 L243 119.9 L248 122.3 L253 124.5 L258 126.6 L263 128.5 L268 130.3 L273 132 L278 133.6 L283 135.1 L288 136.4 L293 137.7 L298 138.9 L303 140.1 L308 141.1 L313 142.1 L318 143 L323 143.9 L328 144.7 L333 145.4 L338 146.1"/><path class="sc-rep" d="M168 49 L173 55.1 L178 60.8 L183 66.2 L188 71.2 L193 76 L198 80.4 L203 84.6 L208 88.5 L213 92.2 L218 95.7 L223 98.9 L228 102 L233 104.8 L238 107.5 L243 110.1 L248 112.4 L253 114.7 L258 116.8 L263 118.7 L268 120.6 L273 122.3 L278 123.9 L283 125.5 L288 126.9 L293 128.2 L298 129.5 L303 130.7 L308 131.8 L313 132.9 L318 133.8 L323 134.8 L328 135.6 L333 136.4 L338 137.2"/><path class="sc-rep" d="M168 55 L173 60.3 L178 65.4 L183 70.1 L188 74.6 L193 78.9 L198 83 L203 86.8 L208 90.4 L213 93.9 L218 97.1 L223 100.2 L228 103.1 L233 105.9 L238 108.5 L243 110.9 L248 113.3 L253 115.5 L258 117.6 L263 119.6 L268 121.5 L273 123.3 L278 125 L283 126.6 L288 128.1 L293 129.5 L298 130.9 L303 132.1 L308 133.4 L313 134.5 L318 135.6 L323 136.6 L328 137.6 L333 138.5 L338 139.4"/><path class="sc-rep" d="M168 48 L173 53 L178 57.8 L183 62.3 L188 66.6 L193 70.6 L198 74.5 L203 78.2 L208 81.7 L213 85 L218 88.1 L223 91.1 L228 94 L233 96.7 L238 99.2 L243 101.7 L248 104 L253 106.2 L258 108.3 L263 110.3 L268 112.2 L273 113.9 L278 115.6 L283 117.3 L288 118.8 L293 120.3 L298 121.7 L303 123 L308 124.2 L313 125.4 L318 126.5 L323 127.6 L328 128.6 L333 129.6 L338 130.5"/><path class="sc-rep" d="M168 58 L173 63.9 L178 69.4 L183 74.5 L188 79.4 L193 84 L198 88.4 L203 92.4 L208 96.3 L213 99.9 L218 103.3 L223 106.5 L228 109.5 L233 112.3 L238 115 L243 117.5 L248 119.9 L253 122.1 L258 124.2 L263 126.2 L268 128.1 L273 129.8 L278 131.5 L283 133 L288 134.5 L293 135.8 L298 137.1 L303 138.4 L308 139.5 L313 140.6 L318 141.6 L323 142.6 L328 143.5 L333 144.3 L338 145.1"/><path class="sc-rep" d="M168 46 L173 51.5 L178 56.7 L183 61.7 L188 66.3 L193 70.7 L198 74.9 L203 78.8 L208 82.5 L213 86 L218 89.3 L223 92.4 L228 95.4 L233 98.2 L238 100.8 L243 103.3 L248 105.7 L253 107.9 L258 110 L263 112 L268 113.9 L273 115.6 L278 117.3 L283 118.9 L288 120.4 L293 121.8 L298 123.1 L303 124.4 L308 125.6 L313 126.7 L318 127.8 L323 128.8 L328 129.7 L333 130.6 L338 131.5"/></g><g data-from="8"><path class="sc-noise" d="M166 158.7 L175.3 157 L184.6 158.3 L193.9 161.4 L203.2 161.2 L212.5 157.8 L221.8 154.1 L231.1 153.9 L240.4 156.4 L249.7 159.3 L259 159 L268.3 155.7 L277.6 152.1 L286.9 152 L296.2 154.6 L305.5 157.3 L314.8 156.7 L324.1 154.5 L333.4 155.4 L342.7 158.2"/><rect class="sc-chip" x="172" y="116" width="62" height="16" rx="8"/><text class="sc-chiptxt" x="203" y="127.5" text-anchor="middle">memory</text></g></svg></figure>
+</div>
 <p class="lab-hint">Change the word in quotes. Press Run Code. Watch the light.</p>
 ```
 
-:::: {.lab-pair}
+:::: {.lab-pair .lab-lazy}
 
 ```{pyodide}
 import numpy as np
@@ -192,26 +573,310 @@ show(t, T, noise, model, par, cov)
 ::::
 
 ```{=html}
-<a class="lab-next" href="python-noise.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8c3-4 5 4 8 0s5 4 8 0"/><path d="M3 16h18"/></svg>Noise →</a>
+<p class="lab-sub"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg>Your turn</p>
+<p class="lab-hint">Compute the number behind the light. Fill in the blank. Press Run Code.</p>
+```
+
+:::: {.lab-pair .lab-turn data-nudge="Tip: square each residual with ** 2, then add them up with np.sum."}
+
+```{pyodide}
+import numpy as np
+from tealab import tea, newton_fit
+
+noise = 0.4
+t, T = tea(noise)
+Ta, T0, tau = newton_fit(t, T)
+fit = Ta + (T0 - Ta) * np.exp(-t / tau)
+
+residuals = (T - fit) / noise        # how many σ each point is from the curve
+chi2 = ___                           # ← add up the squares of the residuals
+print("reduced chi2 =", round(chi2 / (t.size - 3), 2))    # about 1 = the fit agrees with the bars
+```
+
+::::
+
+```{=html}
+<details class="lab-solution"><summary>Stuck? Show the answer</summary>
+<pre><code>chi2 = np.sum(residuals ** 2)</code></pre></details>
+```
+
+```{=html}
+<div class="lab-wrapup">
+  <p class="lab-can"><strong>Now you can</strong> tell a good fit from a bad one: the residuals look like noise and the reduced χ² is about 1 (green).</p>
+  <p class="lab-because" style="margin:0;opacity:.85;max-width:26rem">The fit looks good. But is the ± it reports honest? Repeat the experiment and see.</p>
+  <a class="lab-next" href="#ch7"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>7 · Repeat</a>
+</div>
 ```
 
 :::::
 
+::::: {#ch7 .lab-section}
+
+```{=html}
+<div class="lab-head">
+  <h2 class="lab-h"><span class="lab-n">7</span>Repeat</h2>
+  <a class="lab-skip" href="#ch8">I know this → skip</a>
+</div>
+<div class="lab-intro">
+<div class="lab-intro-text">
+<p class="lab-story">Do the experiment again, and again. If the fit's ± is honest, τ scatters by about that much. Real noise often has memory: each reading remembers the one before.</p>
+<details class="lab-ctx"><summary>Why does this matter?</summary><p>Repeating a virtual experiment many times, to see how the result scatters, is called a Monte Carlo. When you cannot repeat the real experiment a hundred times, the computer can.</p></details>
+<div class="lab-ask" data-right="2">
+<p class="lab-q"><span class="lab-qm" aria-hidden="true">?</span><span>The fit says τ = 240 ± 3 s. Repeat the experiment 100 times when the noise has memory 0.9. How much does τ really scatter?</span></p>
+<div class="lab-opts" role="group" aria-label="Your guess">
+<button type="button" class="lab-opt" data-opt="1" aria-pressed="false">About ± 3 s, as the fit says</button>
+<button type="button" class="lab-opt" data-opt="2" aria-pressed="false">About ± 6 s, twice as much</button>
+<button type="button" class="lab-opt" data-opt="3" aria-pressed="false">About ± 30 s, ten times as much</button>
+</div>
+<button type="button" class="lab-justshow">I would rather just see it</button>
+<p class="lab-reveal" hidden><strong class="lab-verdict"></strong> About twice as much. With memory the fit's ± is too optimistic, even though τ is still right on average.</p>
+</div>
+<p class="lab-bubble" hidden data-text="Set memory = 0.9 and press Run Code."></p>
+</div>
+<figure class="lab-fig"><svg class="lab-scene" data-stage="7" viewBox="0 0 360 210" role="img" aria-label="A cup of tea with a thermometer, and the graph of its cooling that grows as you learn"><rect class="sc-bg" x="0" y="0" width="360" height="210" rx="14"/><path class="sc-table" d="M10 180H350"/><g class="sc-steam"><path d="M46 98q-7-10 0-19q7-9 0-18"/><path d="M62 96q-7-10 0-19q7-9 0-18"/><path d="M78 98q-7-10 0-19q7-9 0-18"/></g><path class="sc-cup" d="M34 112H118L108 168Q106 178 96 178H56Q46 178 44 168Z"/><path class="sc-handle" d="M117 122q22 3 17 21q-4 12-19 10"/><ellipse class="sc-tea" cx="76" cy="113" rx="42" ry="7"/><ellipse class="sc-saucer" cx="76" cy="180" rx="58" ry="5"/><g data-from="1"><rect class="sc-th" x="90" y="60" width="8" height="64" rx="4"/><rect class="sc-hg" x="92" y="74" width="4" height="50" rx="2"/><text class="sc-txt" x="102" y="72">78.3 °C</text></g><g data-from="2"><rect class="sc-cell" x="158" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="172.5" y="26" text-anchor="middle">78.2</text><rect class="sc-cell" x="189" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="203.5" y="26" text-anchor="middle">74.9</text><rect class="sc-cell" x="220" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="234.5" y="26" text-anchor="middle">71.0</text><rect class="sc-cell" x="251" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="265.5" y="26" text-anchor="middle">68.6</text><rect class="sc-cell" x="282" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="296.5" y="26" text-anchor="middle">65.1</text><rect class="sc-cell" x="313" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="327.5" y="26" text-anchor="middle">62.9</text></g><g data-from="3"><path class="sc-axes" d="M158 44V168H350"/><circle class="sc-pt" cx="168" cy="52" r="3.4"/><circle class="sc-pt" cx="187" cy="69.4" r="3.4"/><circle class="sc-pt" cx="206" cy="89.9" r="3.4"/><circle class="sc-pt" cx="225" cy="99.2" r="3.4"/><circle class="sc-pt" cx="244" cy="113.9" r="3.4"/><circle class="sc-pt" cx="263" cy="117.1" r="3.4"/><circle class="sc-pt" cx="282" cy="127.1" r="3.4"/><circle class="sc-pt" cx="301" cy="127.9" r="3.4"/><circle class="sc-pt" cx="320" cy="137.6" r="3.4"/><circle class="sc-pt" cx="339" cy="137.5" r="3.4"/></g><g data-from="4"><path class="sc-err" d="M168 45V59M165 45H171M165 59H171"/><path class="sc-err" d="M187 62.4V76.4M184 62.4H190M184 76.4H190"/><path class="sc-err" d="M206 82.9V96.9M203 82.9H209M203 96.9H209"/><path class="sc-err" d="M225 92.2V106.2M222 92.2H228M222 106.2H228"/><path class="sc-err" d="M244 106.9V120.9M241 106.9H247M241 120.9H247"/><path class="sc-err" d="M263 110.1V124.1M260 110.1H266M260 124.1H266"/><path class="sc-err" d="M282 120.1V134.1M279 120.1H285M279 134.1H285"/><path class="sc-err" d="M301 120.9V134.9M298 120.9H304M298 134.9H304"/><path class="sc-err" d="M320 130.6V144.6M317 130.6H323M317 144.6H323"/><path class="sc-err" d="M339 130.5V144.5M336 130.5H342M336 144.5H342"/></g><g data-from="5"><path class="sc-fit" pathLength="100" d="M168 52 L173 57.7 L178 63 L183 68.1 L188 72.9 L193 77.4 L198 81.6 L203 85.6 L208 89.4 L213 92.9 L218 96.3 L223 99.4 L228 102.4 L233 105.2 L238 107.9 L243 110.4 L248 112.8 L253 115 L258 117.1 L263 119.1 L268 121 L273 122.7 L278 124.4 L283 125.9 L288 127.4 L293 128.8 L298 130.1 L303 131.4 L308 132.6 L313 133.7 L318 134.7 L323 135.7 L328 136.6 L333 137.5 L338 138.3"/><text class="sc-txt" x="232" y="82">τ = 237 ± 3 s</text></g><g data-from="6"><path class="sc-res" d="M168 52V52"/><path class="sc-res" d="M187 69.4V71.9"/><path class="sc-res" d="M206 89.9V87.9"/><path class="sc-res" d="M225 99.2V100.7"/><path class="sc-res" d="M244 113.9V110.9"/><path class="sc-res" d="M263 117.1V119.1"/><path class="sc-res" d="M282 127.1V125.6"/><path class="sc-res" d="M301 127.9V130.9"/><path class="sc-res" d="M320 137.6V135.1"/><path class="sc-res" d="M339 137.5V138.5"/><circle class="sc-light" cx="326" cy="60" r="9"/><text class="sc-small" x="326" y="84" text-anchor="middle">χ² 0.7</text></g><g data-from="7" data-new="1"><path class="sc-rep" d="M168 56 L173 62.6 L178 68.7 L183 74.5 L188 79.8 L193 84.8 L198 89.5 L203 93.9 L208 98 L213 101.8 L218 105.3 L223 108.7 L228 111.8 L233 114.7 L238 117.4 L243 119.9 L248 122.3 L253 124.5 L258 126.6 L263 128.5 L268 130.3 L273 132 L278 133.6 L283 135.1 L288 136.4 L293 137.7 L298 138.9 L303 140.1 L308 141.1 L313 142.1 L318 143 L323 143.9 L328 144.7 L333 145.4 L338 146.1"/><path class="sc-rep" d="M168 49 L173 55.1 L178 60.8 L183 66.2 L188 71.2 L193 76 L198 80.4 L203 84.6 L208 88.5 L213 92.2 L218 95.7 L223 98.9 L228 102 L233 104.8 L238 107.5 L243 110.1 L248 112.4 L253 114.7 L258 116.8 L263 118.7 L268 120.6 L273 122.3 L278 123.9 L283 125.5 L288 126.9 L293 128.2 L298 129.5 L303 130.7 L308 131.8 L313 132.9 L318 133.8 L323 134.8 L328 135.6 L333 136.4 L338 137.2"/><path class="sc-rep" d="M168 55 L173 60.3 L178 65.4 L183 70.1 L188 74.6 L193 78.9 L198 83 L203 86.8 L208 90.4 L213 93.9 L218 97.1 L223 100.2 L228 103.1 L233 105.9 L238 108.5 L243 110.9 L248 113.3 L253 115.5 L258 117.6 L263 119.6 L268 121.5 L273 123.3 L278 125 L283 126.6 L288 128.1 L293 129.5 L298 130.9 L303 132.1 L308 133.4 L313 134.5 L318 135.6 L323 136.6 L328 137.6 L333 138.5 L338 139.4"/><path class="sc-rep" d="M168 48 L173 53 L178 57.8 L183 62.3 L188 66.6 L193 70.6 L198 74.5 L203 78.2 L208 81.7 L213 85 L218 88.1 L223 91.1 L228 94 L233 96.7 L238 99.2 L243 101.7 L248 104 L253 106.2 L258 108.3 L263 110.3 L268 112.2 L273 113.9 L278 115.6 L283 117.3 L288 118.8 L293 120.3 L298 121.7 L303 123 L308 124.2 L313 125.4 L318 126.5 L323 127.6 L328 128.6 L333 129.6 L338 130.5"/><path class="sc-rep" d="M168 58 L173 63.9 L178 69.4 L183 74.5 L188 79.4 L193 84 L198 88.4 L203 92.4 L208 96.3 L213 99.9 L218 103.3 L223 106.5 L228 109.5 L233 112.3 L238 115 L243 117.5 L248 119.9 L253 122.1 L258 124.2 L263 126.2 L268 128.1 L273 129.8 L278 131.5 L283 133 L288 134.5 L293 135.8 L298 137.1 L303 138.4 L308 139.5 L313 140.6 L318 141.6 L323 142.6 L328 143.5 L333 144.3 L338 145.1"/><path class="sc-rep" d="M168 46 L173 51.5 L178 56.7 L183 61.7 L188 66.3 L193 70.7 L198 74.9 L203 78.8 L208 82.5 L213 86 L218 89.3 L223 92.4 L228 95.4 L233 98.2 L238 100.8 L243 103.3 L248 105.7 L253 107.9 L258 110 L263 112 L268 113.9 L273 115.6 L278 117.3 L283 118.9 L288 120.4 L293 121.8 L298 123.1 L303 124.4 L308 125.6 L313 126.7 L318 127.8 L323 128.8 L328 129.7 L333 130.6 L338 131.5"/></g><g data-from="8"><path class="sc-noise" d="M166 158.7 L175.3 157 L184.6 158.3 L193.9 161.4 L203.2 161.2 L212.5 157.8 L221.8 154.1 L231.1 153.9 L240.4 156.4 L249.7 159.3 L259 159 L268.3 155.7 L277.6 152.1 L286.9 152 L296.2 154.6 L305.5 157.3 L314.8 156.7 L324.1 154.5 L333.4 155.4 L342.7 158.2"/><rect class="sc-chip" x="172" y="116" width="62" height="16" rx="8"/><text class="sc-chiptxt" x="203" y="127.5" text-anchor="middle">memory</text></g></svg></figure>
+</div>
+<p class="lab-hint">Same experiment, again and again. Change a number in the code. Press Run Code.</p>
+```
+
+:::: {.lab-pair .lab-lazy}
+
+```{pyodide}
+import numpy as np
+from scipy.optimize import curve_fit
+from tealab import tea, spread
+
+noise = 0.4      # ← try 1        wobble of each reading (°C)
+memory = 0.0     # ← try 0.9      0 = none, near 1 = each reading remembers the one before
+repeats = 100    # ← try 300      how many times we repeat the experiment
+
+def model(t, Ta, T0, tau):
+    return Ta + (T0 - Ta) * np.exp(-t / tau)
+
+taus, claimed = [], []
+for k in range(repeats):
+    t, T = tea(noise, memory=memory, seed=k)
+    par, cov = curve_fit(model, t, T, p0=[20, 80, 100],
+                         sigma=np.full(t.size, noise), absolute_sigma=True)
+    taus.append(par[2])
+    claimed.append(np.sqrt(cov[2, 2]))
+
+spread(taus, claimed)
+```
+
+::::
+
+```{=html}
+<p class="lab-challenge"><strong>Challenge.</strong> Which memory makes the fit overconfident by a factor 2? The fit gets τ right on average. What does it get wrong?</p>
+```
+
+```{=html}
+<div class="lab-wrapup">
+  <p class="lab-can"><strong>Now you can</strong> check whether a fit's uncertainty is honest by repeating the experiment on the computer (a Monte Carlo).</p>
+  <p class="lab-because" style="margin:0;opacity:.85;max-width:26rem">Memory fools the fit. How does it look inside real data?</p>
+  <a class="lab-next" href="#ch8"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>8 · Noise</a>
+</div>
+```
+
+:::::
+
+::::: {#ch8 .lab-section}
+
+```{=html}
+<div class="lab-head">
+  <h2 class="lab-h"><span class="lab-n">8</span>Noise</h2>
+  <a class="lab-skip" href="#end">I know this → skip</a>
+</div>
+<div class="lab-intro">
+<div class="lab-intro-text">
+<p class="lab-story">Noise is not only how much. It can have memory. Look at the residuals, then at your own data.</p>
+<details class="lab-ctx"><summary>Why does this matter?</summary><p>Real instruments have inertia and drift, so one reading remembers the last. When that happens, averaging N readings helps less than the usual σ/√N promises.</p></details>
+<div class="lab-ask" data-right="1">
+<p class="lab-q"><span class="lab-qm" aria-hidden="true">?</span><span>In the residuals, the chip shows r₁, how much each value resembles the one before. If the noise were pure chance, what would r₁ be?</span></p>
+<div class="lab-opts" role="group" aria-label="Your guess">
+<button type="button" class="lab-opt" data-opt="1" aria-pressed="false">About 0</button>
+<button type="button" class="lab-opt" data-opt="2" aria-pressed="false">About 1</button>
+<button type="button" class="lab-opt" data-opt="3" aria-pressed="false">About 0.5</button>
+</div>
+<p class="lab-reveal" hidden><strong class="lab-verdict"></strong> About 0, within ± 2/√N. The sample data show r₁ = +0.75: the wobble has memory, so the ± of a plain fit is too optimistic.</p>
+</div>
+<p class="lab-bubble" hidden data-text="Drag memory to 0.9."></p>
+</div>
+<figure class="lab-fig"><svg class="lab-scene" data-stage="8" viewBox="0 0 360 210" role="img" aria-label="A cup of tea with a thermometer, and the graph of its cooling that grows as you learn"><rect class="sc-bg" x="0" y="0" width="360" height="210" rx="14"/><path class="sc-table" d="M10 180H350"/><g class="sc-steam"><path d="M46 98q-7-10 0-19q7-9 0-18"/><path d="M62 96q-7-10 0-19q7-9 0-18"/><path d="M78 98q-7-10 0-19q7-9 0-18"/></g><path class="sc-cup" d="M34 112H118L108 168Q106 178 96 178H56Q46 178 44 168Z"/><path class="sc-handle" d="M117 122q22 3 17 21q-4 12-19 10"/><ellipse class="sc-tea" cx="76" cy="113" rx="42" ry="7"/><ellipse class="sc-saucer" cx="76" cy="180" rx="58" ry="5"/><g data-from="1"><rect class="sc-th" x="90" y="60" width="8" height="64" rx="4"/><rect class="sc-hg" x="92" y="74" width="4" height="50" rx="2"/><text class="sc-txt" x="102" y="72">78.3 °C</text></g><g data-from="2"><rect class="sc-cell" x="158" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="172.5" y="26" text-anchor="middle">78.2</text><rect class="sc-cell" x="189" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="203.5" y="26" text-anchor="middle">74.9</text><rect class="sc-cell" x="220" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="234.5" y="26" text-anchor="middle">71.0</text><rect class="sc-cell" x="251" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="265.5" y="26" text-anchor="middle">68.6</text><rect class="sc-cell" x="282" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="296.5" y="26" text-anchor="middle">65.1</text><rect class="sc-cell" x="313" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="327.5" y="26" text-anchor="middle">62.9</text></g><g data-from="3"><path class="sc-axes" d="M158 44V168H350"/><circle class="sc-pt" cx="168" cy="52" r="3.4"/><circle class="sc-pt" cx="187" cy="69.4" r="3.4"/><circle class="sc-pt" cx="206" cy="89.9" r="3.4"/><circle class="sc-pt" cx="225" cy="99.2" r="3.4"/><circle class="sc-pt" cx="244" cy="113.9" r="3.4"/><circle class="sc-pt" cx="263" cy="117.1" r="3.4"/><circle class="sc-pt" cx="282" cy="127.1" r="3.4"/><circle class="sc-pt" cx="301" cy="127.9" r="3.4"/><circle class="sc-pt" cx="320" cy="137.6" r="3.4"/><circle class="sc-pt" cx="339" cy="137.5" r="3.4"/></g><g data-from="4"><path class="sc-err" d="M168 45V59M165 45H171M165 59H171"/><path class="sc-err" d="M187 62.4V76.4M184 62.4H190M184 76.4H190"/><path class="sc-err" d="M206 82.9V96.9M203 82.9H209M203 96.9H209"/><path class="sc-err" d="M225 92.2V106.2M222 92.2H228M222 106.2H228"/><path class="sc-err" d="M244 106.9V120.9M241 106.9H247M241 120.9H247"/><path class="sc-err" d="M263 110.1V124.1M260 110.1H266M260 124.1H266"/><path class="sc-err" d="M282 120.1V134.1M279 120.1H285M279 134.1H285"/><path class="sc-err" d="M301 120.9V134.9M298 120.9H304M298 134.9H304"/><path class="sc-err" d="M320 130.6V144.6M317 130.6H323M317 144.6H323"/><path class="sc-err" d="M339 130.5V144.5M336 130.5H342M336 144.5H342"/></g><g data-from="5"><path class="sc-fit" pathLength="100" d="M168 52 L173 57.7 L178 63 L183 68.1 L188 72.9 L193 77.4 L198 81.6 L203 85.6 L208 89.4 L213 92.9 L218 96.3 L223 99.4 L228 102.4 L233 105.2 L238 107.9 L243 110.4 L248 112.8 L253 115 L258 117.1 L263 119.1 L268 121 L273 122.7 L278 124.4 L283 125.9 L288 127.4 L293 128.8 L298 130.1 L303 131.4 L308 132.6 L313 133.7 L318 134.7 L323 135.7 L328 136.6 L333 137.5 L338 138.3"/><text class="sc-txt" x="232" y="82">τ = 237 ± 3 s</text></g><g data-from="6"><path class="sc-res" d="M168 52V52"/><path class="sc-res" d="M187 69.4V71.9"/><path class="sc-res" d="M206 89.9V87.9"/><path class="sc-res" d="M225 99.2V100.7"/><path class="sc-res" d="M244 113.9V110.9"/><path class="sc-res" d="M263 117.1V119.1"/><path class="sc-res" d="M282 127.1V125.6"/><path class="sc-res" d="M301 127.9V130.9"/><path class="sc-res" d="M320 137.6V135.1"/><path class="sc-res" d="M339 137.5V138.5"/><circle class="sc-light" cx="326" cy="60" r="9"/><text class="sc-small" x="326" y="84" text-anchor="middle">χ² 0.7</text></g><g data-from="7"><path class="sc-rep" d="M168 56 L173 62.6 L178 68.7 L183 74.5 L188 79.8 L193 84.8 L198 89.5 L203 93.9 L208 98 L213 101.8 L218 105.3 L223 108.7 L228 111.8 L233 114.7 L238 117.4 L243 119.9 L248 122.3 L253 124.5 L258 126.6 L263 128.5 L268 130.3 L273 132 L278 133.6 L283 135.1 L288 136.4 L293 137.7 L298 138.9 L303 140.1 L308 141.1 L313 142.1 L318 143 L323 143.9 L328 144.7 L333 145.4 L338 146.1"/><path class="sc-rep" d="M168 49 L173 55.1 L178 60.8 L183 66.2 L188 71.2 L193 76 L198 80.4 L203 84.6 L208 88.5 L213 92.2 L218 95.7 L223 98.9 L228 102 L233 104.8 L238 107.5 L243 110.1 L248 112.4 L253 114.7 L258 116.8 L263 118.7 L268 120.6 L273 122.3 L278 123.9 L283 125.5 L288 126.9 L293 128.2 L298 129.5 L303 130.7 L308 131.8 L313 132.9 L318 133.8 L323 134.8 L328 135.6 L333 136.4 L338 137.2"/><path class="sc-rep" d="M168 55 L173 60.3 L178 65.4 L183 70.1 L188 74.6 L193 78.9 L198 83 L203 86.8 L208 90.4 L213 93.9 L218 97.1 L223 100.2 L228 103.1 L233 105.9 L238 108.5 L243 110.9 L248 113.3 L253 115.5 L258 117.6 L263 119.6 L268 121.5 L273 123.3 L278 125 L283 126.6 L288 128.1 L293 129.5 L298 130.9 L303 132.1 L308 133.4 L313 134.5 L318 135.6 L323 136.6 L328 137.6 L333 138.5 L338 139.4"/><path class="sc-rep" d="M168 48 L173 53 L178 57.8 L183 62.3 L188 66.6 L193 70.6 L198 74.5 L203 78.2 L208 81.7 L213 85 L218 88.1 L223 91.1 L228 94 L233 96.7 L238 99.2 L243 101.7 L248 104 L253 106.2 L258 108.3 L263 110.3 L268 112.2 L273 113.9 L278 115.6 L283 117.3 L288 118.8 L293 120.3 L298 121.7 L303 123 L308 124.2 L313 125.4 L318 126.5 L323 127.6 L328 128.6 L333 129.6 L338 130.5"/><path class="sc-rep" d="M168 58 L173 63.9 L178 69.4 L183 74.5 L188 79.4 L193 84 L198 88.4 L203 92.4 L208 96.3 L213 99.9 L218 103.3 L223 106.5 L228 109.5 L233 112.3 L238 115 L243 117.5 L248 119.9 L253 122.1 L258 124.2 L263 126.2 L268 128.1 L273 129.8 L278 131.5 L283 133 L288 134.5 L293 135.8 L298 137.1 L303 138.4 L308 139.5 L313 140.6 L318 141.6 L323 142.6 L328 143.5 L333 144.3 L338 145.1"/><path class="sc-rep" d="M168 46 L173 51.5 L178 56.7 L183 61.7 L188 66.3 L193 70.7 L198 74.9 L203 78.8 L208 82.5 L213 86 L218 89.3 L223 92.4 L228 95.4 L233 98.2 L238 100.8 L243 103.3 L248 105.7 L253 107.9 L258 110 L263 112 L268 113.9 L273 115.6 L278 117.3 L283 118.9 L288 120.4 L293 121.8 L298 123.1 L303 124.4 L308 125.6 L313 126.7 L318 127.8 L323 128.8 L328 129.7 L333 130.6 L338 131.5"/></g><g data-from="8" data-new="1"><path class="sc-noise" d="M166 158.7 L175.3 157 L184.6 158.3 L193.9 161.4 L203.2 161.2 L212.5 157.8 L221.8 154.1 L231.1 153.9 L240.4 156.4 L249.7 159.3 L259 159 L268.3 155.7 L277.6 152.1 L286.9 152 L296.2 154.6 L305.5 157.3 L314.8 156.7 L324.1 154.5 L333.4 155.4 L342.7 158.2"/><rect class="sc-chip" x="172" y="116" width="62" height="16" rx="8"/><text class="sc-chiptxt" x="203" y="127.5" text-anchor="middle">memory</text></g></svg></figure>
+</div>
+<p class="lab-hint">Drag the sliders. The chip is the memory of the noise.</p>
+```
+
+:::: {.lab-split}
+
+::: {.lab-controls}
+
+::: {.lab-row}
+```{ojs}
+//| echo: false
+viewof memory = Inputs.range([0, 0.95], {value: 0, step: 0.05, label: "memory"})
+```
+
+```{=html}
+<button type="button" class="lab-i" aria-expanded="false" aria-label="What is memory?">i</button>
+<p class="lab-info" hidden>How much each noise value remembers the one before. 0: every reading is independent (white noise). Near 1: the noise wanders slowly. The spread of the values stays the same; only the order changes.</p>
+```
+:::
+
+::: {.lab-row}
+```{ojs}
+//| echo: false
+viewof thermo_step = Inputs.range([0, 0.5], {value: 0, step: 0.05, label: "thermometer step (°C)"})
+```
+
+```{=html}
+<button type="button" class="lab-i" aria-expanded="false" aria-label="What is the thermometer step?">i</button>
+<p class="lab-info" hidden>A digital thermometer shows steps, not every value. With a big step the histogram turns into teeth; the rounding alone adds a wobble of about step/√12.</p>
+```
+:::
+
+:::
+
+::: {.lab-view}
+
+```{pyodide}
+#| echo: false
+#| autorun: true
+#| input:
+#|   - memory
+#|   - thermo_step
+import numpy as np
+from scipy.optimize import curve_fit
+from tealab import tea, look
+
+noise = 0.4
+t, T = tea(noise, memory=memory, step=thermo_step)
+
+def model(t, Ta, T0, tau):
+    return Ta + (T0 - Ta) * np.exp(-t / tau)
+
+par, cov = curve_fit(model, t, T, p0=[20, 80, 100],
+                     sigma=np.full(t.size, noise), absolute_sigma=True)
+look(t, T, noise, model, par, cov)
+```
+
+```{=html}
+<div class="lab-ghost" aria-hidden="true"><svg viewBox="0 0 100 40"><path d="M4 6 C 24 8, 40 28, 96 34"/></svg></div>
+```
+
+:::
+
+::::
+
+```{=html}
+<p class="lab-sub"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg>Your turn</p>
+<p class="lab-hint">Your data. A cooling measurement is below. Press Run Code; then paste your own (time, temperature) lines in place of it.</p>
+```
+
+:::: {.lab-pair .lab-turn data-nudge="Tip: paste your own lines in place of the sample, and keep the first line, t,T."}
+
+```{pyodide}
+import io
+import numpy as np
+from scipy.optimize import curve_fit
+from tealab import look
+
+data = """t,T
+0,80.1
+20,74.6
+40,69.6
+60,65.3
+80,60.9
+100,57.5
+120,54.2
+140,51.7
+160,49.4
+180,47.4
+200,45.4
+220,43.3
+240,41.6
+260,40.3
+280,38.4
+300,37.1
+320,35.7
+340,34.9
+360,33.4
+380,32.3
+400,31.5
+420,30.7
+440,29.4
+460,28.9
+480,28.3
+500,27.7
+520,27.2
+540,26.9
+560,26.0
+580,26.2
+"""            # ← paste your own measurements here: time (s), temperature (°C)
+
+t, T = np.loadtxt(io.StringIO(data), delimiter=",", skiprows=1, unpack=True)
+
+def model(t, Ta, T0, tau):
+    return Ta + (T0 - Ta) * np.exp(-t / tau)
+
+par, cov = curve_fit(model, t, T, p0=[20, T[0], 100])
+sigma = np.std(T - model(t, *par), ddof=3)         # the wobble, estimated from the data itself
+look(t, T, sigma, model, par, cov)
+```
+
+::::
+
+```{=html}
+<p class="lab-hint">If the chip is amber or red, the wobble of your data has memory: the ± of the fit is too optimistic.</p>
+```
+
+```{=html}
+<div class="lab-wrapup">
+  <p class="lab-can"><strong>Now you can</strong> read the noise in real data: how much it wobbles, whether it has memory, and what that does to the uncertainty.</p>
+  <p class="lab-because" style="margin:0;opacity:.85;max-width:26rem">That is the whole path.</p>
+  <a class="lab-next" href="#end"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>The end</a>
+</div>
+```
+
+:::::
+
+```{=html}
+<section id="end" class="lab-end">
+  <h2>Where you are now</h2>
+  <figure class="lab-fig" style="max-width:26rem"><svg class="lab-scene" data-stage="8" viewBox="0 0 360 210" role="img" aria-label="A cup of tea with a thermometer, and the graph of its cooling that grows as you learn"><rect class="sc-bg" x="0" y="0" width="360" height="210" rx="14"/><path class="sc-table" d="M10 180H350"/><g class="sc-steam"><path d="M46 98q-7-10 0-19q7-9 0-18"/><path d="M62 96q-7-10 0-19q7-9 0-18"/><path d="M78 98q-7-10 0-19q7-9 0-18"/></g><path class="sc-cup" d="M34 112H118L108 168Q106 178 96 178H56Q46 178 44 168Z"/><path class="sc-handle" d="M117 122q22 3 17 21q-4 12-19 10"/><ellipse class="sc-tea" cx="76" cy="113" rx="42" ry="7"/><ellipse class="sc-saucer" cx="76" cy="180" rx="58" ry="5"/><g data-from="1"><rect class="sc-th" x="90" y="60" width="8" height="64" rx="4"/><rect class="sc-hg" x="92" y="74" width="4" height="50" rx="2"/><text class="sc-txt" x="102" y="72">78.3 °C</text></g><g data-from="2"><rect class="sc-cell" x="158" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="172.5" y="26" text-anchor="middle">78.2</text><rect class="sc-cell" x="189" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="203.5" y="26" text-anchor="middle">74.9</text><rect class="sc-cell" x="220" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="234.5" y="26" text-anchor="middle">71.0</text><rect class="sc-cell" x="251" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="265.5" y="26" text-anchor="middle">68.6</text><rect class="sc-cell" x="282" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="296.5" y="26" text-anchor="middle">65.1</text><rect class="sc-cell" x="313" y="12" width="29" height="20" rx="4"/><text class="sc-small" x="327.5" y="26" text-anchor="middle">62.9</text></g><g data-from="3"><path class="sc-axes" d="M158 44V168H350"/><circle class="sc-pt" cx="168" cy="52" r="3.4"/><circle class="sc-pt" cx="187" cy="69.4" r="3.4"/><circle class="sc-pt" cx="206" cy="89.9" r="3.4"/><circle class="sc-pt" cx="225" cy="99.2" r="3.4"/><circle class="sc-pt" cx="244" cy="113.9" r="3.4"/><circle class="sc-pt" cx="263" cy="117.1" r="3.4"/><circle class="sc-pt" cx="282" cy="127.1" r="3.4"/><circle class="sc-pt" cx="301" cy="127.9" r="3.4"/><circle class="sc-pt" cx="320" cy="137.6" r="3.4"/><circle class="sc-pt" cx="339" cy="137.5" r="3.4"/></g><g data-from="4"><path class="sc-err" d="M168 45V59M165 45H171M165 59H171"/><path class="sc-err" d="M187 62.4V76.4M184 62.4H190M184 76.4H190"/><path class="sc-err" d="M206 82.9V96.9M203 82.9H209M203 96.9H209"/><path class="sc-err" d="M225 92.2V106.2M222 92.2H228M222 106.2H228"/><path class="sc-err" d="M244 106.9V120.9M241 106.9H247M241 120.9H247"/><path class="sc-err" d="M263 110.1V124.1M260 110.1H266M260 124.1H266"/><path class="sc-err" d="M282 120.1V134.1M279 120.1H285M279 134.1H285"/><path class="sc-err" d="M301 120.9V134.9M298 120.9H304M298 134.9H304"/><path class="sc-err" d="M320 130.6V144.6M317 130.6H323M317 144.6H323"/><path class="sc-err" d="M339 130.5V144.5M336 130.5H342M336 144.5H342"/></g><g data-from="5"><path class="sc-fit" pathLength="100" d="M168 52 L173 57.7 L178 63 L183 68.1 L188 72.9 L193 77.4 L198 81.6 L203 85.6 L208 89.4 L213 92.9 L218 96.3 L223 99.4 L228 102.4 L233 105.2 L238 107.9 L243 110.4 L248 112.8 L253 115 L258 117.1 L263 119.1 L268 121 L273 122.7 L278 124.4 L283 125.9 L288 127.4 L293 128.8 L298 130.1 L303 131.4 L308 132.6 L313 133.7 L318 134.7 L323 135.7 L328 136.6 L333 137.5 L338 138.3"/><text class="sc-txt" x="232" y="82">τ = 237 ± 3 s</text></g><g data-from="6"><path class="sc-res" d="M168 52V52"/><path class="sc-res" d="M187 69.4V71.9"/><path class="sc-res" d="M206 89.9V87.9"/><path class="sc-res" d="M225 99.2V100.7"/><path class="sc-res" d="M244 113.9V110.9"/><path class="sc-res" d="M263 117.1V119.1"/><path class="sc-res" d="M282 127.1V125.6"/><path class="sc-res" d="M301 127.9V130.9"/><path class="sc-res" d="M320 137.6V135.1"/><path class="sc-res" d="M339 137.5V138.5"/><circle class="sc-light" cx="326" cy="60" r="9"/><text class="sc-small" x="326" y="84" text-anchor="middle">χ² 0.7</text></g><g data-from="7"><path class="sc-rep" d="M168 56 L173 62.6 L178 68.7 L183 74.5 L188 79.8 L193 84.8 L198 89.5 L203 93.9 L208 98 L213 101.8 L218 105.3 L223 108.7 L228 111.8 L233 114.7 L238 117.4 L243 119.9 L248 122.3 L253 124.5 L258 126.6 L263 128.5 L268 130.3 L273 132 L278 133.6 L283 135.1 L288 136.4 L293 137.7 L298 138.9 L303 140.1 L308 141.1 L313 142.1 L318 143 L323 143.9 L328 144.7 L333 145.4 L338 146.1"/><path class="sc-rep" d="M168 49 L173 55.1 L178 60.8 L183 66.2 L188 71.2 L193 76 L198 80.4 L203 84.6 L208 88.5 L213 92.2 L218 95.7 L223 98.9 L228 102 L233 104.8 L238 107.5 L243 110.1 L248 112.4 L253 114.7 L258 116.8 L263 118.7 L268 120.6 L273 122.3 L278 123.9 L283 125.5 L288 126.9 L293 128.2 L298 129.5 L303 130.7 L308 131.8 L313 132.9 L318 133.8 L323 134.8 L328 135.6 L333 136.4 L338 137.2"/><path class="sc-rep" d="M168 55 L173 60.3 L178 65.4 L183 70.1 L188 74.6 L193 78.9 L198 83 L203 86.8 L208 90.4 L213 93.9 L218 97.1 L223 100.2 L228 103.1 L233 105.9 L238 108.5 L243 110.9 L248 113.3 L253 115.5 L258 117.6 L263 119.6 L268 121.5 L273 123.3 L278 125 L283 126.6 L288 128.1 L293 129.5 L298 130.9 L303 132.1 L308 133.4 L313 134.5 L318 135.6 L323 136.6 L328 137.6 L333 138.5 L338 139.4"/><path class="sc-rep" d="M168 48 L173 53 L178 57.8 L183 62.3 L188 66.6 L193 70.6 L198 74.5 L203 78.2 L208 81.7 L213 85 L218 88.1 L223 91.1 L228 94 L233 96.7 L238 99.2 L243 101.7 L248 104 L253 106.2 L258 108.3 L263 110.3 L268 112.2 L273 113.9 L278 115.6 L283 117.3 L288 118.8 L293 120.3 L298 121.7 L303 123 L308 124.2 L313 125.4 L318 126.5 L323 127.6 L328 128.6 L333 129.6 L338 130.5"/><path class="sc-rep" d="M168 58 L173 63.9 L178 69.4 L183 74.5 L188 79.4 L193 84 L198 88.4 L203 92.4 L208 96.3 L213 99.9 L218 103.3 L223 106.5 L228 109.5 L233 112.3 L238 115 L243 117.5 L248 119.9 L253 122.1 L258 124.2 L263 126.2 L268 128.1 L273 129.8 L278 131.5 L283 133 L288 134.5 L293 135.8 L298 137.1 L303 138.4 L308 139.5 L313 140.6 L318 141.6 L323 142.6 L328 143.5 L333 144.3 L338 145.1"/><path class="sc-rep" d="M168 46 L173 51.5 L178 56.7 L183 61.7 L188 66.3 L193 70.7 L198 74.9 L203 78.8 L208 82.5 L213 86 L218 89.3 L223 92.4 L228 95.4 L233 98.2 L238 100.8 L243 103.3 L248 105.7 L253 107.9 L258 110 L263 112 L268 113.9 L273 115.6 L278 117.3 L283 118.9 L288 120.4 L293 121.8 L298 123.1 L303 124.4 L308 125.6 L313 126.7 L318 127.8 L323 128.8 L328 129.7 L333 130.6 L338 131.5"/></g><g data-from="8"><path class="sc-noise" d="M166 158.7 L175.3 157 L184.6 158.3 L193.9 161.4 L203.2 161.2 L212.5 157.8 L221.8 154.1 L231.1 153.9 L240.4 156.4 L249.7 159.3 L259 159 L268.3 155.7 L277.6 152.1 L286.9 152 L296.2 154.6 L305.5 157.3 L314.8 156.7 L324.1 154.5 L333.4 155.4 L342.7 158.2"/><rect class="sc-chip" x="172" y="116" width="62" height="16" rx="8"/><text class="sc-chiptxt" x="203" y="127.5" text-anchor="middle">memory</text></g></svg></figure>
+  <ol>
+    <li>Store a measurement in a variable and calculate with it.</li>
+    <li>Keep many readings in an array and ask it questions.</li>
+    <li>Turn numbers into a graph with labelled axes.</li>
+    <li>Measure the wobble σ of a reading.</li>
+    <li>Fit a law, read τ ± its uncertainty, and predict with it.</li>
+    <li>Judge a fit with the residuals and the reduced χ².</li>
+    <li>Repeat an experiment on the computer to test the uncertainty.</li>
+    <li>Read the noise in real data: wobble and memory.</li>
+  </ol>
+  <p>Want to go deeper? Play with the noise itself: its memory, the thermometer step, and how much averaging really helps.</p>
+  <a class="lab-next" style="opacity:1;pointer-events:auto" href="python-noise.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8c3-4 5 4 8 0s5 4 8 0"/><path d="M3 16h18"/></svg>Noise Lab →</a>
+</section>
+```
+
 ::: {.callout-note collapse="true"}
 ## Words
 
-- **noise (σ)**: how much one reading can be off. The bars on the points.
+- **variable**: a name for a value, like `T = 78.3`.
+- **array**: many values in a row, with one name.
+- **σ (sigma), noise, wobble**: how much one reading can be off. The bars on the points.
 - **fit**: finding the numbers that bring a curve closest to the data.
 - **cooling time (τ, tau)**: how fast the tea cools. Larger means slower.
-- **residual**: data minus fit, point by point (lower panel).
-- **χ²**: around 1 (green) the fit agrees with the bars; higher (amber, red) something is off.
+- **residual**: data minus fit, point by point.
+- **χ² (chi-squared)**: around 1 (green) the fit agrees with the bars; higher (amber, red) something is off.
+- **memory (autocorrelation)**: how much a noise value resembles the one before.
+- **repeat (Monte Carlo)**: do the experiment many times on the computer and look at the scatter of the result.
 - **function, lambda, dictionary**: a recipe with inputs; a tiny unnamed recipe; a labelled collection like `laws["newton"]`.
 :::
 
 ::: {.callout-note collapse="true"}
 ## About this page
 
-Python runs inside your browser (Pyodide, WebAssembly): nothing you type is sent to a server. The first visit downloads tens of MB of Python files and page libraries from a public content delivery network (jsDelivr), which can see your IP address; later visits use the browser cache. The data are simulated. Real Mosaicus measurements come next.
+Python runs inside your browser (Pyodide, WebAssembly): nothing you type is sent to a server. The first visit downloads tens of MB of Python files and page libraries from a public content delivery network (jsDelivr), which can see your IP address; later visits use the browser cache. The data are simulated.
 :::
 
 ```{=html}
