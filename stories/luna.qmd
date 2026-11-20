@@ -1,7 +1,11 @@
 ---
 title: "Perché la Luna non cade sulla Terra?"
 description: "Il cannone di Newton: una simulazione per capire cos'è un'orbita."
-image: ../images/orbita-circolare.png
+image: ../images/cannone-di-newton.svg
+open-graph:
+  image: ../images/orbita-circolare.png
+twitter-card:
+  image: ../images/orbita-circolare.png
 toc: false
 ---
 
