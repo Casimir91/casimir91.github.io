@@ -6,6 +6,18 @@
 
 const ARC = { 1: [0], 2: [-26, 26], 3: [-48, 0, 48], 4: [-66, -22, 22, 66] };   // degrees around the "up" direction
 let overlay = null;
+let active = null;          // the gesture in progress: { id, end(commit, quiet) } – there is only ever one
+
+/* Safety nets: if a release is never reported (mouse let go outside the window, window loses focus, tab hidden),
+   the fan must not stay on screen. */
+const dropActive = () => { if (active) active.end(false, true); };
+addEventListener("blur", dropActive);
+addEventListener("pagehide", dropActive);
+document.addEventListener("visibilitychange", () => { if (document.hidden) dropActive(); });
+addEventListener("pointerup", (e) => { if (active && e.pointerId === active.id) active.end(true, false); });
+addEventListener("pointercancel", (e) => { if (active && e.pointerId === active.id) active.end(false, false); });
+addEventListener("keydown", (e) => { if (e.key === "Escape") dropActive(); });
+const clearOverlay = () => { document.querySelectorAll(".radial").forEach((n) => n.remove()); overlay = null; };
 
 function buzz(ms) { try { if (navigator.vibrate) navigator.vibrate(ms); } catch (e) {} }
 
@@ -35,6 +47,7 @@ export function attachRadial(btn, items, onPick, opts = {}) {
     if (st.c.x < R + 28) shift = lean; else if (st.c.x > vw - R - 28) shift = -lean;
     const arc = ARC[Math.min(4, items.length)] || ARC[4];
     st.angles = arc.slice(0, items.length).map((a) => a + shift);        // 0 = straight up
+    clearOverlay();
     overlay = document.createElement("div");
     overlay.className = "radial";
     overlay.setAttribute("aria-hidden", "true");
@@ -55,6 +68,7 @@ export function attachRadial(btn, items, onPick, opts = {}) {
     overlay.appendChild(ring);
     document.body.appendChild(overlay);
     btn.classList.add("radial-open");
+    st.guard = setTimeout(() => finish(false, true), 15000);          // last resort
     buzz(10);
   }
 
@@ -80,14 +94,16 @@ export function attachRadial(btn, items, onPick, opts = {}) {
     overlay.classList.toggle("cancel", st.cancel);
   }
 
-  function finish(commit) {
+  function finish(commit, quiet) {
     if (!st) return;
-    clearTimeout(st.timer);
+    clearTimeout(st.timer); clearTimeout(st.guard);
     const s = st; st = null;
+    if (active && active.id === s.id) active = null;
     try { btn.releasePointerCapture(s.id); } catch (e) {}
     if (!s.open) return;
-    if (overlay) { overlay.remove(); overlay = null; }
+    clearOverlay();
     btn.classList.remove("radial-open");
+    if (quiet) return;                                                   // aborted by a safety net: nothing typed, the next tap must still work
     if (commit && s.sel >= 0 && !s.cancel) {
       skipClick = true; setTimeout(() => { skipClick = false; }, 450);
       onPick(s.out ? items[s.sel].outer : items[s.sel]);
@@ -99,12 +115,15 @@ export function attachRadial(btn, items, onPick, opts = {}) {
 
   btn.addEventListener("pointerdown", (e) => {
     if (e.pointerType === "mouse" && e.button !== 0) return;
+    dropActive(); if (st) finish(false, true);                            // a release was lost earlier: clean up first
     st = { id: e.pointerId, x: e.clientX, y: e.clientY, open: false, sel: -1, out: false };
+    active = { id: e.pointerId, end: (commit, quiet) => finish(commit, quiet) };
     st.timer = setTimeout(open, HOLD);
     try { btn.setPointerCapture(e.pointerId); } catch (err) {}
   });
   btn.addEventListener("pointermove", (e) => {
     if (!st || e.pointerId !== st.id) return;
+    if (e.pointerType === "mouse" && e.buttons === 0) { finish(false, true); return; }   // button was released outside the page
     if (!st.open) {
       if (Math.hypot(e.clientX - st.x, e.clientY - st.y) < FLICK) return;
       open();
@@ -113,4 +132,5 @@ export function attachRadial(btn, items, onPick, opts = {}) {
   });
   btn.addEventListener("pointerup", (e) => { if (st && e.pointerId === st.id) finish(true); });
   btn.addEventListener("pointercancel", (e) => { if (st && e.pointerId === st.id) finish(false); });
+  btn.addEventListener("lostpointercapture", (e) => { if (st && st.open && e.pointerId === st.id) finish(false, true); });
 }

@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 563" role="img" aria-label="Il cannone di Newton: colpo debole, colpo più veloce, orbita">
+<title>Il cannone di Newton in tre mosse: colpo debole, più veloce, in orbita</title>
+<style>
+text { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+.cap { opacity: 0; }
+.cap .a { font-size: 42px; font-weight: 700; fill: #1e2430; text-anchor: middle; }
+.cap .b { font-family: Georgia, "Times New Roman", serif; font-style: italic; font-size: 33px; fill: #59637c; text-anchor: middle; }
+.dk { opacity: 0; }
+.tr { fill: none; stroke: #2a5aa8; stroke-width: 5; stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: 0; opacity: .85; }
+.ba, .bb, .fl, .ri { opacity: 0; }
+.fl, .ri { transform-box: fill-box; transform-origin: 50% 50%; }
+.orb { transform-origin: 500px 355px; }
+@keyframes cap1 { 0% { opacity: 0 } 1.6% { opacity: 1 } 25.32% { opacity: 1 } 26.92% { opacity: 0 } 100% { opacity: 0 } }
+@keyframes dot1 { 0% { opacity: 0 } 1.6% { opacity: 1 } 25.32% { opacity: 1 } 26.92% { opacity: 0 } 100% { opacity: 0 } }
+@keyframes cap2 { 0% { opacity: 0 } 26.92% { opacity: 0 } 28.52% { opacity: 1 } 53.02% { opacity: 1 } 54.62% { opacity: 0 } 100% { opacity: 0 } }
+@keyframes dot2 { 0% { opacity: 0 } 26.92% { opacity: 0 } 28.52% { opacity: 1 } 53.02% { opacity: 1 } 54.62% { opacity: 0 } 100% { opacity: 0 } }
+@keyframes cap3 { 0% { opacity: 0 } 54.62% { opacity: 0 } 56.22% { opacity: 1 } 97.6% { opacity: 1 } 99.2% { opacity: 0 } 100% { opacity: 0 } }
+@keyframes dot3 { 0% { opacity: 0 } 54.62% { opacity: 0 } 56.22% { opacity: 1 } 97.6% { opacity: 1 } 99.2% { opacity: 0 } 100% { opacity: 0 } }
+@keyframes ball1 { 0% { opacity: 0; transform: translate(520px, 203px) } 3.07% { opacity: 0; transform: translate(520px, 203px) } 3.08% { opacity: 1; transform: translate(520px, 203px) } 4.13% { opacity: 1; transform: translate(521.94px, 203.24px) } 5.19% { opacity: 1; transform: translate(525.32px, 204.95px) } 6.25% { opacity: 1; transform: translate(528.77px, 208.98px) } 7.31% { opacity: 1; transform: translate(531.62px, 214.8px) } 8.37% { opacity: 1; transform: translate(533.9px, 222px) } 9.42% { opacity: 1; transform: translate(535.73px, 230.33px) } 10.48% { opacity: 1; transform: translate(537.18px, 239.64px) } 11.54% { opacity: 1; transform: translate(538.3px, 249.8px) } 23.08% { opacity: 1; transform: translate(538.3px, 249.8px) } 26.92% { opacity: 0; transform: translate(538.3px, 249.8px) } 100% { opacity: 0; transform: translate(538.3px, 249.8px) } }
+@keyframes tr1 { 0% { opacity: 0; stroke-dashoffset: 100 } 3.07% { opacity: 0; stroke-dashoffset: 100 } 3.08% { opacity: .85; stroke-dashoffset: 100 } 4.13% { opacity: .85; stroke-dashoffset: 96.41 } 5.19% { opacity: .85; stroke-dashoffset: 89.12 } 6.25% { opacity: .85; stroke-dashoffset: 79.18 } 7.31% { opacity: .85; stroke-dashoffset: 67.01 } 8.37% { opacity: .85; stroke-dashoffset: 52.86 } 9.42% { opacity: .85; stroke-dashoffset: 36.89 } 10.48% { opacity: .85; stroke-dashoffset: 19.24 } 11.54% { opacity: .85; stroke-dashoffset: 0 } 23.08% { opacity: .85; stroke-dashoffset: 0 } 26.92% { opacity: 0; stroke-dashoffset: 0 } 100% { opacity: 0; stroke-dashoffset: 0 } }
+@keyframes ri1 { 0% { opacity: 0; transform: scale(.3) } 11.53% { opacity: 0; transform: scale(.3) } 11.54% { opacity: .9; transform: scale(.5) } 15.38% { opacity: 0; transform: scale(2) } 100% { opacity: 0; transform: scale(2) } }
+@keyframes ball2 { 0% { opacity: 0; transform: translate(520px, 203px) } 30.76% { opacity: 0; transform: translate(520px, 203px) } 30.77% { opacity: 1; transform: translate(520px, 203px) } 32.12% { opacity: 1; transform: translate(524.96px, 203.16px) } 33.46% { opacity: 1; transform: translate(534.57px, 204.46px) } 34.81% { opacity: 1; transform: translate(547.4px, 208.69px) } 36.15% { opacity: 1; transform: translate(561.2px, 217.59px) } 37.5% { opacity: 1; transform: translate(573.89px, 231.9px) } 38.85% { opacity: 1; transform: translate(584.16px, 250.94px) } 40.19% { opacity: 1; transform: translate(591.77px, 273.59px) } 41.54% { opacity: 1; transform: translate(597px, 299px) } 50.77% { opacity: 1; transform: translate(597px, 299px) } 54.62% { opacity: 0; transform: translate(597px, 299px) } 100% { opacity: 0; transform: translate(597px, 299px) } }
+@keyframes tr2 { 0% { opacity: 0; stroke-dashoffset: 100 } 30.76% { opacity: 0; stroke-dashoffset: 100 } 30.77% { opacity: .85; stroke-dashoffset: 100 } 32.12% { opacity: .85; stroke-dashoffset: 96.41 } 33.46% { opacity: .85; stroke-dashoffset: 89.12 } 34.81% { opacity: .85; stroke-dashoffset: 79.18 } 36.15% { opacity: .85; stroke-dashoffset: 67.01 } 37.5% { opacity: .85; stroke-dashoffset: 52.86 } 38.85% { opacity: .85; stroke-dashoffset: 36.89 } 40.19% { opacity: .85; stroke-dashoffset: 19.24 } 41.54% { opacity: .85; stroke-dashoffset: 0 } 50.77% { opacity: .85; stroke-dashoffset: 0 } 54.62% { opacity: 0; stroke-dashoffset: 0 } 100% { opacity: 0; stroke-dashoffset: 0 } }
+@keyframes ri2 { 0% { opacity: 0; transform: scale(.3) } 41.53% { opacity: 0; transform: scale(.3) } 41.54% { opacity: .9; transform: scale(.5) } 45.38% { opacity: 0; transform: scale(2) } 100% { opacity: 0; transform: scale(2) } }
+@keyframes orb { 0% { opacity: 0; transform: rotate(0deg) } 58.45% { opacity: 0; transform: rotate(0deg) } 58.46% { opacity: 1; transform: rotate(0deg) } 92.31% { opacity: 1; transform: rotate(360deg) } 94.62% { opacity: 1; transform: rotate(360deg) } 99.23% { opacity: 0; transform: rotate(360deg) } 100% { opacity: 0; transform: rotate(360deg) } }
+@keyframes tr3 { 0% { opacity: 0; stroke-dashoffset: 100 } 58.45% { opacity: 0; stroke-dashoffset: 100 } 58.46% { opacity: .85; stroke-dashoffset: 100 } 92.31% { opacity: .85; stroke-dashoffset: 0 } 94.62% { opacity: .85; stroke-dashoffset: 0 } 99.23% { opacity: 0; stroke-dashoffset: 0 } 100% { opacity: 0; stroke-dashoffset: 0 } }
+@keyframes fl { 0% { opacity: 0; transform: scale(.3) } 3.07% { opacity: 0; transform: scale(.3) } 3.08% { opacity: .9; transform: scale(.6) } 5.77% { opacity: 0; transform: scale(2.4) } 30.76% { opacity: 0; transform: scale(.3) } 30.77% { opacity: .9; transform: scale(.6) } 33.46% { opacity: 0; transform: scale(2.4) } 58.45% { opacity: 0; transform: scale(.3) } 58.46% { opacity: .9; transform: scale(.6) } 61.15% { opacity: 0; transform: scale(2.4) } 100% { opacity: 0; transform: scale(2.4) } }
+@media (prefers-reduced-motion: no-preference) {
+  .cap1 { animation: cap1 13s linear infinite; } .cap2 { animation: cap2 13s linear infinite; } .cap3 { animation: cap3 13s linear infinite; }
+  .dk1 { animation: dot1 13s linear infinite; } .dk2 { animation: dot2 13s linear infinite; } .dk3 { animation: dot3 13s linear infinite; }
+  .tr1 { animation: tr1 13s linear infinite; } .tr2 { animation: tr2 13s linear infinite; } .tr3 { animation: tr3 13s linear infinite; }
+  .ba { animation: ball1 13s linear infinite; } .bb { animation: ball2 13s linear infinite; }
+  .orb { animation: orb 13s linear infinite; }
+  .fl { animation: fl 13s ease-out infinite; }
+  .ri1 { animation: ri1 13s ease-out infinite; } .ri2 { animation: ri2 13s ease-out infinite; }
+}
+</style>
+<rect width="1000" height="563" fill="#f3f4f1"/>
+<circle cx="500" cy="355" r="150" fill="none" stroke="#a9b0bf" stroke-width="3" stroke-dasharray="3 11" stroke-linecap="round" opacity=".7"/>
+<polygon points="500,205 464,256 536,256" fill="#c9ccd6" stroke="#1e2430" stroke-width="4" stroke-linejoin="round"/>
+<circle cx="500" cy="355" r="112" fill="#eaf2fa" stroke="#1e2430" stroke-width="4.5"/>
+<clipPath id="ec"><circle cx="500" cy="355" r="110"/></clipPath>
+<g clip-path="url(#ec)" fill="#9ebf9b"><path d="M428 350q18-28 52-20q28 6 20 32q-6 26-38 28q-32 4-34-40z"/><path d="M520 392q22-20 48-6q18 12 6 32q-14 18-40 12q-26-8-14-38z"/><path d="M458 430q14-10 30-2q10 8 0 20q-12 8-26 4q-14-8-4-22z"/></g>
+<rect x="497" y="196" width="28" height="11" rx="3.5" fill="#1e2430"/><circle cx="503" cy="209" r="7" fill="#1e2430"/>
+<path class="tr tr1" pathLength="100" d="M520 203Q534 203 538.3 249.8"/>
+<path class="tr tr2" pathLength="100" d="M520 203Q582 203 597.0 299.0"/>
+<path class="tr tr3" pathLength="100" d="M500 205A150 150 0 0 1 500 505A150 150 0 0 1 500 205"/>
+<circle class="ri ri1" cx="538.3" cy="249.8" r="13" fill="none" stroke="#2a5aa8" stroke-width="3.5"/>
+<circle class="ri ri2" cx="597.0" cy="299.0" r="13" fill="none" stroke="#2a5aa8" stroke-width="3.5"/>
+<circle class="ba" cx="0" cy="0" r="11" fill="#2a5aa8"/>
+<circle class="bb" cx="0" cy="0" r="11" fill="#2a5aa8"/>
+<g class="orb"><circle class="bc" cx="500" cy="205" r="11" fill="#2a5aa8"/></g>
+<circle class="fl" cx="520" cy="203" r="13" fill="#2a5aa8"/>
+<g class="dots"><circle cx="466" cy="66" r="7" fill="#dde1e6"/><circle cx="500" cy="66" r="7" fill="#dde1e6"/><circle cx="534" cy="66" r="7" fill="#dde1e6"/>
+<circle class="dk dk1" cx="466" cy="66" r="7" fill="#2a5aa8"/><circle class="dk dk2" cx="500" cy="66" r="7" fill="#2a5aa8"/><circle class="dk dk3" cx="534" cy="66" r="7" fill="#2a5aa8"/></g>
+<g class="cap cap1"><text class="a" x="500" y="122">1 · colpo debole</text><text class="b" x="500" y="166">cade vicino</text></g>
+<g class="cap cap2"><text class="a" x="500" y="122">2 · più veloce</text><text class="b" x="500" y="166">cade più lontano</text></g>
+<g class="cap cap3"><text class="a" x="500" y="122">3 · in orbita</text><text class="b" x="500" y="166">non tocca mai terra</text></g>
+</svg>
