@@ -1,0 +1,234 @@
+---
+title: "Noise Lab"
+subtitle: "Every reading wobbles. Look how."
+description: "What is the noise of a temperature measurement? Look at it, repeat the experiment, average it. In Python, in your browser."
+toc: false
+page-layout: full
+engine: markdown
+resources:
+  - tealab.py
+  - lab.js
+format:
+  live-html:
+    lang: en
+    theme:
+      light: [sandstone, ../fonts.scss]
+      dark: [darkly, ../custom-dark.scss, ../fonts.scss]
+    respect-user-color-scheme: true
+    css: lab.css
+    include-in-header: ../_includes/pwa-head.html
+    include-after-body: ../brand-link.html
+    pyodide:
+      resources:
+        - tealab.py
+      packages:
+        - numpy
+        - scipy
+        - matplotlib
+      cell-options:
+        autorun: true
+        fig-dpi: 120
+---
+
+:::::: {.lab-wrap}
+
+```{=html}
+<nav class="lab-rail" aria-label="Steps">
+  <a class="lab-step" href="#step-look"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><span>Look</span></a>
+  <a class="lab-step" href="#step-repeat"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a3 3 0 013-3h15"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a3 3 0 01-3 3H3"/></svg><span>Repeat</span></a>
+  <a class="lab-step" href="#step-average"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8c3-4 5 4 8 0s5 4 8 0"/><path d="M3 16h18"/></svg><span>Average</span></a>
+</nav>
+```
+
+::::: {#step-look .lab-section}
+
+```{=html}
+<h2 class="lab-h"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>Look <span class="lab-cue" aria-hidden="true">⇆</span></h2>
+```
+
+:::: {.lab-split}
+
+::: {.lab-controls}
+
+::: {.lab-row}
+```{ojs}
+//| echo: false
+viewof noise = Inputs.range([0.1, 1], {value: 0.4, step: 0.05, label: "noise (°C)"})
+```
+
+```{=html}
+<button type="button" class="lab-i" aria-expanded="false" aria-label="What is noise?">i</button>
+<p class="lab-info" hidden>How much each thermometer reading wobbles at random, in °C. The grey band in the graph is ± this value.</p>
+```
+:::
+
+::: {.lab-row}
+```{ojs}
+//| echo: false
+viewof memory = Inputs.range([0, 0.95], {value: 0, step: 0.05, label: "memory"})
+```
+
+```{=html}
+<button type="button" class="lab-i" aria-expanded="false" aria-label="What is memory?">i</button>
+<p class="lab-info" hidden>How much each reading resembles the one before. 0: every reading is independent (white noise). Close to 1: the noise drifts slowly, like a room warming up.</p>
+```
+:::
+
+::: {.lab-row}
+```{ojs}
+//| echo: false
+viewof thermo_step = Inputs.range([0, 0.5], {value: 0, step: 0.05, label: "thermometer step (°C)"})
+```
+
+```{=html}
+<button type="button" class="lab-i" aria-expanded="false" aria-label="What is the thermometer step?">i</button>
+<p class="lab-info" hidden>A digital thermometer rounds its readings. With 0.5 it can only show 21.0, 21.5, 22.0… Zero means no rounding.</p>
+```
+:::
+
+:::
+
+::: {.lab-view}
+
+```{pyodide}
+#| echo: false
+#| input:
+#|   - noise
+#|   - memory
+#|   - thermo_step
+import numpy as np
+from scipy.optimize import curve_fit
+from tealab import tea, look
+
+t, T = tea(noise, memory=memory, step=thermo_step)
+
+def model(t, Ta, T0, tau):
+    return Ta + (T0 - Ta) * np.exp(-t / tau)
+
+par, cov = curve_fit(model, t, T, p0=[20, 80, 100],
+                     sigma=np.full(t.size, noise), absolute_sigma=True)
+look(t, T, noise, model, par, cov)
+```
+
+```{=html}
+<div class="lab-ghost" aria-hidden="true"><svg viewBox="0 0 100 40"><path d="M4 22 L12 16 L20 26 L28 14 L36 24 L44 18 L52 28 L60 15 L68 23 L76 17 L84 26 L96 20"/></svg></div>
+```
+
+:::
+
+::::
+
+```{=html}
+<a class="lab-next" href="#step-repeat"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a3 3 0 013-3h15"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a3 3 0 01-3 3H3"/></svg>Repeat ↓</a>
+```
+
+:::::
+
+::::: {#step-repeat .lab-section}
+
+```{=html}
+<h2 class="lab-h"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a3 3 0 013-3h15"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a3 3 0 01-3 3H3"/></svg>Repeat</h2>
+<p class="lab-hint">Same experiment, again and again. Change a number in the code. Press Run Code.</p>
+```
+
+:::: {.lab-pair}
+
+```{pyodide}
+import numpy as np
+from scipy.optimize import curve_fit
+from tealab import tea, spread
+
+noise = 0.4      # ← try 1     wobble of each reading (°C)
+memory = 0.0     # ← try 0.9   0 = none, near 1 = slow drift
+repeats = 100    # ← try 300   how many times we redo it
+
+def model(t, Ta, T0, tau):
+    return Ta + (T0 - Ta) * np.exp(-t / tau)
+
+taus, claimed = [], []
+for k in range(repeats):
+    t, T = tea(noise, memory=memory, seed=k)
+    par, cov = curve_fit(model, t, T, p0=[20, 80, 100],
+                         sigma=np.full(t.size, noise), absolute_sigma=True)
+    taus.append(par[2])
+    claimed.append(np.sqrt(cov[2, 2]))
+
+spread(taus, claimed)
+```
+
+::::
+
+```{=html}
+<a class="lab-next" href="#step-average"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8c3-4 5 4 8 0s5 4 8 0"/><path d="M3 16h18"/></svg>Average ↓</a>
+```
+
+:::::
+
+::::: {#step-average .lab-section}
+
+```{=html}
+<h2 class="lab-h"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8c3-4 5 4 8 0s5 4 8 0"/><path d="M3 16h18"/></svg>Average <span class="lab-cue" aria-hidden="true">⇆</span></h2>
+```
+
+:::: {.lab-split}
+
+::: {.lab-controls}
+
+::: {.lab-row}
+```{ojs}
+//| echo: false
+viewof avg_memory = Inputs.range([0, 0.95], {value: 0, step: 0.05, label: "memory"})
+```
+
+```{=html}
+<button type="button" class="lab-i" aria-expanded="false" aria-label="What is memory?">i</button>
+<p class="lab-info" hidden>The same memory as above, now for a thermometer in a bath at constant temperature. Averaging N readings should cut the error by √N, but only if the readings are independent.</p>
+```
+:::
+
+:::
+
+::: {.lab-view}
+
+```{pyodide}
+#| echo: false
+#| input:
+#|   - avg_memory
+from tealab import average
+
+average(avg_memory)
+```
+
+```{=html}
+<div class="lab-ghost" aria-hidden="true"><svg viewBox="0 0 100 40"><path d="M6 6 L94 34" stroke-dasharray="4 4"/><path d="M6 6 C 40 10, 70 20, 94 26"/></svg></div>
+```
+
+:::
+
+::::
+
+:::::
+
+::: {.callout-note collapse="true"}
+## Words
+
+- **noise**: what is left of a reading after you remove the law (the residuals).
+- **σ**: how wide the noise is. About two readings in three fall within ±σ.
+- **memory**: how much a reading resembles the one before. 0 is white noise. Statisticians call it autocorrelation; r₁ is its value at one step.
+- **histogram**: how the values are spread, forgetting their order. It can look the same for any memory.
+- **thermometer step**: a digital thermometer rounds. The error is up to half a step, with σ ≈ step / √12.
+- **repeat (Monte Carlo)**: redo a simulated experiment many times to see how the result scatters.
+- **error of the average**: σ/√N for white noise. Memory makes averaging less effective.
+:::
+
+::: {.callout-note collapse="true"}
+## About this page
+
+Python runs inside your browser (Pyodide, WebAssembly): nothing you type is sent to a server. The first visit downloads tens of MB of Python files and page libraries from a public content delivery network (jsDelivr), which can see your IP address; later visits use the browser cache. The data are simulated with the same cooling model as the Mosaicus simulator.
+:::
+
+```{=html}
+<script src="lab.js" defer></script>
+```
+
+::::::
