@@ -317,7 +317,8 @@ function factorial(v) {
 /* ---------- parser (recursive descent over the LaTeX string) ---------- */
 function normalise(src) {
   let s = String(src);
-  s = s.replace(/\\left|\\right/g, "")
+  s = s.replace(/\\left\.|\\right\./g, "")                // the empty delimiter MathLive leaves when one bracket is deleted
+       .replace(/\\left|\\right/g, "")
        .replace(/\\[,;:! ]|~/g, "")
        .replace(/\\displaystyle|\\textstyle/g, "")
        .replace(/\\cdot|\\times|·|×|\*/g, "*")

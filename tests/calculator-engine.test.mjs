@@ -160,5 +160,11 @@ t('\\cot^{-1}\\left(1\\right)', '45', 'exact', { angle: 'deg' });
 t('\\cot^{-1}\\left(0\\right)', '90', 'exact', { angle: 'deg' });
 t('\\cot^{-1}\\left(-1\\right)', '135', 'exact', { angle: 'deg' });
 t('\\cot^{2}\\left(45\\right)', '1', 'exact', { angle: 'deg' });
+// a deleted bracket leaves MathLive's empty delimiter (\\left. ... \\right) ): it is ignored, plain brackets still count
+t('(\\left.2+3\\right)\\times4', '20');
+t('\\left(2+3\\right.)\\times4', '20');
+t('(2+3)\\times4', '20');
+t('\\left.2+3\\right)', 'ERR:syntax');
+t('(2+3', 'ERR:syntax');
 console.log(fail ? `\n${fail} FAILED` : '\nall passed');
 process.exit(fail ? 1 : 0);

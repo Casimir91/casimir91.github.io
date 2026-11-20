@@ -41,9 +41,55 @@ mf.addEventListener("mount", () => {
   mf.setAttribute("aria-label", "Calculation");
   refresh();
   if (!coarse) mf.focus({ preventScroll: true });
+  watchFit();
 }, { once: true });
 mf.setAttribute("placeholder", "\\text{Type here}");
 $("entry").appendChild(mf);
+
+/* ---------- the expression shrinks to stay in view; below the minimum size it scrolls to the caret ---------- */
+let fitQueued = false, fitForce = false, baseSize = 0, lastSig = "";
+function readBase() {                                           // the size CSS asks for (it changes with the screen height)
+  const had = mf.style.fontSize;
+  if (had) mf.style.fontSize = "";
+  const v = parseFloat(getComputedStyle(mf).fontSize);
+  if (had) mf.style.fontSize = had;
+  return v;
+}
+function fitEntry(force) {
+  const root = mf.shadowRoot && mf.shadowRoot.querySelector(".ML__latex");
+  if (!root || !mf.clientWidth) return;
+  if (!baseSize) baseSize = readBase();
+  const cs = getComputedStyle(mf);
+  const avail = mf.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight) - 14;   // room for the caret
+  const min = Math.max(17, baseSize * 0.5);
+  let size = parseFloat(cs.fontSize);
+  const setSize = (s) => {
+    size = s;
+    const next = s >= baseSize - 0.3 ? "" : s.toFixed(2) + "px";
+    if (mf.style.fontSize !== next) mf.style.fontSize = next;
+  };
+  for (let i = 0; i < 3; i++) {
+    const w = root.getBoundingClientRect().width;
+    const natural = w * baseSize / size;                         // width at the full size (layout is linear in the font size)
+    const want = natural <= avail ? baseSize : Math.max(min, baseSize * avail / natural * 0.985);
+    if (Math.abs(want - size) < 0.4) break;
+    setSize(want);
+  }
+  const sig = size.toFixed(1) + "|" + Math.round(root.getBoundingClientRect().width);
+  if (force || sig !== lastSig) { lastSig = sig; try { mf.executeCommand("scrollIntoView"); } catch (e) {} }
+}
+function queueFit(force) {
+  fitForce = fitForce || force === true;
+  if (fitQueued) return;
+  fitQueued = true;
+  requestAnimationFrame(() => { fitQueued = false; const f = fitForce; fitForce = false; fitEntry(f); });
+}
+function watchFit() {
+  if (mf.shadowRoot) new MutationObserver(() => queueFit()).observe(mf.shadowRoot, { childList: true, subtree: true, characterData: true });
+  mf.addEventListener("input", () => queueFit(true));
+  addEventListener("resize", () => { baseSize = 0; queueFit(true); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { baseSize = 0; queueFit(); });
+}
 
 const focusField = () => { if (!coarse) mf.focus({ preventScroll: true }); };
 const isEmpty = () => mf.getValue("latex").trim() === "";
@@ -205,7 +251,8 @@ const TRIGS = [trigItem("sin", "Sine"), trigItem("cos", "Cosine"), trigItem("tan
      1    2    3     ⌫
      π    0    .     =                                  */
 const K = {
-  paren: { l: "( )", aria: "Brackets", kind: "fn", act: "paren" },
+  paren: { l: "( )", aria: "Brackets", kind: "fn", act: "paren", alts: [
+    { l: "(", aria: "Open bracket only", ins: "(" }, { l: ")", aria: "Close bracket only", ins: ")" }] },
   trig: { ...TRIGS[0], kind: "fn mono", alts: TRIGS },
   sci: { l: "×10<sup>x</sup>", aria: "Times ten to the power", kind: "fn", ins: "\\times10^{#?}", ans: true, exit: true, alts: [
     { l: "log", aria: "Logarithm base 10", ins: "\\log\\left(#?\\right)" },
