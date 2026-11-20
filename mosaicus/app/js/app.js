@@ -11,10 +11,11 @@ import { initWorkbench, addBox, boxesForSession, focusBox, refreshStyle as wbRef
 import { createScope } from './scope.js';
 import { createSynth, onGeneratorChange, generatorState, stopGenerator } from './synth.js';
 import { audioSupported } from './audio.js';
+import { createCalibration } from './calibration.js';
 
 // versione: la stessa di version.json (letta dalla pagina del sito) e di CACHE in sw.js
-const APP_VERSION = '0.13.0';
-const FIRMWARE_VERSION = '0.2';   // firmware atteso su Arduino
+const APP_VERSION = '0.16.0';
+const FIRMWARE_VERSION = '0.3';   // firmware atteso su Arduino
 const $ = (s) => document.querySelector(s);
 
 const state = {
@@ -32,8 +33,10 @@ const state = {
   session: null,    // { id?, name, created, source, fw }
   simSignal: 'mic', // segnale del simulatore per l'oscilloscopio elettrico
   sent: false,      // il tratto è già stato inviato a Elaborazione (per la guida a passi)
+  calSkipped: false, // la taratura del termometro è stata saltata per questo lab (per la guida a passi)
 };
 let instr = null;   // pannello dello strumento attivo (oscilloscopio, generatore, strumento musicale)
+let cal = null;     // pannello «Tara il termometro» aperto (calibration.js)
 
 // Grafici impilati: condividono asse dei tempi, zoom, selezione e mirino.
 const group = new ChartGroup({
@@ -118,7 +121,8 @@ function selectExperiment(id, { keepData = false } = {}) {
   if (state.running) { toast('Ferma la misura prima di cambiare lab.'); return; }
   // generatore e strumento musicale sono confluiti nel sintetizzatore (v0.10)
   if (id === 'generator' || id === 'theremin') id = 'synth';
-  state.exp = byId(id); state.sent = false;
+  closeCalibration();
+  state.exp = byId(id); state.sent = false; state.calSkipped = false;
   if (!state.exp || state.exp.hidden) state.exp = byId(serialSupported() ? 'motion' : 'synth');
   id = state.exp.id;
   state.params = { ...defaultParams(state.exp), ...store.get(`mosaicus.params.${id}`, {}) };
@@ -435,6 +439,7 @@ async function exportData(kind) {
       ['Nome della misura', $('#sessionName').value || state.session?.name || ''],
       ['Data', new Date(state.session?.created ?? Date.now()).toLocaleString('it-IT')],
       ['Sorgente', state.session?.source === 'simulatore' ? 'simulatore' : `Arduino (firmware ${state.session?.fw ?? '?'})`],
+      ...(state.session?.cal ? [['Taratura del termometro', calSummary(state.session.cal)]] : []),
       ['Tratto esportato', state.selection ? `${state.selection[0]} s – ${state.selection[1]} s` : 'tutta la misura'],
       [],
       ['Parametro', 'Valore', 'Unità'],
@@ -461,7 +466,7 @@ function stackPNG() {
 
 // ---------------- collegamento ----------------
 function setStatus(text, cls) { const s = $('#status'); s.textContent = text; s.className = `pill ${cls}`; }
-const simStatus = () => `Simulatore pronto · ${state.exp.title.toLowerCase()}${state.exp.sim === 'cooling' ? ' · tempo ×30' : ''}`;
+const simStatus = () => `Simulatore pronto · ${state.exp.title.toLowerCase()}${state.exp.sim === 'cooling' || state.exp.sim === 'irtemp' ? ' · tempo ×30' : ''}`;
 
 function refreshButtons() {
   const connected = !!state.link;
@@ -482,16 +487,69 @@ const GUIDE_STEPS = 6;
 const GUIDE = {
   link:  { n: 2, text: 'Scegli da dove arrivano i dati' },
   wait:  { n: 2, text: 'Collegamento in corso…' },
+  cal:   { n: 3, text: 'Tara il termometro: ghiaccio e acqua calda' },   // solo nei lab con termometro (cooling): passo 0 prima di Avvia
   start: { n: 3, text: 'Premi <b>▶ Avvia</b>' },
   stop:  { n: 4, text: 'Premi <b>■ Ferma</b> quando vuoi' },
   pick:  { n: 5, text: 'Trascina sul grafico per scegliere un tratto' },
   send:  { n: 6, text: 'Invia il tratto a Elaborazione' },
   go:    { n: 6, text: 'Tratto inviato' },
 };
+
+// ---- taratura del termometro (v0.14): passo opzionale prima di Avvia ----
+const CAL_VALID_MS = 12 * 3600 * 1000;   // una taratura vale per la sessione di lavoro, non per sempre (il circuito cambia)
+const calInfo = () => (state.exp?.calibration ? store.get(`mosaicus.cal.${state.exp.id}`, null) : null);
+const calMatches = (i) => !!i && i.a === state.params.calA && i.b === state.params.calB;
+const calFresh = () => { const i = calInfo(); return calMatches(i) && Date.now() - i.when < CAL_VALID_MS; };
+/** La taratura in uso (se i parametri corrispondono), da salvare con la misura. */
+const currentCal = () => { const i = calInfo(); return calMatches(i) ? i : undefined; };
+const needsCal = () => !!state.exp?.calibration && !state.running && !state.rows.length && !state.calSkipped && !calFresh();
+const fmtDay = (ms) => new Date(ms).toLocaleString('it-IT', { day: 'numeric', month: 'numeric', hour: '2-digit', minute: '2-digit' });
+const calNote = () => (calMatches(calInfo()) ? `tarato il ${fmtDay(calInfo().when)}` : 'non tarato');
+function calSummary(c) {
+  const p = c.points.map((q) => `letta ${q.meas.toFixed(2)} → ${q.ref.toFixed(1)} °C`).join('; ');
+  return `T = ${c.a.toFixed(4)}·T_letta ${c.b < 0 ? '−' : '+'} ${Math.abs(c.b).toFixed(3)} °C · incertezza ± ${c.uMid.toFixed(2)} °C · ${p} · ${fmtDay(c.when)}`;
+}
+
+function openCalibration() {
+  if (!state.exp?.calibration || !state.ready || state.running || cal) return;
+  const sim = state.link.kind === 'simulatore';
+  if (sim) { state.link.scenario = 'cal'; state.link.calT = 21; state.link.calTarget = 0; }
+  const panel = $('#calPanel');
+  cal = createCalibration(panel, {
+    params: () => state.params,
+    isSim: () => sim,
+    setBath: (T) => { if (state.link?.kind === 'simulatore') state.link.calTarget = T; },
+    apply: ({ a, b, info }) => {
+      state.params.calA = a; state.params.calB = b;
+      store.set(`mosaicus.params.${state.exp.id}`, state.params);
+      store.set(`mosaicus.cal.${state.exp.id}`, { ...info, a, b });
+      renderParams(); recompute();
+      toast(`Termometro tarato: T = ${fmtVal(a, 3)}·T_letta ${b < 0 ? '−' : '+'} ${fmtVal(Math.abs(b), 2)} °C`, 5000);
+    },
+    close: closeCalibration,
+    toast,
+  });
+  panel.hidden = false; document.body.dataset.cal = '1';
+  if (isPhone()) panel.scrollIntoView({ block: 'start' });   // sul telefono l'elenco dei lab sta sopra: porto in vista il pannello
+  state.link.write('START,TEMP,500');
+  updateGuide();
+}
+
+function closeCalibration() {
+  if (!cal) return;
+  cal.destroy(); cal = null;
+  $('#calPanel').hidden = true; delete document.body.dataset.cal;
+  const link = state.link;
+  if (link) { Promise.resolve(link.write('STOP')).catch(() => { /* scollegato */ }); if (link.kind === 'simulatore') link.scenario = state.exp.sim; }
+  updateGuide();
+}
+
 function guideStep() {
   if (!state.exp || state.exp.kind || state.exp.source === 'audio') return null;
   if (!state.link) return 'link';
   if (!state.ready) return 'wait';
+  if (cal) return null;                                   // il pannello di taratura ha già le sue indicazioni
+  if (needsCal()) return 'cal';
   if (state.running) return 'stop';
   if (!state.rows.length) return 'start';
   if (state.sent) return 'go';
@@ -504,16 +562,28 @@ function updateGuide() {
   if (!g) { el.hidden = true; el.dataset.key = ''; return; }
   el.hidden = false;
   const bc = $('#btnConnect');
-  const key = `${g}|${bc.textContent}|${bc.disabled}`;
+  const hasCal = !!state.exp.calibration;
+  const key = `${g}|${bc.textContent}|${bc.disabled}|${hasCal ? calNote() : ''}`;
   if (el.dataset.key === key) return;
   el.dataset.key = key;
-  const { n, text } = GUIDE[g];
-  const dots = Array.from({ length: GUIDE_STEPS }, (_, i) => `<i class="${i + 1 < n ? 'done' : i + 1 === n ? 'now' : ''}"></i>`).join('');
+  let { n, text } = GUIDE[g];
+  if (hasCal && g !== 'cal' && n >= 3) n += 1;            // nei lab con termometro il passo di taratura si inserisce prima di Avvia
+  const total = GUIDE_STEPS + (hasCal ? 1 : 0);
+  const dots = Array.from({ length: total }, (_, i) => `<i class="${i + 1 < n ? 'done' : i + 1 === n ? 'now' : ''}"></i>`).join('');
   let act = '';
   if (g === 'link') act = `<button class="btn btn-primary" data-g="connect"${bc.disabled ? ' disabled' : ''}>${bc.textContent}</button><button class="btn" data-g="sim">Simulatore</button>`;
+  if (g === 'cal') {
+    const old = calInfo();
+    if (old) text = `Tara il termometro <small class="coach-note">(l'ultima taratura è del ${fmtDay(old.when)})</small>`;
+    act = `<button class="btn btn-go" data-g="cal">🌡 Tara il termometro</button><button class="btn btn-small btn-ghost" data-g="skipcal">${old ? 'Usa l\'ultima' : 'Salta'}</button>`;
+  }
+  if (g === 'start' && hasCal) {
+    text += ` <small class="coach-note">🌡 ${calNote()}</small>`;
+    act = `<button class="btn btn-small btn-ghost" data-g="cal">🌡 ${calMatches(calInfo()) ? 'Rifai la taratura' : 'Tara il termometro'}</button>`;
+  }
   if (g === 'send') act = '<button class="btn btn-go" data-g="send">Invia a Elaborazione →</button>';
   if (g === 'go') act = '<button class="btn btn-go" data-g="go">Vai a Elaborazione →</button>';
-  el.innerHTML = `<div class="coach-dots" aria-hidden="true">${dots}</div><p class="coach-text"><span class="coach-n">${n}</span>${text}</p>${act ? `<div class="coach-act">${act}</div>` : ''}`;
+  el.innerHTML = `<div class="coach-dots" aria-hidden="true">${dots}</div><p class="coach-text"><span class="coach-n">${n}</span><span>${text}</span></p>${act ? `<div class="coach-act">${act}</div>` : ''}`;
 }
 
 async function connect(kind) {
@@ -524,6 +594,7 @@ async function connect(kind) {
     if (state.link !== link) return;
     const wasRunning = state.running;
     state.link = null; state.ready = false; state.running = false;
+    closeCalibration();
     setStatus('Nessun dispositivo', 'pill-off'); refreshButtons();
     instr?.linkChanged?.();
     if (wasRunning) { toast('Arduino scollegato durante la misura: salvo i dati raccolti.'); autosave(); }
@@ -567,6 +638,7 @@ function handleLine(line) {
   }
   if (line.startsWith('#')) return;
   if (instr?.onLine?.(line)) return;
+  if (cal?.onLine(line)) return;
   if (!state.running) return;
   if (line[0] === state.exp.lineType && line[1] === ',') {
     // un sensore può mancare (es. telefono senza giroscopio): basta che il tempo sia valido
@@ -588,7 +660,7 @@ async function start() {
   if (!state.ready) return;
   state.raw = []; state.selection = null; group.setSelection(null); group.fitAll();
   const name = $('#sessionName').value.trim() || `${state.exp.title} ${new Date().toLocaleString('it-IT', { dateStyle: 'short', timeStyle: 'short' })}`;
-  state.session = { name, created: Date.now(), source: state.link.kind, fw: state.fw };
+  state.session = { name, created: Date.now(), source: state.link.kind, fw: state.fw, cal: currentCal() };
   $('#sessionName').value = name;
   state.sent = false;
   state.running = true; refreshButtons();
@@ -632,6 +704,7 @@ async function autosave(quiet = false) {
     name: $('#sessionName').value.trim() || state.session.name,
     experiment: state.exp.id, created: state.session.created, source: state.session.source, fw: state.session.fw,
     params: { ...state.params }, raw: state.raw, app: APP_VERSION,
+    ...(state.session.cal ? { cal: state.session.cal } : {}),
   };
   try {
     const id = await saveSession(rec);
@@ -687,7 +760,7 @@ async function openSession(id) {
   selectExperiment(s.experiment, { keepData: true });
   state.params = { ...defaultParams(state.exp), ...s.params };
   state.raw = s.raw;
-  state.session = { id: s.id, name: s.name, created: s.created, source: s.source, fw: s.fw };
+  state.session = { id: s.id, name: s.name, created: s.created, source: s.source, fw: s.fw, cal: s.cal };
   $('#sessionName').value = s.name;
   renderParams();
   recompute();
@@ -718,6 +791,71 @@ function setLim(on) {
   store.set('mosaicus.lim', on);
   group.refreshStyle();
   wbRefreshStyle();
+}
+
+// ---------------- aggiornamento dell'app ----------------
+// Il service worker serve i file dalla cache finché CACHE (sw.js) non cambia. «Aggiorna l'app» chiede al sito se c'è una versione nuova, la scarica e ricarica la pagina.
+// Le misure, il tema e le impostazioni stanno altrove (IndexedDB e localStorage): non si toccano.
+const swOk = 'serviceWorker' in navigator && location.protocol.startsWith('http');
+let swHadController = false, swReloading = false, updating = false, lastPing = 0;
+/** Chiede al browser di cercare un sw.js nuovo. Risponde 'updated' (nuova versione scaricata e attiva), 'none' o 'error'. */
+function checkWorker(reg) {
+  return new Promise((resolve) => {
+    let found = false, timer = null;
+    const end = (v) => { clearTimeout(timer); resolve(v); };
+    const follow = (w) => {
+      found = true; timer = setTimeout(() => end('error'), 25000);
+      const look = () => { if (w.state === 'activated') end('updated'); else if (w.state === 'redundant') end('error'); };
+      w.addEventListener('statechange', look); look();
+    };
+    reg.addEventListener('updatefound', () => follow(reg.installing), { once: true });
+    reg.update().then(() => { if (!found) { if (reg.installing) follow(reg.installing); else end('none'); } }).catch(() => end('error'));
+  });
+}
+async function siteVersion() {
+  try { const r = await fetch(`version.json?t=${Date.now()}`, { cache: 'no-store' }); return r.ok ? (await r.json()).app : null; } catch { return null; }
+}
+/** Il sito ha una versione più nuova ma il browser non la scarica (di solito perché CACHE in sw.js non è cambiato): la copia salvata si riscrive da capo.
+ *  I file si chiedono uno per uno al sito saltando la copia temporanea del browser (cache: 'reload') e si mettono nella cache dell'app, poi si ricarica. */
+async function hardRefresh() {
+  try {
+    const txt = await (await fetch(`sw.js?t=${Date.now()}`, { cache: 'no-store' })).text();   // il «?t=» evita che risponda la copia salvata
+    const name = txt.match(/CACHE = '([^']+)'/)?.[1], list = [...txt.matchAll(/'(\.\/[^']*)'/g)].map((m) => m[1]);
+    if (name && list.length && typeof caches !== 'undefined') {
+      for (const k of await caches.keys()) if (k.startsWith('mosaicus-')) await caches.delete(k);   // prima si svuota: finché la copia c'è, il service worker risponde con quella
+      const c = await caches.open(name);
+      await Promise.all(list.map((u) => c.add(new Request(u, { cache: 'reload' }))));
+    }
+  } catch { /* si ricarica comunque */ }
+  location.reload();
+}
+async function updateApp(btn) {
+  if (updating) return;
+  if (state.running) { toast('Ferma la misura prima di aggiornare.'); return; }
+  if (!navigator.onLine) { toast('Sei offline: non posso cercare aggiornamenti.', 4000); return; }
+  updating = true; const label = btn.textContent; btn.disabled = true; btn.textContent = 'Controllo…';
+  const finish = (msg, ms = 3500) => { updating = false; btn.disabled = false; btn.textContent = label; toast(msg, ms); };
+  try {
+    const site = await siteVersion();
+    if (site == null) return finish('Non riesco a raggiungere il sito: riprova con la rete.', 4500);
+    const reg = swOk ? await navigator.serviceWorker.getRegistration() : null;
+    const res = reg ? await checkWorker(reg) : 'none';
+    if (res === 'updated') { swReloading = true; toast('Nuova versione trovata: ricarico…', 3000); setTimeout(() => location.reload(), 500); return; }
+    if (cmpVersion(site, APP_VERSION) > 0) { swReloading = true; toast(`Scarico la v${site}…`, 3000); await hardRefresh(); return; }
+    finish(`Hai già l'ultima versione (v${APP_VERSION}).`);
+  } catch { finish('Non riesco ad aggiornare: riprova.', 4500); }
+}
+function initUpdates() {
+  document.querySelectorAll('[data-update]').forEach((b) => b.addEventListener('click', () => updateApp(b)));
+  if (!swOk) return;
+  swHadController = !!navigator.serviceWorker.controller;   // alla prima installazione non c'è nulla da annunciare
+  navigator.serviceWorker.addEventListener('controllerchange', () => {   // una versione nuova è diventata attiva mentre l'app era aperta
+    if (swHadController && !swReloading) toast('È pronta una nuova versione di Mosaicus.', 15000, { label: 'Ricarica', run: () => location.reload() });
+  });
+  document.addEventListener('visibilitychange', () => {   // un'app installata resta aperta per giorni: quando torna in primo piano cerca da sola, al massimo ogni 10 minuti
+    if (document.visibilityState !== 'visible' || Date.now() - lastPing < 600000) return;
+    lastPing = Date.now(); navigator.serviceWorker.getRegistration().then((r) => r && r.update()).catch(() => {});
+  });
 }
 
 // ---------------- avvio ----------------
@@ -764,6 +902,7 @@ async function init() {
   $('#coach').addEventListener('click', (e) => {
     const g = e.target.closest('[data-g]')?.dataset.g;
     if (g === 'connect') $('#btnConnect').click(); else if (g === 'sim') $('#btnSim').click(); else if (g === 'send') $('#btnSaveSel').click(); else if (g === 'go') goElab();
+    else if (g === 'cal') openCalibration(); else if (g === 'skipcal') { state.calSkipped = true; updateGuide(); }
   });
   $('#btnConnect').addEventListener('click', () => connect('serial'));
   $('#btnSim').addEventListener('click', () => connect('sim'));
@@ -786,9 +925,8 @@ async function init() {
   onGeneratorChange(updateGenChip);
   $('#genChip .gc-open').addEventListener('click', () => { showPage('misura'); selectExperiment('synth'); });
   $('#genChip .gc-stop').addEventListener('click', () => stopGenerator());
-  if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
-    navigator.serviceWorker.register('sw.js').catch(() => { /* offline non disponibile */ });
-  }
+  initUpdates();
+  if (swOk) navigator.serviceWorker.register('sw.js').catch(() => { /* offline non disponibile */ });
   window.addEventListener('beforeunload', (e) => { if (state.running) { e.preventDefault(); e.returnValue = ''; } });
 }
 

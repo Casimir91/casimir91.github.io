@@ -135,3 +135,131 @@
 @keyframes tb-p2 { 0%,15% { opacity: 0; transform: scale(.5); } 28%,82% { opacity: 1; transform: scale(1); } 92%,100% { opacity: 0; } }
 @keyframes tb-fg { 0%,8% { opacity: 0; transform: translateY(10px); } 18%,45% { opacity: 1; transform: none; } 62%,82% { opacity: 1; transform: translate(-2.6rem, -2.9rem); } 92%,100% { opacity: 0; transform: translate(-2.6rem, -2.9rem); } }
 @media (prefers-reduced-motion: reduce) { .tb-pt, .tb-fg { animation: none; } .tb-fg { opacity: 0; } }
+
+
+/* ---------- Mosaicus preview: data appear, a fit is drawn, the table fills, the .xlsx is ready (pure CSS, 9 s loop) ---------- */
+.mz-pv text { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+.mz-pv .mz-lbl { font-size: 9px; font-weight: 600; fill: #C6F432; }
+.mz-pv .mz-h { font-size: 7px; font-weight: 700; fill: #00302A; text-anchor: middle; }
+.mz-pv .mz-x { font-size: 10px; font-weight: 700; fill: #00302A; text-anchor: middle; }
+.mz-pv .mz-fit { stroke-dasharray: 100; stroke-dashoffset: 0; }
+.mz-pv .mz-cov { transform-box: fill-box; transform: scale(0); }
+.mz-pv .mz-cx { transform-origin: 100% 50%; }
+.mz-pv .mz-cy { transform-origin: 50% 100%; }
+.mz-pv .mz-exp, .mz-pv .mz-arr { transform-box: fill-box; transform-origin: 50% 50%; }
+@media (prefers-reduced-motion: no-preference) {
+  .mz-pv .mz-scene { animation: mz-scene 9s linear infinite; }
+  .mz-pv .mz-cov { transform: none; }
+  .mz-pv .mz-cx { animation: mz-sweep-x 9s steps(8, jump-end) infinite; }
+  .mz-pv .mz-cy { animation: mz-sweep-y 9s steps(8, jump-end) infinite; }
+  .mz-pv .mz-fit { animation: mz-fit 9s linear infinite; }
+  .mz-pv .mz-lbl { animation: mz-lbl 9s linear infinite; }
+  .mz-pv .mz-arr { animation: mz-arr 9s ease-out infinite; }
+  .mz-pv .mz-exp { animation: mz-exp 9s ease-out infinite; }
+}
+@keyframes mz-scene { 0% { opacity: 0; } 3%, 90% { opacity: 1; } 96%, 100% { opacity: 0; } }
+@keyframes mz-sweep-x { 0%, 4% { transform: scaleX(1); } 35%, 100% { transform: scaleX(0); } }
+@keyframes mz-sweep-y { 0%, 4% { transform: scaleY(1); } 35%, 100% { transform: scaleY(0); } }
+@keyframes mz-fit { 0%, 40% { stroke-dashoffset: 100; } 52%, 100% { stroke-dashoffset: 0; } }
+@keyframes mz-lbl { 0%, 53% { opacity: 0; } 58%, 100% { opacity: 1; } }
+@keyframes mz-arr { 0%, 60% { opacity: 0; transform: translateY(-3px); } 64% { opacity: 1; transform: none; } 72% { transform: translateY(2px); } 80%, 100% { opacity: 1; transform: none; } }
+@keyframes mz-exp { 0%, 63% { opacity: 0; transform: scale(.6); } 69% { opacity: 1; transform: scale(1.08); } 73%, 100% { opacity: 1; transform: scale(1); } }
+
+/* ---------- Snake Lab preview: model = "newton" / "almost" / "wrong" is typed, Run is pressed, a snake-like fit is drawn, the chi-square light changes (pure CSS, 12 s loop) ---------- */
+.sk-pv { width: 220px; height: 110px; display: grid; grid-template-columns: 104px 100px; gap: 8px; align-items: center; }
+.sk-code { box-sizing: border-box; padding: 7px 7px 8px; border-radius: 6px; background: rgba(0, 0, 0, .3); border: 1px solid rgba(255, 255, 255, .2);
+  font: 8.5px/1.6 ui-monospace, "SF Mono", Menlo, Consolas, monospace; color: #e8f1ee; white-space: nowrap; }
+.sk-k { font-style: normal; color: #9fb7b0; }
+.sk-dim { color: #9fb7b0; }
+.sk-w { position: relative; display: inline-block; width: 6ch; height: 1.6em; vertical-align: top; }
+.sk-w b { position: absolute; left: 0; top: 0; overflow: hidden; font-weight: 600; opacity: 0; }
+.sk-w1 { color: #C6F432; width: 6ch; opacity: 1; }
+.sk-w2 { color: #FFC531; width: 6ch; }
+.sk-w3 { color: #ff6b5e; width: 5ch; }
+.sk-run { display: inline-block; margin-top: 4px; padding: 1px 8px; border-radius: 99px; background: #C6F432; color: #00302A; font-weight: 700; }
+.sk-g { position: relative; height: 82px; }
+.sk-g svg { display: block; overflow: visible; }
+.sk-c { stroke-dasharray: 100; stroke-dashoffset: 0; opacity: 0; }
+.sk-c1 { opacity: 1; }
+.sk-h { opacity: 0; }
+.sk-chip { position: absolute; right: 0; top: -4px; padding: 0 6px; border-radius: 99px; font: 700 8px/14px ui-monospace, "SF Mono", Menlo, Consolas, monospace; color: #00302A; opacity: 0; }
+.sk-ch1 { background: #C6F432; opacity: 1; }
+.sk-ch2 { background: #FFC531; }
+.sk-ch3 { background: #ff6b5e; }
+@media (prefers-reduced-motion: no-preference) {
+  .sk-w b { animation-duration: 12s; animation-iteration-count: infinite; animation-timing-function: steps(6, end); }
+  .sk-w1 { animation-name: sk-w1; } .sk-w2 { animation-name: sk-w2; } .sk-w3 { animation-name: sk-w3; animation-timing-function: steps(5, end); }
+  .sk-run { animation: sk-run 12s ease-in-out infinite; }
+  .sk-c { animation-duration: 12s; animation-timing-function: linear; animation-iteration-count: infinite; }
+  .sk-c1 { animation-name: sk-c1; } .sk-c2 { animation-name: sk-c2; } .sk-c3 { animation-name: sk-c3; }
+  .sk-chip { animation-duration: 12s; animation-timing-function: ease-out; animation-iteration-count: infinite; }
+  .sk-ch1 { animation-name: sk-ch1; } .sk-ch2 { animation-name: sk-ch2; } .sk-ch3 { animation-name: sk-ch3; }
+}
+@supports (offset-path: path("M0 0L1 1")) {
+  @media (prefers-reduced-motion: no-preference) {
+    .sk-h { animation-duration: 12s; animation-timing-function: linear; animation-iteration-count: infinite; }
+    .sk-h1 { animation-name: sk-h1; } .sk-h2 { animation-name: sk-h2; } .sk-h3 { animation-name: sk-h3; }
+  }
+}
+@keyframes sk-w1 { 0% { width: 0; opacity: 1 } 4.5% { width: 6ch; opacity: 1 } 29% { width: 6ch; opacity: 1 } 31.5% { width: 6ch; opacity: 0 } 100% { width: 6ch; opacity: 0 } }
+@keyframes sk-w2 { 0% { width: 0; opacity: 0 } 33% { width: 0; opacity: 0 } 33.4% { width: 0; opacity: 1 } 38% { width: 6ch; opacity: 1 } 62% { width: 6ch; opacity: 1 } 64.5% { width: 6ch; opacity: 0 } 100% { width: 6ch; opacity: 0 } }
+@keyframes sk-w3 { 0% { width: 0; opacity: 0 } 66.3% { width: 0; opacity: 0 } 66.7% { width: 0; opacity: 1 } 70.8% { width: 5ch; opacity: 1 } 95% { width: 5ch; opacity: 1 } 97.5% { width: 5ch; opacity: 0 } 100% { width: 5ch; opacity: 0 } }
+@keyframes sk-run { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(198,244,50,0) } 6.5% { transform: scale(1); box-shadow: 0 0 0 0 rgba(198,244,50,0) } 8% { transform: scale(.88) } 10% { transform: scale(1); box-shadow: 0 0 0 5px rgba(198,244,50,.35) } 12.5% { transform: scale(1); box-shadow: 0 0 0 0 rgba(198,244,50,0) } 39.83% { transform: scale(1); box-shadow: 0 0 0 0 rgba(198,244,50,0) } 41.33% { transform: scale(.88) } 43.33% { transform: scale(1); box-shadow: 0 0 0 5px rgba(198,244,50,.35) } 45.83% { transform: scale(1); box-shadow: 0 0 0 0 rgba(198,244,50,0) } 73.17% { transform: scale(1); box-shadow: 0 0 0 0 rgba(198,244,50,0) } 74.67% { transform: scale(.88) } 76.67% { transform: scale(1); box-shadow: 0 0 0 5px rgba(198,244,50,.35) } 79.17% { transform: scale(1); box-shadow: 0 0 0 0 rgba(198,244,50,0) } 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(198,244,50,0) } }
+@keyframes sk-c1 { 0% { opacity: 0; stroke-dashoffset: 100 } 8.5% { opacity: 0; stroke-dashoffset: 100 } 9% { opacity: 1; stroke-dashoffset: 100 } 19% { opacity: 1; stroke-dashoffset: 0 } 30% { opacity: 1; stroke-dashoffset: 0 } 32.5% { opacity: 0; stroke-dashoffset: 0 } 100% { opacity: 0; stroke-dashoffset: 0 } }
+@keyframes sk-h1 { 0% { opacity: 0; offset-distance: 0% } 8.5% { opacity: 0; offset-distance: 0% } 9% { opacity: 1; offset-distance: 0% } 19% { opacity: 1; offset-distance: 100% } 21% { opacity: 0; offset-distance: 100% } 100% { opacity: 0; offset-distance: 100% } }
+@keyframes sk-ch1 { 0% { opacity: 0; transform: translateY(3px) } 19.5% { opacity: 0; transform: translateY(3px) } 22.5% { opacity: 1; transform: none } 30% { opacity: 1; transform: none } 32.5% { opacity: 0; transform: none } 100% { opacity: 0; transform: none } }
+@keyframes sk-c2 { 0% { opacity: 0; stroke-dashoffset: 100 } 41.83% { opacity: 0; stroke-dashoffset: 100 } 42.33% { opacity: 1; stroke-dashoffset: 100 } 52.33% { opacity: 1; stroke-dashoffset: 0 } 63.33% { opacity: 1; stroke-dashoffset: 0 } 65.83% { opacity: 0; stroke-dashoffset: 0 } 100% { opacity: 0; stroke-dashoffset: 0 } }
+@keyframes sk-h2 { 0% { opacity: 0; offset-distance: 0% } 41.83% { opacity: 0; offset-distance: 0% } 42.33% { opacity: 1; offset-distance: 0% } 52.33% { opacity: 1; offset-distance: 100% } 54.33% { opacity: 0; offset-distance: 100% } 100% { opacity: 0; offset-distance: 100% } }
+@keyframes sk-ch2 { 0% { opacity: 0; transform: translateY(3px) } 52.83% { opacity: 0; transform: translateY(3px) } 55.83% { opacity: 1; transform: none } 63.33% { opacity: 1; transform: none } 65.83% { opacity: 0; transform: none } 100% { opacity: 0; transform: none } }
+@keyframes sk-c3 { 0% { opacity: 0; stroke-dashoffset: 100 } 75.17% { opacity: 0; stroke-dashoffset: 100 } 75.67% { opacity: 1; stroke-dashoffset: 100 } 85.67% { opacity: 1; stroke-dashoffset: 0 } 96.67% { opacity: 1; stroke-dashoffset: 0 } 99.17% { opacity: 0; stroke-dashoffset: 0 } 100% { opacity: 0; stroke-dashoffset: 0 } }
+@keyframes sk-h3 { 0% { opacity: 0; offset-distance: 0% } 75.17% { opacity: 0; offset-distance: 0% } 75.67% { opacity: 1; offset-distance: 0% } 85.67% { opacity: 1; offset-distance: 100% } 87.67% { opacity: 0; offset-distance: 100% } 100% { opacity: 0; offset-distance: 100% } }
+@keyframes sk-ch3 { 0% { opacity: 0; transform: translateY(3px) } 86.17% { opacity: 0; transform: translateY(3px) } 89.17% { opacity: 1; transform: none } 96.67% { opacity: 1; transform: none } 99.17% { opacity: 0; transform: none } 100% { opacity: 0; transform: none } }
+
+/* ---------- Calculator preview: 1/2 + 1/3 and the same result in three formats (pure CSS, 9 s loop) ---------- */
+.tb-calc2 { display: flex; flex-direction: column; align-items: center; gap: .3rem; font-variant-numeric: tabular-nums; }
+.tb-calc2 .cx { display: flex; align-items: center; gap: .5rem; font-size: 1.3rem; }
+.tb-calc2 .tb-fr { font-size: 1.2rem; }
+.tb-calc2 .cr { position: relative; width: 11rem; height: 2.6rem; }
+.tb-calc2 .r { position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; gap: .35rem;
+  color: var(--pv-accent); font-size: 1.4rem; font-weight: 500; opacity: 0; }
+.tb-calc2 .r1 { opacity: 1; }
+.tb-calc2 .r3 { font-size: 1.25rem; }
+.tb-calc2 sup { font-size: .6em; position: relative; top: -.2em; }
+.tb-calc2 .ov { display: inline-block; border-top: 2px solid currentColor; line-height: 1.05; margin-left: -.3rem; }
+.tb-calc2 .cc { display: flex; gap: .4rem; font-size: .68rem; }
+.tb-calc2 .cc i { font-style: normal; padding: .1rem .55rem; border: 1px solid var(--pv-line); border-radius: 99px; }
+.tb-calc2 .cc .c1 { background: var(--pv-accent); color: var(--pv-bg); border-color: var(--pv-accent); }
+@media (prefers-reduced-motion: no-preference) {
+  .tb-calc2 .r { animation-duration: 9s; animation-iteration-count: infinite; animation-timing-function: ease-out; }
+  .tb-calc2 .r1 { animation-name: tb-r1; } .tb-calc2 .r2 { animation-name: tb-r2; } .tb-calc2 .r3 { animation-name: tb-r3; }
+  .tb-calc2 .cc i { animation-duration: 9s; animation-iteration-count: infinite; animation-timing-function: step-end; }
+  .tb-calc2 .cc .c1 { animation-name: tb-c1; } .tb-calc2 .cc .c2 { animation-name: tb-c2; } .tb-calc2 .cc .c3 { animation-name: tb-c3; }
+}
+@keyframes tb-r1 { 0% { opacity: 0; transform: translateY(6px); } 4%, 30% { opacity: 1; transform: none; } 33%, 100% { opacity: 0; transform: translateY(-6px); } }
+@keyframes tb-r2 { 0%, 33% { opacity: 0; transform: translateY(6px); } 37%, 63% { opacity: 1; transform: none; } 66%, 100% { opacity: 0; transform: translateY(-6px); } }
+@keyframes tb-r3 { 0%, 66% { opacity: 0; transform: translateY(6px); } 70%, 96% { opacity: 1; transform: none; } 99%, 100% { opacity: 0; transform: translateY(-6px); } }
+@keyframes tb-c1 { 0% { background: var(--pv-accent); color: var(--pv-bg); border-color: var(--pv-accent); } 33%, 100% { background: transparent; color: var(--pv-fg); border-color: var(--pv-line); } }
+@keyframes tb-c2 { 0%, 33% { background: transparent; color: var(--pv-fg); border-color: var(--pv-line); } 33.01%, 66% { background: var(--pv-accent); color: var(--pv-bg); border-color: var(--pv-accent); } 66.01%, 100% { background: transparent; color: var(--pv-fg); border-color: var(--pv-line); } }
+@keyframes tb-c3 { 0%, 66% { background: transparent; color: var(--pv-fg); border-color: var(--pv-line); } 66.01%, 100% { background: var(--pv-accent); color: var(--pv-bg); border-color: var(--pv-accent); } }
+
+/* ---------- Ipazia preview: slider a bends the parabola (zeros stay), then a tangent runs along it (pure CSS, 10 s loop) ---------- */
+.tb-gx .c1 { vector-effect: non-scaling-stroke; transform-origin: 60px 35px; }
+.tb-gx circle.gz { fill: none; stroke: var(--pv-accent); stroke-width: 1.8; transform-box: fill-box; transform-origin: 50% 50%; }
+.tb-gx .gs { stroke: var(--pv-line); stroke-width: 2.4; }
+.tb-gx circle.gh { fill: var(--pv-accent); stroke: none; }
+.tb-gx .gt { opacity: 0; }
+.tb-gx .gt line { stroke: var(--pv-fg); stroke-width: 1.6; stroke-linecap: round; fill: none; }
+.tb-gx .gt circle { fill: var(--pv-accent); stroke: var(--pv-bg); stroke-width: 1.4; }
+@media (prefers-reduced-motion: no-preference) {
+  .tb-gx .c1, .tb-gx .gm, .tb-gx .gh, .tb-gx .gz, .tb-gx .gt { animation-duration: 10s; animation-iteration-count: infinite; }
+  .tb-gx .c1 { animation-name: tb-gc1; animation-timing-function: ease-in-out; }
+  .tb-gx .gm { animation-name: tb-gm; animation-timing-function: ease-in-out; }
+  .tb-gx .gh { animation-name: tb-gh; animation-timing-function: ease-in-out; }
+  .tb-gx .gz { animation-name: tb-gz; animation-timing-function: ease-out; }
+  .tb-gx .gt { animation-name: tb-gt; animation-timing-function: linear; }
+}
+@keyframes tb-gc1 { 0%, 10% { transform: scaleY(1); } 22% { transform: scaleY(.35); } 38% { transform: scaleY(-.6); } 50%, 100% { transform: scaleY(1); } }
+@keyframes tb-gm { 0%, 10% { transform: translateY(0); } 22% { transform: translateY(-11.05px); } 38% { transform: translateY(-27.2px); } 50%, 100% { transform: translateY(0); } }
+@keyframes tb-gh { 0%, 10% { transform: translateX(0); } 22% { transform: translateX(-27.6px); } 38% { transform: translateX(-68px); } 50%, 100% { transform: translateX(0); } }
+@keyframes tb-gz { 0%, 2% { opacity: 0; transform: scale(.3); } 6% { opacity: 1; transform: scale(1.4); } 10%, 40% { opacity: 1; transform: scale(1); } 44% { transform: scale(1.5); } 50%, 100% { opacity: 1; transform: scale(1); } }
+@keyframes tb-gt { 0%, 51% { opacity: 0; transform: translate(36.20px, 28.48px) rotate(63.2deg); } 52% { opacity: 1; transform: translate(36.20px, 28.48px) rotate(63.2deg); } 56.75% { opacity: 1; transform: translate(42.15px, 38.77px) rotate(56.0deg); } 61.5% { opacity: 1; transform: translate(48.10px, 46.12px) rotate(44.7deg); } 66.25% { opacity: 1; transform: translate(54.05px, 50.53px) rotate(26.3deg); } 71% { opacity: 1; transform: translate(60.00px, 52.00px) rotate(0.0deg); } 75.75% { opacity: 1; transform: translate(65.95px, 50.53px) rotate(-26.3deg); } 80.5% { opacity: 1; transform: translate(71.90px, 46.12px) rotate(-44.7deg); } 85.25% { opacity: 1; transform: translate(77.85px, 38.77px) rotate(-56.0deg); } 90% { opacity: 1; transform: translate(83.80px, 28.48px) rotate(-63.2deg); } 93%, 100% { opacity: 0; transform: translate(83.80px, 28.48px) rotate(-63.2deg); } }

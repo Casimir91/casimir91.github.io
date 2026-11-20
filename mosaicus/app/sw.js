@@ -1,16 +1,18 @@
 // Mosaicus — service worker: mette in cache l'app per l'uso offline.
-// Quando pubblichi una nuova versione, cambia CACHE (es. 'mosaicus-v0.2').
-const CACHE = 'mosaicus-v0.13.0';
+// Quando pubblichi una nuova versione, cambia CACHE (es. 'mosaicus-v0.2'): è quello che fa scaricare i file nuovi.
+// L'app ha il pulsante «Aggiorna l'app» (in fondo alla pagina) che cerca da solo questa versione nuova.
+const CACHE = 'mosaicus-v0.16.0';
 const FILES = [
   './', './index.html', './manifest.webmanifest', './css/fonts.css', './css/style.css',
   './js/app.js', './js/analysis.js', './js/chart.js', './js/experiments.js', './js/fits.js',
   './js/serial.js', './js/simulator.js', './js/storage.js', './js/export.js', './js/formula.js', './js/workbench.js', './js/phone.js',
-  './js/dsp.js', './js/audio.js', './js/screen.js', './js/scope.js', './js/synth.js',
+  './js/dsp.js', './js/audio.js', './js/screen.js', './js/scope.js', './js/synth.js', './js/calibration.js',
   './icons/icon.svg', './icons/icon-dark.svg', './icons/icon-192.png', './icons/icon-512.png',
 ];
 
 self.addEventListener('install', (e) => {
-  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(FILES)).then(() => self.skipWaiting()));
+  // cache: 'reload' = i file vengono chiesti al sito, non alla copia temporanea del browser (altrimenti, subito dopo una pubblicazione, la cache nuova potrebbe riempirsi di file vecchi)
+  e.waitUntil(caches.open(CACHE).then((c) => Promise.all(FILES.map((u) => c.add(new Request(u, { cache: 'reload' }))))).then(() => self.skipWaiting()));
 });
 
 self.addEventListener('activate', (e) => {

@@ -6,8 +6,9 @@
   Si carica UNA volta sola. Da quel momento è l'app Mosaicus a decidere quale
   esperimento avviare, inviando comandi testuali sulla porta seriale.
 
-  Filosofia: Arduino invia solo grandezze GREZZE (conteggi ADC, tempi di volo in µs).
-  Le conversioni in grandezze fisiche (°C, metri) avvengono nell'app, dove i
+  Filosofia: Arduino invia solo grandezze GREZZE (conteggi ADC, tempi di volo in µs,
+  byte del DHT11, parole dell'MLX90614).
+  Le conversioni in grandezze fisiche (°C, metri, % di umidità) avvengono nell'app, dove i
   parametri (Beta del termistore, temperatura dell'aria, ...) si cambiano senza
   dover ricaricare il firmware. Così gli studenti vedono anche la catena di misura.
 
@@ -15,6 +16,8 @@
     - Termistore NTC (partitore con resistenza da 10 kΩ) -> A0
     - Sensore a ultrasuoni HC-SR04: TRIG -> D12, ECHO -> D11, VCC -> 5V, GND -> GND
     - Oscilloscopio: segnale su A0, SOLO tra 0 e 5 V (mai la rete elettrica!)
+    - DHT11 (temperatura e umidità, modulo a 3 piedini): DATA -> D2, VCC -> 5V, GND -> GND
+    - MLX90614 (termometro a infrarossi, modulo GY-906): SDA -> A4, SCL -> A5, VIN -> 5V, GND -> GND
 
   Protocollo (115200 baud, righe terminate da '\n'):
     App -> Arduino                Arduino -> App
@@ -23,6 +26,12 @@
                                   T,<t_ms>,<adc_medio>        (adc 0..1023, media di 16 letture)
     START,SONAR,<intervallo_ms>   #ACK,START,SONAR,<intervallo_ms>
                                   S,<t_us>,<eco_us>           (eco_us = 0 se nessun eco)
+    START,DHT,<intervallo_ms>     #ACK,START,DHT,<intervallo_ms>      (intervallo ≥ 1000 ms)
+                                  H,<t_ms>,<ur_int>,<ur_dec>,<t_int>,<t_dec>,<ok>
+                                  (i 4 byte di dati del DHT11, grezzi; ok = 1 se il checksum torna, altrimenti 0)
+    START,IRTEMP,<intervallo_ms>  #ACK,START,IRTEMP,<intervallo_ms>   (intervallo ≥ 200 ms)
+                                  I,<t_ms>,<Tamb_raw>,<Toggetto_raw>
+                                  (parole a 16 bit dell'MLX90614, 0,02 K per conteggio; 0,0 se il sensore non risponde)
     START,SCOPE,<dt_us>,<n>,<livello>,<fronte>,<auto>
                                   #ACK,START,SCOPE,<dt_us>
                                   W,<trig>,<dt_us>,<a0>,<a1>,...,<a(n-1)>   (una riga per traccia)
@@ -36,16 +45,20 @@
   Licenza: MIT — vedi LICENSE.
 */
 
-const char *FW_VERSION = "0.2";
+#include <Wire.h>
+
+const char *FW_VERSION = "0.3";
 
 const uint8_t PIN_THERM = A0;
 const uint8_t PIN_TRIG  = 12;
 const uint8_t PIN_ECHO  = 11;
+const uint8_t PIN_DHT   = 2;       // DHT11: linea dati (il modulo a 3 piedini ha già la resistenza di pull-up)
+const uint8_t MLX_ADDR  = 0x5A;    // MLX90614: indirizzo I²C di fabbrica (SDA = A4, SCL = A5)
 
 const uint8_t  ADC_SAMPLES    = 16;      // sovracampionamento per ridurre il rumore
 const unsigned long ECHO_TIMEOUT_US = 30000UL;  // ~5 m andata e ritorno
 
-enum Mode { IDLE, TEMP, SONAR, SCOPE };
+enum Mode { IDLE, TEMP, SONAR, SCOPE, DHT, IRTEMP };
 Mode mode = IDLE;
 
 unsigned long intervalMs = 1000;
@@ -105,6 +118,71 @@ unsigned long readSonarUs(unsigned long &tStampUs) {
   unsigned long echo = pulseIn(PIN_ECHO, HIGH, ECHO_TIMEOUT_US);
   tStampUs = (tTrig - t0Us) + echo / 2;
   return echo;
+}
+
+// ---------- DHT11 ----------
+// Protocollo a un filo: Arduino tiene la linea bassa ≥ 18 ms e la rilascia; il sensore risponde con
+// 80 µs bassi + 80 µs alti, poi invia 40 bit (umidità int, umidità dec, T int, T dec, checksum).
+// Ogni bit = ~50 µs bassi + una durata alta: ~27 µs = 0, ~70 µs = 1. Si confronta la durata alta con
+// quella bassa dello stesso bit (conteggio di cicli, non micros(): durante la lettura gli interrupt sono spenti).
+volatile uint8_t *dhtPort;
+uint8_t dhtMask;
+
+uint16_t dhtPulse(bool level) {
+  uint16_t n = 0;
+  while (((*dhtPort & dhtMask) != 0) == level) {
+    if (++n >= 600) return 0;          // timeout (circa 300 µs)
+  }
+  return n ? n : 1;
+}
+
+bool readDht(uint8_t d[5]) {
+  for (uint8_t i = 0; i < 5; i++) d[i] = 0;
+  dhtPort = portInputRegister(digitalPinToPort(PIN_DHT));
+  dhtMask = digitalPinToBitMask(PIN_DHT);
+  pinMode(PIN_DHT, OUTPUT);
+  digitalWrite(PIN_DHT, LOW);
+  delay(20);                            // inizio: linea bassa per ≥ 18 ms
+  noInterrupts();
+  digitalWrite(PIN_DHT, HIGH);
+  pinMode(PIN_DHT, INPUT_PULLUP);       // rilascia la linea
+  delayMicroseconds(55);
+  bool ok = dhtPulse(false) && dhtPulse(true);       // risposta del sensore
+  for (uint8_t i = 0; ok && i < 40; i++) {
+    uint16_t lo = dhtPulse(false), hi = dhtPulse(true);
+    if (!lo || !hi) { ok = false; break; }
+    d[i / 8] <<= 1;
+    if (hi > lo) d[i / 8] |= 1;
+  }
+  interrupts();
+  return ok && d[4] == (uint8_t)(d[0] + d[1] + d[2] + d[3]);
+}
+
+// ---------- MLX90614 (termometro a infrarossi, I²C/SMBus) ----------
+// Registri: 0x06 = temperatura ambiente, 0x07 = temperatura dell'oggetto; ogni conteggio vale 0,02 K.
+// Il sensore invia 3 byte: parola a 16 bit (prima il byte basso) e PEC (CRC-8, polinomio 0x07).
+bool wireOn = false;
+
+uint8_t crc8(uint8_t crc, uint8_t b) {
+  crc ^= b;
+  for (uint8_t i = 0; i < 8; i++) crc = (crc & 0x80) ? (uint8_t)((crc << 1) ^ 0x07) : (uint8_t)(crc << 1);
+  return crc;
+}
+
+bool mlxRead(uint8_t reg, uint16_t &raw) {
+  Wire.beginTransmission(MLX_ADDR);
+  Wire.write(reg);
+  if (Wire.endTransmission(false) != 0) return false;           // nessuna risposta: sensore scollegato?
+  if (Wire.requestFrom(MLX_ADDR, (uint8_t)3) != 3) return false;
+  uint8_t lo = Wire.read(), hi = Wire.read(), pec = Wire.read();
+  uint8_t crc = crc8(0, (uint8_t)(MLX_ADDR << 1));
+  crc = crc8(crc, reg);
+  crc = crc8(crc, (uint8_t)((MLX_ADDR << 1) | 1));
+  crc = crc8(crc, lo);
+  crc = crc8(crc, hi);
+  if (crc != pec) return false;
+  raw = ((uint16_t)hi << 8) | lo;
+  return true;
 }
 
 // ---------- oscilloscopio ----------
@@ -181,15 +259,24 @@ void startScope(char *args) {
 void startMode(Mode m, long interval) {
   if (m == TEMP && interval < 100) interval = 100;      // termistore: almeno 100 ms
   if (m == SONAR && interval < 30) interval = 30;       // HC-SR04: almeno 30 ms tra impulsi
+  if (m == DHT && interval < 1000) interval = 1000;     // DHT11: al massimo una lettura al secondo
+  if (m == IRTEMP && interval < 200) interval = 200;    // MLX90614: il sensore aggiorna qualche volta al secondo
   if (interval > 600000L) interval = 600000L;           // al massimo 10 minuti
   intervalMs = (unsigned long)interval;
   mode = m;
   t0Ms = millis();
   t0Us = micros();
   nextMs = t0Ms;
+  if (m == IRTEMP && !wireOn) {
+    Wire.begin();
+#ifdef WIRE_HAS_TIMEOUT
+    Wire.setWireTimeout(3000, true);    // se il sensore manca, non restare bloccati
+#endif
+    wireOn = true;
+  }
   digitalWrite(LED_BUILTIN, HIGH);
   Serial.print(F("#ACK,START,"));
-  Serial.print(m == TEMP ? F("TEMP,") : F("SONAR,"));
+  Serial.print(m == TEMP ? F("TEMP,") : m == SONAR ? F("SONAR,") : m == DHT ? F("DHT,") : F("IRTEMP,"));
   Serial.println(intervalMs);
 }
 
@@ -208,6 +295,12 @@ void handleCommand(char *cmd) {
     startScope(cmd + 12);
   } else if (strncmp(cmd, "START,SONAR,", 12) == 0) {
     startMode(SONAR, atol(cmd + 12));
+  } else if (strncmp(cmd, "START,DHT,", 10) == 0) {
+    adcFast(false);
+    startMode(DHT, atol(cmd + 10));
+  } else if (strncmp(cmd, "START,IRTEMP,", 13) == 0) {
+    adcFast(false);
+    startMode(IRTEMP, atol(cmd + 13));
   } else if (cmdLen > 0) {
     Serial.print(F("#ERR,"));
     Serial.println(cmd);
@@ -258,6 +351,26 @@ void loop() {
     Serial.print(tUs);
     Serial.print(',');
     Serial.println(echo);
+  } else if (mode == DHT) {
+    uint8_t d[5];
+    bool ok = readDht(d);
+    Serial.print(F("H,"));
+    Serial.print(now - t0Ms);
+    for (uint8_t i = 0; i < 4; i++) {
+      Serial.print(',');
+      Serial.print(ok ? d[i] : 0);
+    }
+    Serial.print(',');
+    Serial.println(ok ? 1 : 0);
+  } else if (mode == IRTEMP) {
+    uint16_t ta = 0, to = 0;
+    if (!(mlxRead(0x06, ta) && mlxRead(0x07, to))) { ta = 0; to = 0; }
+    Serial.print(F("I,"));
+    Serial.print(now - t0Ms);
+    Serial.print(',');
+    Serial.print(ta);
+    Serial.print(',');
+    Serial.println(to);
   }
 
   // Se siamo rimasti molto indietro (es. intervallo troppo breve), riallinea.
