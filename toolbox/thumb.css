@@ -241,12 +241,11 @@ math-field::part(virtual-keyboard-toggle), math-field::part(menu-toggle) { displ
 
 :root[data-mode="dark"] .key.eq { background: #eef4ea; color: #00302a; border-color: #eef4ea; }
 
-/* ---------- "Cleared · Undo" ---------- */
+/* ---------- short message (iPhone install hint) ---------- */
 .toast { position: fixed; left: 50%; bottom: calc(var(--padh, 56dvh) + 1.4rem); transform: translate(-50%, 8px); z-index: 120; display: flex; align-items: center; gap: .9rem;
-  padding: .45rem .5rem .45rem 1rem; border-radius: 999px; background: var(--fg); color: var(--bg); font-size: .95rem; opacity: 0; pointer-events: none; transition: opacity .18s, transform .18s; }
+  padding: .55rem 1.1rem; border-radius: 999px; background: var(--fg); color: var(--bg); font-size: .95rem; opacity: 0; pointer-events: none; transition: opacity .18s, transform .18s; }
 .toast[hidden] { display: none; }
 .toast.show { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
-.toast button { min-height: 2.1rem; padding: .2rem .9rem; border-radius: 999px; border: 0; background: var(--lime); color: var(--lime-fg); font-weight: 600; font-size: .95rem; }
 @media (min-width: 700px) { .toast { bottom: calc(100dvh - 7rem - var(--h, 800px) + var(--padh, 56dvh) + 5rem); } }
 
 /* installed app: no browser bar, so the "← Toolbox" link has nowhere to go */

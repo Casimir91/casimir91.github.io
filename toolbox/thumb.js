@@ -239,27 +239,19 @@ const KEYS = [
   K.pi, num("0"), K.point, K.eq,
 ];
 
-/* "Cleared · Undo" */
-let undoTimer = null, cleared = null;
-function showUndo(prev) {
-  cleared = prev;
-  const t = $("toast"); t.hidden = false; t.classList.add("show");
-  clearTimeout(undoTimer);
-  undoTimer = setTimeout(() => { t.classList.remove("show"); t.hidden = true; cleared = null; }, 5000);
+/* a short message above the keypad (only used for the iPhone install hint) */
+let toastTimer = null;
+function toast(text, ms = 6000) {
+  const t = $("toast"), s = t.querySelector("span");
+  s.textContent = text; t.hidden = false; t.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { t.classList.remove("show"); t.hidden = true; }, ms);
 }
-$("undoBtn").addEventListener("click", () => {
-  if (cleared == null) return;
-  mf.setValue(cleared); mf.position = mf.lastOffset; cleared = null;
-  $("toast").classList.remove("show"); $("toast").hidden = true;
-  onInput(); tick(10);
-});
 
 function press(k) {
   if (k.act === "equals") return equals();
   if (k.act === "clear") {
-    const prev = mf.getValue();
     mf.setValue(""); state.live = null; state.committed = null; refresh();
-    if (prev && prev.trim()) showUndo(prev);
     return;
   }
   if (k.act === "paren") {
@@ -417,9 +409,6 @@ if (store.get("thumb-tour", "") !== "1") setTimeout(openTour, 500);
   addEventListener("appinstalled", () => { ask = null; btn.hidden = true; });
   btn.addEventListener("click", async () => {
     if (ask) { ask.prompt(); await ask.userChoice; ask = null; btn.hidden = true; return; }
-    const t = $("toast"), s = t.querySelector("span"), u = $("undoBtn"), was = s.textContent;
-    s.textContent = "Share → Add to Home Screen"; s.style.whiteSpace = "nowrap"; u.hidden = true; t.hidden = false; t.classList.add("show");
-    clearTimeout(undoTimer);
-    undoTimer = setTimeout(() => { t.classList.remove("show"); t.hidden = true; s.textContent = was; s.style.whiteSpace = ""; u.hidden = false; }, 6000);
+    toast("Share → Add to Home Screen");
   });
 }
