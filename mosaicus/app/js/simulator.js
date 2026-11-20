@@ -2,7 +2,7 @@
 // e produce le stesse righe grezze, così tutta la catena dell'app viene provata.
 //
 //  • TEMP: patata calda che si raffredda, T = Ta + (T0 − Ta)·e^(−t/θ), letta da un
-//    termistore NTC (B = 3950 K, R0 = 10 kΩ, partitore con 10 kΩ, NTC verso 5 V).
+//    termistore NTC (R0 = 10,2 kΩ, B = 3850 K: non perfetto, da tarare; partitore con 10 kΩ, NTC verso 5 V).
 //    Il tempo è accelerato ×30, così in un minuto si vedono ~25 minuti di misura.
 //  • SONAR, scenario «incline»: carrello fermo a 0,25 m per 1 s, poi parte su un piano
 //    inclinato con a = 0,45 m/s² e si ferma a fine corsa (1,50 m).
@@ -17,6 +17,10 @@
 //  • SCOPE (oscilloscopio elettrico): 400 campioni "a raffica" da un segnale scelto con
 //    link.scopeSignal: «mic» = fischio a ~880 Hz letto dal modulo microfono (pochi mV attorno
 //    a 2,43 V), «coil» = magnete che cade in una bobina (impulso positivo poi negativo attorno a 2,5 V).
+//  • TEMP, scenario «cal» (taratura del termometro): il termistore è in un bagno la cui temperatura
+//    (link.calTarget) si cambia dal pannello di taratura; la lettura la raggiunge con τ ≈ 2,5 s, in tempo reale.
+//  • DHT (DHT11): aria a ~22 °C e ~46 %, un «soffio» ogni 30 s; valori interi e qualche lettura fallita.
+//  • IRTEMP (MLX90614): tazza a 80 °C che si raffredda (ε = 0,95, tempo ×30); il sensore legge come se ε = 1.
 //  L'app sceglie lo scenario impostando link.scenario prima del comando START.
 
 const FW = '0.1-sim';
@@ -35,6 +39,7 @@ export class SimulatedLink {
     this.warp = WARP;
     this.scenario = 'incline';
     this.scopeSignal = 'mic';
+    this.calTarget = 21; this.calT = 21;   // bagno della taratura: obiettivo e temperatura attuale (°C)
   }
   onLine(cb) { this._lineCb = cb; }
   onClose(cb) { this._closeCb = cb; }
@@ -98,7 +103,14 @@ export class SimulatedLink {
       if (m[1] === 'SONAR') interval = Math.max(30, interval);
       this._emit(`#ACK,START,${m[1]},${interval}`);
       const t0 = performance.now();
-      if (m[1] === 'TEMP') {
+      if (m[1] === 'TEMP' && this.scenario === 'cal') {
+        let k = 0, last = performance.now();
+        this._timer = setInterval(() => {
+          const now = performance.now(), dt = (now - last) / 1000; last = now;
+          this.calT += (this.calTarget - this.calT) * (1 - Math.exp(-dt / 2.5));
+          this._emit(`T,${k++ * interval},${adcAt(this.calT + gauss(0.03), SIM_NTC.R0, SIM_NTC.B).toFixed(2)}`);
+        }, interval);
+      } else if (m[1] === 'TEMP') {
         // in tempo accelerato l'intervallo reale si riduce di WARP volte
         const realInterval = Math.max(20, interval / this.warp);
         let k = 0;
@@ -114,18 +126,37 @@ export class SimulatedLink {
       }
       return;
     }
+    if ((m = c.match(/^START,(DHT|IRTEMP),(\d+)$/))) {
+      this._stop();
+      const dht = m[1] === 'DHT';
+      const interval = Math.max(dht ? 1000 : 200, +m[2]);
+      this._emit(`#ACK,START,${m[1]},${interval}`);
+      const realInterval = dht ? interval : Math.max(20, interval / this.warp);   // IRTEMP: tempo accelerato come il raffreddamento
+      let k = 0;
+      this._timer = setInterval(() => {
+        const tMs = k * interval; k++;
+        this._emit(dht ? simDht(tMs / 1000, tMs) : simIr(tMs / 1000, tMs));
+      }, realInterval);
+      return;
+    }
     this._emit(`#ERR,${c}`);
   }
 }
 
+/** Conteggio ADC (0…1023) di un NTC (R0, B) a Tc °C, con NTC verso 5 V e 10 kΩ verso GND. */
+function adcAt(Tc, R0, B, Rs = 10000) {
+  const T = Tc + 273.15, R = R0 * Math.exp(B * (1 / T - 1 / 298.15));
+  return Math.min(1023, Math.max(0, (1023 * Rs) / (Rs + R) + gauss(0.3)));
+}
+
+// Il termistore del simulatore non è perfetto, come uno vero: R₀ = 10,2 kΩ e B = 3850 K, mentre il modello dell'app
+// ne usa 10 kΩ e 3950 K. Senza taratura la temperatura letta sbaglia di circa −0,4 °C a 21 °C e −1,8 °C a 75 °C.
+const SIM_NTC = { R0: 10200, B: 3850 };
+
 function simAdcTemp(t) {
   const Ta = 21, T0 = 75, theta = 900;
   const Tc = Ta + (T0 - Ta) * Math.exp(-t / theta) + gauss(0.05);
-  const T = Tc + 273.15, B = 3950, R0 = 10000, Tref = 298.15, Rs = 10000;
-  const R = R0 * Math.exp(B * (1 / T - 1 / Tref));
-  // NTC verso 5 V, resistenza fissa verso GND: Vout/Vcc = Rs/(Rs+R)
-  const adc = (1023 * Rs) / (Rs + R);
-  return Math.min(1023, Math.max(0, adc + gauss(0.3)));
+  return adcAt(Tc, SIM_NTC.R0, SIM_NTC.B);
 }
 
 function simEcho(t, scenario) {
@@ -145,6 +176,31 @@ function simEcho(t, scenario) {
   if (Math.random() < 0.005) x += 0.3 + Math.random(); // eco spurio
   const v = 331.3 + 0.606 * 20; // aria a 20 °C
   return Math.round((2 * x / v) * 1e6);
+}
+
+
+/** DHT11 simulato: aria a ~22 °C e ~46 % di umidità, con un «soffio» ogni 30 s (UR sale di ~25 %, T di ~1,5 °C, poi decade).
+ *  Come il vero: valori interi, qualche lettura fallita (checksum). */
+function simDht(t, tMs) {
+  if (Math.random() < 0.02) return `H,${tMs},0,0,0,0,0`;
+  let rh = 46 + 2 * Math.sin((2 * Math.PI * t) / 90), T = 22.2 + 0.3 * Math.sin((2 * Math.PI * t) / 120);
+  for (let tk = 8; tk <= t; tk += 30) {
+    const u = t - tk, b = (1 - Math.exp(-u / 1.5)) * Math.exp(-u / 9);
+    rh += 40 * b; T += 2.5 * b;
+  }
+  const h = Math.max(0, Math.min(99, Math.round(rh + gauss(0.4)))), tt = Math.round(T + gauss(0.1));
+  return `H,${tMs},${h},0,${tt},0,1`;
+}
+
+/** MLX90614 simulato: tazza a 80 °C che si raffredda in una stanza a 21 °C (θ = 900 s, tempo ×30 come nel lab Raffreddamento).
+ *  La tazza ha ε = 0,95: il sensore, che legge come se ε = 1, vede T_letta⁴ = ε·T⁴ + (1−ε)·Tₐ⁴, cioè qualche grado in meno
+ *  (circa 2,3 °C a 80 °C) finché nell'app non si imposta ε = 0,95. Parole a 16 bit, 0,02 K per conteggio. */
+const SIM_IR = { ta: 21, t0: 80, theta: 900, eps: 0.95 };
+function simIr(t, tMs) {
+  const K = 273.15, Ta = SIM_IR.ta, e = SIM_IR.eps;
+  const To = Ta + (SIM_IR.t0 - Ta) * Math.exp(-t / SIM_IR.theta);
+  const Tr = Math.pow(e * (To + K) ** 4 + (1 - e) * (Ta + K) ** 4, 0.25) - K;
+  return `I,${tMs},${Math.round((Ta + gauss(0.05) + K) / 0.02)},${Math.round((Tr + gauss(0.1) + K) / 0.02)}`;
 }
 
 function simMotion(t) {

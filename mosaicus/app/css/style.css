@@ -227,6 +227,7 @@ table.results td b { color: var(--green); font-weight: 500; }
 .serial-log { max-height: 14rem; overflow: auto; background: var(--ink); color: var(--lime); padding: 0.65rem; border-radius: 0.5rem; font-size: 0.8rem; margin: 0; }
 
 .foot { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 0.25rem; }
+.foot .btn-upd { margin: 0.1rem 0.15rem; padding: 0.2rem 0.6rem; font-size: 0.78rem; vertical-align: middle; }
 .toast {
   position: fixed; right: 1.2rem; bottom: 1.2rem; transform: translateY(1rem); opacity: 0; pointer-events: none;
   background: var(--ink); color: #fff; padding: 0.65rem 1rem; border-radius: 0.65rem; font-size: 0.9rem;
@@ -865,4 +866,61 @@ body[data-guide="send"] #btnSaveSel { border-color: var(--lime); }
   body[data-guide] .btn, body[data-guide] .nav-btn, body[data-guide] .bottom-nav svg { animation: none !important; }
   body[data-guide="start"] #btnStart:not(:disabled), body[data-guide="stop"] #btnStop:not(:disabled), body[data-guide="send"] #btnSaveSel:not(:disabled),
   body[data-guide="link"] .coach-act .btn:not(:disabled), body[data-guide="send"] .coach-act .btn, body[data-guide="go"] .coach-act .btn { outline: 3px solid var(--lime); outline-offset: 2px; }
+}
+
+/* =========================================================================
+   v0.14 — taratura del termometro (pannello a passi, calibration.js)
+   ========================================================================= */
+body[data-cal] #page-misura .ts { display: none; }
+.coach-note { color: var(--muted); font-size: 0.82rem; }
+body[data-guide="cal"] .coach-act .btn-go { animation: guide-pulse 1.4s ease-out infinite; }
+.cal { display: grid; gap: 0.8rem; border: 2px solid var(--lime); }
+html.dark .cal { border: 1px solid var(--line); }
+.cal-head { display: flex; align-items: center; flex-wrap: wrap; gap: 0.6rem 1rem; }
+.cal-title { font-size: 1.05rem; font-weight: 500; flex: 1 1 auto; }
+.cal-body { display: grid; gap: 0.75rem; }
+.cal-do { margin: 0; display: flex; gap: 0.6rem; align-items: flex-start; font-size: 1rem; }
+.cal-ico { font-size: 1.6rem; line-height: 1.1; }
+.cal-sim { display: flex; align-items: center; flex-wrap: wrap; gap: 0.4rem; font-size: 0.85rem; color: var(--muted); }
+.cal-live { display: grid; grid-template-columns: auto 1fr; grid-template-areas: "big spark" "state state"; align-items: center; gap: 0.4rem 1rem;
+  padding: 0.7rem 0.9rem; border: 1px solid var(--line); border-radius: 0.8rem; background: var(--bg); }
+.cal-big { grid-area: big; display: flex; align-items: baseline; gap: 0.4rem; flex-wrap: wrap; }
+.cal-big small { flex-basis: 100%; color: var(--muted); font-size: 0.8rem; }
+.cal-big b { font-size: 2.4rem; font-weight: 500; line-height: 1; font-variant-numeric: tabular-nums; }
+.cal-big em { font-style: normal; color: var(--muted); }
+.cal-spark { grid-area: spark; width: 100%; height: 2.8rem; stroke: var(--green); }
+html.dark .cal-spark { stroke: #fff; }
+.cal-state { grid-area: state; font-size: 0.9rem; font-weight: 500; }
+.cal-state.ok { color: var(--green); }
+.cal-state.ok::before { content: ''; }
+.cal-state.wait { color: var(--muted); }
+html.dark .cal-state.ok { color: var(--lime); }
+.cal-rec { display: flex; align-items: center; flex-wrap: wrap; gap: 0.7rem 1rem; }
+.cal-ref { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+.cal-ref span { color: var(--muted); font-size: 0.88rem; }
+.cal-ref input, .cal-div { font: 500 1.05rem var(--font); width: 6rem; padding: 0.45rem 0.6rem; border: 1px solid var(--line); border-radius: 0.55rem; background: var(--card); color: var(--ink); }
+.cal-div { width: 4.5rem; font-size: 0.95rem; padding: 0.15rem 0.35rem; }
+.cal-ref em { font-style: normal; color: var(--muted); }
+.cal-rec .btn-go.go-now { animation: guide-pulse 1.4s ease-out infinite; }
+.cal-warn { margin: 0; padding: 0.55rem 0.75rem; border-radius: 0.6rem; background: var(--rosa-t); color: var(--bad); font-size: 0.9rem; }
+html.dark .cal-warn { background: transparent; color: #fff; border: 1px solid var(--line); }
+.cal-tip { margin: 0; }
+.cal-res { display: grid; gap: 0.55rem; }
+.cal-eq small { display: block; color: var(--muted); font-size: 0.8rem; }
+.cal-eq b { font-size: 1.5rem; font-weight: 500; }
+.cal-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.cal-chip { padding: 0.3rem 0.7rem; border-radius: 999px; background: var(--lime-t); color: var(--on-lime); font-size: 0.85rem; }
+html.dark .cal-chip { background: transparent; border: 1px solid var(--line); color: #fff; }
+.cal-u { margin: 0; }
+.cal-how { font-size: 0.88rem; color: var(--muted); }
+.cal-how summary { cursor: pointer; color: var(--green); font-weight: 500; }
+html.dark .cal-how summary { color: #fff; }
+@media (prefers-reduced-motion: reduce) {
+  body[data-guide="cal"] .coach-act .btn-go, .cal-rec .btn-go.go-now { animation: none; outline: 3px solid var(--lime); outline-offset: 2px; }
+}
+@media (max-width: 700px) {
+  .cal { padding: 0.75rem; }
+  .cal-big b { font-size: 2rem; }
+  .cal-rec .btn-go { flex: 1 1 100%; padding: 0.8rem; }
+  .cal-tip { display: none; }
 }

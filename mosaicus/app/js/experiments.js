@@ -24,6 +24,8 @@ const ICON_GYRO = `<svg viewBox="0 0 24 24" fill="none" stroke="#004D43" stroke-
 const ICON_SOUND = `<svg viewBox="0 0 24 24" fill="none" stroke="#004D43" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/><path d="M2 8v3M22 8v3" stroke="#D6336C"/></svg>`;
 const ICON_THERMO = `<svg viewBox="0 0 24 24" fill="none" stroke="#004D43" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13.5V4a2 2 0 0 1 4 0v9.5a4 4 0 1 1-4 0z"/><path d="M12 9v7" stroke="#D6336C"/><path d="M17 5h3M17 9h3"/></svg>`;
 
+const ICON_DROP = `<svg viewBox="0 0 24 24" fill="none" stroke="#004D43" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c3 4.5 6 7.5 6 11a6 6 0 0 1-12 0c0-3.5 3-6.5 6-11z"/><path d="M9 15a3 3 0 0 0 3 3" stroke="#D6336C"/></svg>`;
+const ICON_IR = `<svg viewBox="0 0 24 24" fill="none" stroke="#004D43" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="8.5" width="8" height="7" rx="2"/><path d="M13.5 7.5l4-3M14 12h6.5M13.5 16.5l4 3" stroke="#D6336C"/></svg>`;
 const ICON_SCOPE = `<svg viewBox="0 0 24 24" fill="none" stroke="#004D43" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="14" rx="2.5"/><path d="M5 11c1.5-5 3-5 4.5 0s3 5 4.5 0 3-5 4.5 0" stroke="#D6336C"/><path d="M8 21h8"/></svg>`;
 const ICON_SYNTH = `<svg viewBox="0 0 24 24" fill="none" stroke="#004D43" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="11" width="20" height="10" rx="1.5"/><path d="M7 11v6M12 11v6M17 11v6"/><path d="M3 6c2-4 4-4 6 0s4 4 6 0 4-4 6 0" stroke="#D6336C"/></svg>`;
 const ICON_FREQ = `<svg viewBox="0 0 24 24" fill="none" stroke="#004D43" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 20h18M3 20V4"/><path d="M5 14h3l2-6 2 9 2-5h2.5l1.5-2" stroke="#D6336C"/></svg>`;
@@ -92,6 +94,69 @@ const SCHEMA_COIL = `
   <polyline points="234,105 200,105 200,88 84,88" fill="none" stroke="#2E8BC0" stroke-width="2.5" stroke-dasharray="5 3"/>
 </svg>`;
 
+const SCHEMA_DHT11 = `
+<svg class="schematic" viewBox="0 0 300 132" role="img" aria-label="Modulo DHT11: più a 5V, meno a GND, segnale al pin 2">
+  <rect x="4" y="6" width="96" height="120" rx="8" fill="#EAF8C9" stroke="#004D43"/>
+  <text x="52" y="24" text-anchor="middle">Arduino</text>
+  <text x="92" y="50" text-anchor="end" class="lbl">5V</text><text x="92" y="76" text-anchor="end" class="lbl">GND</text><text x="92" y="102" text-anchor="end" class="lbl">pin 2</text>
+  <rect x="200" y="6" width="96" height="120" rx="8" fill="#DDF1FF" stroke="#004D43"/>
+  <text x="248" y="24" text-anchor="middle">DHT11</text>
+  <text x="208" y="50" class="lbl">VCC (+)</text><text x="208" y="76" class="lbl">GND (−)</text><text x="208" y="102" class="lbl">DATA (S)</text>
+  <line x1="100" y1="46" x2="200" y2="46" stroke="${W5V}" stroke-width="2.5"/>
+  <line x1="100" y1="72" x2="200" y2="72" stroke="${WGND}" stroke-width="2.5"/>
+  <line x1="100" y1="98" x2="200" y2="98" stroke="${WSIG}" stroke-width="2.5"/>
+</svg>`;
+const SCHEMA_MLX90614 = `
+<svg class="schematic" viewBox="0 0 300 132" role="img" aria-label="Modulo MLX90614 (GY-906): VIN a 5V, GND a GND, SDA ad A4, SCL ad A5">
+  <rect x="4" y="6" width="96" height="120" rx="8" fill="#EAF8C9" stroke="#004D43"/>
+  <text x="52" y="24" text-anchor="middle">Arduino</text>
+  <text x="92" y="50" text-anchor="end" class="lbl">5V</text><text x="92" y="72" text-anchor="end" class="lbl">GND</text>
+  <text x="92" y="94" text-anchor="end" class="lbl">A4</text><text x="92" y="116" text-anchor="end" class="lbl">A5</text>
+  <rect x="200" y="6" width="96" height="120" rx="8" fill="#FFF1D6" stroke="#004D43"/>
+  <text x="248" y="24" text-anchor="middle">MLX90614</text>
+  <text x="208" y="50" class="lbl">VIN</text><text x="208" y="72" class="lbl">GND</text>
+  <text x="208" y="94" class="lbl">SDA</text><text x="208" y="116" class="lbl">SCL</text>
+  <line x1="100" y1="46" x2="200" y2="46" stroke="${W5V}" stroke-width="2.5"/>
+  <line x1="100" y1="68" x2="200" y2="68" stroke="${WGND}" stroke-width="2.5"/>
+  <line x1="100" y1="90" x2="200" y2="90" stroke="${WSIG}" stroke-width="2.5"/>
+  <line x1="100" y1="112" x2="200" y2="112" stroke="${WSIG}" stroke-width="2.5" stroke-dasharray="5 3"/>
+</svg>`;
+
+
+// ---------- termistore NTC: dal conteggio ADC alla temperatura (senza correzioni) ----------
+/** Resistenza dell'NTC (Ω) dal conteggio ADC, per il partitore scelto. NaN se fuori scala (circuito aperto o in corto). */
+export function thermistorR(adc, p) {
+  if (!(adc > 0.5 && adc < 1022.5)) return NaN;
+  return p.orientation === 'ntc5v' ? p.rSeries * (1023 - adc) / adc : p.rSeries * adc / (1023 - adc);
+}
+/** Temperatura (°C) dal modello Beta: 1/T = 1/T₀ + ln(R/R₀)/B. È la "lettura grezza" del termometro, prima della taratura. */
+export function thermistorC(R, p) {
+  return 1 / (1 / (p.t0 + 273.15) + Math.log(R / p.r0) / p.beta) - 273.15;
+}
+
+// ---------- DHT11 e MLX90614: dal dato grezzo alla grandezza fisica ----------
+/** Punto di rugiada (°C) dalla formula di Magnus (Sonntag 1990, valida da −45 a 60 °C): γ = ln(UR/100) + b·T/(c + T), Tr = c·γ/(b − γ). */
+export function dewPointC(T, RH) {
+  if (!(RH > 0) || !isFinite(T)) return NaN;
+  const b = 17.62, c = 243.12;
+  const g = Math.log(RH / 100) + (b * T) / (c + T);
+  return (c * g) / (b - g);
+}
+/** DHT11: i 4 byte di dati (UR intera, UR decimale, T intera, T decimale) → UR (%) e T (°C). Il bit 7 del byte decimale della T è il segno. */
+export function dht11Decode(h, hd, t, td) {
+  return { RH: h + hd / 10, T: (td & 0x80 ? -1 : 1) * (t + (td & 0x7f) / 10) };
+}
+/** MLX90614: parola a 16 bit del sensore → °C (0,02 K per conteggio). NaN se fuori dall'intervallo valido (−70 … 382 °C: sensore scollegato o in errore). */
+export function mlxC(raw) {
+  return raw >= 10157 && raw <= 32767 ? raw * 0.02 - 273.15 : NaN;
+}
+/** Correzione di emissività. Il sensore legge come se ε = 1; un oggetto con ε < 1 emette ε·T⁴ e riflette (1−ε)·T_fondo⁴ (Stefan–Boltzmann):
+ *  T_letta⁴ = ε·T⁴ + (1−ε)·T_fondo⁴, quindi T = ((T_letta⁴ − (1−ε)·T_fondo⁴)/ε)^¼, con le temperature in kelvin. */
+export function emissivityCorrect(Tread, Tbg, eps) {
+  if (!(eps > 0) || eps >= 1 || !isFinite(Tbg)) return Tread;
+  const K = 273.15, v = ((Tread + K) ** 4 - (1 - eps) * (Tbg + K) ** 4) / eps;
+  return v > 0 ? v ** 0.25 - K : NaN;
+}
 
 const median = (arr) => { const s = [...arr].sort((a, b) => a - b); const m = s.length >> 1; return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2; };
 
@@ -167,6 +232,24 @@ const Q = {
     physics: { dsin: [...periodFrom(), { label: 'frequenza dei battimenti (se la curva è |cos|, è il doppio di f)', unit: 'Hz', calc: (f) => { const [w, s] = P(f, 'w'); return [w / TWO_PI, s / TWO_PI]; } }] } },
   R: { sym: 'R', name: 'resistenza del termistore', unit: 'Ω', models: ['expC', 'exp'], raw: true },
 };
+// DHT11 e MLX90614: temperatura dell'aria, umidità, punto di rugiada; temperatura dell'oggetto e dell'ambiente (sensore a infrarossi)
+Q.Tair = { sym: 'T', name: "temperatura dell'aria", unit: '°C', models: ['mean', 'lin'],
+  slope: 'rapidità di variazione della temperatura',
+  physics: { mean: [{ label: 'temperatura media', unit: '°C', calc: (f) => P(f, 'mean') }],
+    lin: [{ label: 'rapidità di variazione dT/dt', unit: '°C/s', calc: (f) => P(f, 'm') }] } };
+Q.RH = { sym: 'UR', name: 'umidità relativa', unit: '%', models: ['mean', 'lin'],
+  slope: "rapidità di variazione dell'umidità",
+  physics: { mean: [{ label: 'umidità relativa media', unit: '%', calc: (f) => P(f, 'mean') }],
+    lin: [{ label: 'rapidità di variazione dUR/dt', unit: '%/s', calc: (f) => P(f, 'm') }] } };
+Q.Td = { sym: 'T_r', name: 'temperatura di rugiada', unit: '°C', models: ['mean', 'lin'],
+  slope: 'rapidità di variazione della temperatura di rugiada',
+  physics: { mean: [{ label: 'temperatura di rugiada media', unit: '°C', calc: (f) => P(f, 'mean') }],
+    lin: [{ label: 'rapidità di variazione dT_r/dt', unit: '°C/s', calc: (f) => P(f, 'm') }] } };
+Q.Tobj = { ...Q.T, sym: 'Tₒ', name: "temperatura dell'oggetto" };
+Q.Tamb = { sym: 'Tₐ', name: 'temperatura ambiente (sensore)', unit: '°C', models: ['mean', 'lin'],
+  slope: "rapidità di variazione dell'ambiente",
+  physics: { mean: [{ label: 'temperatura ambiente media', unit: '°C', calc: (f) => P(f, 'mean') }],
+    lin: [{ label: 'rapidità di variazione dT/dt', unit: '°C/s', calc: (f) => P(f, 'm') }] } };
 export const QUANTITIES = { t: Q_T, ...Q };
 
 // ------------------------------------------------------------------
@@ -181,6 +264,7 @@ const cooling = {
   iconBg: 'var(--rosa-t)',
   lineType: 'T',
   sim: 'cooling',
+  calibration: true,   // l'app offre il passo «Tara il termometro» prima di Avvia (calibration.js)
   command: (p) => `START,TEMP,${Math.round(p.interval)}`,
   params: [
     { key: 'interval', label: 'Intervallo di campionamento', unit: 'ms', value: 1000, min: 100, step: 100 },
@@ -191,19 +275,17 @@ const cooling = {
     { key: 'r0', label: 'R₀ del termistore (a T₀)', unit: 'Ω', value: 10000, step: 100, advanced: true },
     { key: 't0', label: 'T₀ di riferimento', unit: '°C', value: 25, step: 0.1, advanced: true },
     { key: 'beta', label: 'Coefficiente B (Beta)', unit: 'K', value: 3950, step: 10, advanced: true },
-    { key: 'offset', label: 'Correzione di taratura (si somma a T)', unit: '°C', value: 0, step: 0.1, advanced: true },
+    { key: 'calA', label: 'Taratura · guadagno a (T = a·T_letta + b)', unit: '', value: 1, step: 0.001, advanced: true },
+    { key: 'calB', label: 'Taratura · intercetta b', unit: '°C', value: 0, step: 0.01, advanced: true },
+    { key: 'offset', label: 'Correzione manuale (si somma a T)', unit: '°C', value: 0, step: 0.1, advanced: true },
   ],
   wiring: `<div class="w-block"><h3>📡 Con Arduino</h3>${SCHEMA_TERMISTORE}<p>Termistore in una patata calda, poi lascialo raffreddare.</p></div>`,
   /** fields = [t_ms, adc] */
   parse(fields, p) {
     const tMs = +fields[0], adc = +fields[1];
     if (!isFinite(tMs) || !isFinite(adc)) return null;
-    let R;
-    if (adc <= 0.5 || adc >= 1022.5) R = NaN; // fuori scala: circuito aperto o in corto
-    else if (p.orientation === 'ntc5v') R = p.rSeries * (1023 - adc) / adc;
-    else R = p.rSeries * adc / (1023 - adc);
-    const Tk = 1 / (1 / (p.t0 + 273.15) + Math.log(R / p.r0) / p.beta);
-    const T = Tk - 273.15 + p.offset;
+    const R = thermistorR(adc, p);
+    const T = (p.calA ?? 1) * thermistorC(R, p) + (p.calB ?? 0) + p.offset;   // T_vera = a·T_letta + b (taratura a due punti)
     return { t: tMs / 1000, adc, R, T };
   },
   derive(samples, p) {
@@ -219,6 +301,89 @@ const cooling = {
   columns: [
     { key: 't', head: 't (s)' }, { key: 'adc', head: 'ADC' }, { key: 'R', head: 'R_NTC (ohm)' },
     { key: 'T', head: 'T (°C)' }, { key: 'lnT', head: 'ln(T-Ta)' },
+  ],
+  xLabel: 't (s)',
+};
+
+// ------------------------------------------------------------------
+// Termologia · Umidità e temperatura (DHT11)
+// ------------------------------------------------------------------
+const humidity = {
+  id: 'humidity',
+  topic: 'Termologia',
+  title: 'Umidità e temperatura',
+  subtitle: 'Punto di rugiada · DHT11',
+  icon: ICON_DROP,
+  iconBg: 'var(--cielo-t)',
+  lineType: 'H',
+  sim: 'humidity',
+  command: (p) => `START,DHT,${Math.round(p.interval)}`,
+  params: [
+    { key: 'interval', label: 'Intervallo di campionamento', unit: 'ms', value: 2000, min: 1000, step: 500 },
+    { key: 'offsetT', label: 'Correzione manuale della temperatura', unit: '°C', value: 0, step: 0.1, advanced: true },
+    { key: 'offsetH', label: "Correzione manuale dell'umidità", unit: '%', value: 0, step: 1, advanced: true },
+  ],
+  wiring: `<div class="w-block"><h3>📡 Con Arduino</h3>${SCHEMA_DHT11}<p>Soffia sul sensore: l'umidità sale. Il DHT11 legge a passi interi (1 °C, 1 %).</p></div>`,
+  /** fields = [t_ms, ur_int, ur_dec, t_int, t_dec, ok] (i 4 byte del DHT11) */
+  parse(fields, p) {
+    const [tMs, h, hd, t, td, ok] = fields.slice(0, 6).map(Number);
+    if (![tMs, h, hd, t, td, ok].every(isFinite) || ok !== 1) return null;   // checksum sbagliato: lettura scartata
+    const d = dht11Decode(h, hd, t, td);
+    const Tair = d.T + (p.offsetT ?? 0), RH = d.RH + (p.offsetH ?? 0);
+    return { t: tMs / 1000, Tair, RH, Td: dewPointC(Tair, RH) };
+  },
+  derive: (samples) => samples,
+  views: [
+    { id: 'Tair', label: 'T(t)', key: 'Tair', yLabel: 'T (°C)', sym: 'T' },
+    { id: 'RH', label: 'UR(t)', key: 'RH', yLabel: 'UR (%)', sym: 'UR' },
+    { id: 'Td', label: 'T_r(t)', key: 'Td', yLabel: 'T di rugiada (°C)', sym: 'T_r' },
+  ],
+  defaultVisible: ['Tair', 'RH', 'Td'],
+  readouts: [{ key: 'Tair', label: 'Temperatura', unit: '°C', digits: 1 }, { key: 'RH', label: 'Umidità', unit: '%', digits: 0 }, { key: 'Td', label: 'Rugiada', unit: '°C', digits: 1 }],
+  columns: [
+    { key: 't', head: 't (s)' }, { key: 'Tair', head: 'T (°C)' }, { key: 'RH', head: 'UR (%)' }, { key: 'Td', head: 'T_rugiada (°C)' },
+  ],
+  xLabel: 't (s)',
+};
+
+// ------------------------------------------------------------------
+// Termologia · Termometro a infrarossi (MLX90614): temperatura senza contatto
+// ------------------------------------------------------------------
+const irtemp = {
+  id: 'irtemp',
+  topic: 'Termologia',
+  title: 'Termometro a infrarossi',
+  subtitle: 'Senza contatto · MLX90614',
+  icon: ICON_IR,
+  iconBg: 'var(--zaff-t)',
+  lineType: 'I',
+  sim: 'irtemp',
+  command: (p) => `START,IRTEMP,${Math.round(p.interval)}`,
+  params: [
+    { key: 'interval', label: 'Intervallo di campionamento', unit: 'ms', value: 1000, min: 200, step: 100 },
+    { key: 'emiss', label: "Emissività ε dell'oggetto (1 = nessuna correzione)", unit: '', value: 1, min: 0.05, step: 0.01 },
+    { key: 'offset', label: "Correzione manuale (si somma a T dell'oggetto)", unit: '°C', value: 0, step: 0.1, advanced: true },
+  ],
+  wiring: `<div class="w-block"><h3>📡 Con Arduino</h3>${SCHEMA_MLX90614}<p>Punta il sensore a pochi cm da una tazza calda. Per un oggetto opaco prova ε ≈ 0,95.</p></div>`,
+  /** fields = [t_ms, Tamb_raw, Toggetto_raw] (parole a 16 bit, 0,02 K per conteggio; 0 se il sensore non risponde) */
+  parse(fields, p) {
+    const tMs = +fields[0], Tamb = mlxC(+fields[1]), To = mlxC(+fields[2]);
+    if (!isFinite(tMs) || !isFinite(Tamb) || !isFinite(To)) return null;
+    return { t: tMs / 1000, Tamb, Tobj: emissivityCorrect(To, Tamb, p.emiss) + (p.offset ?? 0) };
+  },
+  derive(samples) {
+    // con l'ambiente misurato dal sensore stesso: ln(T − Tₐ) è una retta se vale la legge di Newton
+    return samples.map((s) => ({ ...s, lnT: s.Tobj - s.Tamb > 0 ? Math.log(s.Tobj - s.Tamb) : NaN }));
+  },
+  views: [
+    { id: 'Tobj', label: 'Tₒ(t)', key: 'Tobj', yLabel: "T dell'oggetto (°C)", sym: 'Tₒ' },
+    { id: 'Tamb', label: 'Tₐ(t)', key: 'Tamb', yLabel: 'T ambiente (°C)', sym: 'Tₐ' },
+    { id: 'lnT', label: 'ln(Tₒ − Tₐ)', key: 'lnT', yLabel: 'ln[(Tₒ − Tₐ) / °C]', sym: 'ln(T−Tₐ)' },
+  ],
+  defaultVisible: ['Tobj', 'Tamb'],
+  readouts: [{ key: 'Tobj', label: 'Oggetto', unit: '°C', digits: 1 }, { key: 'Tamb', label: 'Ambiente', unit: '°C', digits: 1 }],
+  columns: [
+    { key: 't', head: 't (s)' }, { key: 'Tobj', head: 'T_oggetto (°C)' }, { key: 'Tamb', head: 'T_ambiente (°C)' }, { key: 'lnT', head: 'ln(To-Ta)' },
   ],
   xLabel: 't (s)',
 };
@@ -407,7 +572,7 @@ const scopeArduino = instrumentBase({
     <div class="w-block"><h3>🧲 Bobina e magnete</h3>${SCHEMA_COIL}<p>Fai cadere il magnete nella bobina, trigger singolo.</p></div>`,
 });
 
-export const EXPERIMENTS = [motion, harmonic, cooling, scopeAudio, synthesizer, phoneSound, scopeArduino, phoneAcc, phoneGyro];
+export const EXPERIMENTS = [motion, harmonic, cooling, humidity, irtemp, scopeAudio, synthesizer, phoneSound, scopeArduino, phoneAcc, phoneGyro];
 export const TOPICS = ['Cinematica', 'Termologia', 'Onde e suono', 'Elettromagnetismo'];
 export const byId = (id) => EXPERIMENTS.find((e) => e.id === id);
 export const defaultParams = (exp) => Object.fromEntries(exp.params.map((p) => [p.key, p.value]));
