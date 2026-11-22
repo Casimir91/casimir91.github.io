@@ -11,7 +11,7 @@
 :root[data-theme="light"]{color-scheme:light}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
-.wrap{max-width:560px;margin:0 auto;padding:0 14px 40px}
+.wrap{max-width:640px;margin:0 auto;padding:0 14px 40px}
 header{display:flex;align-items:baseline;justify-content:space-between;gap:8px;padding:16px 0 8px}
 h1{font-size:22px;font-weight:500;margin:0}
 h2{font-size:13px;font-weight:500;color:var(--mut);margin:22px 0 8px;letter-spacing:.02em}
@@ -54,45 +54,58 @@ input[type=range]{width:100%}
 .ib{width:26px;height:26px;padding:0;border-radius:50%;font:italic 13px Georgia,serif;color:var(--mut);display:inline-flex;align-items:center;justify-content:center;position:relative;flex:none}
 .ib.on{border-color:var(--fg);color:var(--fg)}
 .ib.dot::after{content:"";position:absolute;top:-2px;right:-2px;width:8px;height:8px;border-radius:50%;background:var(--acc)}
+.tg{border:0;padding:4px;display:inline-flex;align-items:center;color:var(--mut);background:transparent;border-radius:6px}
+.tg svg{width:24px;height:24px;fill:currentColor}
+
+.k3d{display:flex;align-items:center;gap:16px;border:1.5px solid var(--acc);border-radius:16px;padding:18px 20px;margin:4px 0 18px;text-decoration:none;color:var(--fg);background:var(--card)}
+.k3t{flex:1;min-width:0}
+.k3t b{font-weight:500;font-size:20px;line-height:1.25;display:block;margin-bottom:4px}
+.k3t small{color:var(--mut);font-size:14px;line-height:1.4;display:block}
+.k3t .go{display:inline-block;margin-top:10px;color:var(--acc);font-weight:500;font-size:15px}
+.cyl{position:relative;width:124px;height:118px;flex:none}
+.dk{position:absolute;left:12px;width:100px;height:100px;border-radius:50%;transform:rotateX(66deg);transform-style:preserve-3d}
+.dk i{display:block;position:relative;width:100%;height:100%;border-radius:50%}
+.dk.d3{top:46px}.dk.d2{top:26px}.dk.d1{top:6px}
+.dk.d3 i{background:radial-gradient(circle,rgba(150,150,150,.95) 0,rgba(150,150,150,0) 58%),conic-gradient(from 90deg,#992154,#9E2418,#81480A,#6C550A,#51600A,#0D6A31,#0D665A,#0D636F,#0C5E8A,#374CB0,#673BA2,#862C81,#992154)}.dk.d2 i{background:radial-gradient(circle,rgba(150,150,150,.95) 0,rgba(150,150,150,0) 58%),conic-gradient(from 90deg,#D65C88,#DC5F4E,#CA7417,#A98818,#819818,#2AA654,#1CA28F,#1C9DAF,#1B95D8,#6783EC,#9C72DE,#C063BA,#D65C88)}.dk.d1 i{background:radial-gradient(circle,rgba(150,150,150,.95) 0,rgba(150,150,150,0) 58%),conic-gradient(from 90deg,#FCA8C1,#FCAD9F,#FCB173,#ECBE26,#B7D34E,#6DE18B,#2CE1C8,#2CDBF4,#89CDFC,#AEC2FC,#CEB6FC,#FC9DF4,#FCA8C1)}
+.dk.d1 i::before{content:"";position:absolute;left:50%;top:7%;width:2px;height:43%;margin-left:-1px;background:#000;opacity:.55}
+.dk.d1 i::after{content:"";position:absolute;left:50%;top:3%;width:13px;height:13px;margin-left:-6.5px;border-radius:50%;background:#fff;border:2px solid #000}
+@media (prefers-reduced-motion:no-preference){.dk i{animation:cspin 18s linear infinite}.dk.d2 i{animation-duration:26s;animation-direction:reverse}.dk.d3 i{animation-duration:34s}}
+@keyframes cspin{to{transform:rotate(360deg)}}
+.mn{display:block}
+.as{display:contents}
+.tb{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;justify-content:space-between;margin:0 0 10px}
+.nav{display:grid;grid-template-columns:auto 1fr auto 26px;gap:8px;align-items:center;margin:0 0 10px}
+.fc{text-align:center;line-height:1.2}
+.fc b{font-size:20px;font-weight:500;display:block}
+.fc small{font-size:12px;color:var(--mut);display:block;min-height:14px}
+@media (min-width:900px){
+.wrap{max-width:1180px;padding:0 24px 48px}
+.mn{display:grid;grid-template-columns:360px minmax(0,1fr);gap:32px;align-items:start}
+.as{display:block;position:sticky;top:12px}
+.as>h2{margin-top:0}
+.cmp{position:static;border-bottom:0;padding:14px 0 0}
+.ex>h2:first-child{margin-top:0}
+.hues{grid-template-columns:repeat(8,minmax(0,1fr))}
+.k3d{padding:22px 28px}
+.k3t b{font-size:24px}
+.cyl{width:160px;height:150px}
+}
 </style>
 </head>
 <body>
 <div class="wrap">
 <header>
-<h1 id="fam">Verde</h1>
-<div class="seg row" style="gap:6px"><button id="c1" class="on">CSS</button><button id="c2">XKCD</button><button id="th" aria-label="Cambia tema, chiaro o scuro">Scuro</button></div>
+<h1>Colori</h1>
+<div><button id="th" class="tg" aria-label="Attiva/disattiva la modalità oscura" title="Attiva/disattiva la modalità oscura"><svg viewBox="0 0 16 16" aria-hidden="true"><path id="thp" d="M11 4a4 4 0 0 1 0 8H8a4.992 4.992 0 0 0 2-4 4.992 4.992 0 0 0-2-4h3zm-6 8a4 4 0 1 1 0-8 4 4 0 0 1 0 8zM0 8a5 5 0 0 0 5 5h6a5 5 0 0 0 0-10H5a5 5 0 0 0-5 5z"/></svg></button></div>
 </header>
-<details class="intro"><summary>Cosa significano i codici</summary>
-<div class="kv">
-<b>Base 16</b><span>cifre 0–9, poi A=10 · B=11 · C=12 · D=13 · E=14 · F=15. La cifra a sinistra vale 16, quella a destra vale 1: <span class="mono">27</span> = 2·16 + 7 = 39.</span>
-<b>Da 10 a 16</b><span>dividi per 16: il quoziente è la prima cifra, il resto la seconda. 112 ÷ 16 = 7 resto 0, quindi <span class="mono">70</span>. 29 ÷ 16 = 1 resto 13, quindi <span class="mono">1D</span>. Due cifre coprono 0–255: <span class="mono">FF</span> = 15·16 + 15 = 255, cioè 16² = 256 valori.</span>
-<b>Prova</b><span><input type="number" id="n16" min="0" max="255" value="112" style="width:76px"> → <span id="o16" class="mono"></span></span>
-<b>Hex</b><span><span class="mono">#RRGGBB</span>: tre coppie in base 16 (00–FF = 0–255), cioè quanto rosso, verde e blu emette lo schermo. <span class="mono">#27701D</span> = R 39 · G 112 · B 29. Sono 256³ ≈ 16,7 milioni di combinazioni, nello spazio sRGB.</span>
-<b>OKLCH</b><span>il colore come lo percepiamo, con tre numeri:</span>
-<b>L</b><span class="sub">lightness, luminanza percettiva: 0 nero, 1 bianco</span>
-<b>C</b><span class="sub">chroma, croma: 0 grigio, più alto è più vivace (in sRGB al massimo circa 0,32)</span>
-<b>H</b><span class="sub">hue, tinta: angolo sulla ruota. 29° rosso · 110° giallo · 142° verde · 195° ciano · 264° blu · 328° magenta</span>
-<b>OK</b><span>non è "ok": è <i>Oklab</i> (Ottosson, 2020), uno spazio costruito perché passi uguali siano differenze percepite uguali. LCH sono le sue coordinate cilindriche, in quest'ordine: L, C, H.</span>
-<b>Perché 3</b><span>i coni dell'occhio sono di tre tipi (corti, medi, lunghi), quindi bastano tre numeri. Cambia solo la scelta degli assi: RGB (schermo), HSL (comodo ma non uniforme), OKLCH (percettivo), CMYK (inchiostri, K = nero "key").</span>
-<b>ΔE</b><span>distanza tra due colori, qui in OKLab per 100. Sotto 2 sono appena distinguibili.</span>
-<b>3D</b><span><a href="lch.html" style="color:var(--acc)">Il vettore LCH nel cilindro, da muovere →</a></span>
 
-</div>
-</details>
-<div class="row" style="justify-content:space-between;padding-bottom:8px">
-<button id="pv">←</button>
-<button id="nx">→</button>
-</div>
+<a class="k3d" href="lch.html">
+<div class="k3t"><b>Scopri la matematica dei colori</b><small>Dal codice hex alle coordinate cilindriche: muovi un vettore in 3D e guarda come nasce ogni colore.</small><span class="go">Apri il cilindro →</span></div>
+<div class="cyl" aria-hidden="true"><div class="dk d3"><i></i></div><div class="dk d2"><i></i></div><div class="dk d1"><i></i></div></div>
+</a>
 
-<div class="cmp">
-<div class="cmpg">
-<div class="cell"><div id="uSw" class="sw empty">il tuo colore</div><div class="t"><b id="uHex" class="mono">—</b><span id="uNm" class="n"></span></div></div>
-<div class="cell"><div id="cSw" class="sw empty">tessera scelta</div><div class="t"><b id="cHex" class="mono">—</b><span id="cNm" class="n"></span></div></div>
-<button id="ib" class="ib" aria-label="Dettagli del confronto" aria-expanded="false">i</button>
-</div>
-<div id="de" class="de" hidden></div>
-</div>
-
+<main class="mn">
+<aside class="as">
 <h2>Il colore che hai davanti</h2>
 <div class="row">
 <button id="bPhoto">Foto</button>
@@ -107,20 +120,42 @@ input[type=range]{width:100%}
 </div>
 <canvas id="cv"></canvas>
 
+<div class="cmp">
+<div class="cmpg">
+<div class="cell"><div id="uSw" class="sw empty">il tuo colore</div><div class="t"><b id="uHex" class="mono">—</b><span id="uNm" class="n"></span></div></div>
+<div class="cell"><div id="cSw" class="sw empty">tessera scelta</div><div class="t"><b id="cHex" class="mono">—</b><span id="cNm" class="n"></span></div></div>
+<button id="ib" class="ib" aria-label="Dettagli del confronto" aria-expanded="false">i</button>
+</div>
+<div id="de" class="de" hidden></div>
+</div>
+</aside>
+
+<section class="ex">
+<h2>Non hai una foto? Esplora i colori</h2>
+<div class="tb">
+<div class="seg row" style="gap:6px"><button id="v2" class="on">Tinta × luce</button><button id="v1">Luce × croma</button></div>
+<div class="row" style="gap:6px"><span class="note" style="margin:0">Nomi:</span><span class="seg row" style="gap:6px"><button id="c1" class="on">CSS</button><button id="c2">XKCD</button></span><button id="ic" class="ib" aria-label="Che cosa sono CSS e XKCD" aria-expanded="false">i</button></div>
+</div>
+<div id="catInfo" class="note" hidden style="margin:0 0 10px"><div><b>CSS</b>: i 148 nomi ufficiali dei colori del web, ad esempio <i>darkseagreen</i> o <i>tomato</i>.</div><div><b>XKCD</b>: nomi più colloquiali, scelti da migliaia di persone in un sondaggio, ad esempio <i>sage</i> o <i>kelly green</i>. Per ora ci sono solo alcuni verdi.</div><div>Cambiano solo i nomi che leggi: i colori restano gli stessi.</div></div>
+
+<div class="nav">
+<button id="pv">←</button>
+<div class="fc"><b id="fam">Verde</b><small id="sub"></small></div>
+<button id="nx">→</button>
+<button id="ia" class="ib" aria-label="Mostra o nascondi i valori" aria-pressed="false">i</button>
+</div>
+
 <div id="hueSec">
-<h2>Tinta</h2>
 <div id="hues" class="hues"></div>
-<div style="display:flex;gap:10px;align-items:center;margin-top:10px">
+<div style="display:flex;gap:10px;align-items:center;margin:10px 0">
 <input type="range" id="H" min="105" max="175" step="1" value="142" aria-label="Tinta">
 <span id="Ho" class="mono" style="font-size:13px;min-width:40px;text-align:right"></span>
 </div>
 </div>
 
-<div class="row" style="justify-content:space-between;margin:22px 0 8px"><h2 id="pgT" style="margin:0">Pagina</h2><button id="ia" class="ib" aria-label="Mostra o nascondi i valori" aria-pressed="false">i</button></div>
-<div class="seg row" style="gap:6px;margin-bottom:10px"><button id="v1" class="on">Luce × croma</button><button id="v2">Tinta × luce</button></div>
 <div id="pg" class="pg"></div>
-
-<details class="foot"><summary>Come si legge</summary><p>Ogni tessera è un colore: tocca per leggere hex e nome nella barra in alto. Il punto bianco segna la tessera più vicina al tuo colore. In "Luce × croma" la luce scende dall'alto in basso e la croma cresce da sinistra a destra (percentuale del massimo che lo schermo riesce a mostrare); in "Tinta × luce" ogni colonna è una tinta alla croma massima. ΔE è la distanza in OKLab per cento: sotto 2 la differenza è appena percepibile. Il bordo tratteggiato nella fila delle tinte segna una tinta di confine tra due famiglie. Lo schermo non è un campione fisico: luminosità, calibrazione e luce ambiente cambiano ciò che vedi.</p></details>
+</section>
+</main>
 </div>
 
 <script>
@@ -149,7 +184,7 @@ function famsAt(h){var r=[];for(var i=0;i<FAM.length;i++)if(coord(i,h)!==null)r.
 function cd(x,y){return Math.abs(((x-y+540)%360+360)%360-180);}
 function clampTo(i,h){var c=coord(i,h);if(c!==null)return c;var F=FAM[i];return cd(h,F.a)<cd(h,F.b)?F.a:F.b;}
 function hueLabel(H){var fs=famsAt(H);if(fs.length<2)return FAM[fs.length?fs[0]:S.fam].n;var o=fs.filter(function(i){return i!==S.fam;});return FAM[S.fam].n+" · confine "+FAM[o.length?o[0]:fs[0]].n;}
-var S={axes:false,view:"lc",fam:3,H:142,cat:"css",user:null,sel:null,wb:[1,1,1],wbMode:false,pt:null,img:null,cells:[]};
+var S={T:false,axes:false,view:"hl",fam:3,H:142,cat:"css",user:null,sel:null,wb:[1,1,1],wbMode:false,pt:null,img:null,cells:[]};
 function $(i){return document.getElementById(i);}
 function nameOf(lab){var best=null,bd=1e9;CAT[S.cat].forEach(function(c){var d=dist(c.lab,lab);if(d<bd){bd=d;best=c;}});return {n:best.n,d:bd,ok:bd<=2.5};}
 var LS=[0.92,0.84,0.76,0.68,0.60,0.52,0.44,0.36,0.28],FR=[0.4,0.6,0.8,1];
@@ -166,26 +201,28 @@ function renderHues(){
   box.appendChild(b);})(h);}
 }
 function lchOf(lab){var H=Math.atan2(lab[2],lab[1])*180/Math.PI;return [lab[0],Math.hypot(lab[1],lab[2]),norm(H)];}
-function updTitle(){$("pgT").textContent=S.view==="lc"?"Pagina · tinta "+Math.round(norm(S.H))+"° · "+hueLabel(S.H):"Pagina · tutte le tinte · "+FAM[S.fam].n;}
+function updTitle(){$("sub").textContent=S.view==="lc"?"tinta "+Math.round(norm(S.H))+"°"+hueLabel(S.H).replace(FAM[S.fam].n,""):"";}
 function renderGrid(){
- var g=$("pg"),F=FAM[S.fam];g.innerHTML="";S.cells=[];
+ var g=$("pg"),F=FAM[S.fam],T=!!S.T;g.innerHTML="";S.cells=[];
  var rows=[];for(var i=0;i<17;i++)rows.push(+(0.92-0.04*i).toFixed(2));
  var cols=[];
  if(S.view==="lc"){[0.4,0.5,0.6,0.7,0.8,0.9,1].forEach(function(f){cols.push({f:f,H:S.H,t:Math.round(f*100)+"%"});});}
  else{for(var h=F.a;h<=F.b;h+=10)cols.push({f:1,H:h,t:Math.round(norm(h))+"°"});}
- g.style.gridTemplateColumns=(S.axes?"26px ":"")+"repeat("+cols.length+",minmax(0,1fr))";
+ var nA=T?cols.length:rows.length,nB=T?rows.length:cols.length;
+ g.style.gridTemplateColumns=(S.axes?(T?"40px ":"26px "):"")+"repeat("+nB+",minmax(0,1fr))";
+ function lab(cls,t){var d=document.createElement("div");d.className=cls;d.textContent=t;g.appendChild(d);}
  if(S.axes){g.appendChild(document.createElement("div"));
- cols.forEach(function(c){var d=document.createElement("div");d.className="lab";d.textContent=c.t;g.appendChild(d);});}
- rows.forEach(function(L,ri){
-  if(S.axes){var rl=document.createElement("div");rl.className="rl";rl.textContent=(ri%2===0)?L.toFixed(2):"";g.appendChild(rl);}
-  cols.forEach(function(c){
-   var hex=toHex(lch2lin(L,cmax(L,c.H)*c.f,c.H)),lab=hex2lab(hex);
+  for(var j=0;j<nB;j++)lab("lab",T?(j%2===0?rows[j].toFixed(2):""):cols[j].t);}
+ for(var a=0;a<nA;a++){
+  if(S.axes)lab("rl",T?cols[a].t:(a%2===0?rows[a].toFixed(2):""));
+  for(var k=0;k<nB;k++)(function(L,c){
+   var hex=toHex(lch2lin(L,cmax(L,c.H)*c.f,c.H)),lab2=hex2lab(hex);
    var b=document.createElement("button");b.className="tile";b.style.background="#"+hex;b.setAttribute("aria-label","#"+hex);
-   var cell={hex:hex,lab:lab,el:b,nm:nameOf(lab)};
+   var cell={hex:hex,lab:lab2,el:b,nm:nameOf(lab2)};
    b.onclick=function(){S.sel=cell;if(S.view==="hl"){S.H=c.H;updTitle();}markSel();renderCmp();};
    S.cells.push(cell);g.appendChild(b);
-  });
- });
+  })(T?rows[k]:rows[a],T?cols[a]:cols[k]);
+ }
 }
 function markSel(){
  var best=null,bd=1e9;
@@ -293,19 +330,19 @@ $("nx").onclick=function(){goFam((S.fam+1)%FAM.length);setHash();};
 var h0=fromHash();if(h0>=0)S.fam=h0;
 S.H=clampTo(S.fam,S.H);
 function effDark(){var t=document.documentElement.getAttribute("data-theme");if(t)return t==="dark";return !!(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches);}
-function paintTheme(){$("th").textContent=effDark()?"Chiaro":"Scuro";}
-try{var sv=localStorage.getItem("th");if(sv)document.documentElement.setAttribute("data-theme",sv);}catch(e){}
-$("th").onclick=function(){var d=!effDark();document.documentElement.setAttribute("data-theme",d?"dark":"light");try{localStorage.setItem("th",d?"dark":"light");}catch(e){}paintTheme();};
+function paintTheme(){var d=effDark(),p=$("thp");if(p)p.setAttribute("d",d?"M5 3a5 5 0 0 0 0 10h6a5 5 0 0 0 0-10H5zm6 9a4 4 0 1 1 0-8 4 4 0 0 1 0 8z":"M11 4a4 4 0 0 1 0 8H8a4.992 4.992 0 0 0 2-4 4.992 4.992 0 0 0-2-4h3zm-6 8a4 4 0 1 1 0-8 4 4 0 0 1 0 8zM0 8a5 5 0 0 0 5 5h6a5 5 0 0 0 0-10H5a5 5 0 0 0-5 5z");$("th").setAttribute("aria-pressed",String(d));}
+try{var sv=localStorage.getItem("quarto-color-scheme");if(sv)document.documentElement.setAttribute("data-theme",sv==="alternate"?"dark":"light");}catch(e){}
+$("th").onclick=function(){var d=!effDark();document.documentElement.setAttribute("data-theme",d?"dark":"light");try{localStorage.setItem("quarto-color-scheme",d?"alternate":"default");}catch(e){}paintTheme();};
 paintTheme();
+$("ic").onclick=function(){var d=$("catInfo");d.hidden=!d.hidden;this.classList.toggle("on",!d.hidden);this.setAttribute("aria-expanded",String(!d.hidden));};
 $("ib").onclick=function(){var d=$("de");d.hidden=!d.hidden;this.classList.toggle("on",!d.hidden);this.setAttribute("aria-expanded",String(!d.hidden));};
 $("ip").onclick=function(){var d=$("photoInfo");d.hidden=!d.hidden;this.classList.toggle("on",!d.hidden);this.classList.remove("dot");this.setAttribute("aria-expanded",String(!d.hidden));};
 $("ia").onclick=function(){S.axes=!S.axes;this.classList.toggle("on",S.axes);this.setAttribute("aria-pressed",String(S.axes));renderAll();};
 try{new MutationObserver(function(){if($("photoInfo").hidden&&$("photoNote").textContent)$("ip").classList.add("dot");}).observe($("photoNote"),{childList:true,characterData:true,subtree:true});}catch(e){}
-function conv(){var n=Math.max(0,Math.min(255,Math.floor(+$("n16").value||0))),q=Math.floor(n/16),r=n%16,D="0123456789ABCDEF";$("o16").textContent=n+" ÷ 16 = "+q+" resto "+r+" → "+D.charAt(q)+D.charAt(r);}
-$("n16").addEventListener("input",conv);conv();
 function setView(v){S.view=v;$("v1").className=v==="lc"?"on":"";$("v2").className=v==="hl"?"on":"";renderAll();}
 $("v1").onclick=function(){setView("lc");};
 $("v2").onclick=function(){setView("hl");};
+try{var mq=matchMedia("(min-width:900px)");S.T=mq.matches;var chg=function(e){S.T=e.matches;renderAll();};if(mq.addEventListener)mq.addEventListener("change",chg);else if(mq.addListener)mq.addListener(chg);}catch(e){}
 renderAll();
 </script>
 </body>
