@@ -1,0 +1,364 @@
+---
+title: "Noise"
+subtitle: "Every measurement wobbles. Learn to read the wobble."
+description: "Noise in pictures. Why every measurement wobbles, and what the wobble can tell you."
+toc: true
+toc-title: "On this page"
+engine: markdown
+resources:
+  - noiselab.py
+format:
+  live-html:
+    lang: en
+    theme:
+      light: [sandstone, ../../fonts.scss]
+      dark: [darkly, ../../custom-dark.scss, ../../fonts.scss]
+    respect-user-color-scheme: true
+    include-in-header:
+      - ../../_includes/pwa-head.html
+      - ../_componenti/head.html
+      - ../_componenti/noise-visual.html
+    include-after-body: ../../brand-link.html
+    pyodide:
+      resources:
+        - noiselab.py
+      packages:
+        - numpy
+        - matplotlib
+      cell-options:
+        autorun: false
+        fig-dpi: 110
+---
+
+## Quick quiz
+
+Answer by instinct. You will see at once if you were right.
+
+::: {.mcq-set}
+
+::: {.mcq}
+A thermometer sits in a bath held at exactly 50.0 °C. It reads 50.2, then 49.9, then 50.1. Why?
+
+- the bath is drifting
+- the thermometer is broken
+- ✓ every reading wobbles around the true value
+
+::: {.sol}
+Always. Even a perfect thermometer wobbles. The wobble is called **noise**, and, as you will see, it has a shape.
+:::
+:::
+
+::: {.mcq}
+You average $100$ readings. How much smaller is the error of the average than the error of one reading?
+
+- the same
+- $2$ times smaller
+- ✓ $10$ times smaller
+
+::: {.sol}
+$\sqrt{100} = 10$. But this works only if each wobble forgets the one before. Not all noise does. That is the plot of this chapter.
+:::
+:::
+
+::: {.mcq}
+A walker takes $100$ random steps, left or right, one metre each. Where does he typically end up?
+
+- $100\ \text{m}$ away
+- ✓ about $10\ \text{m}$ away
+- back at the start
+
+::: {.sol}
+Random steps neither cancel nor add up: $\sqrt{100} = 10$. A path made of random steps is a noise that **remembers**. It has a colour: brown.
+:::
+:::
+
+:::
+
+## What is noise?
+
+```{=html}
+<div class="vw" data-vw="strips"></div>
+```
+
+```{=html}
+<p class="def" style="border-color:#3B6FB6"><b class="c-sig">Signal</b> what the cup really does.</p>
+<p class="def" style="border-color:#EF9F27"><b class="c-noi">Noise</b> the part of a reading you cannot predict.</p>
+<p class="def" style="border-color:#1D9E75"><b class="c-rea">Reading</b> what the thermometer shows: signal + noise.</p>
+```
+
+### Now in Python
+
+::: {.cb}
+```{=html}
+<p class="cbt">Make a reading</p>
+<p class="try">Press <b>Run Code</b>. Then change <code>sigma</code> to <code>6</code> and run again.</p>
+<ul class="cbn">
+<li><b>·</b><code>from noiselab import *</code> brings in this chapter's toolbox. Nothing to learn here.</li>
+<li><b>①</b><code>seconds(300, every=5)</code> one time for each reading: 0, 5, 10 … 300 s.</li>
+<li><b>②</b><code>cooling(t)</code> the true temperature at those times. The blue strip.</li>
+<li><b>③</b><code>white(…, sigma=2.5)</code> one random wobble per reading. <code>sigma</code> sets how big. The amber strip.</li>
+<li><b>④</b><code>signal + noise</code> what the thermometer shows. The green strip.</li>
+</ul>
+```
+
+```{pyodide}
+from noiselab import *               # the toolbox
+
+t = seconds(300, every=5)            # ① the times (s)
+signal = cooling(t)                  # ② the truth, no wobble
+noise = white(len(t), sigma=2.5)     # ③ the wobble
+reading = signal + noise             # ④ what you see
+show_strips(t, signal, noise, reading)
+```
+:::
+
+## Where do we find noise?
+
+```{=html}
+<div class="vw" data-vw="where"></div>
+```
+
+Noise is not a flaw of cheap instruments. It comes with the world.
+
+- **Heat.** Above absolute zero atoms never stop moving, so every resistor, sensor and eye jitters a little.
+- **Everything else.** Rounding, draughts, a trembling hand, a passing truck.
+
+You can lower noise. You can never reach zero.
+
+### Why study it?
+
+1. It tells you **how far to trust a number**.
+2. It tells you **whether averaging will help**.
+3. Its **shape is a fingerprint** of what produced it.
+
+## How big is it?
+
+```{=html}
+<div class="vw" data-vw="sigma"></div>
+```
+
+```{=html}
+<p class="def" style="border-color:#EF9F27"><b class="c-noi">σ (sigma)</b> the typical size of the wobble. About two readings in three fall within ±σ.</p>
+```
+
+::: {.cb}
+```{=html}
+<p class="cbt">Measure σ</p>
+<p class="try">Press <b>Run Code</b>. Then change <code>0.5</code> to <code>2</code>. Does the printed σ follow?</p>
+<ul class="cbn">
+<li><b>①</b><code>white(1000, sigma=0.5)</code> a thousand readings of pure noise, built with σ = 0.5.</li>
+<li><b>②</b><code>noise.std()</code> σ <em>measured</em> from the numbers: the standard deviation.</li>
+<li><b>③</b><code>show_noise(noise)</code> the series on the left, the histogram on the right.</li>
+</ul>
+```
+
+```{pyodide}
+from noiselab import *               # the toolbox
+
+noise = white(1000, sigma=0.5)       # ① pure noise
+sigma = noise.std()                  # ② its size, measured
+print("sigma =", round(sigma, 2))
+show_noise(noise)                    # ③ series + histogram
+```
+:::
+
+## Does it remember?
+
+Some noise forgets at once. Some does not.
+
+```{=html}
+<div class="vw" data-vw="colours"></div>
+```
+
+```{=html}
+<p class="def" style="border-color:#888780"><b>Memory (r₁)</b> how well one value predicts the next. 0 = none, 1 = total.</p>
+<p class="def" style="border-color:#888780"><b>Frequency (f)</b> how many times per second a wobble repeats. Slow wobbles: low f. Fast ones: high f.</p>
+<p class="def" style="border-color:#888780"><b>Spectrum</b> how much wobble there is at each f. For pink noise, power ∝ 1/f: the slower the swing, the stronger it is.</p>
+```
+
+::: {.cb}
+```{=html}
+<p class="cbt">Hear the colours</p>
+<p class="try">Press <b>Run Code</b>. Then replace <code>pink</code> with <code>white</code>, then with <code>brown</code>, and compare the numbers.</p>
+<ul class="cbn">
+<li><b>①</b><code>pink(512)</code> 512 values of pink noise. Try <code>white</code> or <code>brown</code>.</li>
+<li><b>②</b><code>memory(x)</code> r₁: does a value predict the next? Near 0 for white, near 1 for brown.</li>
+<li><b>③</b><code>slope(x)</code> how steeply the spectrum falls: about 0 for white, −1 for pink, −2 for brown.</li>
+<li><b>④</b><code>show_colour(x)</code> the noise, the memory plot and the spectrum.</li>
+</ul>
+```
+
+```{pyodide}
+from noiselab import *               # the toolbox
+
+x = pink(512)                        # ① try white or brown
+r = memory(x)                        # ② near 0, or near 1?
+s = slope(x)                         # ③ 0, -1 or -2?
+print("memory r1 =", round(r, 2), "  slope =", round(s, 1))
+show_colour(x)                       # ④ the three graphs
+```
+:::
+
+## Does averaging help?
+
+```{=html}
+<div class="vw" data-vw="average"></div>
+```
+
+Averaging cancels a wobble only if the next one is new.
+
+## What is left over?
+
+In real data you do not know the signal. You fit a model, then look at what the model leaves behind.
+
+```{=html}
+<div class="vw" data-vw="resid"></div>
+```
+
+```{=html}
+<p class="def" style="border-color:#7F77DD"><b class="c-res">Residual</b> reading − model, point by point.</p>
+```
+
+If the model is right, the residuals are pure noise. If they show a pattern, they remember: r₁ is far from 0, and the model is missing something.
+
+::: {.cb}
+```{=html}
+<p class="cbt">Judge a model</p>
+<p class="try">Press <b>Run Code</b>. Then change <code>tau=200</code> in the model to <code>300</code> and run again.</p>
+<ul class="cbn">
+<li><b>·</b>the data: the true curve plus new noise at every run.</li>
+<li><b>①</b><code>cooling(t, tau=200)</code> the model: Newton's law, with cooling time τ = 200 s.</li>
+<li><b>②</b><code>reading - model</code> the residuals: what is left once the model is taken away.</li>
+<li><b>③</b><code>memory(residual)</code> r₁ of the leftovers: near 0 means no pattern.</li>
+</ul>
+```
+
+```{pyodide}
+from noiselab import *               # the toolbox
+
+t = seconds(300, every=10)
+reading = cooling(t, tau=200) + white(len(t), sigma=1.5)
+
+model = cooling(t, tau=200)          # ① try tau=300
+residual = reading - model           # ② the leftovers
+r = memory(residual)                 # ③ near 0 = no pattern
+print("r1 of the leftovers =", round(r, 2))
+show_residuals(t, reading, model)
+```
+:::
+
+Noise is what no model can explain. Its memory tells you whether the model is done.
+
+## Play
+
+### Guess the colour
+
+```{=html}
+<div class="vw" data-vw="guess"></div>
+```
+
+### Pattern or noise?
+
+```{=html}
+<div class="vw" data-vw="left"></div>
+```
+
+## Check yourself
+
+::: {.mcq-set}
+
+::: {.mcq}
+White noise with σ = 2 °C. You average 25 readings. The error of the average is about:
+
+- 2 °C
+- 1 °C
+- ✓ 0.4 °C
+- 0.08 °C
+
+::: {.sol}
+σ/√N = 2/5 = 0.4 °C. Only for noise with no memory.
+:::
+:::
+
+::: {.mcq}
+You average 100 readings of brown noise. Compared with one reading, the error is:
+
+- 100 times smaller
+- 10 times smaller
+- 2 times smaller
+- ✓ about the same
+
+::: {.sol}
+Brown noise remembers everything: the average wanders with it.
+:::
+:::
+
+::: {.mcq}
+A noise has r₁ ≈ 0. This means:
+
+- each value equals the next
+- σ is zero
+- ✓ each value tells you nothing about the next
+- the model is wrong
+
+::: {.sol}
+r₁ measures memory: 0 none, 1 total.
+:::
+:::
+
+::: {.mcq}
+The residuals of a fit form a clear arch. Most likely:
+
+- the thermometer is broken
+- ✓ the model is missing something
+- σ is too big
+- bad luck
+
+::: {.sol}
+Noise has no shape. A shape in the leftovers is signal the model failed to take.
+:::
+:::
+
+::: {.mcq}
+On log-log axes, the spectrum of pink noise has slope:
+
+- 0
+- ✓ −1
+- −2
+- +1
+
+::: {.sol}
+Power ∝ 1/f. White: slope 0. Brown: slope −2.
+:::
+:::
+
+:::
+
+## Use it on real data
+
+```{=html}
+<p>Now take a real measurement. <b>Snake Lab</b> reads your data and runs these steps for you: noise, memory, fit, residuals.</p>
+<p><a class="btn btn-primary" href="../../toolbox/python.html">Open Snake Lab →</a></p>
+```
+
+::: {.callout-note collapse="true"}
+## Words
+
+- **signal**: what the system really does.
+- **noise**: the part of a reading you cannot predict.
+- **σ (sigma)**: the typical size of the noise (its standard deviation).
+- **memory (r₁)**: how well one value predicts the next. 0 none, 1 total.
+- **frequency (f)**: how many times per second a wobble repeats.
+- **spectrum**: how much noise there is at each frequency.
+- **white, pink, brown noise**: spectrum flat, 1/f, 1/f². Memory: none, some, total.
+- **model**: a curve that describes the signal, like Newton's law of cooling.
+- **τ (tau)**: the cooling time of the tea. Larger means slower cooling.
+- **residual**: reading minus model, point by point.
+- **χ² (chi-squared)**: residuals measured in units of σ. Around 1, the model fits. You will meet it in Snake Lab.
+:::
+
+::: {.callout-note collapse="true"}
+## About this page
+
+The drawings are plain JavaScript. The code boxes run Python inside your browser (Pyodide, WebAssembly): nothing you type is sent to a server. The first time, they download tens of MB of Python files from a public content delivery network (jsDelivr), which can see your IP address; later visits use the browser cache. The data are simulated.
+:::

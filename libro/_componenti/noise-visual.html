@@ -1,0 +1,360 @@
+<style>
+.vw{border:1px solid var(--bs-border-color,#ccc);border-radius:.6rem;padding:.6rem .8rem .7rem;margin:1.4rem 0}
+.vw svg{width:100%;height:auto;display:block}
+.vw svg text{fill:currentColor}
+@media (max-width:560px){.vw{padding:.4rem .5rem .5rem}}
+.vw .btns{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;margin-top:.5rem}
+.vw button{border:1px solid #2a7f62;background:transparent;color:inherit;border-radius:.4rem;padding:.35rem .9rem;cursor:pointer;font:inherit}
+.vw button:hover{background:rgba(42,127,98,.18)}
+.vw button.on{background:rgba(42,127,98,.3);font-weight:600}
+.vw button.go{background:#2a7f62;color:#fff;font-weight:600;padding:.4rem 1.2rem}
+.vw button.go::before{content:"\25B6\00a0"}
+.vw button.go:hover{background:#226650}
+.vw button:disabled{opacity:.45;cursor:default}
+.vw .hit{cursor:pointer}
+.vw .hit:focus{outline:none}
+.vw .hit:focus-visible{outline:2px solid #2a7f62;outline-offset:2px}
+.vw input[type=range]{accent-color:#2a7f62;flex:1 1 7rem;min-width:6rem}
+.vw label.rng{display:flex;align-items:center;gap:.6rem;flex:1 1 15rem}
+.vw .msgb{min-height:3.2rem;text-align:center;font-weight:500;margin:.7rem 0 .3rem;line-height:1.45}
+.vw .chip{display:inline-block;border-radius:1rem;padding:.05rem .65rem;font-size:.82em;font-weight:600;color:#fff;vertical-align:baseline;white-space:nowrap}
+.vw .good{color:#1D9E75;font-weight:700}
+.vw .bad{color:#D85A30;font-weight:700}
+.vw .sub{display:block;font-weight:400;opacity:.85;margin-top:.15rem}
+.def{margin:.4rem 0;padding:.3rem .8rem;border-left:4px solid #888780}
+.def b{margin-right:.5rem}
+.c-sig{color:#3B6FB6}.c-noi{color:#B97400}.c-rea{color:#1D9E75}.c-res{color:#6D64C8}.c-wh{color:#6b7078}.c-pk{color:#D4537E}.c-br{color:#9C6B3F}
+body.quarto-dark .c-sig{color:#7FAAE0}body.quarto-dark .c-noi{color:#F2B24D}body.quarto-dark .c-res{color:#A59DF0}body.quarto-dark .c-wh{color:#aab0b8}body.quarto-dark .c-br{color:#C79562}
+.cb{border:1px solid var(--bs-border-color,#ccc);border-radius:.6rem;padding:.7rem .9rem .5rem;margin:1.4rem 0}
+.cb .cbt{font-weight:600;margin:0 0 .3rem}
+.cbn{list-style:none;padding:0;margin:.4rem 0 .8rem;font-size:.92rem}
+.cbn li{margin:.25rem 0;line-height:1.4}
+.cbn li b{display:inline-block;width:1.5rem;color:#2a7f62}
+.cb .exercise-cell-output img{max-width:100%;height:auto;display:block;margin:0 auto}
+.cb .try{margin:.2rem 0 .6rem}
+</style>
+<script>
+(function(){
+"use strict";
+var NS="http://www.w3.org/2000/svg";
+var K={sig:"#3B6FB6",noi:"#EF9F27",rea:"#1D9E75",res:"#7F77DD",white:"#8A8F98",pink:"#D4537E",brown:"#9C6B3F",ok:"#1D9E75",bad:"#D85A30"};
+var BETA={white:0,pink:1,brown:2},NAMES=["white","pink","brown"];
+var MINUS="−";
+
+/* ---------- small helpers ---------- */
+function S(tag,at,par,txt){var e=document.createElementNS(NS,tag);for(var k in at)e.setAttribute(k,at[k]);if(txt!==undefined&&txt!==null)e.textContent=txt;if(par)par.appendChild(e);return e;}
+function T(par,x,y,txt,size,o){o=o||{};var e=S("text",{x:x,y:y,"font-size":size||13,"text-anchor":o.a||"start","font-weight":o.w||400},par,txt);if(o.o!==undefined)e.setAttribute("opacity",o.o);if(o.f)e.style.fill=o.f;return e;}
+function E(tag,cls,par,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!==undefined&&txt!==null)e.textContent=txt;if(par)par.appendChild(e);return e;}
+function clear(g){while(g.firstChild)g.removeChild(g.firstChild);}
+function ease(p){return p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;}
+function tween(dur,fn,done){var t0=null,id,dead=false;function st(t){if(dead)return;if(t0===null)t0=t;var p=Math.min(1,(t-t0)/dur);fn(p);if(p<1)id=requestAnimationFrame(st);else if(done)done();}id=requestAnimationFrame(st);return function(){dead=true;cancelAnimationFrame(id);};}
+function isN(root){return root.dataset.n==="1";}
+function mount(root,w,h,label){root.classList.add("vw");var svg=S("svg",{viewBox:"0 0 "+w+" "+h,role:"img","aria-label":label||""},null);root.appendChild(svg);var b=E("div","btns",root);var m=E("p","msgb",root);return{svg:svg,btns:b,msg:m};}
+function button(par,label,fn,cls){var b=E("button",cls||"",par,label);b.type="button";b.onclick=fn;return b;}
+function fmt(x,d){var s=(+x).toFixed(d);return s.replace("-",MINUS);}
+function sgn(x,d){return (x<0?MINUS:"+")+Math.abs(x).toFixed(d);}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+
+/* ---------- random numbers, FFT, noise colours, statistics ---------- */
+function mk(seed){var a=seed>>>0;return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+var seedC=20261121;
+function newRng(){seedC=(seedC*1664525+1013904223)>>>0;return mk((seedC^(Date.now()&0xffffff))>>>0);}
+function gauss(r){var u=1-r(),v=r();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}
+function fft(re,im,inv){var n=re.length,i,j,k,t,len,ang,wr,wi,ur,ui,vr,vi,a,b,nr,bit;
+ for(i=1,j=0;i<n;i++){bit=n>>1;for(;j&bit;bit>>=1)j^=bit;j^=bit;if(i<j){t=re[i];re[i]=re[j];re[j]=t;t=im[i];im[i]=im[j];im[j]=t;}}
+ for(len=2;len<=n;len<<=1){ang=2*Math.PI/len*(inv?1:-1);wr=Math.cos(ang);wi=Math.sin(ang);
+  for(i=0;i<n;i+=len){ur=1;ui=0;for(k=0;k<len/2;k++){a=i+k;b=i+k+len/2;vr=re[b]*ur-im[b]*ui;vi=re[b]*ui+im[b]*ur;re[b]=re[a]-vr;im[b]=im[a]-vi;re[a]+=vr;im[a]+=vi;nr=ur*wr-ui*wi;ui=ur*wi+ui*wr;ur=nr;}}}
+ if(inv)for(i=0;i<n;i++){re[i]/=n;im[i]/=n;}}
+/* noise whose power goes as 1/f^beta, mean 0, std 1 (spectral synthesis) */
+function colourNoise(n,beta,r){var re=new Float64Array(n),im=new Float64Array(n),h=n/2,k,a,x,y,m=0,v=0,i;
+ for(k=1;k<h;k++){a=Math.pow(k,-beta/2);x=gauss(r)*a;y=gauss(r)*a;re[k]=x;im[k]=y;re[n-k]=x;im[n-k]=-y;}
+ re[h]=gauss(r)*Math.pow(h,-beta/2);
+ fft(re,im,true);
+ for(i=0;i<n;i++)m+=re[i];m/=n;for(i=0;i<n;i++){re[i]-=m;v+=re[i]*re[i];}v=Math.sqrt(v/n);for(i=0;i<n;i++)re[i]/=v;
+ return re;}
+function std(a){var m=0,s=0,i;for(i=0;i<a.length;i++)m+=a[i];m/=a.length;for(i=0;i<a.length;i++)s+=(a[i]-m)*(a[i]-m);return Math.sqrt(s/a.length);}
+function r1(a){var n=a.length-1,i,mx=0,my=0,sxy=0,sxx=0,syy=0,dx,dy;for(i=0;i<n;i++){mx+=a[i];my+=a[i+1];}mx/=n;my/=n;for(i=0;i<n;i++){dx=a[i]-mx;dy=a[i+1]-my;sxy+=dx*dy;sxx+=dx*dx;syy+=dy*dy;}return sxy/Math.sqrt(sxx*syy);}
+/* log-binned power spectrum and its slope on log-log axes */
+function spectrum(x){var n=x.length,re=Float64Array.from(x),im=new Float64Array(n),h=n/2,P=[],k,pts=[],lo=1,hi,s,c,fs,i,mx=0,my=0,sxy=0,sxx=0;
+ fft(re,im,false);for(k=1;k<h;k++)P.push((re[k]*re[k]+im[k]*im[k])/n);
+ while(lo<h){hi=Math.max(lo+1,Math.round(lo*1.5));s=0;c=0;fs=0;for(k=lo;k<hi&&k<h;k++){s+=Math.log(P[k-1]);c++;fs+=Math.log(k);}pts.push([fs/c/Math.LN10,s/c/Math.LN10]);lo=hi;}
+ for(i=0;i<pts.length;i++){mx+=pts[i][0];my+=pts[i][1];}mx/=pts.length;my/=pts.length;
+ for(i=0;i<pts.length;i++){sxy+=(pts[i][0]-mx)*(pts[i][1]-my);sxx+=(pts[i][0]-mx)*(pts[i][0]-mx);}
+ return{pts:pts,slope:sxy/sxx,mx:mx,my:my};}
+function gen(c,n,r){return colourNoise(n,BETA[c],r);}
+
+/* ---------- drawing helpers ---------- */
+function pathD(data,x,y,w,h,lo,hi){var n=data.length,d="",i,px,py;for(i=0;i<n;i++){px=x+w*i/(n-1);py=clamp(y+h-(data[i]-lo)/(hi-lo)*h,y,y+h);d+=(i?"L":"M")+px.toFixed(1)+" "+py.toFixed(1);}return d;}
+function frame(par,x,y,w,h){return S("rect",{x:x,y:y,width:w,height:h,rx:6,fill:"currentColor","fill-opacity":.05,stroke:"currentColor","stroke-opacity":.25},par);}
+function hline(par,x1,x2,y,dash,op){return S("line",{x1:x1,y1:y,x2:x2,y2:y,stroke:"currentColor","stroke-width":1,"stroke-dasharray":dash||"4 4",opacity:op===undefined?.45:op},par);}
+function chip(txt,col){return '<span class="chip" style="background:'+col+'">'+txt+'</span>';}
+function colName(c){return c.charAt(0).toUpperCase()+c.slice(1);}
+function cool(t,tau){return 20+58*Math.exp(-t/tau);}
+
+/* ================= 1 - signal + noise = reading ================= */
+function vStrips(root){
+ var n=isN(root),W=n?360:680,H=n?352:328;
+ var m=mount(root,W,H,"Signal plus noise equals reading: three strips that fill in as readings are taken"),s=m.svg;
+ var sx=n?10:84,sw=n?340:380,sh=80,ys=n?[22,130,238]:[10,118,226];
+ var NP=40,sig=[],i,SL=28,SH=82,NLo=-8,NHi=8;
+ for(i=0;i<NP;i++)sig.push(cool(300*i/(NP-1),200));
+ function X(k){return sx+sw*k/(NP-1);}
+ function Y(v,k,lo,hi){return clamp(ys[k]+sh-(v-lo)/(hi-lo)*sh,ys[k]+3,ys[k]+sh-3);}
+ var labs=[["signal",K.sig],["noise",K.noi],["reading",K.rea]];
+ [0,1,2].forEach(function(k){frame(s,sx,ys[k],sw,sh);});
+ labs.forEach(function(L,k){if(n)T(s,sx+4,ys[k]-6,L[0],13,{w:600,f:L[1]});else T(s,4,ys[k]+sh/2+5,L[0],15,{w:600,f:L[1]});});
+ T(s,sx+sw/2,(ys[0]+sh+ys[1])/2+8,"+",24,{a:"middle",o:.7});
+ T(s,sx+sw/2,(ys[1]+sh+ys[2])/2+8,"=",24,{a:"middle",o:.7});
+ hline(s,sx,sx+sw,Y(0,1,NLo,NHi),"3 4",.4);
+ var sd="";for(i=0;i<NP;i++)sd+=(i?"L":"M")+X(i).toFixed(1)+" "+Y(sig[i],0,SL,SH).toFixed(1);
+ S("path",{d:sd,fill:"none",stroke:K.sig,"stroke-width":2.6,"stroke-linecap":"round","stroke-linejoin":"round"},s);
+ var q1=T(s,sx+sw/2,ys[1]+sh/2+10,"?",32,{a:"middle",o:.22}),q2=T(s,sx+sw/2,ys[2]+sh/2+10,"?",32,{a:"middle",o:.22});
+ var gGN=S("g",{},s),gGR=S("g",{},s),gN=S("g",{},s),gR=S("g",{},s);
+ var cur=S("line",{x1:0,y1:ys[0]-2,x2:0,y2:ys[2]+sh+2,stroke:"currentColor","stroke-dasharray":"3 3",opacity:0},s);
+ var r0,r1_,r2;
+ if(n){r0=T(s,10,343,"—",20,{w:600,f:K.sig});r1_=T(s,122,343,"",20,{w:600,f:K.noi});r2=T(s,238,343,"",20,{w:600,f:K.rea});}
+ else{r0=T(s,sx+sw+30,ys[0]+sh/2+10,"—",30,{w:600,f:K.sig});r1_=T(s,sx+sw+30,ys[1]+sh/2+10,"",30,{w:600,f:K.noi});r2=T(s,sx+sw+30,ys[2]+sh/2+10,"",30,{w:600,f:K.rea});}
+ function setRead(k,nzv){var rd=sig[k]+nzv;r0.textContent=fmt(sig[k],1);r1_.textContent=(n?"+ ":"")+(nzv<0?MINUS:(n?"":"+"))+Math.abs(nzv).toFixed(1);r2.textContent=(n?"= ":"")+fmt(rd,1);}
+ var nz=null,busy=false,stop=null,runs=0;
+ var b=button(m.btns,"Take readings",function(){
+  if(busy)return;busy=true;b.disabled=true;
+  var prev=nz,r=newRng(),shown=0,k;nz=[];for(k=0;k<NP;k++)nz.push(2.5*gauss(r));
+  clear(gGN);clear(gGR);clear(gN);clear(gR);q1.setAttribute("opacity",0);q2.setAttribute("opacity",0);
+  if(prev){for(k=0;k<NP;k++){S("circle",{cx:X(k),cy:Y(prev[k],1,NLo,NHi),r:2.6,fill:K.noi,opacity:.25},gGN);S("circle",{cx:X(k),cy:Y(sig[k]+prev[k],2,SL,SH),r:2.6,fill:K.rea,opacity:.25},gGR);}}
+  m.msg.textContent="Signal + noise = reading";cur.setAttribute("opacity",.6);
+  stop=tween(2800,function(p){var c=Math.min(NP,Math.floor(p*NP)+1),last;while(shown<c){k=shown;S("circle",{cx:X(k),cy:Y(nz[k],1,NLo,NHi),r:3.2,fill:K.noi},gN);S("circle",{cx:X(k),cy:Y(sig[k]+nz[k],2,SL,SH),r:3.2,fill:K.rea},gR);shown++;}
+   last=c-1;setRead(last,nz[last]);cur.setAttribute("x1",X(last));cur.setAttribute("x2",X(last));},
+  function(){busy=false;b.disabled=false;runs++;cur.setAttribute("opacity",0);b.textContent="Again";b.className="go";
+   m.msg.innerHTML=runs===1?"Same cup, same signal. Press again: the noise will be new.":"Same signal, different noise, different readings.<span class='sub'>The faint dots are the previous run.</span>";});
+ },"go");
+ m.msg.textContent="The cup cools. That is the signal.";
+}
+
+/* ================= 2 - where is noise ================= */
+function vWhere(root){
+ var n=isN(root),W=n?360:680,TH=n?76:98,CH=n?130:170,H=TH+14+CH;
+ var m=mount(root,W,H,"Five places where noise shows up: tap one to see a sample of it"),s=m.svg;
+ var IT=[
+  {k:"Resistor",c:"white",ttl:"A resistor at rest",chip:"white noise",txt:"Electrons jiggle with heat, so even a resistor doing nothing hisses. Johnson and Nyquist explained it in 1928. Above absolute zero it never stops."},
+  {k:"Pollen",c:"brown",ttl:"A grain of pollen in water",chip:"brown noise",txt:"Invisible molecules kick it around. Each step starts where the last one ended: a random walk. Einstein explained it in 1905."},
+  {k:"Traffic",c:"pink",ttl:"Cars on a motorway",chip:"pink noise, 1/f",txt:"Musha and Higuchi reported in 1976 that the flow of cars on a Japanese expressway swings with a 1/f spectrum at slow time scales. Later checks are fewer and less clear-cut."},
+  {k:"Music",c:"pink",ttl:"The loudness of music",chip:"pink noise, 1/f",txt:"Voss and Clarke found in 1975 that loudness in music and speech, and pitch in music, have a 1/f spectrum: slow and fast swings, all scales at once."},
+  {k:"Nile",c:"pink",ttl:"The floods of the Nile",chip:"long memory",txt:"Hurst studied centuries of flood records: wet years follow wet years, dry follow dry. A river with memory."}
+ ];
+ var gap=10,tw=(W-20-4*gap)/5,x0=10,sel=0,i,tiles=[],seedBase=7;
+ var gBig=S("g",{},s);
+ function tileSeries(c,sd){return gen(c,128,mk(sd));}
+ function drawTile(k){var it=IT[k],x=x0+k*(tw+gap),g=S("g",{"class":"hit",tabindex:0,role:"button","aria-label":it.ttl},s);
+  var rc=S("rect",{x:x,y:0,width:tw,height:TH,rx:8,fill:"currentColor","fill-opacity":.05,stroke:"currentColor","stroke-opacity":.25,"stroke-width":1.5},g);
+  S("path",{d:pathD(tileSeries(it.c,seedBase+k*13),x+6,8,tw-12,TH-34,-3.2,3.2),fill:"none",stroke:K[it.c],"stroke-width":1.6},g);
+  T(g,x+tw/2,TH-9,it.k,n?11:13,{a:"middle",w:500});
+  g.addEventListener("click",function(){choose(k);});g.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();choose(k);}});
+  tiles.push(rc);}
+ for(i=0;i<5;i++)drawTile(i);
+ function big(fresh){clear(gBig);var it=IT[sel],r=fresh?newRng():mk(seedBase+sel*13+1),y0=TH+14;
+  frame(gBig,10,y0,W-20,CH);hline(gBig,10,W-10,y0+CH/2,"3 4",.3);
+  S("path",{d:pathD(gen(it.c,256,r),10,y0,W-20,CH,-3.4,3.4),fill:"none",stroke:K[it.c],"stroke-width":2},gBig);}
+ function info(){var it=IT[sel];m.msg.innerHTML="<b>"+it.ttl+"</b> "+chip(it.chip,K[it.c])+"<span class='sub'>"+it.txt+"</span>";}
+ function choose(k){sel=k;tiles.forEach(function(rc,j){rc.setAttribute("stroke",j===k?"#2a7f62":"currentColor");rc.setAttribute("stroke-opacity",j===k?1:.25);rc.setAttribute("stroke-width",j===k?2.5:1.5);});big(false);info();}
+ button(m.btns,"Another sample",function(){big(true);});
+ choose(0);
+}
+
+/* ================= 3 - how big: sigma ================= */
+function vSigma(root){
+ var n=isN(root),W=n?360:680,H=n?292:312,pad=10,pw=W-2*pad;
+ var m=mount(root,W,H,"The size of the noise, sigma: a series of readings and the histogram they build"),s=m.svg;
+ var sy=8,sh=n?108:118,hy=n?140:152,hh=n?128:132,R=6,B=48,bw=0.25,MG=n?46:60;
+ var r=mk(5),Z=[],i;for(i=0;i<2000;i++)Z.push(gauss(r));
+ var sig=1,M=100;
+ frame(s,pad,sy,pw,sh);frame(s,pad,hy,pw,hh);
+ var gA=S("g",{},s),gB=S("g",{},s);
+ T(s,W/2,hy+hh+17,"reading − true value",12,{a:"middle",o:.7});
+ function YS(v){return clamp(sy+sh/2-v/R*(sh/2),sy,sy+sh);}
+ function XH(v){return pad+pw*(v+R)/(2*R);}
+ function draw(){clear(gA);clear(gB);var k,d="",ser=[];
+  S("rect",{x:pad,y:YS(sig),width:pw,height:YS(-sig)-YS(sig),fill:K.noi,"fill-opacity":.16},gA);
+  hline(gA,pad,pad+pw,YS(0),"4 4",.5);T(gA,pad+pw-6,YS(0)-3,"true",11,{a:"end",o:.7});T(gA,pad+pw-6,YS(0)+11,"value",11,{a:"end",o:.7});
+  for(k=0;k<60;k++)ser.push(sig*Z[k]);
+  S("path",{d:pathD(ser,pad+8,sy,pw-16-MG,sh,-R,R),fill:"none",stroke:K.noi,"stroke-width":1,opacity:.55},gA);
+  for(k=0;k<60;k++)S("circle",{cx:pad+8+(pw-16-MG)*k/59,cy:YS(ser[k]),r:2.8,fill:K.noi},gA);
+  /* histogram */
+  var cnt=[],b,mx=0,inside=0,x1=XH(-sig),x2=XH(sig),peak=M*bw/(sig*Math.sqrt(2*Math.PI));
+  for(b=0;b<B;b++)cnt.push(0);
+  for(k=0;k<M;k++){var v=sig*Z[k];b=Math.floor((v+R)/bw);if(b>=0&&b<B)cnt[b]++;if(Math.abs(Z[k])<=1)inside++;}
+  for(b=0;b<B;b++)mx=Math.max(mx,cnt[b]);
+  var top=Math.max(mx,peak)*1.18,bwp=pw/B;
+  S("rect",{x:x1,y:hy,width:x2-x1,height:hh,fill:K.noi,"fill-opacity":.13},gB);
+  for(b=0;b<B;b++){if(cnt[b]){var hgt=cnt[b]/top*(hh-8);S("rect",{x:pad+b*bwp+.5,y:hy+hh-hgt,width:bwp-1,height:hgt,fill:K.noi,opacity:.9},gB);}}
+  var bd="";for(k=0;k<=120;k++){var xv=-R+2*R*k/120,yv=M*bw*Math.exp(-xv*xv/(2*sig*sig))/(sig*Math.sqrt(2*Math.PI));bd+=(k?"L":"M")+XH(xv).toFixed(1)+" "+(hy+hh-yv/top*(hh-8)).toFixed(1);}
+  S("path",{d:bd,fill:"none",stroke:"currentColor","stroke-width":1.8,opacity:.75},gB);
+  [x1,x2].forEach(function(x){S("line",{x1:x,y1:hy,x2:x,y2:hy+hh,stroke:K.noi,"stroke-width":1.5,"stroke-dasharray":"4 3"},gB);});
+  T(gB,x1-4,hy+14,MINUS+"σ",12,{a:"end",w:600,f:K.noi});T(gB,x2+4,hy+14,"+σ",12,{a:"start",w:600,f:K.noi});
+  m.msg.innerHTML="σ = <b>"+sig.toFixed(1)+"</b> · "+inside+" of "+M+" readings fall within ±σ ("+Math.round(100*inside/M)+"%)<span class='sub'>σ is the typical size of the wobble. About two readings in three stay inside the band.</span>";}
+ var lab=E("label","rng",m.btns);var sp=E("span","",lab);sp.innerHTML="σ ";var inp=E("input","",lab);inp.type="range";inp.min="0.5";inp.max="2";inp.step="0.1";inp.value="1";inp.setAttribute("aria-label","sigma, the size of the noise");
+ inp.addEventListener("input",function(){sig=+inp.value;draw();});
+ var bm=button(m.btns,"Read 100 more",function(){M=Math.min(2000,M+100);if(M>=2000)bm.disabled=true;draw();});
+ draw();
+}
+
+/* ================= 4 - three colours ================= */
+function vColours(root){
+ var n=isN(root),W=n?360:680,H=n?292:214;
+ var m=mount(root,W,H,"Three colours of noise: white, pink and brown, with their memory plot and spectrum"),s=m.svg;
+ var P=n?{se:[10,22,340,96],la:[10,148,160,112],sp:[190,148,160,112],t1:[10,14],t2:[10,140],t3:[190,140]}:{se:[10,34,310,160],la:[352,34,150,160],sp:[532,34,138,160],t1:[10,24],t2:[352,24],t3:[532,24]};
+ var cur="white",smp={},seeds={white:400,pink:400,brown:400},c;
+ NAMES.forEach(function(c){smp[c]=gen(c,512,mk(seeds[c]));});
+ T(s,P.t1[0],P.t1[1],"the noise over time",n?12:13,{w:600,o:.85});T(s,P.t2[0],P.t2[1],"memory: next vs now",n?12:13,{w:600,o:.85});T(s,P.t3[0],P.t3[1],"spectrum: power vs f",n?12:13,{w:600,o:.85});
+ [P.se,P.la,P.sp].forEach(function(p){frame(s,p[0],p[1],p[2],p[3]);});
+ var g=S("g",{},s);
+ var DESC={white:"No memory. Every value is a fresh surprise.",pink:"Some memory. Slow and fast swings, all scales at once.",brown:"Total memory. Each value starts where the last one ended."};
+ var POW={white:"flat: power ∝ 1/f⁰",pink:"power ∝ 1/f",brown:"power ∝ 1/f²"};
+ function draw(){clear(g);var x=smp[cur],col=K[cur],se=P.se,la=P.la,sp=P.sp,k,rr=r1(x),spc=spectrum(x),A=3.4;
+  hline(g,se[0],se[0]+se[2],se[1]+se[3]/2,"3 4",.3);
+  S("path",{d:pathD(x,se[0],se[1],se[2],se[3],-A,A),fill:"none",stroke:col,"stroke-width":1.5},g);
+  /* memory plot */
+  S("line",{x1:la[0],y1:la[1]+la[3],x2:la[0]+la[2],y2:la[1],stroke:"currentColor","stroke-dasharray":"3 3",opacity:.3},g);
+  for(k=0;k<300;k++){S("circle",{cx:la[0]+la[2]*(x[k]+A)/(2*A),cy:la[1]+la[3]-la[3]*(x[k+1]+A)/(2*A),r:n?1.7:2,fill:col,opacity:.55},g);}
+  T(g,la[0]+8,la[1]+16,"r₁ = "+fmt(rr,2),12,{w:600});
+  /* spectrum */
+  var pts=spc.pts,lo=1e9,hi=-1e9,i;for(i=0;i<pts.length;i++){lo=Math.min(lo,pts[i][1]);hi=Math.max(hi,pts[i][1]);}lo-=.3;hi+=.3;
+  var xmax=2.45,px=function(v){return sp[0]+8+(sp[2]-16)*v/xmax;},py=function(v){return sp[1]+sp[3]-8-(sp[3]-16)*(v-lo)/(hi-lo);};
+  var f0=0,f1=xmax,yy0=spc.my+spc.slope*(f0-spc.mx),yy1=spc.my+spc.slope*(f1-spc.mx);
+  S("line",{x1:px(f0),y1:clamp(py(yy0),sp[1]+2,sp[1]+sp[3]-2),x2:px(f1),y2:clamp(py(yy1),sp[1]+2,sp[1]+sp[3]-2),stroke:"currentColor","stroke-width":1.5,"stroke-dasharray":"5 3",opacity:.6},g);
+  for(i=0;i<pts.length;i++)S("circle",{cx:px(pts[i][0]),cy:py(pts[i][1]),r:3.2,fill:col},g);
+  T(g,sp[0]+sp[2]-6,sp[1]+sp[3]-8,"f →",11,{a:"end",o:.7});
+  T(g,sp[0]+8,sp[1]+16,"slope "+fmt(spc.slope,1),12,{w:600});
+  m.msg.innerHTML="<b class='c-"+(cur==="white"?"wh":cur==="pink"?"pk":"br")+"'>"+colName(cur)+"</b> · "+DESC[cur]+"<span class='sub'>r₁ = "+fmt(rr,2)+" · spectrum slope "+fmt(spc.slope,1)+" · "+POW[cur]+"</span>";}
+ var bs=[];
+ NAMES.forEach(function(c){var b=button(m.btns,colName(c),function(){cur=c;bs.forEach(function(x,j){x.className=NAMES[j]===cur?"on":"";});draw();});bs.push(b);});
+ button(m.btns,"New sample",function(){smp[cur]=gen(cur,512,newRng());draw();});
+ bs[0].className="on";draw();
+}
+
+/* ================= 5 - does averaging help ================= */
+var AV=null,NL_=[1,2,4,8,16,32,64,100,128,256];
+function avgErr(){if(AV)return AV;AV={};NAMES.forEach(function(c){var r=mk(99+BETA[c]),L=2048,Kk=48,acc=NL_.map(function(){return{s:0,c:0};}),k,j,o,q,sm,x;
+  for(k=0;k<Kk;k++){x=colourNoise(L,BETA[c],r);NL_.forEach(function(nn,qi){for(o=0;o+nn<=L;o+=nn){sm=0;for(j=0;j<nn;j++)sm+=x[o+j];sm/=nn;acc[qi].s+=sm*sm;acc[qi].c++;}});}
+  AV[c]=acc.map(function(a){return Math.sqrt(a.s/a.c);});});return AV;}
+function vAverage(root){
+ var n=isN(root),W=n?360:680,Y1=n?236:262,H=Y1+44;
+ var m=mount(root,W,H,"Averaging N readings: the error of the average for white, pink and brown noise"),s=m.svg;
+ var X0=n?46:70,X1=W-14,Y0=36,cur="white",AVv=avgErr();
+ var xl=function(N){return X0+(X1-X0)*Math.log10(N)/Math.log10(256);},yl=function(v){return Y1-(Y1-Y0)*(Math.log10(v)-Math.log10(.04))/(Math.log10(1.25)-Math.log10(.04));};
+ frame(s,X0,Y0,X1-X0,Y1-Y0);
+ [1,4,16,64,256].forEach(function(N){S("line",{x1:xl(N),y1:Y1,x2:xl(N),y2:Y1+4,stroke:"currentColor",opacity:.5},s);T(s,xl(N),Y1+17,String(N),12,{a:"middle",o:.75});});
+ [1,.5,.2,.1,.05].forEach(function(v){hline(s,X0,X1,yl(v),"2 4",.25);T(s,X0-6,yl(v)+4,String(v),12,{a:"end",o:.75});});
+ T(s,(X0+X1)/2,Y1+36,"N = readings averaged",12,{a:"middle",o:.8});
+ T(s,10,20,n?"error of the average (1 = one reading)":"error of the average (1 = the error of one reading)",12,{o:.85});
+ S("line",{x1:xl(1),y1:yl(1),x2:xl(256),y2:yl(1/16),stroke:"currentColor","stroke-width":1.6,"stroke-dasharray":"6 4",opacity:.7},s);
+ T(s,xl(256)-6,yl(1/16)-8,"1/√N",12,{a:"end",o:.8});
+ var g=S("g",{},s);
+ function draw(){clear(g);var e=AVv[cur],col=K[cur],k,d="",i100=NL_.indexOf(100);
+  for(k=0;k<NL_.length;k++)d+=(k?"L":"M")+xl(NL_[k]).toFixed(1)+" "+yl(e[k]).toFixed(1);
+  S("path",{d:d,fill:"none",stroke:col,"stroke-width":2.6},g);
+  for(k=0;k<NL_.length;k++)S("circle",{cx:xl(NL_[k]),cy:yl(e[k]),r:3.6,fill:col},g);
+  S("circle",{cx:xl(100),cy:yl(e[i100]),r:8,fill:"none",stroke:col,"stroke-width":2},g);
+  var lx=xl(100),ly=yl(e[i100])-14;T(g,lx,ly<Y0+14?yl(e[i100])+26:ly,"N = 100: ×"+e[i100].toFixed(2),12,{a:"middle",w:600,f:col});
+  var tail={white:"Each reading forgets the last, so the wobbles cancel: 100 readings, ten times better.",pink:"Slow swings survive the average, so the gain is small.",brown:"The average wanders with the noise. Averaging barely helps."}[cur];
+  m.msg.innerHTML="<b class='c-"+(cur==="white"?"wh":cur==="pink"?"pk":"br")+"'>"+colName(cur)+"</b> · 100 readings shrink the error to ×"+e[i100].toFixed(2)+"<span class='sub'>"+tail+"</span>";}
+ var bs=[];NAMES.forEach(function(c){var b=button(m.btns,colName(c),function(){cur=c;bs.forEach(function(x,j){x.className=NAMES[j]===cur?"on":"";});draw();});bs.push(b);});
+ bs[0].className="on";draw();
+}
+
+/* ================= 6 - residuals ================= */
+function vResid(root){
+ var n=isN(root),W=n?360:680,H=n?326:344,pad=10,pw=W-2*pad;
+ var m=mount(root,W,H,"Residuals: the leftovers when a model is taken away from the readings"),s=m.svg;
+ var ty=n?8:10,th=n?160:176,by=n?200:224,bh=n?90:96,NP=30,TL=22,TH_=82,RL=-10,RH=10;
+ var r=mk(12),z=[],i,tt=[];for(i=0;i<NP;i++){z.push(2.5*gauss(r));tt.push(300*i/(NP-1));}
+ var rd=[];for(i=0;i<NP;i++)rd.push(cool(tt[i],200)+z[i]);
+ frame(s,pad,ty,pw,th);frame(s,pad,by,pw,bh);
+ T(s,pad+8,ty+17,"readings and model",12,{w:600,o:.85});T(s,pad+8,by+17,"residual = reading − model",12,{w:600,f:K.res});
+ hline(s,pad,pad+pw,by+bh/2,"3 4",.45);
+ var X=function(k){return pad+10+(pw-20)*k/(NP-1);},YT=function(v){return clamp(ty+th-6-(v-TL)/(TH_-TL)*(th-30),ty+22,ty+th-3);},YB=function(v){return clamp(by+bh/2-v/RH*(bh/2-4),by+3,by+bh-3);};
+ var gC=S("g",{},s),gS=S("g",{},s),gR=S("g",{},s),gD=S("g",{},s);
+ var tau=200,stage=0,fall=0,stick=0,busy=false,wrong=false;
+ function resid(k){return rd[k]-cool(tt[k],tau);}
+ function draw(){clear(gC);clear(gS);clear(gR);clear(gD);var k,d="",res=[];
+  for(k=0;k<NP;k++)d+=(k?"L":"M")+X(k).toFixed(1)+" "+YT(cool(tt[k],tau)).toFixed(1);
+  /* smooth curve on a finer grid */
+  d="";for(k=0;k<=120;k++){var tq=300*k/120;d+=(k?"L":"M")+(pad+10+(pw-20)*k/120).toFixed(1)+" "+YT(cool(tq,tau)).toFixed(1);}
+  S("path",{d:d,fill:"none",stroke:K.sig,"stroke-width":2.6},gC);
+  for(k=0;k<NP;k++){res.push(resid(k));
+   if(stick>0)S("line",{x1:X(k),y1:YT(rd[k]),x2:X(k),y2:YT(rd[k])+(YT(cool(tt[k],tau))-YT(rd[k]))*stick,stroke:K.res,"stroke-width":2},gS);
+   S("circle",{cx:X(k),cy:YT(rd[k]),r:3.4,fill:K.rea},gD);
+   if(fall>0){var yd=YT(rd[k])+(YB(res[k])-YT(rd[k]))*fall;S("line",{x1:X(k),y1:fall>=1?YB(0):yd,x2:X(k),y2:yd,stroke:K.res,"stroke-width":fall>=1?2:0,opacity:.6},gR);S("circle",{cx:X(k),cy:yd,r:3.2,fill:K.res},gR);}}
+  return res;}
+ function note(res){if(stage<1){m.msg.innerHTML="Model: Newton's law of cooling, τ = "+Math.round(tau)+" s.<span class='sub'>The blue curve runs through the readings. What is left over?</span>";return;}
+  var rr=r1(res),bad=rr>0.4;
+  m.msg.innerHTML=(bad?"<span class='bad'>✗ A pattern.</span> The leftovers still remember each other: r₁ = "+fmt(rr,2)+"<span class='sub'>The model is missing something.</span>":"<span class='good'>✓ No pattern.</span> The leftovers look like pure noise: r₁ = "+fmt(rr,2)+"<span class='sub'>The model has taken all the signal. What remains is the noise.</span>");}
+ var b1=button(m.btns,"Show leftovers",function(){if(busy||stage>0)return;busy=true;b1.disabled=true;
+  tween(900,function(p){stick=ease(p);draw();},function(){tween(1000,function(p){fall=ease(p);draw();},function(){stage=1;busy=false;stick=1;fall=1;note(draw());b2.style.display="";});});},"go");
+ var b2=button(m.btns,"Try a wrong model",function(){if(busy)return;busy=true;var from=tau,to=wrong?200:300;
+  tween(900,function(p){tau=from+(to-from)*ease(p);draw();},function(){tau=to;wrong=!wrong;b2.textContent=wrong?"Back to the right model":"Try a wrong model";busy=false;note(draw());});});
+ b2.style.display="none";
+ note(draw());
+}
+
+/* ================= 7 - play: guess the colour ================= */
+function vGuess(root){
+ var n=isN(root),W=n?360:680,H=n?186:224,pad=10;
+ var m=mount(root,W,H,"Game: look at a noise and guess its colour"),s=m.svg;
+ frame(s,pad,8,W-2*pad,H-16);hline(s,pad,W-pad,H/2,"3 4",.3);
+ var g=S("g",{},s),order=shuffle(NAMES.concat(NAMES)),i=0,score=0,done=false,cur,data;
+ var bs={},bn;
+ NAMES.forEach(function(c){bs[c]=button(m.btns,colName(c),function(){pick(c);});});
+ bn=button(m.btns,"Next",function(){next();},"go");bn.style.display="none";
+ function setPick(on){NAMES.forEach(function(c){bs[c].disabled=!on;bs[c].className="";});}
+ function show(){clear(g);cur=order[i];data=colourNoise(256,BETA[cur],newRng());
+  S("path",{d:pathD(data,pad+4,8,W-2*pad-8,H-16,-3.6,3.6),fill:"none",stroke:"currentColor","stroke-width":1.6},g);
+  setPick(true);bn.style.display="none";done=false;
+  m.msg.innerHTML="Round "+(i+1)+" of 6 · What colour is this noise?<span class='sub'>white: fresh surprises · pink: slow and fast swings · brown: it wanders</span>";}
+ function pick(c){if(done)return;done=true;var ok=c===cur,rr=r1(data),sl=spectrum(data).slope;if(ok)score++;setPick(false);bs[cur].className="on";
+  S("path",{d:pathD(data,pad+4,8,W-2*pad-8,H-16,-3.6,3.6),fill:"none",stroke:K[cur],"stroke-width":2},g);
+  m.msg.innerHTML=(ok?"<span class='good'>✓ Yes, "+cur+".</span>":"<span class='bad'>✗ It was "+cur+".</span>")+"<span class='sub'>r₁ = "+fmt(rr,2)+" · spectrum slope "+fmt(sl,1)+"</span>";
+  bn.textContent=i===5?"Score":"Next";bn.style.display="";}
+ function next(){if(i<5){i++;show();return;}
+  m.msg.innerHTML="Score: <b>"+score+" / 6</b><span class='sub'>"+(score>=5?"You can see the colour of noise.":score>=3?"Not bad. Look at how far each value is from the last one.":"Tricky! The memory plot and the spectrum tell colours apart even when your eye cannot.")+"</span>";
+  bn.textContent="Play again";bn.onclick=function(){order=shuffle(NAMES.concat(NAMES));i=0;score=0;bn.onclick=function(){next();};bn.textContent="Next";show();};}
+ show();
+}
+
+/* ================= 8 - play: pattern or noise ================= */
+function vLeft(root){
+ var n=isN(root),W=n?360:680,H=n?190:228,pad=10,NP=60;
+ var m=mount(root,W,H,"Game: look at the leftovers of a fit and decide if the model is fine"),s=m.svg;
+ frame(s,pad,8,W-2*pad,H-16);var mid=8+(H-16)/2;hline(s,pad,W-pad,mid,"3 4",.5);
+ T(s,pad+8,24,"residual = reading − model",12,{w:600,f:K.res});
+ var g=S("g",{},s),KIND=["fine","fine","fine","bow","wave","drift"],order=shuffle(KIND),i=0,score=0,done=false,cur,data;
+ var bF=button(m.btns,"The model is fine",function(){pick(true);}),bM=button(m.btns,"Something is missing",function(){pick(false);}),bn=button(m.btns,"Next",function(){next();},"go");bn.style.display="none";
+ function make(kind){var tries=0,x,k,r,c=(NP-1)/2;
+  do{r=newRng();x=[];for(k=0;k<NP;k++){var base=gauss(r),pat=0;
+    if(kind==="bow")pat=2.6*(1-Math.pow((k-c)/c,2))-1.1;else if(kind==="wave")pat=1.7*Math.sin(2*Math.PI*k/38);else if(kind==="drift")pat=-1.8+3.6*k/(NP-1);
+    x.push(base+pat);}
+   tries++;}while(tries<60&&(kind==="fine"?Math.abs(r1(x))>0.25:r1(x)<0.5));
+  return x;}
+ var Y=function(v){return clamp(mid-v/4.2*((H-16)/2),12,H-12);},XX=function(k){return pad+10+(W-2*pad-20)*k/(NP-1);};
+ function show(){clear(g);cur=order[i];data=make(cur);done=false;
+  for(var k=0;k<NP;k++){S("line",{x1:XX(k),y1:mid,x2:XX(k),y2:Y(data[k]),stroke:K.res,"stroke-width":1.6,opacity:.55},g);S("circle",{cx:XX(k),cy:Y(data[k]),r:3.2,fill:K.res},g);}
+  bF.disabled=false;bM.disabled=false;bn.style.display="none";
+  m.msg.innerHTML="Round "+(i+1)+" of 6 · Is the model fine?<span class='sub'>Fine = the leftovers look like noise. Missing = they show a pattern.</span>";}
+ function pick(sayFine){if(done)return;done=true;var isFine=cur==="fine",ok=sayFine===isFine,rr=r1(data);if(ok)score++;bF.disabled=true;bM.disabled=true;
+  var why=isFine?"pure noise, no pattern":cur==="bow"?"an arch: the model misses a bend":cur==="wave"?"a slow wave: the model misses an oscillation":"a drift: the model misses a trend";
+  m.msg.innerHTML=(ok?"<span class='good'>✓ Right.</span>":"<span class='bad'>✗ Not this time.</span>")+" These leftovers are "+why+".<span class='sub'>r₁ = "+fmt(rr,2)+(isFine?" · close to 0":" · the leftovers remember")+"</span>";
+  bn.textContent=i===5?"Score":"Next";bn.style.display="";}
+ function next(){if(i<5){i++;show();return;}
+  m.msg.innerHTML="Score: <b>"+score+" / 6</b><span class='sub'>"+(score>=5?"You read leftovers like a scientist.":"A pattern with r₁ well above 0 means the model still has something to say.")+"</span>";
+  bn.textContent="Play again";bn.onclick=function(){order=shuffle(KIND);i=0;score=0;bn.onclick=function(){next();};bn.textContent="Next";show();};}
+ show();
+}
+
+var V={strips:vStrips,where:vWhere,sigma:vSigma,colours:vColours,average:vAverage,resid:vResid,guess:vGuess,left:vLeft};
+function build(r){var f=V[r.dataset.vw];if(!f)return;r.innerHTML="";r.dataset.n=(r.clientWidth||window.innerWidth)<520?"1":"0";f(r);}
+function boot(){document.querySelectorAll(".vw[data-vw]").forEach(function(r){if(!r.dataset.ready){r.dataset.ready="1";build(r);}});}
+var rz=null;window.addEventListener("resize",function(){clearTimeout(rz);rz=setTimeout(function(){document.querySelectorAll(".vw[data-vw]").forEach(function(r){var nn=(r.clientWidth||window.innerWidth)<520?"1":"0";if(r.dataset.n!==nn)build(r);});},250);});
+window.NoiseVW={gauss:gauss,cool:cool,colourNoise:colourNoise,spectrum:spectrum,r1:r1,std:std,mk:mk,avgErr:avgErr};
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot);else boot();
+})();
+</script>
