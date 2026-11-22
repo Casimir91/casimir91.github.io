@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Colori · Verde</title>
+<style>
+:root{--bg:#fbfaf7;--fg:#1f1f1d;--mut:#6b6a66;--line:#d9d7d0;--acc:#0f6e56;--card:#ffffff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1c1c1a;--fg:#f0efe9;--mut:#a3a29b;--line:#3a3a37;--acc:#5dcaa5;--card:#242422;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1c1c1a;--fg:#f0efe9;--mut:#a3a29b;--line:#3a3a37;--acc:#5dcaa5;--card:#242422;color-scheme:dark}
+:root[data-theme="light"]{color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:560px;margin:0 auto;padding:0 14px 40px}
+header{display:flex;align-items:baseline;justify-content:space-between;gap:8px;padding:16px 0 8px}
+h1{font-size:22px;font-weight:500;margin:0}
+h2{font-size:13px;font-weight:500;color:var(--mut);margin:22px 0 8px;letter-spacing:.02em}
+.mono{font-family:ui-monospace,Menlo,Consolas,monospace}
+button{font:inherit;color:inherit;background:transparent;border:.5px solid var(--line);border-radius:8px;padding:8px 12px;cursor:pointer}
+button:active{transform:scale(.98)}
+.seg button.on{border-color:var(--fg);font-weight:500}
+.cmp{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:.5px solid var(--line);padding:8px 0}
+.cmpg{display:grid;grid-template-columns:1fr 1fr 26px;gap:10px;align-items:start}
+.cell .sw{height:44px;border-radius:8px;border:.5px solid var(--line)}
+.cell .sw.empty{border-style:dashed;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--mut)}
+.cell .t{font-size:12px;margin-top:4px;display:flex;justify-content:space-between;gap:6px}
+.cell .t b{font-weight:500}
+.cell .n{font-size:12px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.de{font-size:12px;color:var(--mut);margin-top:6px;min-height:18px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+input[type=text],input[type=number]{font:inherit;background:var(--card);color:var(--fg);border:.5px solid var(--line);border-radius:8px;padding:8px 10px;width:110px}
+input[type=range]{width:100%}
+#cv{width:100%;border-radius:10px;border:.5px solid var(--line);margin-top:10px;display:none;touch-action:manipulation}
+.note{font-size:12px;color:var(--mut);margin-top:6px}
+.hues{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.hues button{padding:0;border:.5px solid var(--line);overflow:hidden;text-align:center;font-size:11px}
+.hues .s{height:34px}
+.hues button.on{outline:2px solid var(--fg)}
+.pg{display:grid;gap:2px;align-items:stretch}
+.pg .lab{font-size:11px;color:var(--mut);text-align:center;padding-bottom:3px}
+.pg .rl{font-size:11px;color:var(--mut);display:flex;align-items:center;justify-content:flex-end;padding-right:4px}
+.tile{padding:0;border:0;border-radius:0;aspect-ratio:1/1;width:100%;position:relative;cursor:pointer}
+.tile:active{transform:none}
+.tile.sel{box-shadow:inset 0 0 0 2px #fff,inset 0 0 0 3px #000}
+.tile.near::after{content:"";position:absolute;left:50%;top:50%;width:8px;height:8px;margin:-4px 0 0 -4px;background:#fff;border:1.5px solid #000}
+.intro{border:.5px solid var(--line);border-radius:8px;padding:8px 12px;margin:0 0 10px;font-size:13px}
+.intro summary{cursor:pointer;font-size:14px}
+.kv{display:grid;grid-template-columns:82px 1fr;gap:6px 10px;margin-top:10px;line-height:1.45}
+.kv b{font-weight:500;font-family:ui-monospace,Menlo,Consolas,monospace}
+.kv .sub{padding-left:10px;border-left:.5px solid var(--line);color:var(--mut)}
+.foot{font-size:12px;color:var(--mut);margin-top:22px}
+.foot summary{cursor:pointer;font-size:13px}
+.foot p{margin:8px 0 0}
+.ib{width:26px;height:26px;padding:0;border-radius:50%;font:italic 13px Georgia,serif;color:var(--mut);display:inline-flex;align-items:center;justify-content:center;position:relative;flex:none}
+.ib.on{border-color:var(--fg);color:var(--fg)}
+.ib.dot::after{content:"";position:absolute;top:-2px;right:-2px;width:8px;height:8px;border-radius:50%;background:var(--acc)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<h1 id="fam">Verde</h1>
+<div class="seg row" style="gap:6px"><button id="c1" class="on">CSS</button><button id="c2">XKCD</button><button id="th" aria-label="Cambia tema, chiaro o scuro">Scuro</button></div>
+</header>
+<details class="intro"><summary>Cosa significano i codici</summary>
+<div class="kv">
+<b>Base 16</b><span>cifre 0–9, poi A=10 · B=11 · C=12 · D=13 · E=14 · F=15. La cifra a sinistra vale 16, quella a destra vale 1: <span class="mono">27</span> = 2·16 + 7 = 39.</span>
+<b>Da 10 a 16</b><span>dividi per 16: il quoziente è la prima cifra, il resto la seconda. 112 ÷ 16 = 7 resto 0, quindi <span class="mono">70</span>. 29 ÷ 16 = 1 resto 13, quindi <span class="mono">1D</span>. Due cifre coprono 0–255: <span class="mono">FF</span> = 15·16 + 15 = 255, cioè 16² = 256 valori.</span>
+<b>Prova</b><span><input type="number" id="n16" min="0" max="255" value="112" style="width:76px"> → <span id="o16" class="mono"></span></span>
+<b>Hex</b><span><span class="mono">#RRGGBB</span>: tre coppie in base 16 (00–FF = 0–255), cioè quanto rosso, verde e blu emette lo schermo. <span class="mono">#27701D</span> = R 39 · G 112 · B 29. Sono 256³ ≈ 16,7 milioni di combinazioni, nello spazio sRGB.</span>
+<b>OKLCH</b><span>il colore come lo percepiamo, con tre numeri:</span>
+<b>L</b><span class="sub">lightness, luminanza percettiva: 0 nero, 1 bianco</span>
+<b>C</b><span class="sub">chroma, croma: 0 grigio, più alto è più vivace (in sRGB al massimo circa 0,32)</span>
+<b>H</b><span class="sub">hue, tinta: angolo sulla ruota. 29° rosso · 110° giallo · 142° verde · 195° ciano · 264° blu · 328° magenta</span>
+<b>OK</b><span>non è "ok": è <i>Oklab</i> (Ottosson, 2020), uno spazio costruito perché passi uguali siano differenze percepite uguali. LCH sono le sue coordinate cilindriche, in quest'ordine: L, C, H.</span>
+<b>Perché 3</b><span>i coni dell'occhio sono di tre tipi (corti, medi, lunghi), quindi bastano tre numeri. Cambia solo la scelta degli assi: RGB (schermo), HSL (comodo ma non uniforme), OKLCH (percettivo), CMYK (inchiostri, K = nero "key").</span>
+<b>ΔE</b><span>distanza tra due colori, qui in OKLab per 100. Sotto 2 sono appena distinguibili.</span>
+<b>3D</b><span><a href="lch.html" style="color:var(--acc)">Il vettore LCH nel cilindro, da muovere →</a></span>
+
+</div>
+</details>
+<div class="row" style="justify-content:space-between;padding-bottom:8px">
+<button id="pv">←</button>
+<button id="nx">→</button>
+</div>
+
+<div class="cmp">
+<div class="cmpg">
+<div class="cell"><div id="uSw" class="sw empty">il tuo colore</div><div class="t"><b id="uHex" class="mono">—</b><span id="uNm" class="n"></span></div></div>
+<div class="cell"><div id="cSw" class="sw empty">tessera scelta</div><div class="t"><b id="cHex" class="mono">—</b><span id="cNm" class="n"></span></div></div>
+<button id="ib" class="ib" aria-label="Dettagli del confronto" aria-expanded="false">i</button>
+</div>
+<div id="de" class="de" hidden></div>
+</div>
+
+<h2>Il colore che hai davanti</h2>
+<div class="row">
+<button id="bPhoto">Foto</button>
+<button id="bWb">Punto bianco</button>
+<input type="text" id="hx" placeholder="#3fa34d" maxlength="7" aria-label="Codice hex" class="mono">
+<button id="ip" class="ib" aria-label="Come si usa" aria-expanded="false">i</button>
+</div>
+<input type="file" id="f" accept="image/*" style="display:none">
+<div id="photoInfo" class="note" hidden>
+<div>Foto: tocca un punto per misurarlo. Punto bianco: prima tocca un foglio bianco o grigio nella stessa foto, così tolgo la dominante di colore della luce.</div>
+<div id="photoNote"></div>
+</div>
+<canvas id="cv"></canvas>
+
+<div id="hueSec">
+<h2>Tinta</h2>
+<div id="hues" class="hues"></div>
+<div style="display:flex;gap:10px;align-items:center;margin-top:10px">
+<input type="range" id="H" min="105" max="175" step="1" value="142" aria-label="Tinta">
+<span id="Ho" class="mono" style="font-size:13px;min-width:40px;text-align:right"></span>
+</div>
+</div>
+
+<div class="row" style="justify-content:space-between;margin:22px 0 8px"><h2 id="pgT" style="margin:0">Pagina</h2><button id="ia" class="ib" aria-label="Mostra o nascondi i valori" aria-pressed="false">i</button></div>
+<div class="seg row" style="gap:6px;margin-bottom:10px"><button id="v1" class="on">Luce × croma</button><button id="v2">Tinta × luce</button></div>
+<div id="pg" class="pg"></div>
+
+<details class="foot"><summary>Come si legge</summary><p>Ogni tessera è un colore: tocca per leggere hex e nome nella barra in alto. Il punto bianco segna la tessera più vicina al tuo colore. In "Luce × croma" la luce scende dall'alto in basso e la croma cresce da sinistra a destra (percentuale del massimo che lo schermo riesce a mostrare); in "Tinta × luce" ogni colonna è una tinta alla croma massima. ΔE è la distanza in OKLab per cento: sotto 2 la differenza è appena percepibile. Il bordo tratteggiato nella fila delle tinte segna una tinta di confine tra due famiglie. Lo schermo non è un campione fisico: luminosità, calibrazione e luce ambiente cambiano ciò che vedi.</p></details>
+</div>
+
+<script>
+var CSS_RAW="aliceblue:f0f8ff,antiquewhite:faebd7,aqua:00ffff,aquamarine:7fffd4,azure:f0ffff,beige:f5f5dc,bisque:ffe4c4,black:000000,blanchedalmond:ffebcd,blue:0000ff,blueviolet:8a2be2,brown:a52a2a,burlywood:deb887,cadetblue:5f9ea0,chartreuse:7fff00,chocolate:d2691e,coral:ff7f50,cornflowerblue:6495ed,cornsilk:fff8dc,crimson:dc143c,darkblue:00008b,darkcyan:008b8b,darkgoldenrod:b8860b,darkgray:a9a9a9,darkgreen:006400,darkkhaki:bdb76b,darkmagenta:8b008b,darkolivegreen:556b2f,darkorange:ff8c00,darkorchid:9932cc,darkred:8b0000,darksalmon:e9967a,darkseagreen:8fbc8f,darkslateblue:483d8b,darkslategray:2f4f4f,darkturquoise:00ced1,darkviolet:9400d3,deeppink:ff1493,deepskyblue:00bfff,dimgray:696969,dodgerblue:1e90ff,firebrick:b22222,floralwhite:fffaf0,forestgreen:228b22,fuchsia:ff00ff,gainsboro:dcdcdc,ghostwhite:f8f8ff,gold:ffd700,goldenrod:daa520,gray:808080,green:008000,greenyellow:adff2f,honeydew:f0fff0,hotpink:ff69b4,indianred:cd5c5c,indigo:4b0082,ivory:fffff0,khaki:f0e68c,lavender:e6e6fa,lavenderblush:fff0f5,lawngreen:7cfc00,lemonchiffon:fffacd,lightblue:add8e6,lightcoral:f08080,lightcyan:e0ffff,lightgoldenrodyellow:fafad2,lightgray:d3d3d3,lightgreen:90ee90,lightpink:ffb6c1,lightsalmon:ffa07a,lightseagreen:20b2aa,lightskyblue:87cefa,lightslategray:778899,lightsteelblue:b0c4de,lightyellow:ffffe0,lime:00ff00,limegreen:32cd32,linen:faf0e6,maroon:800000,mediumaquamarine:66cdaa,mediumblue:0000cd,mediumorchid:ba55d3,mediumpurple:9370db,mediumseagreen:3cb371,mediumslateblue:7b68ee,mediumspringgreen:00fa9a,mediumturquoise:48d1cc,mediumvioletred:c71585,midnightblue:191970,mintcream:f5fffa,mistyrose:ffe4e1,moccasin:ffe4b5,navajowhite:ffdead,navy:000080,oldlace:fdf5e6,olive:808000,olivedrab:6b8e23,orange:ffa500,orangered:ff4500,orchid:da70d6,palegoldenrod:eee8aa,palegreen:98fb98,paleturquoise:afeeee,palevioletred:db7093,papayawhip:ffefd5,peachpuff:ffdab9,peru:cd853f,pink:ffc0cb,plum:dda0dd,powderblue:b0e0e6,purple:800080,rebeccapurple:663399,red:ff0000,rosybrown:bc8f8f,royalblue:4169e1,saddlebrown:8b4513,salmon:fa8072,sandybrown:f4a460,seagreen:2e8b57,seashell:fff5ee,sienna:a0522d,silver:c0c0c0,skyblue:87ceeb,slateblue:6a5acd,slategray:708090,snow:fffafa,springgreen:00ff7f,steelblue:4682b4,tan:d2b48c,teal:008080,thistle:d8bfd8,tomato:ff6347,turquoise:40e0d0,violet:ee82ee,wheat:f5deb3,white:ffffff,whitesmoke:f5f5f5,yellow:ffff00,yellowgreen:9acd32";
+var XK_RAW="green:15b01a,dark green:033500,light green:96f97b,forest green:06470c,lime green:89fe05,kelly green:02ab2e,emerald:01a049,bright green:01ff07,olive green:677a04,sage:87ae73,mint:9ffeb0,seafoam:80f9ad,grass green:3f9b0b,leaf green:5ca904,pine green:0a481e,moss green:658b38,hunter green:0b4008,jade:1fa774,shamrock:01b44c,apple green:76cd26,pea green:8eab12,spring green:a9f971,fern:63a950,pastel green:b0ff9d,neon green:0cff0c";
+function lin(c){return c<=0.04045?c/12.92:Math.pow((c+0.055)/1.055,2.4);}
+function enc(c){c=Math.min(1,Math.max(0,c));return Math.round((c<=0.0031308?12.92*c:1.055*Math.pow(c,1/2.4)-0.055)*255);}
+function rgb2lab(r,g,b){r=lin(r);g=lin(g);b=lin(b);
+ var l=Math.cbrt(0.4122214708*r+0.5363325363*g+0.0514459929*b),m=Math.cbrt(0.2119034982*r+0.6806995451*g+0.1073969566*b),s=Math.cbrt(0.0883024619*r+0.2817188376*g+0.6299787005*b);
+ return [0.2104542553*l+0.7936177850*m-0.0040720468*s,1.9779984951*l-2.4285922050*m+0.4505937099*s,0.0259040371*l+0.7827717662*m-0.8086757660*s];}
+function hex2lab(h){return rgb2lab(parseInt(h.slice(0,2),16)/255,parseInt(h.slice(2,4),16)/255,parseInt(h.slice(4,6),16)/255);}
+function lch2lin(L,C,H){var a=C*Math.cos(H*Math.PI/180),b=C*Math.sin(H*Math.PI/180);
+ var l_=L+0.3963377774*a+0.2158037573*b,m_=L-0.1055613458*a-0.0638541728*b,s_=L-0.0894841775*a-1.2914855480*b;
+ var l=l_*l_*l_,m=m_*m_*m_,s=s_*s_*s_;
+ return [4.0767416621*l-3.3077115913*m+0.2309699292*s,-1.2684380046*l+2.6097574011*m-0.3413193965*s,-0.0041960863*l-0.7034186147*m+1.7076147010*s];}
+function inG(v){return v[0]>=-0.0005&&v[0]<=1.0005&&v[1]>=-0.0005&&v[1]<=1.0005&&v[2]>=-0.0005&&v[2]<=1.0005;}
+function toHex(v){return [enc(v[0]),enc(v[1]),enc(v[2])].map(function(x){return ("0"+x.toString(16)).slice(-2);}).join("");}
+function cmax(L,H){var lo=0,hi=0.4;for(var i=0;i<20;i++){var m=(lo+hi)/2;if(inG(lch2lin(L,m,H)))lo=m;else hi=m;}return lo;}
+function parse(raw){return raw.split(",").map(function(p){var i=p.lastIndexOf(":");var h=p.slice(i+1);return {n:p.slice(0,i),h:h,lab:hex2lab(h)};});}
+function dist(a,b){return Math.sqrt(Math.pow(a[0]-b[0],2)+Math.pow(a[1]-b[1],2)+Math.pow(a[2]-b[2],2))*100;}
+var CAT={css:parse(CSS_RAW),xk:parse(XK_RAW)};
+var FAM=[{id:"rosso",n:"Rosso",a:-15,b:45},{id:"arancio",n:"Arancio",a:35,b:95},{id:"giallo",n:"Giallo",a:85,b:125},{id:"verde",n:"Verde",a:105,b:175},{id:"ciano",n:"Ciano",a:165,b:215},{id:"blu",n:"Blu",a:205,b:275},{id:"viola",n:"Viola",a:265,b:325},{id:"magenta",n:"Magenta",a:315,b:360}];
+function norm(h){return ((h%360)+360)%360;}
+function coord(i,h){var F=FAM[i],c=[h,h-360,h+360];for(var k=0;k<3;k++)if(c[k]>=F.a&&c[k]<=F.b)return c[k];return null;}
+function famsAt(h){var r=[];for(var i=0;i<FAM.length;i++)if(coord(i,h)!==null)r.push(i);return r;}
+function cd(x,y){return Math.abs(((x-y+540)%360+360)%360-180);}
+function clampTo(i,h){var c=coord(i,h);if(c!==null)return c;var F=FAM[i];return cd(h,F.a)<cd(h,F.b)?F.a:F.b;}
+function hueLabel(H){var fs=famsAt(H);if(fs.length<2)return FAM[fs.length?fs[0]:S.fam].n;var o=fs.filter(function(i){return i!==S.fam;});return FAM[S.fam].n+" · confine "+FAM[o.length?o[0]:fs[0]].n;}
+var S={axes:false,view:"lc",fam:3,H:142,cat:"css",user:null,sel:null,wb:[1,1,1],wbMode:false,pt:null,img:null,cells:[]};
+function $(i){return document.getElementById(i);}
+function nameOf(lab){var best=null,bd=1e9;CAT[S.cat].forEach(function(c){var d=dist(c.lab,lab);if(d<bd){bd=d;best=c;}});return {n:best.n,d:bd,ok:bd<=2.5};}
+var LS=[0.92,0.84,0.76,0.68,0.60,0.52,0.44,0.36,0.28],FR=[0.4,0.6,0.8,1];
+
+function renderHues(){
+ var box=$("hues");box.innerHTML="";
+ var F=FAM[S.fam];for(var h=F.a;h<=F.b;h+=10){(function(h){
+  var hex=toHex(lch2lin(0.7,cmax(0.7,h),h));
+  var b=document.createElement("button");b.setAttribute("aria-label","Tinta "+norm(h)+" gradi");
+  b.innerHTML='<div class="s" style="background:#'+hex+'"></div>'+(S.axes?'<div style="padding:3px 0;font-size:11px">'+norm(h)+'°</div>':'');
+  if(Math.abs(S.H-h)<5)b.className="on";
+  if(famsAt(h).length>1){b.style.borderStyle="dashed";b.style.borderWidth="1px";}
+  b.onclick=function(){S.H=h;$("H").value=h;renderAll();};
+  box.appendChild(b);})(h);}
+}
+function lchOf(lab){var H=Math.atan2(lab[2],lab[1])*180/Math.PI;return [lab[0],Math.hypot(lab[1],lab[2]),norm(H)];}
+function updTitle(){$("pgT").textContent=S.view==="lc"?"Pagina · tinta "+Math.round(norm(S.H))+"° · "+hueLabel(S.H):"Pagina · tutte le tinte · "+FAM[S.fam].n;}
+function renderGrid(){
+ var g=$("pg"),F=FAM[S.fam];g.innerHTML="";S.cells=[];
+ var rows=[];for(var i=0;i<17;i++)rows.push(+(0.92-0.04*i).toFixed(2));
+ var cols=[];
+ if(S.view==="lc"){[0.4,0.5,0.6,0.7,0.8,0.9,1].forEach(function(f){cols.push({f:f,H:S.H,t:Math.round(f*100)+"%"});});}
+ else{for(var h=F.a;h<=F.b;h+=10)cols.push({f:1,H:h,t:Math.round(norm(h))+"°"});}
+ g.style.gridTemplateColumns=(S.axes?"26px ":"")+"repeat("+cols.length+",minmax(0,1fr))";
+ if(S.axes){g.appendChild(document.createElement("div"));
+ cols.forEach(function(c){var d=document.createElement("div");d.className="lab";d.textContent=c.t;g.appendChild(d);});}
+ rows.forEach(function(L,ri){
+  if(S.axes){var rl=document.createElement("div");rl.className="rl";rl.textContent=(ri%2===0)?L.toFixed(2):"";g.appendChild(rl);}
+  cols.forEach(function(c){
+   var hex=toHex(lch2lin(L,cmax(L,c.H)*c.f,c.H)),lab=hex2lab(hex);
+   var b=document.createElement("button");b.className="tile";b.style.background="#"+hex;b.setAttribute("aria-label","#"+hex);
+   var cell={hex:hex,lab:lab,el:b,nm:nameOf(lab)};
+   b.onclick=function(){S.sel=cell;if(S.view==="hl"){S.H=c.H;updTitle();}markSel();renderCmp();};
+   S.cells.push(cell);g.appendChild(b);
+  });
+ });
+}
+function markSel(){
+ var best=null,bd=1e9;
+ S.cells.forEach(function(c){c.el.classList.remove("near");c.el.classList.toggle("sel",S.sel&&S.sel.hex===c.hex);
+  if(S.user){var d=dist(c.lab,S.user.lab);if(d<bd){bd=d;best=c;}}});
+ if(best)best.el.classList.add("near");
+ return best;
+}
+function renderCmp(){
+ var u=S.user,c=S.sel;
+ if(u){$("uSw").className="sw";$("uSw").textContent="";$("uSw").style.background="#"+u.hex;$("uHex").textContent="#"+u.hex.toUpperCase();var nu=nameOf(u.lab);$("uNm").textContent=(nu.ok?"":"≈ ")+nu.n;}
+ else{$("uSw").className="sw empty";$("uSw").style.background="";$("uSw").textContent="il tuo colore";$("uHex").textContent="—";$("uNm").textContent="";}
+ if(c){$("cSw").className="sw";$("cSw").textContent="";$("cSw").style.background="#"+c.hex;$("cHex").textContent="#"+c.hex.toUpperCase();$("cNm").textContent=(c.nm.ok?"":"≈ ")+c.nm.n;}
+ else{$("cSw").className="sw empty";$("cSw").style.background="";$("cSw").textContent="tessera scelta";$("cHex").textContent="—";$("cNm").textContent="";}
+ var t="Sinistra: il tuo colore. Destra: la tessera scelta. ";
+ if(c){var q=lchOf(c.lab);t="L "+q[0].toFixed(2)+" · C "+q[1].toFixed(3)+" · H "+Math.round(q[2])+"°";}
+ if(u&&c){var d=dist(u.lab,c.lab);t+=" · ΔE "+d.toFixed(1)+(d<2?" · uguali":d<5?" · vicini":" · lontani");}
+ $("de").textContent=t;
+}
+function renderAll(){
+ var F=FAM[S.fam];
+ $("fam").textContent=F.n;document.title="Colori · "+F.n;
+ var N=FAM.length;
+ $("pv").textContent="← "+FAM[(S.fam+N-1)%N].n;
+ $("nx").textContent=FAM[(S.fam+1)%N].n+" →";
+ var sl=$("H");sl.min=F.a;sl.max=F.b;sl.value=S.H;
+ $("Ho").textContent=Math.round(norm(S.H))+"°";
+ $("Ho").style.visibility=S.axes?"visible":"hidden";
+ $("hueSec").style.display=S.view==="lc"?"block":"none";
+ updTitle();
+ renderHues();renderGrid();
+ if(S.user){var b=markSel();if(b)S.sel=b;markSel();}
+ renderCmp();
+}
+function setUser(hex,fromPhoto){
+ hex=hex.toLowerCase();var lab=hex2lab(hex);
+ S.user={hex:hex,lab:lab};
+ var C=Math.hypot(lab[1],lab[2]),H=Math.atan2(lab[2],lab[1])*180/Math.PI;if(H<0)H+=360;
+ var msg="";
+ if(C<0.02)msg="Colore quasi neutro (croma "+C.toFixed(3)+"): la tinta non è significativa.";
+ else{var fs=famsAt(H);
+  if(fs.length){S.fam=fs.indexOf(S.fam)>=0?S.fam:fs[0];S.H=Math.round(coord(S.fam,H));S.sel=null;setHash();}
+  else msg="Tinta "+Math.round(H)+"°: fuori dalle famiglie definite (85°–275°).";}
+ if(fromPhoto)$("photoNote").textContent=msg||"Tinta "+Math.round(H)+"°, luce "+lab[0].toFixed(2)+", croma "+C.toFixed(3)+".";
+ else if(msg)$("photoNote").textContent=msg;
+ else $("photoNote").textContent="";
+ renderAll();
+}
+$("H").addEventListener("input",function(){S.H=+this.value;renderAll();});
+$("c1").onclick=function(){S.cat="css";$("c1").className="on";$("c2").className="";renderAll();};
+$("c2").onclick=function(){S.cat="xk";$("c2").className="on";$("c1").className="";renderAll();};
+$("hx").addEventListener("input",function(){var v=this.value.trim().replace("#","");if(/^[0-9a-fA-F]{6}$/.test(v))setUser(v,false);});
+$("bPhoto").onclick=function(){$("f").click();};
+$("bWb").onclick=function(){
+ if(!S.img){$("photoNote").textContent="Prima carica una foto.";return;}
+ S.wbMode=!S.wbMode;$("bWb").style.borderColor=S.wbMode?"var(--fg)":"";
+ $("photoNote").textContent=S.wbMode?"Tocca un punto bianco o grigio nella foto (un foglio, per esempio).":"";
+};
+$("f").addEventListener("change",function(){
+ var file=this.files&&this.files[0];if(!file)return;
+ var img=new Image();var url=URL.createObjectURL(file);
+ img.onload=function(){
+  var cv=$("cv"),w=Math.min(img.naturalWidth,720),h=Math.round(img.naturalHeight*w/img.naturalWidth);
+  cv.width=w;cv.height=h;cv.style.display="block";cv.getContext("2d").drawImage(img,0,0,w,h);
+  S.img=img;S.pt=null;S.wb=[1,1,1];S.wbMode=false;$("bWb").style.borderColor="";
+  $("photoNote").textContent="Tocca il punto da misurare. La fotocamera altera il colore: se puoi, inquadra anche un foglio bianco e usa Punto bianco.";
+  URL.revokeObjectURL(url);
+ };
+ img.src=url;this.value="";
+});
+function redraw(){
+ var cv=$("cv"),ctx=cv.getContext("2d");ctx.drawImage(S.img,0,0,cv.width,cv.height);
+ if(S.pt){ctx.lineWidth=3;ctx.strokeStyle="#ffffff";ctx.beginPath();ctx.arc(S.pt.x,S.pt.y,14,0,7);ctx.stroke();ctx.lineWidth=1.5;ctx.strokeStyle="#000000";ctx.beginPath();ctx.arc(S.pt.x,S.pt.y,14,0,7);ctx.stroke();}
+}
+function sample(x,y){
+ var cv=$("cv"),ctx=cv.getContext("2d"),r=4;
+ var x0=Math.max(0,Math.round(x)-r),y0=Math.max(0,Math.round(y)-r);
+ var w=Math.min(2*r+1,cv.width-x0),h=Math.min(2*r+1,cv.height-y0);
+ var d=ctx.getImageData(x0,y0,w,h).data,n=w*h,s=[0,0,0];
+ for(var i=0;i<d.length;i+=4){s[0]+=lin(d[i]/255);s[1]+=lin(d[i+1]/255);s[2]+=lin(d[i+2]/255);}
+ return [s[0]/n,s[1]/n,s[2]/n];
+}
+$("cv").addEventListener("click",function(e){
+ if(!S.img)return;
+ var cv=$("cv"),rc=cv.getBoundingClientRect();
+ var x=(e.clientX-rc.left)*cv.width/rc.width,y=(e.clientY-rc.top)*cv.height/rc.height;
+ S.pt={x:x,y:y};redraw();
+ var v=sample(x,y);
+ if(S.wbMode){
+  var m=(v[0]+v[1]+v[2])/3;
+  if(v[0]<0.002||v[1]<0.002||v[2]<0.002){$("photoNote").textContent="Punto troppo scuro: scegli un'area bianca o grigio chiaro.";return;}
+  S.wb=[m/v[0],m/v[1],m/v[2]];S.wbMode=false;$("bWb").style.borderColor="";
+  $("photoNote").textContent="Bianco impostato. Ora tocca il colore da misurare.";
+  return;
+ }
+ var c=[v[0]*S.wb[0],v[1]*S.wb[1],v[2]*S.wb[2]];
+ setUser(toHex(c),true);
+});
+function setHash(){try{location.hash=FAM[S.fam].id;}catch(e){}}
+function fromHash(){var id="";try{id=(location.hash||"").replace("#","");}catch(e){}for(var i=0;i<FAM.length;i++)if(FAM[i].id===id)return i;return -1;}
+function goFam(i){S.fam=i;S.H=clampTo(i,S.H);S.sel=null;renderAll();}
+window.addEventListener("hashchange",function(){var i=fromHash();if(i>=0&&i!==S.fam)goFam(i);});
+$("pv").onclick=function(){goFam((S.fam+FAM.length-1)%FAM.length);setHash();};
+$("nx").onclick=function(){goFam((S.fam+1)%FAM.length);setHash();};
+var h0=fromHash();if(h0>=0)S.fam=h0;
+S.H=clampTo(S.fam,S.H);
+function effDark(){var t=document.documentElement.getAttribute("data-theme");if(t)return t==="dark";return !!(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches);}
+function paintTheme(){$("th").textContent=effDark()?"Chiaro":"Scuro";}
+try{var sv=localStorage.getItem("th");if(sv)document.documentElement.setAttribute("data-theme",sv);}catch(e){}
+$("th").onclick=function(){var d=!effDark();document.documentElement.setAttribute("data-theme",d?"dark":"light");try{localStorage.setItem("th",d?"dark":"light");}catch(e){}paintTheme();};
+paintTheme();
+$("ib").onclick=function(){var d=$("de");d.hidden=!d.hidden;this.classList.toggle("on",!d.hidden);this.setAttribute("aria-expanded",String(!d.hidden));};
+$("ip").onclick=function(){var d=$("photoInfo");d.hidden=!d.hidden;this.classList.toggle("on",!d.hidden);this.classList.remove("dot");this.setAttribute("aria-expanded",String(!d.hidden));};
+$("ia").onclick=function(){S.axes=!S.axes;this.classList.toggle("on",S.axes);this.setAttribute("aria-pressed",String(S.axes));renderAll();};
+try{new MutationObserver(function(){if($("photoInfo").hidden&&$("photoNote").textContent)$("ip").classList.add("dot");}).observe($("photoNote"),{childList:true,characterData:true,subtree:true});}catch(e){}
+function conv(){var n=Math.max(0,Math.min(255,Math.floor(+$("n16").value||0))),q=Math.floor(n/16),r=n%16,D="0123456789ABCDEF";$("o16").textContent=n+" ÷ 16 = "+q+" resto "+r+" → "+D.charAt(q)+D.charAt(r);}
+$("n16").addEventListener("input",conv);conv();
+function setView(v){S.view=v;$("v1").className=v==="lc"?"on":"";$("v2").className=v==="hl"?"on":"";renderAll();}
+$("v1").onclick=function(){setView("lc");};
+$("v2").onclick=function(){setView("hl");};
+renderAll();
+</script>
+</body>
+</html>

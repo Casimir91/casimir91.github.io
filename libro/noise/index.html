@@ -1,0 +1,1869 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="Noise in pictures. Why every measurement wobbles, and what the wobble can tell you.">
+
+<title>Noise – Prof.&nbsp;Rosi</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../img/favicon-round.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-f6813cb46473393f4fcc594ab4c76308.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-8d8030eb350bebc4c17f72a9abe13240.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-f6813cb46473393f4fcc594ab4c76308.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
+<link href="../../site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<link rel="manifest" href="../../manifest.webmanifest">
+<link rel="apple-touch-icon" href="../../img/apple-touch-icon.png">
+<meta name="theme-color" content="#293133">
+<meta name="apple-mobile-web-app-title" content="EFR">
+<style>
+/* ===== Libro: stile componenti (quiz e widget) ===== */
+.mcq-set{margin:1.2rem 0;counter-reset:mcq}
+.mcq{counter-increment:mcq;border:1px solid var(--bs-border-color,#ccc);border-radius:.5rem;padding:.9rem 1rem;margin:.9rem 0}
+.mcq>p:first-child::before{content:counter(mcq) ". ";font-weight:700}
+.mcq ul{list-style:none;padding:0;margin:.6rem 0 0}
+.mcq li{border:1px solid var(--bs-border-color,#ccc);border-radius:.4rem;padding:.45rem .7rem;margin:.35rem 0;cursor:pointer}
+.mcq li:hover{background:rgba(127,127,127,.12)}
+.mcq li.sel{outline:2px solid #2a7f62}
+.mcq li.ok{background:rgba(42,127,98,.22);border-color:#2a7f62}
+.mcq li.no{background:rgba(200,70,60,.2);border-color:#c8463c}
+.mcq.done li{cursor:default}
+.mcq .sol{display:none;margin-top:.7rem;padding:.6rem .8rem;border-left:4px solid #2a7f62;background:rgba(42,127,98,.08)}
+.mcq.done .sol,.mcq-set.revealed .sol{display:block}
+.mcq-btn,.lw button{border:1px solid #2a7f62;background:transparent;color:inherit;border-radius:.4rem;padding:.35rem .8rem;cursor:pointer;font:inherit}
+.mcq-btn:hover,.lw button:hover{background:rgba(42,127,98,.18)}
+.lw button.on{background:rgba(42,127,98,.3);font-weight:600}
+.lw{border:1px solid var(--bs-border-color,#ccc);border-radius:.6rem;padding:.8rem;margin:1.2rem 0}
+.lw canvas{width:100%;display:block;border-radius:.4rem}
+.lw .ctl{display:flex;flex-wrap:wrap;gap:.4rem 1.2rem;align-items:center;margin-top:.6rem}
+.lw .ctl label{display:flex;flex-direction:column;font-size:.85rem;min-width:9rem;flex:1}
+.lw .ctl input[type=range]{width:100%}
+.lw .out{font-size:.9rem;margin-top:.5rem;line-height:1.5}
+.lw .btns{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.6rem}
+.lw .cap{font-size:.8rem;opacity:.75;margin-top:.4rem}
+</style>
+<script>
+(function(){
+"use strict";
+/* ---------- utilità ---------- */
+function el(tag,attrs,kids){var e=document.createElement(tag);for(var k in (attrs||{})){if(k==="text")e.textContent=attrs[k];else if(k==="html")e.innerHTML=attrs[k];else e.setAttribute(k,attrs[k]);}(kids||[]).forEach(function(c){e.appendChild(c)});return e;}
+function fmt(x,d){return Number(x).toLocaleString("it-IT",{minimumFractionDigits:d,maximumFractionDigits:d});}
+function fmtJ(x){if(x<0.0005)return "0";return fmt(x,x>=100?0:(x>=1?1:3));}
+function fg(){return getComputedStyle(document.body).color;}
+function prepCanvas(c,h){var dpr=window.devicePixelRatio||1;var w=c.parentNode.clientWidth-16;if(w<200)w=200;c.style.height=h+"px";c.width=Math.round(w*dpr);c.height=Math.round(h*dpr);var x=c.getContext("2d");x.setTransform(dpr,0,0,dpr,0,0);x.clearRect(0,0,w,h);return {ctx:x,w:w,h:h};}
+function slider(lab,min,max,step,val,unit,dec,onch){
+  var inp=el("input",{type:"range",min:min,max:max,step:step,value:val});
+  var v=el("b",{});var l=el("label",{},[el("span",{html:lab+": "}),inp]);l.firstChild.appendChild(v);
+  function upd(){v.textContent=fmt(inp.value,dec)+" "+unit;}
+  inp.addEventListener("input",function(){upd();onch(+inp.value);});upd();
+  return {box:l,inp:inp,set:function(x){inp.value=x;upd();}};
+}
+/* cursore logaritmico per la massa (kg) */
+function massSlider(min,max,val,onch){
+  var inp=el("input",{type:"range",min:0,max:1000,step:1,value:Math.round(1000*Math.log(val/min)/Math.log(max/min))});
+  var v=el("b",{});var l=el("label",{},[el("span",{html:"Massa: "}),inp]);l.firstChild.appendChild(v);
+  function mval(){return min*Math.pow(max/min,inp.value/1000);}
+  function upd(){var m=mval();v.textContent=m<1?fmt(m*1000,m<0.1?0:0)+" g":fmt(m,m>=100?0:1)+" kg";}
+  inp.addEventListener("input",function(){upd();onch(mval());});upd();
+  return {box:l,set:function(m){inp.value=Math.round(1000*Math.log(m/min)/Math.log(max/min));upd();}};
+}
+function raf(fn){var id;var t0=null;function step(t){if(t0===null)t0=t;var go=fn((t-t0)/1000);if(go)id=requestAnimationFrame(step);}id=requestAnimationFrame(step);return function(){cancelAnimationFrame(id);};}
+var G=10;
+var COL={cin:"#2a7f62",pot:"#d98a1c",ter:"#c8463c",lav:"#3b6fb6",ela:"#8e5bb5",chi:"#3b8fb6",nuc:"#b59a1e"};
+
+/* ---------- disegno: serbatoi, frecce, omino ---------- */
+function fitText(c,t,x,y,maxw){
+  var s=11;c.font=s+"px sans-serif";
+  if(c.measureText(t).width>maxw&&t.indexOf(" ")>0){var i=t.indexOf(" ");fitText(c,t.slice(0,i),x,y,maxw);fitText(c,t.slice(i+1),x,y+12,maxw);return;}
+  while(c.measureText(t).width>maxw&&s>7){s--;c.font=s+"px sans-serif";}
+  c.fillText(t,x,y);
+}
+function tanks(c,items,x,y,w,h,max){
+  var n=items.length,gap=Math.min(12,w*0.04),bw=(w-gap*(n-1))/n;
+  items.forEach(function(it,i){
+    var bx=x+i*(bw+gap),fh=h*Math.max(0,Math.min(1,it.val/max));
+    c.fillStyle="rgba(127,127,127,.15)";c.fillRect(bx,y,bw,h);
+    c.fillStyle=it.col;c.fillRect(bx,y+h-fh,bw,fh);
+    c.strokeStyle=fg();c.lineWidth=1;c.strokeRect(bx,y,bw,h);
+    c.fillStyle=fg();c.textAlign="center";c.font="bold 11px sans-serif";
+    c.fillText(fmtJ(it.val)+" "+(it.unit||"J"),bx+bw/2,y-5);
+    c.font="11px sans-serif";fitText(c,it.lab,bx+bw/2,y+h+13,bw+gap-3);
+  });
+}
+function arrow(c,x1,y1,x2,y2,col,lw){
+  c.strokeStyle=col;c.fillStyle=col;c.lineWidth=lw||2.5;c.beginPath();c.moveTo(x1,y1);c.lineTo(x2,y2);c.stroke();
+  var a=Math.atan2(y2-y1,x2-x1),s=8;c.beginPath();c.moveTo(x2,y2);c.lineTo(x2-s*Math.cos(a-0.4),y2-s*Math.sin(a-0.4));c.lineTo(x2-s*Math.cos(a+0.4),y2-s*Math.sin(a+0.4));c.closePath();c.fill();
+}
+/* omino: piedi in (x,y); pose "push" o "lift" (handY = altezza mani) o "stand" */
+function figure(c,x,y,s,pose,handY){
+  c.strokeStyle=fg();c.fillStyle=fg();c.lineWidth=2;
+  var lean=pose==="push"?9*s:0,hip=[x,y-22*s],sh=[x+lean,y-40*s];
+  c.beginPath();c.arc(sh[0]+lean*0.2,y-47*s,5.5*s,0,7);c.stroke();
+  c.beginPath();c.moveTo(sh[0],sh[1]);c.lineTo(hip[0],hip[1]);c.lineTo(x-8*s,y);c.moveTo(hip[0],hip[1]);c.lineTo(x+8*s,y);c.stroke();
+  var hand=pose==="push"?[x+30*s,y-34*s]:pose==="lift"?[x+16*s,handY]:[x+12*s,y-24*s];
+  c.beginPath();c.moveTo(sh[0],sh[1]+2*s);c.lineTo(hand[0],hand[1]);c.stroke();
+}
+
+/* ---------- quiz a scelta multipla ---------- */
+function initMcq(){
+  document.querySelectorAll(".mcq").forEach(function(q){
+    var lis=q.querySelectorAll("ul>li");
+    lis.forEach(function(li){
+      var w=document.createTreeWalker(li,NodeFilter.SHOW_TEXT,null);var n=w.nextNode();
+      if(n&&/^\s*✓\s*/.test(n.nodeValue)){li.dataset.ok="1";n.nodeValue=n.nodeValue.replace(/^\s*✓\s*/,"");}
+    });
+    var set=q.closest(".mcq-set");var pre=set&&set.dataset.mode==="pretest";
+    lis.forEach(function(li){li.addEventListener("click",function(){
+      if(q.classList.contains("done")||(set&&set.classList.contains("revealed")))return;
+      lis.forEach(function(x){x.classList.remove("sel")});li.classList.add("sel");
+      if(!pre){q.classList.add("done");lis.forEach(function(x){if(x.dataset.ok)x.classList.add("ok");});if(!li.dataset.ok)li.classList.add("no");}
+    });});
+  });
+  document.querySelectorAll(".mcq-set[data-mode=pretest]").forEach(function(set){
+    var b=el("button",{"class":"mcq-btn",type:"button",text:"Check answers"});
+    b.addEventListener("click",function(){set.classList.add("revealed");set.querySelectorAll(".mcq").forEach(function(q){q.classList.add("done");q.querySelectorAll("li").forEach(function(x){if(x.dataset.ok)x.classList.add("ok");else if(x.classList.contains("sel"))x.classList.add("no");});});b.remove();});
+    set.appendChild(b);
+  });
+}
+
+/* ---------- widget: i quattro trasferimenti ---------- */
+function wTrasf(root){
+  var names=["Con una forza","Con una corrente","Riscaldando","Con onde (luce)"];
+  var cur=0,p=0,t=0,stop=null;
+  var cv=el("canvas",{"aria-label":"Quattro modi di trasferire energia, con serbatoi"});var out=el("div",{"class":"out"});
+  var tabs=el("div",{"class":"btns"});var bts=[];
+  names.forEach(function(n,i){var b=el("button",{type:"button",text:n});b.onclick=function(){cur=i;reset();};bts.push(b);tabs.appendChild(b);});
+  var play=el("button",{type:"button",text:"▶ Avvia"});play.onclick=function(){if(stop)stop();p=0;stop=raf(function(sec){t=sec;p=Math.min(1,sec/4.5);draw();return p<1;});};
+  root.appendChild(cv);root.appendChild(tabs);root.appendChild(el("div",{"class":"btns"},[play]));root.appendChild(out);
+  root.appendChild(el("div",{"class":"cap",text:"Numeri di fantasia (100 J all'inizio) per vedere l'energia passare da un serbatoio all'altro: il totale resta sempre lo stesso."}));
+  function reset(){if(stop)stop();stop=null;p=0;t=0;draw();}
+  var GY=118;
+  function ground(c,W){c.strokeStyle=fg();c.lineWidth=1.5;c.beginPath();c.moveTo(6,GY);c.lineTo(W-6,GY);c.stroke();}
+  function s0(c,W){ground(c,W);var x0=W*0.38,x1=W*0.7,cx=x0+(x1-x0)*p;
+    c.fillStyle="#9aa5b1";c.fillRect(cx,GY-40,56,24);c.fillStyle=fg();c.beginPath();c.arc(cx+13,GY-8,8,0,7);c.arc(cx+43,GY-8,8,0,7);c.fill();
+    figure(c,cx-34,GY,0.95,"push");arrow(c,cx-30,GY-66,cx+6,GY-66,COL.lav);c.fillStyle=fg();c.textAlign="center";c.font="12px sans-serif";c.fillText("forza",cx-12,GY-72);}
+  function s1(c,W){var bx=W*0.14,lx=W*0.72;
+    c.strokeStyle=fg();c.lineWidth=2;c.fillStyle="#9aa5b1";c.fillRect(bx-14,56,28,38);c.strokeRect(bx-14,56,28,38);c.fillStyle=fg();c.font="12px sans-serif";c.textAlign="center";c.fillText("+",bx,72);c.fillText("batteria",bx,110);
+    var pts=[[bx,56],[bx,20],[lx,20],[lx,48],[lx,92],[lx,116],[bx,116],[bx,94]];
+    c.beginPath();c.moveTo(pts[0][0],pts[0][1]);for(var i=1;i<pts.length;i++){if(i===4){c.moveTo(pts[i][0],pts[i][1]);}else c.lineTo(pts[i][0],pts[i][1]);}c.stroke();
+    var glow=Math.min(1,p*5)*(p<1?(0.75+0.25*Math.sin(t*10)):0.35);
+    c.fillStyle="rgba(255,220,60,"+(0.2+0.8*glow)+")";c.beginPath();c.arc(lx,70,22,0,7);c.fill();c.strokeStyle=fg();c.stroke();
+    if(glow>0.1){c.strokeStyle="rgba(255,210,40,"+glow+")";for(var a=0;a<8;a++){var an=a*Math.PI/4;c.beginPath();c.moveTo(lx+27*Math.cos(an),70+27*Math.sin(an));c.lineTo(lx+36*Math.cos(an),70+36*Math.sin(an));c.stroke();}}
+    if(p>0&&p<1){c.fillStyle=COL.lav;var path=[[bx,56],[bx,20],[lx,20],[lx,48],[lx,92],[lx,116],[bx,116],[bx,94]];for(var d=0;d<10;d++){var s=((t*0.4+d/10)%1)*0.999;var L=[],tot=0,k;
+      var seg=[[0,1],[1,2],[2,3],[4,5],[5,6],[6,7]];seg.forEach(function(q){var l=Math.hypot(path[q[1]][0]-path[q[0]][0],path[q[1]][1]-path[q[0]][1]);L.push(l);tot+=l;});
+      var dist=s*tot;for(k=0;k<seg.length;k++){if(dist<=L[k]){var f=dist/L[k],a0=path[seg[k][0]],a1=path[seg[k][1]];c.beginPath();c.arc(a0[0]+(a1[0]-a0[0])*f,a0[1]+(a1[1]-a0[1])*f,3,0,7);c.fill();break;}dist-=L[k];}}}
+  }
+  function s2(c,W){var cx=W*0.5;ground(c,W);
+    c.fillStyle="rgba(80,150,220,"+(0.35+0.15*p)+")";c.beginPath();c.moveTo(cx-34,GY-62);c.lineTo(cx+34,GY-62);c.lineTo(cx+28,GY-22);c.lineTo(cx-28,GY-22);c.closePath();c.fill();c.strokeStyle=fg();c.lineWidth=2;c.stroke();
+    if(p>0.35&&p<1){c.fillStyle="rgba(255,255,255,.8)";for(var k=0;k<6;k++){var yy=GY-26-((t*18+k*11)%34);c.beginPath();c.arc(cx-20+k*8,yy,2.2,0,7);c.fill();}}
+    if(p>0&&p<1){for(k=0;k<5;k++){var h=10+6*Math.sin(t*14+k*2);c.fillStyle=k%2?"#f0a020":"#e8561c";c.beginPath();c.moveTo(cx-26+k*13-5,GY-1);c.lineTo(cx-26+k*13,GY-1-h-6);c.lineTo(cx-26+k*13+5,GY-1);c.fill();}
+      c.strokeStyle="rgba(127,127,127,.6)";c.lineWidth=1.5;for(k=0;k<3;k++){c.beginPath();c.moveTo(cx-14+k*14,GY-70);c.quadraticCurveTo(cx-20+k*14,GY-82-((t*10+k*5)%10),cx-14+k*14,GY-94);c.stroke();}}
+    c.fillStyle=fg();c.textAlign="center";c.font="12px sans-serif";c.fillText("gas",cx,GY+14);}
+  function s3(c,W){var sx=W*0.14,ox=W*0.72;
+    c.fillStyle="#f2c21b";c.beginPath();c.arc(sx,60,24,0,7);c.fill();c.strokeStyle="#f2c21b";c.lineWidth=2;for(var a=0;a<12;a++){var an=a*Math.PI/6;c.beginPath();c.moveTo(sx+28*Math.cos(an),60+28*Math.sin(an));c.lineTo(sx+38*Math.cos(an),60+38*Math.sin(an));c.stroke();}
+    c.strokeStyle="#e8b300";c.lineWidth=2;for(var r=0;r<3;r++){var y0=38+r*22;c.beginPath();for(var x=sx+44;x<=ox-10;x+=3){var ph=(x-sx)*0.14-t*8;var yy=y0+4*Math.sin(ph);if(x===sx+44)c.moveTo(x,yy);else c.lineTo(x,yy);}c.stroke();}
+    var heat=p;c.fillStyle="rgb("+Math.round(60+150*heat)+","+Math.round(60-20*heat)+",60)";c.fillRect(ox,34,40,60);c.strokeStyle=fg();c.lineWidth=1.5;c.strokeRect(ox,34,40,60);
+    c.fillStyle=fg();c.font="12px sans-serif";c.textAlign="center";c.fillText("Sole",sx,104);c.fillText("oggetto scuro",ox+20,110);}
+  var DATA=[
+   function(){return {tk:[{lab:"chimica persona",val:100-55*p,col:COL.chi},{lab:"cinetica carrello",val:40*p,col:COL.cin},{lab:"termica corpo",val:15*p,col:COL.ter}],txt:"Una forza (le braccia) sposta energia dalla riserva chimica della persona alla riserva cinetica del carrello; una parte si disperde nel corpo come calore."};},
+   function(){return {tk:[{lab:"chimica batteria",val:100-70*p,col:COL.chi},{lab:"termica lampadina e aria",val:70*p,col:COL.ter}],txt:"La corrente elettrica sposta energia dalla batteria alla lampadina, che la restituisce come luce e calore."};},
+   function(){return {tk:[{lab:"chimica gas",val:100-60*p,col:COL.chi},{lab:"termica acqua",val:45*p,col:COL.ter},{lab:"termica aria",val:15*p,col:"#e08a6c"}],txt:"Il riscaldamento sposta energia dalla fiamma all'acqua; una parte scalda l'aria intorno."};},
+   function(){return {tk:[{lab:"nucleare Sole",val:100-30*p,col:COL.nuc},{lab:"termica oggetto",val:30*p,col:COL.ter}],txt:"La luce è un'onda: sposta energia dal Sole all'oggetto, che si scalda."};}
+  ];
+  var SC=[s0,s1,s2,s3];
+  function draw(){
+    var P=prepCanvas(cv,262),c=P.ctx,W=P.w;
+    bts.forEach(function(b,i){b.className=i===cur?"on":"";});
+    SC[cur](c,W);
+    var d=DATA[cur]();var tot=d.tk.reduce(function(s,x){return s+x.val;},0);
+    tanks(c,d.tk,10,168,W-20,56,100);
+    c.fillStyle=fg();c.textAlign="right";c.font="bold 12px sans-serif";c.fillText("Totale: "+fmt(tot,0)+" J",W-8,14);
+    out.textContent=d.txt;
+  }
+  reset();window.addEventListener("resize",draw);
+}
+
+/* ---------- widget: l'auto che frena (senza numeri sullo spazio) ---------- */
+function wFreno(root){
+  var E0=139,p=0,stop=null;var cv=el("canvas",{"aria-label":"Auto che frena: l'energia cinetica diventa calore nei freni"});var out=el("div",{"class":"out"});
+  var go=el("button",{type:"button",text:"▶ Frena"}),rs=el("button",{type:"button",text:"↺ Ricomincia"});
+  go.onclick=function(){if(stop)stop();p=0;stop=raf(function(sec){p=Math.min(1,sec/4);draw();return p<1;});};
+  rs.onclick=function(){if(stop)stop();stop=null;p=0;draw();};
+  root.appendChild(cv);root.appendChild(el("div",{"class":"btns"},[go,rs]));root.appendChild(out);
+  root.appendChild(el("div",{"class":"cap",text:"I freni compiono lavoro: è il trasferimento che porta via l'energia cinetica e la lascia come energia termica."}));
+  function draw(){
+    var P=prepCanvas(cv,262),c=P.ctx,W=P.w,GY=112,v=60*(1-p),Ek=E0*(1-p)*(1-p),Q=E0-Ek;
+    c.strokeStyle=fg();c.lineWidth=2;c.beginPath();c.moveTo(0,GY);c.lineTo(W,GY);c.stroke();
+    var s=60*4*(p-p*p/2);c.lineWidth=3;for(var i=-1;i<12;i++){var x=((i*70-s*1.6)%(W+70)+W+70)%(W+70)-35;c.beginPath();c.moveTo(x,GY+10);c.lineTo(x+30,GY+10);c.stroke();}
+    var cx=W*0.36;c.fillStyle=COL.cin;c.fillRect(cx,GY-42,120,24);c.beginPath();c.moveTo(cx+28,GY-42);c.lineTo(cx+42,GY-62);c.lineTo(cx+86,GY-62);c.lineTo(cx+100,GY-42);c.closePath();c.fill();
+    c.fillStyle="rgba(255,255,255,.75)";c.fillRect(cx+46,GY-58,16,13);c.fillRect(cx+66,GY-58,16,13);
+    [cx+24,cx+96].forEach(function(wx,k){c.fillStyle=fg();c.beginPath();c.arc(wx,GY-12,12,0,7);c.fill();var f=Q/E0;c.fillStyle="rgba(255,"+Math.round(80-60*f)+",20,"+(0.25+0.75*f)+")";c.beginPath();c.arc(wx,GY-12,7,0,7);c.fill();if(f>0.1){c.strokeStyle="rgba(232,86,28,"+f+")";c.lineWidth=1.5;for(var q=0;q<3;q++){c.beginPath();c.moveTo(wx-8+q*8,GY-30);c.quadraticCurveTo(wx-12+q*8,GY-38,wx-8+q*8,GY-46);c.stroke();}}});
+    c.fillStyle=fg();c.textAlign="left";c.font="bold 13px sans-serif";c.fillText("velocità: "+fmt(v,0)+" km/h",8,18);
+    c.textAlign="right";c.fillText("lavoro dei freni: "+fmt(Q,0)+" kJ",W-8,18);
+    tanks(c,[{lab:"energia cinetica (auto)",val:Ek,col:COL.cin,unit:"kJ"},{lab:"energia termica (freni, aria…)",val:Q,col:COL.ter,unit:"kJ"}],W*0.2,162,W*0.6,56,E0);
+    out.innerHTML=p===0?"Premi «Frena». Guarda la velocità scendere e i freni scaldarsi.":(p<1?"L'energia cinetica passa ai freni, che la trasferiscono come calore.":"Auto ferma: tutta l'energia cinetica è diventata energia termica (<b>"+fmt(E0,0)+" kJ</b>).");
+  }
+  draw();window.addEventListener("resize",draw);
+}
+
+/* ---------- widget: palla che rimbalza (ideale / reale) ---------- */
+function wRimbalzo(root){
+  var m=0.5,k=4000,H0=2,E0=m*G*H0,real=false,y,v,done,stop=null,Th=0;
+  var cv=el("canvas",{"aria-label":"Palla che cade e rimbalza con serbatoi di energia"});var out=el("div",{"class":"out"});
+  var bI=el("button",{type:"button",text:"Rimbalzo perfetto (ideale)"}),bR=el("button",{type:"button",text:"Rimbalzo reale"});
+  var go=el("button",{type:"button",text:"▶ Lascia cadere"});
+  function setMode(r){real=r;bI.className=r?"":"on";bR.className=r?"on":"";reset();}
+  bI.onclick=function(){setMode(false);};bR.onclick=function(){setMode(true);};go.onclick=function(){run();};
+  root.appendChild(cv);root.appendChild(el("div",{"class":"btns"},[bI,bR]));root.appendChild(el("div",{"class":"btns"},[go]));root.appendChild(out);
+  root.appendChild(el("div",{"class":"cap",text:"Palla da 0,5 kg lasciata da 2 m. Il momento dell'urto è rallentato molto, per vedere la palla schiacciarsi."}));
+  function reset(){if(stop)stop();stop=null;y=H0;v=0;done=false;Th=0;draw();}
+  function C(){return real?2*0.09*Math.sqrt(k*m):0;}
+  function run(){reset();var c0=C(),last=null;
+    stop=raf(function(sec){var dtr=last===null?0.016:Math.min(0.05,sec-last);last=sec;var budget=dtr,guard=0;
+      while(budget>0&&!done&&guard++<400){var contact=y<0,rate=contact?0.05:0.8,st=contact?0.0002:0.001;
+        var a=-G+(contact?(-k*y-c0*v)/m:0);v+=a*st;y+=v*st;budget-=st/rate;
+        if(real&&y>=0&&v>0){var me=m*G*y+0.5*m*v*v;if(me<0.015*E0){done=true;y=0;v=0;}}}
+      draw();return !done||false;});
+  }
+  function draw(){
+    var P=prepCanvas(cv,250),c=P.ctx,W=P.w,sw=Math.min(120,W*0.3),GY=232,sc=52,r=9;
+    var contact=y<0,Ek=0.5*m*v*v,Ep=Math.max(0,m*G*y),El=contact?0.5*k*y*y:0;
+    if(real){Th=done?E0:Math.max(0,E0-(m*G*y+Ek+El));}else{Th=0;}
+    if(done){Ek=0;Ep=0;El=0;}
+    c.strokeStyle=fg();c.lineWidth=2;c.beginPath();c.moveTo(6,GY);c.lineTo(sw+4,GY);c.stroke();
+    c.lineWidth=1;c.setLineDash([3,4]);c.beginPath();c.moveTo(sw/2,GY);c.lineTo(sw/2,GY-H0*sc-2*r);c.stroke();c.setLineDash([]);
+    var sq=contact?Math.min(0.55,-y/0.0707*0.5):0,bx=sw/2,by=GY-r*(1-sq)-Math.max(0,y)*sc;
+    c.fillStyle=COL.pot;c.beginPath();c.ellipse(bx,by,r*(1+sq*0.9),r*(1-sq),0,0,7);c.fill();c.strokeStyle=fg();c.stroke();
+    c.fillStyle=fg();c.textAlign="left";c.font="11px sans-serif";c.fillText("2 m",sw/2+8,GY-H0*sc-4);
+    tanks(c,[{lab:"di quota (gravitaz.)",val:Ep,col:COL.pot},{lab:"di movimento (cinetica)",val:Ek,col:COL.cin},{lab:"elastica",val:El,col:COL.ela},{lab:"termica",val:Th,col:COL.ter}],sw+14,34,W-sw-20,150,E0);
+    c.fillStyle=fg();c.textAlign="right";c.font="bold 12px sans-serif";c.fillText("Totale: "+fmt(E0,1)+" J",W-6,14);
+    var ph=done?"La palla si ferma: tutta l'energia è diventata <b>termica</b> (e un po' di suono).":(y===H0&&v===0)?"Scegli il tipo di rimbalzo e premi «Lascia cadere».":contact?"<b>Urto</b>: la palla si schiaccia, l'energia di movimento diventa <b>elastica</b>"+(real?" (e un po' si disperde in calore).":"."):v<0?"<b>Caduta</b>: l'energia di quota diventa energia di movimento.":"<b>Risalita</b>: l'energia elastica torna di movimento, poi di quota.";
+    out.innerHTML=ph;
+  }
+  setMode(false);window.addEventListener("resize",draw);
+}
+
+/* ---------- widget: il lavoro (carrello, peso, caduta) ---------- */
+function hbar(c,x,y,w,h,val,max,col,lab){
+  c.fillStyle="rgba(127,127,127,.2)";c.fillRect(x,y,w,h);c.fillStyle=col;c.fillRect(x,y,w*Math.max(0,Math.min(1,val/max)),h);
+  c.strokeStyle=fg();c.lineWidth=1;c.strokeRect(x,y,w,h);c.fillStyle=fg();c.textAlign="left";c.font="12px sans-serif";c.fillText(lab+": "+fmtJ(val)+" J",x+6,y+h-5);
+}
+function wLavoro(root){
+  var cur=0,p=0,stop=null,F=80,M=5,Mb=1;
+  var cv=el("canvas",{"aria-label":"Il lavoro: una forza che sposta un oggetto"});var out=el("div",{"class":"out"});
+  var names=["Carrello spinto","Peso sollevato","Palla che cade"],bts=[];var tabs=el("div",{"class":"btns"});
+  names.forEach(function(n,i){var b=el("button",{type:"button",text:n});b.onclick=function(){cur=i;sel();reset();};bts.push(b);tabs.appendChild(b);});
+  var sF=slider("Forza",20,200,10,F,"N",0,function(x){F=x;draw();});
+  var sM=slider("Massa del peso",1,20,1,M,"kg",0,function(x){M=x;draw();});
+  var sB=slider("Massa della palla",0.5,5,0.5,Mb,"kg",1,function(x){Mb=x;draw();});
+  var ctl=el("div",{"class":"ctl"},[sF.box,sM.box,sB.box]);
+  var go=el("button",{type:"button",text:"▶ Avvia"});go.onclick=function(){if(stop)stop();p=0;stop=raf(function(sec){p=Math.min(1,sec/3.5);draw();return p<1;});};
+  root.appendChild(cv);root.appendChild(tabs);root.appendChild(ctl);root.appendChild(el("div",{"class":"btns"},[go]));root.appendChild(out);
+  root.appendChild(el("div",{"class":"cap",html:"Il lavoro è l'energia trasferita da una forza: <i>W = F · d</i>, con d misurata nella direzione della forza."}));
+  function sel(){bts.forEach(function(b,i){b.className=i===cur?"on":"";});sF.box.style.display=cur===0?"":"none";sM.box.style.display=cur===1?"":"none";sB.box.style.display=cur===2?"":"none";}
+  function reset(){if(stop)stop();stop=null;p=0;draw();}
+  function draw(){
+    var P=prepCanvas(cv,262),c=P.ctx,W=P.w,GY=150,fgc=fg();
+    c.strokeStyle=fgc;c.lineWidth=2;c.beginPath();c.moveTo(6,GY);c.lineTo(W-6,GY);c.stroke();
+    var Wk,dest=null,dtot,Fv,d;c.font="12px sans-serif";
+    if(cur===0){dtot=5;d=dtot*p;Fv=F;var x0=W*0.22,x1=W*0.74,px=(x1-x0)/dtot,cx=x0+d*px;
+      c.fillStyle="#9aa5b1";c.fillRect(cx,GY-44,60,26);c.fillStyle=fgc;c.beginPath();c.arc(cx+14,GY-9,8,0,7);c.arc(cx+46,GY-9,8,0,7);c.fill();
+      figure(c,cx-38,GY,1.1,"push");arrow(c,cx-34,GY-78,cx-34+Fv*0.3,GY-78,COL.lav,3);c.fillStyle=fgc;c.textAlign="left";c.fillText("F = "+Fv+" N",cx-34,GY-84);
+      c.lineWidth=1;c.strokeStyle=fgc;c.beginPath();c.moveTo(x0,GY+14);c.lineTo(x1,GY+14);c.stroke();for(var i=0;i<=dtot;i++){c.beginPath();c.moveTo(x0+i*px,GY+10);c.lineTo(x0+i*px,GY+18);c.stroke();}
+      c.strokeStyle=COL.lav;c.lineWidth=3;c.beginPath();c.moveTo(x0,GY+14);c.lineTo(x0+d*px,GY+14);c.stroke();c.fillStyle=fgc;c.textAlign="center";c.fillText("d = "+fmt(d,2)+" m",x0+d*px/2+1,GY+34);}
+    else if(cur===1){dtot=1.2;d=dtot*p;Fv=M*G;var px2=50,wx=W*0.5,wy=GY-d*px2;
+      c.fillStyle="#9aa5b1";c.fillRect(wx-18,wy-30,36,30);c.strokeStyle=fgc;c.lineWidth=1.5;c.strokeRect(wx-18,wy-30,36,30);c.fillStyle=fgc;c.textAlign="center";c.fillText(M+" kg",wx,wy-10);
+      figure(c,wx-56,GY,1.1,"lift",wy-20);arrow(c,wx+30,wy-15,wx+30,wy-15-Math.min(50,Fv*0.3),COL.lav,3);c.textAlign="left";c.fillText("F = "+Fv+" N",wx+38,wy-24);
+      c.lineWidth=1;c.strokeStyle=fgc;c.setLineDash([3,3]);c.beginPath();c.moveTo(wx+80,GY);c.lineTo(wx+80,GY-dtot*px2);c.stroke();c.setLineDash([]);c.strokeStyle=COL.lav;c.lineWidth=3;c.beginPath();c.moveTo(wx+80,GY);c.lineTo(wx+80,GY-d*px2);c.stroke();c.fillStyle=fgc;c.textAlign="left";c.fillText("d = "+fmt(d,2)+" m",wx+88,GY-d*px2/2+4);dest={lab:"energia di quota",col:COL.pot};}
+    else{dtot=2;var tt=p*Math.sqrt(2*dtot/G);d=0.5*G*tt*tt;Fv=Mb*G;var px3=48,bx=W*0.5,by=GY-9-(dtot-d)*px3;
+      c.fillStyle=COL.pot;c.beginPath();c.arc(bx,by,9,0,7);c.fill();c.strokeStyle=fgc;c.stroke();arrow(c,bx+24,by,bx+24,by+Math.min(50,Fv*0.9),COL.lav,3);c.fillStyle=fgc;c.textAlign="left";c.fillText("peso = "+fmt(Fv,0)+" N",bx+32,by+6);c.fillText("nessuno la spinge",bx+32,20);
+      c.setLineDash([3,3]);c.lineWidth=1;c.beginPath();c.moveTo(bx-40,GY-9-dtot*px3);c.lineTo(bx-40,GY-9);c.stroke();c.setLineDash([]);c.strokeStyle=COL.lav;c.lineWidth=3;c.beginPath();c.moveTo(bx-40,GY-9-dtot*px3);c.lineTo(bx-40,GY-9-(dtot-d)*px3);c.stroke();c.fillStyle=fgc;c.textAlign="right";c.fillText("d = "+fmt(d,2)+" m",bx-46,GY-9-(dtot-d/2)*px3+4);dest={lab:"energia di movimento",col:COL.cin};}
+    Wk=Fv*d;var tot=Fv*dtot;
+    hbar(c,10,196,W-20,20,Wk,tot,COL.lav,"lavoro W compiuto");
+    if(dest)hbar(c,10,224,W-20,20,Wk,tot,dest.col,dest.lab+" guadagnata");
+    out.innerHTML="<b>W = F · d</b> = "+fmt(Fv,0)+" N × "+fmt(d,2)+" m = <b>"+fmt(Wk,1)+" J</b>"+(cur===1?" &nbsp;→ l'energia trasferita si ritrova nella riserva di quota.":cur===2?" &nbsp;→ è la forza di gravità a compiere il lavoro: l'energia di quota diventa energia di movimento.":"");
+  }
+  sel();draw();window.addEventListener("resize",draw);
+}
+
+/* ---------- widget: caduta (la massa non conta) ---------- */
+function wCaduta(root){
+  var h=1,m=0.005,t=null,stop=null;var cv=el("canvas",{"aria-label":"Corpo che cade: energia potenziale e cinetica"});var out=el("div",{"class":"out"});
+  var sh=slider("Altezza di caduta",0.5,5,0.5,h,"m",1,function(v){h=v;t=null;draw();});
+  var sm=massSlider(0.005,500,m,function(v){m=v;draw();});
+  var go=el("button",{type:"button",text:"▶ Lascia cadere"});
+  go.onclick=function(){if(stop)stop();var T=Math.sqrt(2*h/G),slow=3;stop=raf(function(sec){t=Math.min(T,sec/slow);draw();return t<T;});};
+  function pre(mm,lab){var b=el("button",{type:"button",text:lab});b.onclick=function(){m=mm;sm.set(mm);t=null;draw();};return b;}
+  root.appendChild(cv);root.appendChild(el("div",{"class":"btns"},[pre(0.005,"Piuma (5 g)"),pre(0.2,"Palla (200 g)"),pre(400,"Pianoforte (400 kg)")]));
+  root.appendChild(el("div",{"class":"ctl"},[sh.box,sm.box]));root.appendChild(el("div",{"class":"btns"},[go]));root.appendChild(out);
+  root.appendChild(el("div",{"class":"cap",text:"Senza resistenza dell'aria, rallentato di 3 volte. Cambia la massa: la velocità finale non cambia."}));
+  function draw(){
+    var P=prepCanvas(cv,230),c=P.ctx,W=P.w,H=230;c.font="12px sans-serif";
+    var tt=t===null?0:t,y=h-0.5*G*tt*tt,v=G*tt,Ep=m*G*y,Ek=0.5*m*v*v,Em=m*G*h;
+    var top=24,bot=H-34,sc=(bot-top)/5.2;c.strokeStyle=fg();c.lineWidth=2;c.beginPath();c.moveTo(20,bot);c.lineTo(110,bot);c.stroke();
+    c.lineWidth=1;c.setLineDash([3,4]);c.beginPath();c.moveTo(65,bot);c.lineTo(65,bot-h*sc);c.stroke();c.setLineDash([]);
+    c.fillStyle=COL.pot;c.beginPath();c.arc(65,bot-y*sc-8,8,0,7);c.fill();c.strokeStyle=fg();c.stroke();c.fillStyle=fg();c.textAlign="left";c.fillText("h = "+fmt(h,1)+" m",22,Math.max(14,bot-h*sc-8));
+    var bx=Math.max(125,W*0.3);
+    tanks(c,[{lab:"di quota",val:Ep,col:COL.pot},{lab:"di movimento",val:Ek,col:COL.cin},{lab:"somma",val:Ep+Ek,col:COL.lav}],bx,24,W-bx-8,bot-24,Em);
+    var vf=Math.sqrt(2*G*h);
+    out.innerHTML="Ora: v = <b>"+fmt(v,1)+" m/s</b>. All'arrivo: mgh = <b>"+fmtJ(Em)+" J</b> e v = <b>"+fmt(vf,1)+" m/s</b> ("+fmt(vf*3.6,0)+" km/h), qualunque sia la massa.";
+  }
+  draw();window.addEventListener("resize",draw);
+}
+
+/* ---------- widget: frenata completa (F, spazio, massa) ---------- */
+function wFrenata(root){
+  var v0=50,F=7,m=1000,hist=[],stop=null,x=0,vnow=0,running=false;
+  var cv=el("canvas",{"aria-label":"Auto che frena: forza, spazio e lavoro dei freni"});var out=el("div",{"class":"out"});
+  var sv=slider("Velocità iniziale",20,130,5,v0,"km/h",0,function(v){v0=v;resetRun();});
+  var sf=slider("Forza frenante",2,10,0.5,F,"kN",1,function(v){F=v;resetRun();});
+  var sm=slider("Massa",500,2000,100,m,"kg",0,function(v){m=v;resetRun();});
+  var go=el("button",{type:"button",text:"▶ Frena"});
+  var b50=el("button",{type:"button",text:"50 km/h"}),b100=el("button",{type:"button",text:"100 km/h"}),bw=el("button",{type:"button",text:"100 km/h, strada bagnata"}),bc=el("button",{type:"button",text:"Cancella i confronti"});
+  function preset(v,f){v0=v;F=f;sv.set(v);sf.set(f);resetRun();}
+  b50.onclick=function(){preset(50,7)};b100.onclick=function(){preset(100,7)};bw.onclick=function(){preset(100,3.5)};bc.onclick=function(){hist=[];resetRun();};
+  root.appendChild(cv);root.appendChild(el("div",{"class":"ctl"},[sv.box,sf.box,sm.box]));
+  root.appendChild(el("div",{"class":"btns"},[go,b50,b100,bw,bc]));root.appendChild(out);
+  root.appendChild(el("div",{"class":"cap",html:"Per fermarsi, tutta l'energia cinetica deve diventare lavoro dei freni: F·d = E<sub>k</sub>. A parità di energia, meno spazio vuol dire più forza."}));
+  if(root.dataset.prefill){root.dataset.prefill.split(",").forEach(function(s){var q=s.split(":");hist.push({v:+q[0],F:+q[1]||7,m:1000});});}
+  function Ek0(){return 0.5*m*Math.pow(v0/3.6,2);}
+  function dstop(){return Ek0()/(F*1000);}
+  function resetRun(){if(stop){stop();stop=null;}running=false;x=0;vnow=v0/3.6;draw();}
+  go.onclick=function(){
+    if(stop)stop();x=0;running=true;var tst=m*(v0/3.6)/(F*1000),speed=tst/3,a=F*1000/m,v00=v0/3.6,d=dstop();
+    stop=raf(function(sec){var t=Math.min(tst,sec*speed);x=v00*t-0.5*a*t*t;vnow=Math.max(0,v00-a*t);draw();if(t>=tst){running=false;hist.push({v:v0,F:F,m:m});if(hist.length>4)hist.shift();x=d;vnow=0;draw();return false;}return true;});
+  };
+  function draw(){
+    var P=prepCanvas(cv,235),c=P.ctx,W=P.w,H=235;c.fillStyle=fg();c.strokeStyle=fg();c.font="12px sans-serif";
+    var dmax=dstop();hist.forEach(function(h){dmax=Math.max(dmax,0.5*h.m*Math.pow(h.v/3.6,2)/(h.F*1000));});
+    var L=20,R=W-30,S=(R-L)/(dmax*1.12),road=105;
+    c.beginPath();c.moveTo(L,road);c.lineTo(R+10,road);c.stroke();
+    var step=dmax>300?100:dmax>120?50:dmax>60?20:10;c.textAlign="center";
+    for(var k=0;k<=dmax*1.12;k+=step){c.beginPath();c.moveTo(L+k*S,road);c.lineTo(L+k*S,road+5);c.stroke();c.fillText(k+" m",L+k*S,road+18);}
+    hist.forEach(function(h,i){var d=0.5*h.m*Math.pow(h.v/3.6,2)/(h.F*1000);var xx=L+d*S;c.strokeStyle=COL.lav;c.setLineDash([4,3]);c.beginPath();c.moveTo(xx,road-48);c.lineTo(xx,road+24);c.stroke();c.setLineDash([]);c.fillStyle=COL.lav;c.textAlign="center";c.fillText(h.v+" km/h: "+fmt(d,0)+" m",xx,road+38+(i%2)*14);});
+    c.strokeStyle=fg();c.fillStyle=COL.cin;var cx=L+x*S;c.fillRect(cx-22,road-24,22,18);c.fillStyle=fg();c.beginPath();c.arc(cx-16,road-4,4,0,7);c.arc(cx-5,road-4,4,0,7);c.fill();
+    if(running){c.fillStyle=COL.ter;c.font="bold 11px sans-serif";c.textAlign="left";c.fillText("v = "+fmt(vnow*3.6,0)+" km/h",Math.min(cx+4,R-70),road-34);}
+    var e0=Ek0(),W_=Math.min(e0,F*1000*x),Ek=e0-W_,bx=L,by=165,bw_=R-L,bh=16;
+    function hbar(y,val,col,lab){c.fillStyle="rgba(127,127,127,.25)";c.fillRect(bx,y,bw_,bh);c.fillStyle=col;c.fillRect(bx,y,bw_*val/e0,bh);c.fillStyle=fg();c.textAlign="left";c.font="12px sans-serif";c.fillText(lab+" "+fmt(val/1000,1)+" kJ",bx+4,y+12);}
+    hbar(by-14,Ek,COL.cin,"Energia cinetica rimasta");hbar(by+10,W_,COL.lav,"Lavoro dei freni W = F·x");
+    out.innerHTML="Energia cinetica iniziale: <b>"+fmt(e0/1000,1)+" kJ</b>. Per fermarla: d = E<sub>k</sub>/F = <b>"+fmt(dstop(),1)+" m</b>."+(hist.length?" Le linee blu segnano gli arresti già provati.":"");
+  }
+  resetRun();window.addEventListener("resize",draw);
+}
+
+var W={trasferimenti:wTrasf,freno:wFreno,rimbalzo:wRimbalzo,lavoro:wLavoro,caduta:wCaduta,frenata:wFrenata};
+function boot(){initMcq();document.querySelectorAll(".lw[data-widget]").forEach(function(r){var f=W[r.dataset.widget];if(f&&!r.dataset.ready){r.dataset.ready="1";f(r);}});}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot);else boot();
+})();
+</script>
+<style>
+.vw{border:1px solid var(--bs-border-color,#ccc);border-radius:.6rem;padding:.6rem .8rem .7rem;margin:1.4rem 0}
+.vw svg{width:100%;height:auto;display:block}
+.vw svg text{fill:currentColor}
+@media (max-width:560px){.vw{padding:.4rem .5rem .5rem}}
+.vw .btns{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;margin-top:.5rem}
+.vw button{border:1px solid #2a7f62;background:transparent;color:inherit;border-radius:.4rem;padding:.35rem .9rem;cursor:pointer;font:inherit}
+.vw button:hover{background:rgba(42,127,98,.18)}
+.vw button.on{background:rgba(42,127,98,.3);font-weight:600}
+.vw button.go{background:#2a7f62;color:#fff;font-weight:600;padding:.4rem 1.2rem}
+.vw button.go::before{content:"\25B6\00a0"}
+.vw button.go:hover{background:#226650}
+.vw button:disabled{opacity:.45;cursor:default}
+.vw .hit{cursor:pointer}
+.vw .hit:focus{outline:none}
+.vw .hit:focus-visible{outline:2px solid #2a7f62;outline-offset:2px}
+.vw input[type=range]{accent-color:#2a7f62;flex:1 1 7rem;min-width:6rem}
+.vw label.rng{display:flex;align-items:center;gap:.6rem;flex:1 1 15rem}
+.vw .msgb{min-height:3.2rem;text-align:center;font-weight:500;margin:.7rem 0 .3rem;line-height:1.45}
+.vw .chip{display:inline-block;border-radius:1rem;padding:.05rem .65rem;font-size:.82em;font-weight:600;color:#fff;vertical-align:baseline;white-space:nowrap}
+.vw .good{color:#1D9E75;font-weight:700}
+.vw .bad{color:#D85A30;font-weight:700}
+.vw .sub{display:block;font-weight:400;opacity:.85;margin-top:.15rem}
+.def{margin:.4rem 0;padding:.3rem .8rem;border-left:4px solid #888780}
+.def b{margin-right:.5rem}
+.c-sig{color:#3B6FB6}.c-noi{color:#B97400}.c-rea{color:#1D9E75}.c-res{color:#6D64C8}.c-wh{color:#6b7078}.c-pk{color:#D4537E}.c-br{color:#9C6B3F}
+body.quarto-dark .c-sig{color:#7FAAE0}body.quarto-dark .c-noi{color:#F2B24D}body.quarto-dark .c-res{color:#A59DF0}body.quarto-dark .c-wh{color:#aab0b8}body.quarto-dark .c-br{color:#C79562}
+.cb{border:1px solid var(--bs-border-color,#ccc);border-radius:.6rem;padding:.7rem .9rem .5rem;margin:1.4rem 0}
+.cb .cbt{font-weight:600;margin:0 0 .3rem}
+.cbn{list-style:none;padding:0;margin:.4rem 0 .8rem;font-size:.92rem}
+.cbn li{margin:.25rem 0;line-height:1.4}
+.cbn li b{display:inline-block;width:1.5rem;color:#2a7f62}
+.cb .exercise-cell-output img{max-width:100%;height:auto;display:block;margin:0 auto}
+.cb .try{margin:.2rem 0 .6rem}
+</style>
+<script>
+(function(){
+"use strict";
+var NS="http://www.w3.org/2000/svg";
+var K={sig:"#3B6FB6",noi:"#EF9F27",rea:"#1D9E75",res:"#7F77DD",white:"#8A8F98",pink:"#D4537E",brown:"#9C6B3F",ok:"#1D9E75",bad:"#D85A30"};
+var BETA={white:0,pink:1,brown:2},NAMES=["white","pink","brown"];
+var MINUS="−";
+
+/* ---------- small helpers ---------- */
+function S(tag,at,par,txt){var e=document.createElementNS(NS,tag);for(var k in at)e.setAttribute(k,at[k]);if(txt!==undefined&&txt!==null)e.textContent=txt;if(par)par.appendChild(e);return e;}
+function T(par,x,y,txt,size,o){o=o||{};var e=S("text",{x:x,y:y,"font-size":size||13,"text-anchor":o.a||"start","font-weight":o.w||400},par,txt);if(o.o!==undefined)e.setAttribute("opacity",o.o);if(o.f)e.style.fill=o.f;return e;}
+function E(tag,cls,par,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!==undefined&&txt!==null)e.textContent=txt;if(par)par.appendChild(e);return e;}
+function clear(g){while(g.firstChild)g.removeChild(g.firstChild);}
+function ease(p){return p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;}
+function tween(dur,fn,done){var t0=null,id,dead=false;function st(t){if(dead)return;if(t0===null)t0=t;var p=Math.min(1,(t-t0)/dur);fn(p);if(p<1)id=requestAnimationFrame(st);else if(done)done();}id=requestAnimationFrame(st);return function(){dead=true;cancelAnimationFrame(id);};}
+function isN(root){return root.dataset.n==="1";}
+function mount(root,w,h,label){root.classList.add("vw");var svg=S("svg",{viewBox:"0 0 "+w+" "+h,role:"img","aria-label":label||""},null);root.appendChild(svg);var b=E("div","btns",root);var m=E("p","msgb",root);return{svg:svg,btns:b,msg:m};}
+function button(par,label,fn,cls){var b=E("button",cls||"",par,label);b.type="button";b.onclick=fn;return b;}
+function fmt(x,d){var s=(+x).toFixed(d);return s.replace("-",MINUS);}
+function sgn(x,d){return (x<0?MINUS:"+")+Math.abs(x).toFixed(d);}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+
+/* ---------- random numbers, FFT, noise colours, statistics ---------- */
+function mk(seed){var a=seed>>>0;return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+var seedC=20261121;
+function newRng(){seedC=(seedC*1664525+1013904223)>>>0;return mk((seedC^(Date.now()&0xffffff))>>>0);}
+function gauss(r){var u=1-r(),v=r();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}
+function fft(re,im,inv){var n=re.length,i,j,k,t,len,ang,wr,wi,ur,ui,vr,vi,a,b,nr,bit;
+ for(i=1,j=0;i<n;i++){bit=n>>1;for(;j&bit;bit>>=1)j^=bit;j^=bit;if(i<j){t=re[i];re[i]=re[j];re[j]=t;t=im[i];im[i]=im[j];im[j]=t;}}
+ for(len=2;len<=n;len<<=1){ang=2*Math.PI/len*(inv?1:-1);wr=Math.cos(ang);wi=Math.sin(ang);
+  for(i=0;i<n;i+=len){ur=1;ui=0;for(k=0;k<len/2;k++){a=i+k;b=i+k+len/2;vr=re[b]*ur-im[b]*ui;vi=re[b]*ui+im[b]*ur;re[b]=re[a]-vr;im[b]=im[a]-vi;re[a]+=vr;im[a]+=vi;nr=ur*wr-ui*wi;ui=ur*wi+ui*wr;ur=nr;}}}
+ if(inv)for(i=0;i<n;i++){re[i]/=n;im[i]/=n;}}
+/* noise whose power goes as 1/f^beta, mean 0, std 1 (spectral synthesis) */
+function colourNoise(n,beta,r){var re=new Float64Array(n),im=new Float64Array(n),h=n/2,k,a,x,y,m=0,v=0,i;
+ for(k=1;k<h;k++){a=Math.pow(k,-beta/2);x=gauss(r)*a;y=gauss(r)*a;re[k]=x;im[k]=y;re[n-k]=x;im[n-k]=-y;}
+ re[h]=gauss(r)*Math.pow(h,-beta/2);
+ fft(re,im,true);
+ for(i=0;i<n;i++)m+=re[i];m/=n;for(i=0;i<n;i++){re[i]-=m;v+=re[i]*re[i];}v=Math.sqrt(v/n);for(i=0;i<n;i++)re[i]/=v;
+ return re;}
+function std(a){var m=0,s=0,i;for(i=0;i<a.length;i++)m+=a[i];m/=a.length;for(i=0;i<a.length;i++)s+=(a[i]-m)*(a[i]-m);return Math.sqrt(s/a.length);}
+function r1(a){var n=a.length-1,i,mx=0,my=0,sxy=0,sxx=0,syy=0,dx,dy;for(i=0;i<n;i++){mx+=a[i];my+=a[i+1];}mx/=n;my/=n;for(i=0;i<n;i++){dx=a[i]-mx;dy=a[i+1]-my;sxy+=dx*dy;sxx+=dx*dx;syy+=dy*dy;}return sxy/Math.sqrt(sxx*syy);}
+/* log-binned power spectrum and its slope on log-log axes */
+function spectrum(x){var n=x.length,re=Float64Array.from(x),im=new Float64Array(n),h=n/2,P=[],k,pts=[],lo=1,hi,s,c,fs,i,mx=0,my=0,sxy=0,sxx=0;
+ fft(re,im,false);for(k=1;k<h;k++)P.push((re[k]*re[k]+im[k]*im[k])/n);
+ while(lo<h){hi=Math.max(lo+1,Math.round(lo*1.5));s=0;c=0;fs=0;for(k=lo;k<hi&&k<h;k++){s+=Math.log(P[k-1]);c++;fs+=Math.log(k);}pts.push([fs/c/Math.LN10,s/c/Math.LN10]);lo=hi;}
+ for(i=0;i<pts.length;i++){mx+=pts[i][0];my+=pts[i][1];}mx/=pts.length;my/=pts.length;
+ for(i=0;i<pts.length;i++){sxy+=(pts[i][0]-mx)*(pts[i][1]-my);sxx+=(pts[i][0]-mx)*(pts[i][0]-mx);}
+ return{pts:pts,slope:sxy/sxx,mx:mx,my:my};}
+function gen(c,n,r){return colourNoise(n,BETA[c],r);}
+
+/* ---------- drawing helpers ---------- */
+function pathD(data,x,y,w,h,lo,hi){var n=data.length,d="",i,px,py;for(i=0;i<n;i++){px=x+w*i/(n-1);py=clamp(y+h-(data[i]-lo)/(hi-lo)*h,y,y+h);d+=(i?"L":"M")+px.toFixed(1)+" "+py.toFixed(1);}return d;}
+function frame(par,x,y,w,h){return S("rect",{x:x,y:y,width:w,height:h,rx:6,fill:"currentColor","fill-opacity":.05,stroke:"currentColor","stroke-opacity":.25},par);}
+function hline(par,x1,x2,y,dash,op){return S("line",{x1:x1,y1:y,x2:x2,y2:y,stroke:"currentColor","stroke-width":1,"stroke-dasharray":dash||"4 4",opacity:op===undefined?.45:op},par);}
+function chip(txt,col){return '<span class="chip" style="background:'+col+'">'+txt+'</span>';}
+function colName(c){return c.charAt(0).toUpperCase()+c.slice(1);}
+function cool(t,tau){return 20+58*Math.exp(-t/tau);}
+
+/* ================= 1 - signal + noise = reading ================= */
+function vStrips(root){
+ var n=isN(root),W=n?360:680,H=n?352:328;
+ var m=mount(root,W,H,"Signal plus noise equals reading: three strips that fill in as readings are taken"),s=m.svg;
+ var sx=n?10:84,sw=n?340:380,sh=80,ys=n?[22,130,238]:[10,118,226];
+ var NP=40,sig=[],i,SL=28,SH=82,NLo=-8,NHi=8;
+ for(i=0;i<NP;i++)sig.push(cool(300*i/(NP-1),200));
+ function X(k){return sx+sw*k/(NP-1);}
+ function Y(v,k,lo,hi){return clamp(ys[k]+sh-(v-lo)/(hi-lo)*sh,ys[k]+3,ys[k]+sh-3);}
+ var labs=[["signal",K.sig],["noise",K.noi],["reading",K.rea]];
+ [0,1,2].forEach(function(k){frame(s,sx,ys[k],sw,sh);});
+ labs.forEach(function(L,k){if(n)T(s,sx+4,ys[k]-6,L[0],13,{w:600,f:L[1]});else T(s,4,ys[k]+sh/2+5,L[0],15,{w:600,f:L[1]});});
+ T(s,sx+sw/2,(ys[0]+sh+ys[1])/2+8,"+",24,{a:"middle",o:.7});
+ T(s,sx+sw/2,(ys[1]+sh+ys[2])/2+8,"=",24,{a:"middle",o:.7});
+ hline(s,sx,sx+sw,Y(0,1,NLo,NHi),"3 4",.4);
+ var sd="";for(i=0;i<NP;i++)sd+=(i?"L":"M")+X(i).toFixed(1)+" "+Y(sig[i],0,SL,SH).toFixed(1);
+ S("path",{d:sd,fill:"none",stroke:K.sig,"stroke-width":2.6,"stroke-linecap":"round","stroke-linejoin":"round"},s);
+ var q1=T(s,sx+sw/2,ys[1]+sh/2+10,"?",32,{a:"middle",o:.22}),q2=T(s,sx+sw/2,ys[2]+sh/2+10,"?",32,{a:"middle",o:.22});
+ var gGN=S("g",{},s),gGR=S("g",{},s),gN=S("g",{},s),gR=S("g",{},s);
+ var cur=S("line",{x1:0,y1:ys[0]-2,x2:0,y2:ys[2]+sh+2,stroke:"currentColor","stroke-dasharray":"3 3",opacity:0},s);
+ var r0,r1_,r2;
+ if(n){r0=T(s,10,343,"—",20,{w:600,f:K.sig});r1_=T(s,122,343,"",20,{w:600,f:K.noi});r2=T(s,238,343,"",20,{w:600,f:K.rea});}
+ else{r0=T(s,sx+sw+30,ys[0]+sh/2+10,"—",30,{w:600,f:K.sig});r1_=T(s,sx+sw+30,ys[1]+sh/2+10,"",30,{w:600,f:K.noi});r2=T(s,sx+sw+30,ys[2]+sh/2+10,"",30,{w:600,f:K.rea});}
+ function setRead(k,nzv){var rd=sig[k]+nzv;r0.textContent=fmt(sig[k],1);r1_.textContent=(n?"+ ":"")+(nzv<0?MINUS:(n?"":"+"))+Math.abs(nzv).toFixed(1);r2.textContent=(n?"= ":"")+fmt(rd,1);}
+ var nz=null,busy=false,stop=null,runs=0;
+ var b=button(m.btns,"Take readings",function(){
+  if(busy)return;busy=true;b.disabled=true;
+  var prev=nz,r=newRng(),shown=0,k;nz=[];for(k=0;k<NP;k++)nz.push(2.5*gauss(r));
+  clear(gGN);clear(gGR);clear(gN);clear(gR);q1.setAttribute("opacity",0);q2.setAttribute("opacity",0);
+  if(prev){for(k=0;k<NP;k++){S("circle",{cx:X(k),cy:Y(prev[k],1,NLo,NHi),r:2.6,fill:K.noi,opacity:.25},gGN);S("circle",{cx:X(k),cy:Y(sig[k]+prev[k],2,SL,SH),r:2.6,fill:K.rea,opacity:.25},gGR);}}
+  m.msg.textContent="Signal + noise = reading";cur.setAttribute("opacity",.6);
+  stop=tween(2800,function(p){var c=Math.min(NP,Math.floor(p*NP)+1),last;while(shown<c){k=shown;S("circle",{cx:X(k),cy:Y(nz[k],1,NLo,NHi),r:3.2,fill:K.noi},gN);S("circle",{cx:X(k),cy:Y(sig[k]+nz[k],2,SL,SH),r:3.2,fill:K.rea},gR);shown++;}
+   last=c-1;setRead(last,nz[last]);cur.setAttribute("x1",X(last));cur.setAttribute("x2",X(last));},
+  function(){busy=false;b.disabled=false;runs++;cur.setAttribute("opacity",0);b.textContent="Again";b.className="go";
+   m.msg.innerHTML=runs===1?"Same cup, same signal. Press again: the noise will be new.":"Same signal, different noise, different readings.<span class='sub'>The faint dots are the previous run.</span>";});
+ },"go");
+ m.msg.textContent="The cup cools. That is the signal.";
+}
+
+/* ================= 2 - where is noise ================= */
+function vWhere(root){
+ var n=isN(root),W=n?360:680,TH=n?76:98,CH=n?130:170,H=TH+14+CH;
+ var m=mount(root,W,H,"Five places where noise shows up: tap one to see a sample of it"),s=m.svg;
+ var IT=[
+  {k:"Resistor",c:"white",ttl:"A resistor at rest",chip:"white noise",txt:"Electrons jiggle with heat, so even a resistor doing nothing hisses. Johnson and Nyquist explained it in 1928. Above absolute zero it never stops."},
+  {k:"Pollen",c:"brown",ttl:"A grain of pollen in water",chip:"brown noise",txt:"Invisible molecules kick it around. Each step starts where the last one ended: a random walk. Einstein explained it in 1905."},
+  {k:"Traffic",c:"pink",ttl:"Cars on a motorway",chip:"pink noise, 1/f",txt:"Musha and Higuchi reported in 1976 that the flow of cars on a Japanese expressway swings with a 1/f spectrum at slow time scales. Later checks are fewer and less clear-cut."},
+  {k:"Music",c:"pink",ttl:"The loudness of music",chip:"pink noise, 1/f",txt:"Voss and Clarke found in 1975 that loudness in music and speech, and pitch in music, have a 1/f spectrum: slow and fast swings, all scales at once."},
+  {k:"Nile",c:"pink",ttl:"The floods of the Nile",chip:"long memory",txt:"Hurst studied centuries of flood records: wet years follow wet years, dry follow dry. A river with memory."}
+ ];
+ var gap=10,tw=(W-20-4*gap)/5,x0=10,sel=0,i,tiles=[],seedBase=7;
+ var gBig=S("g",{},s);
+ function tileSeries(c,sd){return gen(c,128,mk(sd));}
+ function drawTile(k){var it=IT[k],x=x0+k*(tw+gap),g=S("g",{"class":"hit",tabindex:0,role:"button","aria-label":it.ttl},s);
+  var rc=S("rect",{x:x,y:0,width:tw,height:TH,rx:8,fill:"currentColor","fill-opacity":.05,stroke:"currentColor","stroke-opacity":.25,"stroke-width":1.5},g);
+  S("path",{d:pathD(tileSeries(it.c,seedBase+k*13),x+6,8,tw-12,TH-34,-3.2,3.2),fill:"none",stroke:K[it.c],"stroke-width":1.6},g);
+  T(g,x+tw/2,TH-9,it.k,n?11:13,{a:"middle",w:500});
+  g.addEventListener("click",function(){choose(k);});g.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();choose(k);}});
+  tiles.push(rc);}
+ for(i=0;i<5;i++)drawTile(i);
+ function big(fresh){clear(gBig);var it=IT[sel],r=fresh?newRng():mk(seedBase+sel*13+1),y0=TH+14;
+  frame(gBig,10,y0,W-20,CH);hline(gBig,10,W-10,y0+CH/2,"3 4",.3);
+  S("path",{d:pathD(gen(it.c,256,r),10,y0,W-20,CH,-3.4,3.4),fill:"none",stroke:K[it.c],"stroke-width":2},gBig);}
+ function info(){var it=IT[sel];m.msg.innerHTML="<b>"+it.ttl+"</b> "+chip(it.chip,K[it.c])+"<span class='sub'>"+it.txt+"</span>";}
+ function choose(k){sel=k;tiles.forEach(function(rc,j){rc.setAttribute("stroke",j===k?"#2a7f62":"currentColor");rc.setAttribute("stroke-opacity",j===k?1:.25);rc.setAttribute("stroke-width",j===k?2.5:1.5);});big(false);info();}
+ button(m.btns,"Another sample",function(){big(true);});
+ choose(0);
+}
+
+/* ================= 3 - how big: sigma ================= */
+function vSigma(root){
+ var n=isN(root),W=n?360:680,H=n?292:312,pad=10,pw=W-2*pad;
+ var m=mount(root,W,H,"The size of the noise, sigma: a series of readings and the histogram they build"),s=m.svg;
+ var sy=8,sh=n?108:118,hy=n?140:152,hh=n?128:132,R=6,B=48,bw=0.25,MG=n?46:60;
+ var r=mk(5),Z=[],i;for(i=0;i<2000;i++)Z.push(gauss(r));
+ var sig=1,M=100;
+ frame(s,pad,sy,pw,sh);frame(s,pad,hy,pw,hh);
+ var gA=S("g",{},s),gB=S("g",{},s);
+ T(s,W/2,hy+hh+17,"reading − true value",12,{a:"middle",o:.7});
+ function YS(v){return clamp(sy+sh/2-v/R*(sh/2),sy,sy+sh);}
+ function XH(v){return pad+pw*(v+R)/(2*R);}
+ function draw(){clear(gA);clear(gB);var k,d="",ser=[];
+  S("rect",{x:pad,y:YS(sig),width:pw,height:YS(-sig)-YS(sig),fill:K.noi,"fill-opacity":.16},gA);
+  hline(gA,pad,pad+pw,YS(0),"4 4",.5);T(gA,pad+pw-6,YS(0)-3,"true",11,{a:"end",o:.7});T(gA,pad+pw-6,YS(0)+11,"value",11,{a:"end",o:.7});
+  for(k=0;k<60;k++)ser.push(sig*Z[k]);
+  S("path",{d:pathD(ser,pad+8,sy,pw-16-MG,sh,-R,R),fill:"none",stroke:K.noi,"stroke-width":1,opacity:.55},gA);
+  for(k=0;k<60;k++)S("circle",{cx:pad+8+(pw-16-MG)*k/59,cy:YS(ser[k]),r:2.8,fill:K.noi},gA);
+  /* histogram */
+  var cnt=[],b,mx=0,inside=0,x1=XH(-sig),x2=XH(sig),peak=M*bw/(sig*Math.sqrt(2*Math.PI));
+  for(b=0;b<B;b++)cnt.push(0);
+  for(k=0;k<M;k++){var v=sig*Z[k];b=Math.floor((v+R)/bw);if(b>=0&&b<B)cnt[b]++;if(Math.abs(Z[k])<=1)inside++;}
+  for(b=0;b<B;b++)mx=Math.max(mx,cnt[b]);
+  var top=Math.max(mx,peak)*1.18,bwp=pw/B;
+  S("rect",{x:x1,y:hy,width:x2-x1,height:hh,fill:K.noi,"fill-opacity":.13},gB);
+  for(b=0;b<B;b++){if(cnt[b]){var hgt=cnt[b]/top*(hh-8);S("rect",{x:pad+b*bwp+.5,y:hy+hh-hgt,width:bwp-1,height:hgt,fill:K.noi,opacity:.9},gB);}}
+  var bd="";for(k=0;k<=120;k++){var xv=-R+2*R*k/120,yv=M*bw*Math.exp(-xv*xv/(2*sig*sig))/(sig*Math.sqrt(2*Math.PI));bd+=(k?"L":"M")+XH(xv).toFixed(1)+" "+(hy+hh-yv/top*(hh-8)).toFixed(1);}
+  S("path",{d:bd,fill:"none",stroke:"currentColor","stroke-width":1.8,opacity:.75},gB);
+  [x1,x2].forEach(function(x){S("line",{x1:x,y1:hy,x2:x,y2:hy+hh,stroke:K.noi,"stroke-width":1.5,"stroke-dasharray":"4 3"},gB);});
+  T(gB,x1-4,hy+14,MINUS+"σ",12,{a:"end",w:600,f:K.noi});T(gB,x2+4,hy+14,"+σ",12,{a:"start",w:600,f:K.noi});
+  m.msg.innerHTML="σ = <b>"+sig.toFixed(1)+"</b> · "+inside+" of "+M+" readings fall within ±σ ("+Math.round(100*inside/M)+"%)<span class='sub'>σ is the typical size of the wobble. About two readings in three stay inside the band.</span>";}
+ var lab=E("label","rng",m.btns);var sp=E("span","",lab);sp.innerHTML="σ ";var inp=E("input","",lab);inp.type="range";inp.min="0.5";inp.max="2";inp.step="0.1";inp.value="1";inp.setAttribute("aria-label","sigma, the size of the noise");
+ inp.addEventListener("input",function(){sig=+inp.value;draw();});
+ var bm=button(m.btns,"Read 100 more",function(){M=Math.min(2000,M+100);if(M>=2000)bm.disabled=true;draw();});
+ draw();
+}
+
+/* ================= 4 - three colours ================= */
+function vColours(root){
+ var n=isN(root),W=n?360:680,H=n?292:214;
+ var m=mount(root,W,H,"Three colours of noise: white, pink and brown, with their memory plot and spectrum"),s=m.svg;
+ var P=n?{se:[10,22,340,96],la:[10,148,160,112],sp:[190,148,160,112],t1:[10,14],t2:[10,140],t3:[190,140]}:{se:[10,34,310,160],la:[352,34,150,160],sp:[532,34,138,160],t1:[10,24],t2:[352,24],t3:[532,24]};
+ var cur="white",smp={},seeds={white:400,pink:400,brown:400},c;
+ NAMES.forEach(function(c){smp[c]=gen(c,512,mk(seeds[c]));});
+ T(s,P.t1[0],P.t1[1],"the noise over time",n?12:13,{w:600,o:.85});T(s,P.t2[0],P.t2[1],"memory: next vs now",n?12:13,{w:600,o:.85});T(s,P.t3[0],P.t3[1],"spectrum: power vs f",n?12:13,{w:600,o:.85});
+ [P.se,P.la,P.sp].forEach(function(p){frame(s,p[0],p[1],p[2],p[3]);});
+ var g=S("g",{},s);
+ var DESC={white:"No memory. Every value is a fresh surprise.",pink:"Some memory. Slow and fast swings, all scales at once.",brown:"Total memory. Each value starts where the last one ended."};
+ var POW={white:"flat: power ∝ 1/f⁰",pink:"power ∝ 1/f",brown:"power ∝ 1/f²"};
+ function draw(){clear(g);var x=smp[cur],col=K[cur],se=P.se,la=P.la,sp=P.sp,k,rr=r1(x),spc=spectrum(x),A=3.4;
+  hline(g,se[0],se[0]+se[2],se[1]+se[3]/2,"3 4",.3);
+  S("path",{d:pathD(x,se[0],se[1],se[2],se[3],-A,A),fill:"none",stroke:col,"stroke-width":1.5},g);
+  /* memory plot */
+  S("line",{x1:la[0],y1:la[1]+la[3],x2:la[0]+la[2],y2:la[1],stroke:"currentColor","stroke-dasharray":"3 3",opacity:.3},g);
+  for(k=0;k<300;k++){S("circle",{cx:la[0]+la[2]*(x[k]+A)/(2*A),cy:la[1]+la[3]-la[3]*(x[k+1]+A)/(2*A),r:n?1.7:2,fill:col,opacity:.55},g);}
+  T(g,la[0]+8,la[1]+16,"r₁ = "+fmt(rr,2),12,{w:600});
+  /* spectrum */
+  var pts=spc.pts,lo=1e9,hi=-1e9,i;for(i=0;i<pts.length;i++){lo=Math.min(lo,pts[i][1]);hi=Math.max(hi,pts[i][1]);}lo-=.3;hi+=.3;
+  var xmax=2.45,px=function(v){return sp[0]+8+(sp[2]-16)*v/xmax;},py=function(v){return sp[1]+sp[3]-8-(sp[3]-16)*(v-lo)/(hi-lo);};
+  var f0=0,f1=xmax,yy0=spc.my+spc.slope*(f0-spc.mx),yy1=spc.my+spc.slope*(f1-spc.mx);
+  S("line",{x1:px(f0),y1:clamp(py(yy0),sp[1]+2,sp[1]+sp[3]-2),x2:px(f1),y2:clamp(py(yy1),sp[1]+2,sp[1]+sp[3]-2),stroke:"currentColor","stroke-width":1.5,"stroke-dasharray":"5 3",opacity:.6},g);
+  for(i=0;i<pts.length;i++)S("circle",{cx:px(pts[i][0]),cy:py(pts[i][1]),r:3.2,fill:col},g);
+  T(g,sp[0]+sp[2]-6,sp[1]+sp[3]-8,"f →",11,{a:"end",o:.7});
+  T(g,sp[0]+8,sp[1]+16,"slope "+fmt(spc.slope,1),12,{w:600});
+  m.msg.innerHTML="<b class='c-"+(cur==="white"?"wh":cur==="pink"?"pk":"br")+"'>"+colName(cur)+"</b> · "+DESC[cur]+"<span class='sub'>r₁ = "+fmt(rr,2)+" · spectrum slope "+fmt(spc.slope,1)+" · "+POW[cur]+"</span>";}
+ var bs=[];
+ NAMES.forEach(function(c){var b=button(m.btns,colName(c),function(){cur=c;bs.forEach(function(x,j){x.className=NAMES[j]===cur?"on":"";});draw();});bs.push(b);});
+ button(m.btns,"New sample",function(){smp[cur]=gen(cur,512,newRng());draw();});
+ bs[0].className="on";draw();
+}
+
+/* ================= 5 - does averaging help ================= */
+var AV=null,NL_=[1,2,4,8,16,32,64,100,128,256];
+function avgErr(){if(AV)return AV;AV={};NAMES.forEach(function(c){var r=mk(99+BETA[c]),L=2048,Kk=48,acc=NL_.map(function(){return{s:0,c:0};}),k,j,o,q,sm,x;
+  for(k=0;k<Kk;k++){x=colourNoise(L,BETA[c],r);NL_.forEach(function(nn,qi){for(o=0;o+nn<=L;o+=nn){sm=0;for(j=0;j<nn;j++)sm+=x[o+j];sm/=nn;acc[qi].s+=sm*sm;acc[qi].c++;}});}
+  AV[c]=acc.map(function(a){return Math.sqrt(a.s/a.c);});});return AV;}
+function vAverage(root){
+ var n=isN(root),W=n?360:680,Y1=n?236:262,H=Y1+44;
+ var m=mount(root,W,H,"Averaging N readings: the error of the average for white, pink and brown noise"),s=m.svg;
+ var X0=n?46:70,X1=W-14,Y0=36,cur="white",AVv=avgErr();
+ var xl=function(N){return X0+(X1-X0)*Math.log10(N)/Math.log10(256);},yl=function(v){return Y1-(Y1-Y0)*(Math.log10(v)-Math.log10(.04))/(Math.log10(1.25)-Math.log10(.04));};
+ frame(s,X0,Y0,X1-X0,Y1-Y0);
+ [1,4,16,64,256].forEach(function(N){S("line",{x1:xl(N),y1:Y1,x2:xl(N),y2:Y1+4,stroke:"currentColor",opacity:.5},s);T(s,xl(N),Y1+17,String(N),12,{a:"middle",o:.75});});
+ [1,.5,.2,.1,.05].forEach(function(v){hline(s,X0,X1,yl(v),"2 4",.25);T(s,X0-6,yl(v)+4,String(v),12,{a:"end",o:.75});});
+ T(s,(X0+X1)/2,Y1+36,"N = readings averaged",12,{a:"middle",o:.8});
+ T(s,10,20,n?"error of the average (1 = one reading)":"error of the average (1 = the error of one reading)",12,{o:.85});
+ S("line",{x1:xl(1),y1:yl(1),x2:xl(256),y2:yl(1/16),stroke:"currentColor","stroke-width":1.6,"stroke-dasharray":"6 4",opacity:.7},s);
+ T(s,xl(256)-6,yl(1/16)-8,"1/√N",12,{a:"end",o:.8});
+ var g=S("g",{},s);
+ function draw(){clear(g);var e=AVv[cur],col=K[cur],k,d="",i100=NL_.indexOf(100);
+  for(k=0;k<NL_.length;k++)d+=(k?"L":"M")+xl(NL_[k]).toFixed(1)+" "+yl(e[k]).toFixed(1);
+  S("path",{d:d,fill:"none",stroke:col,"stroke-width":2.6},g);
+  for(k=0;k<NL_.length;k++)S("circle",{cx:xl(NL_[k]),cy:yl(e[k]),r:3.6,fill:col},g);
+  S("circle",{cx:xl(100),cy:yl(e[i100]),r:8,fill:"none",stroke:col,"stroke-width":2},g);
+  var lx=xl(100),ly=yl(e[i100])-14;T(g,lx,ly<Y0+14?yl(e[i100])+26:ly,"N = 100: ×"+e[i100].toFixed(2),12,{a:"middle",w:600,f:col});
+  var tail={white:"Each reading forgets the last, so the wobbles cancel: 100 readings, ten times better.",pink:"Slow swings survive the average, so the gain is small.",brown:"The average wanders with the noise. Averaging barely helps."}[cur];
+  m.msg.innerHTML="<b class='c-"+(cur==="white"?"wh":cur==="pink"?"pk":"br")+"'>"+colName(cur)+"</b> · 100 readings shrink the error to ×"+e[i100].toFixed(2)+"<span class='sub'>"+tail+"</span>";}
+ var bs=[];NAMES.forEach(function(c){var b=button(m.btns,colName(c),function(){cur=c;bs.forEach(function(x,j){x.className=NAMES[j]===cur?"on":"";});draw();});bs.push(b);});
+ bs[0].className="on";draw();
+}
+
+/* ================= 6 - residuals ================= */
+function vResid(root){
+ var n=isN(root),W=n?360:680,H=n?326:344,pad=10,pw=W-2*pad;
+ var m=mount(root,W,H,"Residuals: the leftovers when a model is taken away from the readings"),s=m.svg;
+ var ty=n?8:10,th=n?160:176,by=n?200:224,bh=n?90:96,NP=30,TL=22,TH_=82,RL=-10,RH=10;
+ var r=mk(12),z=[],i,tt=[];for(i=0;i<NP;i++){z.push(2.5*gauss(r));tt.push(300*i/(NP-1));}
+ var rd=[];for(i=0;i<NP;i++)rd.push(cool(tt[i],200)+z[i]);
+ frame(s,pad,ty,pw,th);frame(s,pad,by,pw,bh);
+ T(s,pad+8,ty+17,"readings and model",12,{w:600,o:.85});T(s,pad+8,by+17,"residual = reading − model",12,{w:600,f:K.res});
+ hline(s,pad,pad+pw,by+bh/2,"3 4",.45);
+ var X=function(k){return pad+10+(pw-20)*k/(NP-1);},YT=function(v){return clamp(ty+th-6-(v-TL)/(TH_-TL)*(th-30),ty+22,ty+th-3);},YB=function(v){return clamp(by+bh/2-v/RH*(bh/2-4),by+3,by+bh-3);};
+ var gC=S("g",{},s),gS=S("g",{},s),gR=S("g",{},s),gD=S("g",{},s);
+ var tau=200,stage=0,fall=0,stick=0,busy=false,wrong=false;
+ function resid(k){return rd[k]-cool(tt[k],tau);}
+ function draw(){clear(gC);clear(gS);clear(gR);clear(gD);var k,d="",res=[];
+  for(k=0;k<NP;k++)d+=(k?"L":"M")+X(k).toFixed(1)+" "+YT(cool(tt[k],tau)).toFixed(1);
+  /* smooth curve on a finer grid */
+  d="";for(k=0;k<=120;k++){var tq=300*k/120;d+=(k?"L":"M")+(pad+10+(pw-20)*k/120).toFixed(1)+" "+YT(cool(tq,tau)).toFixed(1);}
+  S("path",{d:d,fill:"none",stroke:K.sig,"stroke-width":2.6},gC);
+  for(k=0;k<NP;k++){res.push(resid(k));
+   if(stick>0)S("line",{x1:X(k),y1:YT(rd[k]),x2:X(k),y2:YT(rd[k])+(YT(cool(tt[k],tau))-YT(rd[k]))*stick,stroke:K.res,"stroke-width":2},gS);
+   S("circle",{cx:X(k),cy:YT(rd[k]),r:3.4,fill:K.rea},gD);
+   if(fall>0){var yd=YT(rd[k])+(YB(res[k])-YT(rd[k]))*fall;S("line",{x1:X(k),y1:fall>=1?YB(0):yd,x2:X(k),y2:yd,stroke:K.res,"stroke-width":fall>=1?2:0,opacity:.6},gR);S("circle",{cx:X(k),cy:yd,r:3.2,fill:K.res},gR);}}
+  return res;}
+ function note(res){if(stage<1){m.msg.innerHTML="Model: Newton's law of cooling, τ = "+Math.round(tau)+" s.<span class='sub'>The blue curve runs through the readings. What is left over?</span>";return;}
+  var rr=r1(res),bad=rr>0.4;
+  m.msg.innerHTML=(bad?"<span class='bad'>✗ A pattern.</span> The leftovers still remember each other: r₁ = "+fmt(rr,2)+"<span class='sub'>The model is missing something.</span>":"<span class='good'>✓ No pattern.</span> The leftovers look like pure noise: r₁ = "+fmt(rr,2)+"<span class='sub'>The model has taken all the signal. What remains is the noise.</span>");}
+ var b1=button(m.btns,"Show leftovers",function(){if(busy||stage>0)return;busy=true;b1.disabled=true;
+  tween(900,function(p){stick=ease(p);draw();},function(){tween(1000,function(p){fall=ease(p);draw();},function(){stage=1;busy=false;stick=1;fall=1;note(draw());b2.style.display="";});});},"go");
+ var b2=button(m.btns,"Try a wrong model",function(){if(busy)return;busy=true;var from=tau,to=wrong?200:300;
+  tween(900,function(p){tau=from+(to-from)*ease(p);draw();},function(){tau=to;wrong=!wrong;b2.textContent=wrong?"Back to the right model":"Try a wrong model";busy=false;note(draw());});});
+ b2.style.display="none";
+ note(draw());
+}
+
+/* ================= 7 - play: guess the colour ================= */
+function vGuess(root){
+ var n=isN(root),W=n?360:680,H=n?186:224,pad=10;
+ var m=mount(root,W,H,"Game: look at a noise and guess its colour"),s=m.svg;
+ frame(s,pad,8,W-2*pad,H-16);hline(s,pad,W-pad,H/2,"3 4",.3);
+ var g=S("g",{},s),order=shuffle(NAMES.concat(NAMES)),i=0,score=0,done=false,cur,data;
+ var bs={},bn;
+ NAMES.forEach(function(c){bs[c]=button(m.btns,colName(c),function(){pick(c);});});
+ bn=button(m.btns,"Next",function(){next();},"go");bn.style.display="none";
+ function setPick(on){NAMES.forEach(function(c){bs[c].disabled=!on;bs[c].className="";});}
+ function show(){clear(g);cur=order[i];data=colourNoise(256,BETA[cur],newRng());
+  S("path",{d:pathD(data,pad+4,8,W-2*pad-8,H-16,-3.6,3.6),fill:"none",stroke:"currentColor","stroke-width":1.6},g);
+  setPick(true);bn.style.display="none";done=false;
+  m.msg.innerHTML="Round "+(i+1)+" of 6 · What colour is this noise?<span class='sub'>white: fresh surprises · pink: slow and fast swings · brown: it wanders</span>";}
+ function pick(c){if(done)return;done=true;var ok=c===cur,rr=r1(data),sl=spectrum(data).slope;if(ok)score++;setPick(false);bs[cur].className="on";
+  S("path",{d:pathD(data,pad+4,8,W-2*pad-8,H-16,-3.6,3.6),fill:"none",stroke:K[cur],"stroke-width":2},g);
+  m.msg.innerHTML=(ok?"<span class='good'>✓ Yes, "+cur+".</span>":"<span class='bad'>✗ It was "+cur+".</span>")+"<span class='sub'>r₁ = "+fmt(rr,2)+" · spectrum slope "+fmt(sl,1)+"</span>";
+  bn.textContent=i===5?"Score":"Next";bn.style.display="";}
+ function next(){if(i<5){i++;show();return;}
+  m.msg.innerHTML="Score: <b>"+score+" / 6</b><span class='sub'>"+(score>=5?"You can see the colour of noise.":score>=3?"Not bad. Look at how far each value is from the last one.":"Tricky! The memory plot and the spectrum tell colours apart even when your eye cannot.")+"</span>";
+  bn.textContent="Play again";bn.onclick=function(){order=shuffle(NAMES.concat(NAMES));i=0;score=0;bn.onclick=function(){next();};bn.textContent="Next";show();};}
+ show();
+}
+
+/* ================= 8 - play: pattern or noise ================= */
+function vLeft(root){
+ var n=isN(root),W=n?360:680,H=n?190:228,pad=10,NP=60;
+ var m=mount(root,W,H,"Game: look at the leftovers of a fit and decide if the model is fine"),s=m.svg;
+ frame(s,pad,8,W-2*pad,H-16);var mid=8+(H-16)/2;hline(s,pad,W-pad,mid,"3 4",.5);
+ T(s,pad+8,24,"residual = reading − model",12,{w:600,f:K.res});
+ var g=S("g",{},s),KIND=["fine","fine","fine","bow","wave","drift"],order=shuffle(KIND),i=0,score=0,done=false,cur,data;
+ var bF=button(m.btns,"The model is fine",function(){pick(true);}),bM=button(m.btns,"Something is missing",function(){pick(false);}),bn=button(m.btns,"Next",function(){next();},"go");bn.style.display="none";
+ function make(kind){var tries=0,x,k,r,c=(NP-1)/2;
+  do{r=newRng();x=[];for(k=0;k<NP;k++){var base=gauss(r),pat=0;
+    if(kind==="bow")pat=2.6*(1-Math.pow((k-c)/c,2))-1.1;else if(kind==="wave")pat=1.7*Math.sin(2*Math.PI*k/38);else if(kind==="drift")pat=-1.8+3.6*k/(NP-1);
+    x.push(base+pat);}
+   tries++;}while(tries<60&&(kind==="fine"?Math.abs(r1(x))>0.25:r1(x)<0.5));
+  return x;}
+ var Y=function(v){return clamp(mid-v/4.2*((H-16)/2),12,H-12);},XX=function(k){return pad+10+(W-2*pad-20)*k/(NP-1);};
+ function show(){clear(g);cur=order[i];data=make(cur);done=false;
+  for(var k=0;k<NP;k++){S("line",{x1:XX(k),y1:mid,x2:XX(k),y2:Y(data[k]),stroke:K.res,"stroke-width":1.6,opacity:.55},g);S("circle",{cx:XX(k),cy:Y(data[k]),r:3.2,fill:K.res},g);}
+  bF.disabled=false;bM.disabled=false;bn.style.display="none";
+  m.msg.innerHTML="Round "+(i+1)+" of 6 · Is the model fine?<span class='sub'>Fine = the leftovers look like noise. Missing = they show a pattern.</span>";}
+ function pick(sayFine){if(done)return;done=true;var isFine=cur==="fine",ok=sayFine===isFine,rr=r1(data);if(ok)score++;bF.disabled=true;bM.disabled=true;
+  var why=isFine?"pure noise, no pattern":cur==="bow"?"an arch: the model misses a bend":cur==="wave"?"a slow wave: the model misses an oscillation":"a drift: the model misses a trend";
+  m.msg.innerHTML=(ok?"<span class='good'>✓ Right.</span>":"<span class='bad'>✗ Not this time.</span>")+" These leftovers are "+why+".<span class='sub'>r₁ = "+fmt(rr,2)+(isFine?" · close to 0":" · the leftovers remember")+"</span>";
+  bn.textContent=i===5?"Score":"Next";bn.style.display="";}
+ function next(){if(i<5){i++;show();return;}
+  m.msg.innerHTML="Score: <b>"+score+" / 6</b><span class='sub'>"+(score>=5?"You read leftovers like a scientist.":"A pattern with r₁ well above 0 means the model still has something to say.")+"</span>";
+  bn.textContent="Play again";bn.onclick=function(){order=shuffle(KIND);i=0;score=0;bn.onclick=function(){next();};bn.textContent="Next";show();};}
+ show();
+}
+
+var V={strips:vStrips,where:vWhere,sigma:vSigma,colours:vColours,average:vAverage,resid:vResid,guess:vGuess,left:vLeft};
+function build(r){var f=V[r.dataset.vw];if(!f)return;r.innerHTML="";r.dataset.n=(r.clientWidth||window.innerWidth)<520?"1":"0";f(r);}
+function boot(){document.querySelectorAll(".vw[data-vw]").forEach(function(r){if(!r.dataset.ready){r.dataset.ready="1";build(r);}});}
+var rz=null;window.addEventListener("resize",function(){clearTimeout(rz);rz=setTimeout(function(){document.querySelectorAll(".vw[data-vw]").forEach(function(r){var nn=(r.clientWidth||window.innerWidth)<520?"1":"0";if(r.dataset.n!==nn)build(r);});},250);});
+window.NoiseVW={gauss:gauss,cool:cool,colourNoise:colourNoise,spectrum:spectrum,r1:r1,std:std,mk:mk,avgErr:avgErr};
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot);else boot();
+})();
+</script>
+<script type="module" src="../../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="../../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="Noise – Prof.&nbsp;Rosi">
+<meta property="og:description" content="Noise in pictures. Why every measurement wobbles, and what the wobble can tell you.">
+<meta property="og:image" content="https://ermesfrosi.it/img/icon-512.png">
+<meta property="og:site_name" content="Prof.&nbsp;Rosi">
+<meta property="og:image:height" content="512">
+<meta property="og:image:width" content="512">
+<meta name="twitter:title" content="Noise – Prof.&nbsp;Rosi">
+<meta name="twitter:description" content="Noise in pictures. Why every measurement wobbles, and what the wobble can tell you.">
+<meta name="twitter:image" content="https://ermesfrosi.it/img/icon-512.png">
+<meta name="twitter:image-height" content="512">
+<meta name="twitter:image-width" content="512">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const queryPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const darkModeDefault = queryPrefersDark.matches;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    queryPrefersDark.addEventListener("change", e => {
+      if(window.localStorage.getItem("quarto-color-scheme") !== null)
+        return;
+      const alternate = e.matches
+      toggleColorMode(alternate);
+      localAlternateSentinel = e.matches ? 'alternate' : 'default'; // this is used alongside local storage!
+      toggleGiscusIfUsed(alternate, darkModeDefault);
+    });
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Prof.&nbsp;Rosi</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../didattica/index.html"> 
+<span class="menu-text">Didattica</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../edtech/index.html"> 
+<span class="menu-text">EdTech</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../toolbox/index.html"> 
+<span class="menu-text">Toolbox</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../stories/index.html"> 
+<span class="menu-text">Stories</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../chi-sono.html"> 
+<span class="menu-text">Chi sono</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/ermes-f-rosi/"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#quick-quiz" id="toc-quick-quiz" class="nav-link active" data-scroll-target="#quick-quiz">Quick quiz</a></li>
+  <li><a href="#what-is-noise" id="toc-what-is-noise" class="nav-link" data-scroll-target="#what-is-noise">What is noise?</a>
+  <ul class="collapse">
+  <li><a href="#now-in-python" id="toc-now-in-python" class="nav-link" data-scroll-target="#now-in-python">Now in Python</a></li>
+  </ul></li>
+  <li><a href="#where-do-we-find-noise" id="toc-where-do-we-find-noise" class="nav-link" data-scroll-target="#where-do-we-find-noise">Where do we find noise?</a>
+  <ul class="collapse">
+  <li><a href="#why-study-it" id="toc-why-study-it" class="nav-link" data-scroll-target="#why-study-it">Why study it?</a></li>
+  </ul></li>
+  <li><a href="#how-big-is-it" id="toc-how-big-is-it" class="nav-link" data-scroll-target="#how-big-is-it">How big is it?</a></li>
+  <li><a href="#does-it-remember" id="toc-does-it-remember" class="nav-link" data-scroll-target="#does-it-remember">Does it remember?</a></li>
+  <li><a href="#does-averaging-help" id="toc-does-averaging-help" class="nav-link" data-scroll-target="#does-averaging-help">Does averaging help?</a></li>
+  <li><a href="#what-is-left-over" id="toc-what-is-left-over" class="nav-link" data-scroll-target="#what-is-left-over">What is left over?</a></li>
+  <li><a href="#play" id="toc-play" class="nav-link" data-scroll-target="#play">Play</a>
+  <ul class="collapse">
+  <li><a href="#guess-the-colour" id="toc-guess-the-colour" class="nav-link" data-scroll-target="#guess-the-colour">Guess the colour</a></li>
+  <li><a href="#pattern-or-noise" id="toc-pattern-or-noise" class="nav-link" data-scroll-target="#pattern-or-noise">Pattern or noise?</a></li>
+  </ul></li>
+  <li><a href="#check-yourself" id="toc-check-yourself" class="nav-link" data-scroll-target="#check-yourself">Check yourself</a></li>
+  <li><a href="#use-it-on-real-data" id="toc-use-it-on-real-data" class="nav-link" data-scroll-target="#use-it-on-real-data">Use it on real data</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Noise</h1>
+<p class="subtitle lead">Every measurement wobbles. Learn to read the wobble.</p>
+</div>
+
+<div>
+  <div class="description">
+    Noise in pictures. Why every measurement wobbles, and what the wobble can tell you.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="quick-quiz" class="level2">
+<h2 class="anchored" data-anchor-id="quick-quiz">Quick quiz</h2>
+<p>Answer by instinct. You will see at once if you were right.</p>
+<div class="mcq-set">
+<div class="mcq">
+<p>A thermometer sits in a bath held at exactly 50.0 °C. It reads 50.2, then 49.9, then 50.1. Why?</p>
+<ul>
+<li>the bath is drifting</li>
+<li>the thermometer is broken</li>
+<li>✓ every reading wobbles around the true value</li>
+</ul>
+<div class="sol">
+<p>Always. Even a perfect thermometer wobbles. The wobble is called <strong>noise</strong>, and, as you will see, it has a shape.</p>
+</div>
+</div>
+<div class="mcq">
+<p>You average <span class="math inline">\(100\)</span> readings. How much smaller is the error of the average than the error of one reading?</p>
+<ul>
+<li>the same</li>
+<li><span class="math inline">\(2\)</span> times smaller</li>
+<li>✓ <span class="math inline">\(10\)</span> times smaller</li>
+</ul>
+<div class="sol">
+<p><span class="math inline">\(\sqrt{100} = 10\)</span>. But this works only if each wobble forgets the one before. Not all noise does. That is the plot of this chapter.</p>
+</div>
+</div>
+<div class="mcq">
+<p>A walker takes <span class="math inline">\(100\)</span> random steps, left or right, one metre each. Where does he typically end up?</p>
+<ul>
+<li><span class="math inline">\(100\ \text{m}\)</span> away</li>
+<li>✓ about <span class="math inline">\(10\ \text{m}\)</span> away</li>
+<li>back at the start</li>
+</ul>
+<div class="sol">
+<p>Random steps neither cancel nor add up: <span class="math inline">\(\sqrt{100} = 10\)</span>. A path made of random steps is a noise that <strong>remembers</strong>. It has a colour: brown.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="what-is-noise" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-noise">What is noise?</h2>
+<div class="vw" data-vw="strips"></div>
+<p class="def" style="border-color:#3B6FB6"><b class="c-sig">Signal</b> what the cup really does.</p>
+<p class="def" style="border-color:#EF9F27"><b class="c-noi">Noise</b> the part of a reading you cannot predict.</p>
+<p class="def" style="border-color:#1D9E75"><b class="c-rea">Reading</b> what the thermometer shows: signal + noise.</p>
+<section id="now-in-python" class="level3">
+<h3 class="anchored" data-anchor-id="now-in-python">Now in Python</h3>
+<div class="cb">
+<p class="cbt">Make a reading</p>
+<p class="try">Press <b>Run Code</b>. Then change <code>sigma</code> to <code>6</code> and run again.</p>
+<ul class="cbn">
+<li><b>·</b><code>from noiselab import *</code> brings in this chapter's toolbox. Nothing to learn here.</li>
+<li><b>①</b><code>seconds(300, every=5)</code> one time for each reading: 0, 5, 10 … 300 s.</li>
+<li><b>②</b><code>cooling(t)</code> the true temperature at those times. The blue strip.</li>
+<li><b>③</b><code>white(…, sigma=2.5)</code> one random wobble per reading. <code>sigma</code> sets how big. The amber strip.</li>
+<li><b>④</b><code>signal + noise</code> what the thermometer shows. The green strip.</li>
+</ul>
+<div>
+<div id="pyodide-1" class="exercise-cell">
+
+</div>
+<script type="pyodide-1-contents">
+eyJhdHRyIjp7ImF1dG9ydW4iOmZhbHNlLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlLCJmaWctZHBpIjoiMTEwIn0sImNvZGUiOiJmcm9tIG5vaXNlbGFiIGltcG9ydCAqICAgICAgICAgICAgICAgIyB0aGUgdG9vbGJveFxuXG50ID0gc2Vjb25kcygzMDAsIGV2ZXJ5PTUpICAgICAgICAgICAgIyDikaAgdGhlIHRpbWVzIChzKVxuc2lnbmFsID0gY29vbGluZyh0KSAgICAgICAgICAgICAgICAgICMg4pGhIHRoZSB0cnV0aCwgbm8gd29iYmxlXG5ub2lzZSA9IHdoaXRlKGxlbih0KSwgc2lnbWE9Mi41KSAgICAgIyDikaIgdGhlIHdvYmJsZVxucmVhZGluZyA9IHNpZ25hbCArIG5vaXNlICAgICAgICAgICAgICMg4pGjIHdoYXQgeW91IHNlZVxuc2hvd19zdHJpcHModCwgc2lnbmFsLCBub2lzZSwgcmVhZGluZykifQ==
+</script>
+</div>
+</div>
+</section>
+</section>
+<section id="where-do-we-find-noise" class="level2">
+<h2 class="anchored" data-anchor-id="where-do-we-find-noise">Where do we find noise?</h2>
+<div class="vw" data-vw="where"></div>
+<p>Noise is not a flaw of cheap instruments. It comes with the world.</p>
+<ul>
+<li><strong>Heat.</strong> Above absolute zero atoms never stop moving, so every resistor, sensor and eye jitters a little.</li>
+<li><strong>Everything else.</strong> Rounding, draughts, a trembling hand, a passing truck.</li>
+</ul>
+<p>You can lower noise. You can never reach zero.</p>
+<section id="why-study-it" class="level3">
+<h3 class="anchored" data-anchor-id="why-study-it">Why study it?</h3>
+<ol type="1">
+<li>It tells you <strong>how far to trust a number</strong>.</li>
+<li>It tells you <strong>whether averaging will help</strong>.</li>
+<li>Its <strong>shape is a fingerprint</strong> of what produced it.</li>
+</ol>
+</section>
+</section>
+<section id="how-big-is-it" class="level2">
+<h2 class="anchored" data-anchor-id="how-big-is-it">How big is it?</h2>
+<div class="vw" data-vw="sigma"></div>
+<p class="def" style="border-color:#EF9F27"><b class="c-noi">σ (sigma)</b> the typical size of the wobble. About two readings in three fall within ±σ.</p>
+<div class="cb">
+<p class="cbt">Measure σ</p>
+<p class="try">Press <b>Run Code</b>. Then change <code>0.5</code> to <code>2</code>. Does the printed σ follow?</p>
+<ul class="cbn">
+<li><b>①</b><code>white(1000, sigma=0.5)</code> a thousand readings of pure noise, built with σ = 0.5.</li>
+<li><b>②</b><code>noise.std()</code> σ <em>measured</em> from the numbers: the standard deviation.</li>
+<li><b>③</b><code>show_noise(noise)</code> the series on the left, the histogram on the right.</li>
+</ul>
+<div>
+<div id="pyodide-2" class="exercise-cell">
+
+</div>
+<script type="pyodide-2-contents">
+eyJhdHRyIjp7ImF1dG9ydW4iOmZhbHNlLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlLCJmaWctZHBpIjoiMTEwIn0sImNvZGUiOiJmcm9tIG5vaXNlbGFiIGltcG9ydCAqICAgICAgICAgICAgICAgIyB0aGUgdG9vbGJveFxuXG5ub2lzZSA9IHdoaXRlKDEwMDAsIHNpZ21hPTAuNSkgICAgICAgIyDikaAgcHVyZSBub2lzZVxuc2lnbWEgPSBub2lzZS5zdGQoKSAgICAgICAgICAgICAgICAgICMg4pGhIGl0cyBzaXplLCBtZWFzdXJlZFxucHJpbnQoXCJzaWdtYSA9XCIsIHJvdW5kKHNpZ21hLCAyKSlcbnNob3dfbm9pc2Uobm9pc2UpICAgICAgICAgICAgICAgICAgICAjIOKRoiBzZXJpZXMgKyBoaXN0b2dyYW0ifQ==
+</script>
+</div>
+</div>
+</section>
+<section id="does-it-remember" class="level2">
+<h2 class="anchored" data-anchor-id="does-it-remember">Does it remember?</h2>
+<p>Some noise forgets at once. Some does not.</p>
+<div class="vw" data-vw="colours"></div>
+<p class="def" style="border-color:#888780"><b>Memory (r₁)</b> how well one value predicts the next. 0 = none, 1 = total.</p>
+<p class="def" style="border-color:#888780"><b>Frequency (f)</b> how many times per second a wobble repeats. Slow wobbles: low f. Fast ones: high f.</p>
+<p class="def" style="border-color:#888780"><b>Spectrum</b> how much wobble there is at each f. For pink noise, power ∝ 1/f: the slower the swing, the stronger it is.</p>
+<div class="cb">
+<p class="cbt">Hear the colours</p>
+<p class="try">Press <b>Run Code</b>. Then replace <code>pink</code> with <code>white</code>, then with <code>brown</code>, and compare the numbers.</p>
+<ul class="cbn">
+<li><b>①</b><code>pink(512)</code> 512 values of pink noise. Try <code>white</code> or <code>brown</code>.</li>
+<li><b>②</b><code>memory(x)</code> r₁: does a value predict the next? Near 0 for white, near 1 for brown.</li>
+<li><b>③</b><code>slope(x)</code> how steeply the spectrum falls: about 0 for white, −1 for pink, −2 for brown.</li>
+<li><b>④</b><code>show_colour(x)</code> the noise, the memory plot and the spectrum.</li>
+</ul>
+<div>
+<div id="pyodide-3" class="exercise-cell">
+
+</div>
+<script type="pyodide-3-contents">
+eyJhdHRyIjp7ImF1dG9ydW4iOmZhbHNlLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlLCJmaWctZHBpIjoiMTEwIn0sImNvZGUiOiJmcm9tIG5vaXNlbGFiIGltcG9ydCAqICAgICAgICAgICAgICAgIyB0aGUgdG9vbGJveFxuXG54ID0gcGluayg1MTIpICAgICAgICAgICAgICAgICAgICAgICAgIyDikaAgdHJ5IHdoaXRlIG9yIGJyb3duXG5yID0gbWVtb3J5KHgpICAgICAgICAgICAgICAgICAgICAgICAgIyDikaEgbmVhciAwLCBvciBuZWFyIDE/XG5zID0gc2xvcGUoeCkgICAgICAgICAgICAgICAgICAgICAgICAgIyDikaIgMCwgLTEgb3IgLTI/XG5wcmludChcIm1lbW9yeSByMSA9XCIsIHJvdW5kKHIsIDIpLCBcIiAgc2xvcGUgPVwiLCByb3VuZChzLCAxKSlcbnNob3dfY29sb3VyKHgpICAgICAgICAgICAgICAgICAgICAgICAjIOKRoyB0aGUgdGhyZWUgZ3JhcGhzIn0=
+</script>
+</div>
+</div>
+</section>
+<section id="does-averaging-help" class="level2">
+<h2 class="anchored" data-anchor-id="does-averaging-help">Does averaging help?</h2>
+<div class="vw" data-vw="average"></div>
+<p>Averaging cancels a wobble only if the next one is new.</p>
+</section>
+<section id="what-is-left-over" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-left-over">What is left over?</h2>
+<p>In real data you do not know the signal. You fit a model, then look at what the model leaves behind.</p>
+<div class="vw" data-vw="resid"></div>
+<p class="def" style="border-color:#7F77DD"><b class="c-res">Residual</b> reading − model, point by point.</p>
+<p>If the model is right, the residuals are pure noise. If they show a pattern, they remember: r₁ is far from 0, and the model is missing something.</p>
+<div class="cb">
+<p class="cbt">Judge a model</p>
+<p class="try">Press <b>Run Code</b>. Then change <code>tau=200</code> in the model to <code>300</code> and run again.</p>
+<ul class="cbn">
+<li><b>·</b>the data: the true curve plus new noise at every run.</li>
+<li><b>①</b><code>cooling(t, tau=200)</code> the model: Newton's law, with cooling time τ = 200 s.</li>
+<li><b>②</b><code>reading - model</code> the residuals: what is left once the model is taken away.</li>
+<li><b>③</b><code>memory(residual)</code> r₁ of the leftovers: near 0 means no pattern.</li>
+</ul>
+<div>
+<div id="pyodide-4" class="exercise-cell">
+
+</div>
+<script type="pyodide-4-contents">
+eyJhdHRyIjp7ImF1dG9ydW4iOmZhbHNlLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlLCJmaWctZHBpIjoiMTEwIn0sImNvZGUiOiJmcm9tIG5vaXNlbGFiIGltcG9ydCAqICAgICAgICAgICAgICAgIyB0aGUgdG9vbGJveFxuXG50ID0gc2Vjb25kcygzMDAsIGV2ZXJ5PTEwKVxucmVhZGluZyA9IGNvb2xpbmcodCwgdGF1PTIwMCkgKyB3aGl0ZShsZW4odCksIHNpZ21hPTEuNSlcblxubW9kZWwgPSBjb29saW5nKHQsIHRhdT0yMDApICAgICAgICAgICMg4pGgIHRyeSB0YXU9MzAwXG5yZXNpZHVhbCA9IHJlYWRpbmcgLSBtb2RlbCAgICAgICAgICAgIyDikaEgdGhlIGxlZnRvdmVyc1xuciA9IG1lbW9yeShyZXNpZHVhbCkgICAgICAgICAgICAgICAgICMg4pGiIG5lYXIgMCA9IG5vIHBhdHRlcm5cbnByaW50KFwicjEgb2YgdGhlIGxlZnRvdmVycyA9XCIsIHJvdW5kKHIsIDIpKVxuc2hvd19yZXNpZHVhbHModCwgcmVhZGluZywgbW9kZWwpIn0=
+</script>
+</div>
+</div>
+<p>Noise is what no model can explain. Its memory tells you whether the model is done.</p>
+</section>
+<section id="play" class="level2">
+<h2 class="anchored" data-anchor-id="play">Play</h2>
+<section id="guess-the-colour" class="level3">
+<h3 class="anchored" data-anchor-id="guess-the-colour">Guess the colour</h3>
+<div class="vw" data-vw="guess"></div>
+</section>
+<section id="pattern-or-noise" class="level3">
+<h3 class="anchored" data-anchor-id="pattern-or-noise">Pattern or noise?</h3>
+<div class="vw" data-vw="left"></div>
+</section>
+</section>
+<section id="check-yourself" class="level2">
+<h2 class="anchored" data-anchor-id="check-yourself">Check yourself</h2>
+<div class="mcq-set">
+<div class="mcq">
+<p>White noise with σ = 2 °C. You average 25 readings. The error of the average is about:</p>
+<ul>
+<li>2 °C</li>
+<li>1 °C</li>
+<li>✓ 0.4 °C</li>
+<li>0.08 °C</li>
+</ul>
+<div class="sol">
+<p>σ/√N = 2/5 = 0.4 °C. Only for noise with no memory.</p>
+</div>
+</div>
+<div class="mcq">
+<p>You average 100 readings of brown noise. Compared with one reading, the error is:</p>
+<ul>
+<li>100 times smaller</li>
+<li>10 times smaller</li>
+<li>2 times smaller</li>
+<li>✓ about the same</li>
+</ul>
+<div class="sol">
+<p>Brown noise remembers everything: the average wanders with it.</p>
+</div>
+</div>
+<div class="mcq">
+<p>A noise has r₁ ≈ 0. This means:</p>
+<ul>
+<li>each value equals the next</li>
+<li>σ is zero</li>
+<li>✓ each value tells you nothing about the next</li>
+<li>the model is wrong</li>
+</ul>
+<div class="sol">
+<p>r₁ measures memory: 0 none, 1 total.</p>
+</div>
+</div>
+<div class="mcq">
+<p>The residuals of a fit form a clear arch. Most likely:</p>
+<ul>
+<li>the thermometer is broken</li>
+<li>✓ the model is missing something</li>
+<li>σ is too big</li>
+<li>bad luck</li>
+</ul>
+<div class="sol">
+<p>Noise has no shape. A shape in the leftovers is signal the model failed to take.</p>
+</div>
+</div>
+<div class="mcq">
+<p>On log-log axes, the spectrum of pink noise has slope:</p>
+<ul>
+<li>0</li>
+<li>✓ −1</li>
+<li>−2</li>
+<li>+1</li>
+</ul>
+<div class="sol">
+<p>Power ∝ 1/f.&nbsp;White: slope 0. Brown: slope −2.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="use-it-on-real-data" class="level2">
+<h2 class="anchored" data-anchor-id="use-it-on-real-data">Use it on real data</h2>
+<p>Now take a real measurement. <b>Snake Lab</b> reads your data and runs these steps for you: noise, memory, fit, residuals.</p>
+<p><a class="btn btn-primary" href="../../toolbox/python.html">Open Snake Lab →</a></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Words
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>signal</strong>: what the system really does.</li>
+<li><strong>noise</strong>: the part of a reading you cannot predict.</li>
+<li><strong>σ (sigma)</strong>: the typical size of the noise (its standard deviation).</li>
+<li><strong>memory (r₁)</strong>: how well one value predicts the next. 0 none, 1 total.</li>
+<li><strong>frequency (f)</strong>: how many times per second a wobble repeats.</li>
+<li><strong>spectrum</strong>: how much noise there is at each frequency.</li>
+<li><strong>white, pink, brown noise</strong>: spectrum flat, 1/f, 1/f². Memory: none, some, total.</li>
+<li><strong>model</strong>: a curve that describes the signal, like Newton’s law of cooling.</li>
+<li><strong>τ (tau)</strong>: the cooling time of the tea. Larger means slower cooling.</li>
+<li><strong>residual</strong>: reading minus model, point by point.</li>
+<li><strong>χ² (chi-squared)</strong>: residuals measured in units of σ. Around 1, the model fits. You will meet it in Snake Lab.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>About this page
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The drawings are plain JavaScript. The code boxes run Python inside your browser (Pyodide, WebAssembly): nothing you type is sent to a server. The first time, they download tens of MB of Python files from a public content delivery network (jsDelivr), which can see your IP address; later visits use the browser cache. The data are simulated.</p>
+</div>
+</div>
+</div>
+
+
+<script type="pyodide-data">
+eyJvcHRpb25zIjp7ImVudiI6eyJQTE9UTFlfUkVOREVSRVIiOiJwbG90bHlfbWltZXR5cGUifSwiaW5kZXhVUkwiOiJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvcHlvZGlkZS92MC4yOC4xL2Z1bGwvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsicHlvZGlkZV9odHRwIiwibWljcm9waXAiLCJpcHl0aG9uIiwibnVtcHkiLCJtYXRwbG90bGliIl19fQ==
+</script>
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJweW9kaWRlLTQiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl80ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS00LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtNC1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzQgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzQsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTMiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8zID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0zLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMy1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzMgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzMsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTIiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8yID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0yLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMi1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzIgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzIsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTEiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8xID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0xLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMS1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzEgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzEsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLXByZWx1ZGUiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJweW9kaWRlT2pzID0ge1xuICBjb25zdCB7XG4gICAgUHlvZGlkZUV2YWx1YXRvcixcbiAgICBQeW9kaWRlRW52aXJvbm1lbnRNYW5hZ2VyLFxuICAgIHNldHVwUHl0aG9uLFxuICAgIHN0YXJ0UHlvZGlkZVdvcmtlcixcbiAgICBiNjREZWNvZGUsXG4gICAgY29sbGFwc2VQYXRoLFxuICB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcblxuICBjb25zdCBzdGF0dXNDb250YWluZXIgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcImV4ZXJjaXNlLWxvYWRpbmctc3RhdHVzXCIpO1xuICBjb25zdCBpbmRpY2F0b3JDb250YWluZXIgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcImV4ZXJjaXNlLWxvYWRpbmctaW5kaWNhdG9yXCIpO1xuICBpbmRpY2F0b3JDb250YWluZXIuY2xhc3NMaXN0LnJlbW92ZShcImQtbm9uZVwiKTtcblxuICBsZXQgc3RhdHVzVGV4dCA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJkaXZcIilcbiAgc3RhdHVzVGV4dC5jbGFzc0xpc3QgPSBcImV4ZXJjaXNlLWxvYWRpbmctZGV0YWlsc1wiO1xuICBzdGF0dXNUZXh0ID0gc3RhdHVzQ29udGFpbmVyLmFwcGVuZENoaWxkKHN0YXR1c1RleHQpO1xuICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYEluaXRpYWxpc2VgO1xuXG4gIC8vIEhvaXN0IGluZGljYXRvciBvdXQgZnJvbSBmaW5hbCBzbGlkZSB3aGVuIHJ1bm5pbmcgdW5kZXIgcmV2ZWFsXG4gIGNvbnN0IHJldmVhbFN0YXR1cyA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoXCIucmV2ZWFsIC5leGVyY2lzZS1sb2FkaW5nLWluZGljYXRvclwiKTtcbiAgaWYgKHJldmVhbFN0YXR1cykge1xuICAgIHJldmVhbFN0YXR1cy5yZW1vdmUoKTtcbiAgICBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKFwiLnJldmVhbCA+IC5zbGlkZXNcIikuYXBwZW5kQ2hpbGQocmV2ZWFsU3RhdHVzKTtcbiAgfVxuXG4gIC8vIE1ha2UgYW55IHJldmVhbCBzbGlkZXMgd2l0aCBsaXZlIGNlbGxzIHNjcm9sbGFibGVcbiAgZG9jdW1lbnQucXVlcnlTZWxlY3RvckFsbChcIi5yZXZlYWwgLmV4ZXJjaXNlLWNlbGxcIikuZm9yRWFjaCgoZWwpID0+IHtcbiAgICBlbC5jbG9zZXN0KCdzZWN0aW9uLnNsaWRlJykuY2xhc3NMaXN0LmFkZChcInNjcm9sbGFibGVcIik7XG4gIH0pXG5cbiAgLy8gUHlvZGlkZSBzdXBwbGVtZW50YWwgZGF0YSBhbmQgb3B0aW9uc1xuICBjb25zdCBkYXRhQ29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJweW9kaWRlLWRhdGFcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBkYXRhID0gSlNPTi5wYXJzZShiNjREZWNvZGUoZGF0YUNvbnRlbnQpKTtcblxuICAvLyBHcmFiIGxpc3Qgb2YgcmVzb3VyY2VzIHRvIGJlIGRvd25sb2FkZWRcbiAgY29uc3QgZmlsZXNDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInZmcy1maWxlXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgZmlsZXMgPSBKU09OLnBhcnNlKGI2NERlY29kZShmaWxlc0NvbnRlbnQpKTtcblxuICBsZXQgcHlvZGlkZVByb21pc2UgPSAoYXN5bmMgKCkgPT4ge1xuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgUHlvZGlkZWA7XG4gICAgY29uc3QgcHlvZGlkZSA9IGF3YWl0IHN0YXJ0UHlvZGlkZVdvcmtlcihkYXRhLm9wdGlvbnMpO1xuXG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBwYWNrYWdlOiBtaWNyb3BpcGA7XG4gICAgYXdhaXQgcHlvZGlkZS5sb2FkUGFja2FnZShcIm1pY3JvcGlwXCIpO1xuICAgIGNvbnN0IG1pY3JvcGlwID0gYXdhaXQgcHlvZGlkZS5weWltcG9ydChcIm1pY3JvcGlwXCIpO1xuICAgIGF3YWl0IGRhdGEucGFja2FnZXMucGtncy5tYXAoKHBrZykgPT4gKCkgPT4ge1xuICAgICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBwYWNrYWdlOiAke3BrZ31gO1xuICAgICAgcmV0dXJuIG1pY3JvcGlwLmluc3RhbGwocGtnKTtcbiAgICB9KS5yZWR1Y2UoKGN1ciwgbmV4dCkgPT4gY3VyLnRoZW4obmV4dCksIFByb21pc2UucmVzb2x2ZSgpKTtcbiAgICBhd2FpdCBtaWNyb3BpcC5kZXN0cm95KCk7XG5cbiAgICAvLyBEb3dubG9hZCBhbmQgaW5zdGFsbCByZXNvdXJjZXNcbiAgICBhd2FpdCBmaWxlcy5tYXAoKGZpbGUpID0+IGFzeW5jICgpID0+IHtcbiAgICAgIGNvbnN0IG5hbWUgPSBmaWxlLnN1YnN0cmluZyhmaWxlLmxhc3RJbmRleE9mKCcvJykgKyAxKTtcbiAgICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgcmVzb3VyY2U6ICR7bmFtZX1gO1xuICAgICAgY29uc3QgcmVzcG9uc2UgPSBhd2FpdCBmZXRjaChmaWxlKTtcbiAgICAgIGlmICghcmVzcG9uc2Uub2spIHtcbiAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBDYW4ndCBkb3dubG9hZCBcXGAke2ZpbGV9XFxgLiBFcnJvciAke3Jlc3BvbnNlLnN0YXR1c306IFwiJHtyZXNwb25zZS5zdGF0dXNUZXh0fVwiLmApO1xuICAgICAgfVxuICAgICAgY29uc3QgZGF0YSA9IGF3YWl0IHJlc3BvbnNlLmFycmF5QnVmZmVyKCk7XG5cbiAgICAgIC8vIFN0b3JlIFVSTHMgaW4gdGhlIGN3ZCB3aXRob3V0IGFueSBzdWJkaXJlY3Rvcnkgc3RydWN0dXJlXG4gICAgICBpZiAoZmlsZS5pbmNsdWRlcyhcIjovL1wiKSkge1xuICAgICAgICBmaWxlID0gbmFtZTtcbiAgICAgIH1cblxuICAgICAgLy8gQ29sbGFwc2UgaGlnaGVyIGRpcmVjdG9yeSBzdHJ1Y3R1cmVcbiAgICAgIGZpbGUgPSBjb2xsYXBzZVBhdGgoZmlsZSk7XG5cbiAgICAgIC8vIENyZWF0ZSBkaXJlY3RvcnkgdHJlZSwgaWdub3JpbmcgXCJkaXJlY3RvcnkgZXhpc3RzXCIgVkZTIGVycm9yc1xuICAgICAgY29uc3QgcGFydHMgPSBmaWxlLnNwbGl0KCcvJykuc2xpY2UoMCwgLTEpO1xuICAgICAgbGV0IHBhdGggPSAnJztcbiAgICAgIHdoaWxlIChwYXJ0cy5sZW5ndGggPiAwKSB7XG4gICAgICAgIHBhdGggKz0gcGFydHMuc2hpZnQoKSArICcvJztcbiAgICAgICAgdHJ5IHtcbiAgICAgICAgICBhd2FpdCBweW9kaWRlLkZTLm1rZGlyKHBhdGgpO1xuICAgICAgICB9IGNhdGNoIChlKSB7XG4gICAgICAgICAgaWYgKGUubmFtZSAhPT0gXCJFcnJub0Vycm9yXCIpIHRocm93IGU7XG4gICAgICAgICAgaWYgKGUuZXJybm8gIT09IDIwKSB7XG4gICAgICAgICAgICBjb25zdCBlcnJvclRleHRQdHIgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuX3N0cmVycm9yKGUuZXJybm8pO1xuICAgICAgICAgICAgY29uc3QgZXJyb3JUZXh0ID0gYXdhaXQgcHlvZGlkZS5fbW9kdWxlLlVURjhUb1N0cmluZyhlcnJvclRleHRQdHIpO1xuICAgICAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBGaWxlc3lzdGVtIEVycm9yICR7ZS5lcnJub30gXCIke2Vycm9yVGV4dH1cIi5gKTtcbiAgICAgICAgICB9XG4gICAgICAgIH1cbiAgICAgIH1cblxuICAgICAgLy8gV3JpdGUgdGhpcyBmaWxlIHRvIHRoZSBWRlNcbiAgICAgIHRyeSB7XG4gICAgICAgIHJldHVybiBhd2FpdCBweW9kaWRlLkZTLndyaXRlRmlsZShmaWxlLCBuZXcgVWludDhBcnJheShkYXRhKSk7XG4gICAgICB9IGNhdGNoIChlKSB7XG4gICAgICAgIGlmIChlLm5hbWUgIT09IFwiRXJybm9FcnJvclwiKSB0aHJvdyBlO1xuICAgICAgICBjb25zdCBlcnJvclRleHRQdHIgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuX3N0cmVycm9yKGUuZXJybm8pO1xuICAgICAgICBjb25zdCBlcnJvclRleHQgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuVVRGOFRvU3RyaW5nKGVycm9yVGV4dFB0cik7XG4gICAgICAgIHRocm93IG5ldyBFcnJvcihgRmlsZXN5c3RlbSBFcnJvciAke2UuZXJybm99IFwiJHtlcnJvclRleHR9XCIuYCk7XG4gICAgICB9XG4gICAgfSkucmVkdWNlKChjdXIsIG5leHQpID0+IGN1ci50aGVuKG5leHQpLCBQcm9taXNlLnJlc29sdmUoKSk7XG5cbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYFB5b2RpZGUgZW52aXJvbm1lbnQgc2V0dXBgO1xuICAgIGF3YWl0IHNldHVwUHl0aG9uKHB5b2RpZGUpO1xuXG4gICAgc3RhdHVzVGV4dC5yZW1vdmUoKTtcbiAgICBpZiAoc3RhdHVzQ29udGFpbmVyLmNoaWxkcmVuLmxlbmd0aCA9PSAwKSB7XG4gICAgICBzdGF0dXNDb250YWluZXIucGFyZW50Tm9kZS5yZW1vdmUoKTtcbiAgICB9XG4gICAgcmV0dXJuIHB5b2RpZGU7XG4gIH0pKCkuY2F0Y2goKGVycikgPT4ge1xuICAgIHN0YXR1c1RleHQuc3R5bGUuY29sb3IgPSBcInZhcigtLWV4ZXJjaXNlLWVkaXRvci1obC1lciwgI0FEMDAwMClcIjtcbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gZXJyLm1lc3NhZ2U7XG4gICAgLy9pbmRpY2F0b3JDb250YWluZXIucXVlcnlTZWxlY3RvcihcIi5zcGlubmVyLWdyb3dcIikuY2xhc3NMaXN0LmFkZChcImQtbm9uZVwiKTtcbiAgICB0aHJvdyBlcnI7XG4gIH0pO1xuXG4gIC8vIEtlZXAgdHJhY2sgb2YgaW5pdGlhbCBPSlMgYmxvY2sgcmVuZGVyXG4gIGNvbnN0IHJlbmRlcmVkT2pzID0ge307XG5cbiAgY29uc3QgcHJvY2VzcyA9IGFzeW5jIChjb250ZXh0LCBpbnB1dHMpID0+IHtcbiAgICBjb25zdCBweW9kaWRlID0gYXdhaXQgcHlvZGlkZVByb21pc2U7XG4gICAgY29uc3QgZXZhbHVhdG9yID0gbmV3IFB5b2RpZGVFdmFsdWF0b3IocHlvZGlkZSwgY29udGV4dCk7XG4gICAgYXdhaXQgZXZhbHVhdG9yLnByb2Nlc3MoaW5wdXRzKTtcbiAgICByZXR1cm4gZXZhbHVhdG9yLmNvbnRhaW5lcjtcbiAgfVxuXG4gIHJldHVybiB7XG4gICAgcHlvZGlkZVByb21pc2UsXG4gICAgcmVuZGVyZWRPanMsXG4gICAgcHJvY2VzcyxcbiAgfTtcbn1cbiJ9XX0=
+</script>
+<div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
+<div id="exercise-loading-status" class="d-flex gap-2">
+
+</div>
+<div class="spinner-grow spinner-grow-sm">
+
+</div>
+</div>
+<script type="vfs-file">
+WyJub2lzZWxhYi5weSJd
+</script>
+</section>
+
+</main> <!-- /main -->
+<!-- Easter egg: il titolo "Prof. Rosi" nella navbar porta al Libro (sezione ancora in costruzione, non linkata nel menu) -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var meta = document.querySelector('meta[name="quarto:offset"]');
+  var offset = meta ? meta.getAttribute("content") : "";
+  var brand = document.querySelector(".navbar-brand");
+  if (brand) brand.setAttribute("href", offset + "libro/index.html");
+});
+</script>
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W119
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../../libro/noise";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "../..";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/ermesfrosi\.it");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

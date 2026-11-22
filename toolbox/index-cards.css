@@ -263,3 +263,28 @@
 @keyframes tb-gh { 0%, 10% { transform: translateX(0); } 22% { transform: translateX(-27.6px); } 38% { transform: translateX(-68px); } 50%, 100% { transform: translateX(0); } }
 @keyframes tb-gz { 0%, 2% { opacity: 0; transform: scale(.3); } 6% { opacity: 1; transform: scale(1.4); } 10%, 40% { opacity: 1; transform: scale(1); } 44% { transform: scale(1.5); } 50%, 100% { opacity: 1; transform: scale(1); } }
 @keyframes tb-gt { 0%, 51% { opacity: 0; transform: translate(36.20px, 28.48px) rotate(63.2deg); } 52% { opacity: 1; transform: translate(36.20px, 28.48px) rotate(63.2deg); } 56.75% { opacity: 1; transform: translate(42.15px, 38.77px) rotate(56.0deg); } 61.5% { opacity: 1; transform: translate(48.10px, 46.12px) rotate(44.7deg); } 66.25% { opacity: 1; transform: translate(54.05px, 50.53px) rotate(26.3deg); } 71% { opacity: 1; transform: translate(60.00px, 52.00px) rotate(0.0deg); } 75.75% { opacity: 1; transform: translate(65.95px, 50.53px) rotate(-26.3deg); } 80.5% { opacity: 1; transform: translate(71.90px, 46.12px) rotate(-44.7deg); } 85.25% { opacity: 1; transform: translate(77.85px, 38.77px) rotate(-56.0deg); } 90% { opacity: 1; transform: translate(83.80px, 28.48px) rotate(-63.2deg); } 93%, 100% { opacity: 0; transform: translate(83.80px, 28.48px) rotate(-63.2deg); } }
+
+/* Colours: mosaic of tiles, a selection ring hops between three tiles and the hex label follows */
+.cl-pv { --p: calc(1.45rem + 3px); display: flex; flex-direction: column; align-items: center; gap: .55rem; }
+.cl-g { position: relative; display: grid; grid-template-columns: repeat(6, 1.45rem); grid-auto-rows: 1.45rem; gap: 3px; }
+.cl-g i { border-radius: 3px; }
+.cl-sel { position: absolute; left: 0; top: 0; width: 1.45rem; height: 1.45rem; box-sizing: border-box; border: 2.5px solid var(--pv-fg);
+  border-radius: 4px; box-shadow: 0 0 0 1.5px var(--pv-bg); transform: translate(var(--p), var(--p)); }
+.cl-hx { position: relative; width: 8.4rem; height: 1.45rem; font: 600 .92rem/1.45rem ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+.cl-hx span { position: absolute; left: 0; right: 0; text-align: center; opacity: 0; }
+.cl-hx span::before { content: ""; display: inline-block; width: .8rem; height: .8rem; margin-right: .45rem; border-radius: 3px; background: var(--c); vertical-align: -.08rem; }
+.cl-hx .h1 { opacity: 1; }
+@media (prefers-reduced-motion: no-preference) {
+  .cl-sel { animation: cl-sel 9s ease-in-out infinite; }
+  .cl-hx span { animation: 9s steps(1, end) infinite; }
+  .cl-hx .h1 { animation-name: cl-h1; } .cl-hx .h2 { animation-name: cl-h2; } .cl-hx .h3 { animation-name: cl-h3; }
+}
+@keyframes cl-sel {
+  0%, 28% { transform: translate(var(--p), var(--p)); }
+  36%, 61% { transform: translate(calc(3 * var(--p)), 0); }
+  69%, 94% { transform: translate(calc(4 * var(--p)), calc(2 * var(--p))); }
+  100% { transform: translate(var(--p), var(--p)); }
+}
+@keyframes cl-h1 { 0% { opacity: 1; } 33% { opacity: 0; } 100% { opacity: 0; } }
+@keyframes cl-h2 { 0% { opacity: 0; } 33% { opacity: 1; } 66% { opacity: 0; } 100% { opacity: 0; } }
+@keyframes cl-h3 { 0% { opacity: 0; } 66% { opacity: 1; } 100% { opacity: 1; } }
