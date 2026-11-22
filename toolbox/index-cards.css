@@ -273,11 +273,11 @@
 .cl-hx { position: relative; width: 8.4rem; height: 1.45rem; font: 600 .92rem/1.45rem ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
 .cl-hx span { position: absolute; left: 0; right: 0; text-align: center; opacity: 0; }
 .cl-hx span::before { content: ""; display: inline-block; width: .8rem; height: .8rem; margin-right: .45rem; border-radius: 3px; background: var(--c); vertical-align: -.08rem; }
-.cl-hx .h1 { opacity: 1; }
+.cl-hx .cl-a { opacity: 1; }
 @media (prefers-reduced-motion: no-preference) {
   .cl-sel { animation: cl-sel 9s ease-in-out infinite; }
   .cl-hx span { animation: 9s steps(1, end) infinite; }
-  .cl-hx .h1 { animation-name: cl-h1; } .cl-hx .h2 { animation-name: cl-h2; } .cl-hx .h3 { animation-name: cl-h3; }
+  .cl-hx .cl-a { animation-name: cl-h1; } .cl-hx .cl-b { animation-name: cl-h2; } .cl-hx .cl-c { animation-name: cl-h3; }
 }
 @keyframes cl-sel {
   0%, 28% { transform: translate(var(--p), var(--p)); }
