@@ -17,14 +17,13 @@ const store = {
 /* ---------- state ---------- */
 const state = {
   dec: store.get("calc-dec", "."),           // decimal separator shown in results
-  pref: store.get("calc-pref", "exact"),      // exact | mixed | decimal | sci
+  pick: null,                                 // one-off form chosen with a chip: { plain, f } (valid for that result only)
   angle: store.get("calc-angle", "deg"),      // deg | rad (for sin, cos, tan and their inverses)
   ans: null,                                  // last committed value
   committed: null,                            // value currently shown after "="
   live: null,                                 // value of the expression being typed
   history: [],                                // [{ latex, value }]
 };
-if (!["exact", "mixed", "decimal", "sci"].includes(state.pref)) state.pref = "exact";
 if (state.dec !== "," && state.dec !== ".") state.dec = ".";
 if (state.angle !== "rad") state.angle = "deg";
 
@@ -104,8 +103,10 @@ const FORMAT_LABEL = {
   sci: () => "Standard form",
 };
 
-function pickForm(d) {
-  let f = state.pref;
+/* The fraction is always shown when the result is one. A chip changes the form of the
+   current result only: the next calculation goes back to the fraction. */
+function pickForm(d, own = false) {
+  let f = own && state.pick && state.pick.plain === d.plain ? state.pick.f : "exact";
   if (f === "mixed" && !d.mixed) f = "exact";
   if (f === "exact" && d.kind === "approx") f = "decimal";
   return f;
@@ -122,7 +123,7 @@ function renderFormats(d) {
   const box = $("formats");
   box.textContent = "";
   if (!d) return;
-  const shown = pickForm(d);
+  const shown = pickForm(d, true);
   const options = ["exact", ...(d.mixed ? ["mixed"] : []), "decimal", "sci"];
   for (const f of options) {
     const b = document.createElement("button");
@@ -131,7 +132,7 @@ function renderFormats(d) {
     b.setAttribute("aria-pressed", String(f === shown));
     if (f === "exact" && d.kind === "approx") { b.disabled = true; b.title = "This number is not a fraction"; b.textContent = "Fraction"; }
     b.addEventListener("pointerdown", (e) => e.preventDefault());
-    b.addEventListener("click", () => { state.pref = f; store.set("calc-pref", f); refresh(); });
+    b.addEventListener("click", () => { state.pick = { plain: d.plain, f }; refresh(); });
     box.appendChild(b);
   }
 }
@@ -153,7 +154,7 @@ function refresh({ error = null, fresh = false } = {}) {
     return;
   }
   const d = describe(value, { dec: state.dec });
-  const f = pickForm(d);
+  const f = pickForm(d, true);
   const out = formLatex(d, f);
   const html = (out.approx ? "<span class='ML__text' style='opacity:.6'>≈&nbsp;</span>" : "") + markup(out.latex);
   main.innerHTML = html;
