@@ -20,7 +20,7 @@ button{font:inherit;color:inherit;background:transparent;border:.5px solid var(-
 button:active{transform:scale(.98)}
 .seg button.on{border-color:var(--fg);font-weight:500}
 .cmp{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:.5px solid var(--line);padding:8px 0}
-.cmpg{display:grid;grid-template-columns:1fr 1fr 26px;gap:10px;align-items:start}
+.cmpg{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) 26px;gap:10px;align-items:start}
 .cell .sw{height:44px;border-radius:8px;border:.5px solid var(--line)}
 .cell .sw.empty{border-style:dashed;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--mut)}
 .cell .t{font-size:12px;margin-top:4px;display:flex;justify-content:space-between;gap:6px}
@@ -90,6 +90,35 @@ input[type=range]{width:100%}
 .k3t b{font-size:24px}
 .cyl{width:160px;height:150px}
 }
+.cap{font-size:11px;color:var(--mut);margin-bottom:3px}
+.cmpg.one{grid-template-columns:minmax(0,1fr) 26px}
+.one .cap{display:none}
+.one .cell{display:flex;gap:14px;align-items:center}
+.one .cell .sw{width:56px;height:56px;flex:none}
+.one .cell .t{display:block;margin:0;font-size:inherit;min-width:0}
+.one .cell .t b{font-size:19px;font-weight:500;display:block}
+.one .cell .n{font-size:14px;display:block}
+#bWb.on{border-color:var(--fg);font-weight:500}
+.ico{width:46px;height:40px;padding:0;display:inline-flex;align-items:center;justify-content:center}
+.vb{display:inline-flex;align-items:center;gap:7px}
+.chips{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;margin:14px 0 0;align-items:start}
+.chip .sq{aspect-ratio:1/1;width:100%;border-radius:12px;border:1px solid var(--line)}
+.chip .sq.empty{border-style:dashed;display:flex;align-items:center;justify-content:center;text-align:center;padding:8px;font-size:13px;color:var(--mut)}
+.chip .lb{margin-top:8px;line-height:1.25}
+.chip .lb b{display:block;font-size:20px;font-weight:500}
+.chip .lb .n{display:block;font-size:14px;color:var(--mut);white-space:normal;overflow-wrap:anywhere}
+.chips.one .cap{display:none}
+.spec{display:none;font-size:14px;align-self:center}
+.chips.one .spec{display:block}
+.spec div{display:flex;justify-content:space-between;gap:8px;padding:7px 0;border-bottom:.5px solid var(--line)}
+.spec span{color:var(--mut)}.spec b{font-weight:500}
+.de{font-size:13px;color:var(--mut);margin-top:10px;min-height:0}
+.mini{position:fixed;top:0;left:0;right:0;z-index:7;background:var(--bg);border-bottom:.5px solid var(--line)}
+.mi{max-width:640px;margin:0 auto;padding:6px 14px;display:flex;align-items:center;gap:8px}
+.ms{width:34px;height:34px;border-radius:8px;border:.5px solid var(--line);flex:none}
+.mt{margin-left:4px;min-width:0}.mt b{font-size:16px;font-weight:500;margin-right:8px}.mt .n{font-size:13px;color:var(--mut)}
+@media (min-width:900px){.mini{display:none!important}}
+.k3k{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--acc);font-weight:500;margin-bottom:6px}
 </style>
 </head>
 <body>
@@ -100,7 +129,7 @@ input[type=range]{width:100%}
 </header>
 
 <a class="k3d" href="lch.html">
-<div class="k3t"><b>Scopri la matematica dei colori</b><small>Dal codice hex alle coordinate cilindriche: muovi un vettore in 3D e guarda come nasce ogni colore.</small><span class="go">Apri il cilindro →</span></div>
+<div class="k3t"><span class="k3k">Geometria dei colori</span><b>Scopri il cilindro magico</b><small>Un codice hex non è solo una sigla: è un punto dentro un cilindro. L’altezza è la Lightness, il raggio la Chroma, l’angolo la Hue. Muovi il vettore e guarda nascere il colore.</small><span class="go">Entra nel cilindro →</span></div>
 <div class="cyl" aria-hidden="true"><div class="dk d3"><i></i></div><div class="dk d2"><i></i></div><div class="dk d1"><i></i></div></div>
 </a>
 
@@ -108,32 +137,28 @@ input[type=range]{width:100%}
 <aside class="as">
 <h2>Il colore che hai davanti</h2>
 <div class="row">
-<button id="bPhoto">Foto</button>
+<button id="bPhoto" class="ico" aria-label="Foto" title="Foto"><svg viewBox="0 0 16 16" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M15 12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h1.172a3 3 0 0 0 2.12-.879l.83-.828A1 1 0 0 1 6.827 3h2.344a1 1 0 0 1 .707.293l.828.828A3 3 0 0 0 12.828 5H14a1 1 0 0 1 1 1v6zM2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2z"/><path d="M8 11a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5zm0 1a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM3 6.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z"/></svg></button>
 <button id="bWb">Punto bianco</button>
 <input type="text" id="hx" placeholder="#3fa34d" maxlength="7" aria-label="Codice hex" class="mono">
 <button id="ip" class="ib" aria-label="Come si usa" aria-expanded="false">i</button>
 </div>
 <input type="file" id="f" accept="image/*" style="display:none">
-<div id="photoInfo" class="note" hidden>
-<div>Foto: tocca un punto per misurarlo. Punto bianco: prima tocca un foglio bianco o grigio nella stessa foto, così tolgo la dominante di colore della luce.</div>
-<div id="photoNote"></div>
-</div>
+<div id="photoInfo" class="note" hidden><div>Foto: tocca un punto per misurarne il colore. La fotocamera e la luce ambiente alterano i colori: se nella foto c'è un foglio bianco o grigio, premi Punto bianco e toccalo, poi misura. Le misure si correggono da sole.</div><div style="margin-top:6px">La foto resta sul tuo dispositivo: viene usata solo per misurare il colore, non viene caricata né salvata.</div></div>
+<div id="photoNote" class="note"></div>
 <canvas id="cv"></canvas>
 
-<div class="cmp">
-<div class="cmpg">
-<div class="cell"><div id="uSw" class="sw empty">il tuo colore</div><div class="t"><b id="uHex" class="mono">—</b><span id="uNm" class="n"></span></div></div>
-<div class="cell"><div id="cSw" class="sw empty">tessera scelta</div><div class="t"><b id="cHex" class="mono">—</b><span id="cNm" class="n"></span></div></div>
-<button id="ib" class="ib" aria-label="Dettagli del confronto" aria-expanded="false">i</button>
+<div id="cmpg" class="chips one">
+<div class="chip" id="cellU" style="display:none"><div class="cap">Il tuo colore</div><div id="uSw" class="sq"></div><div class="lb"><b id="uHex" class="mono">—</b><span id="uNm" class="n"></span></div></div>
+<div class="chip" id="cellC"><div class="cap">Tessera scelta</div><div id="cSw" class="sq empty"></div><div class="lb"><b id="cHex" class="mono">—</b><span id="cNm" class="n"></span></div></div>
+<div id="spec" class="spec"></div>
 </div>
-<div id="de" class="de" hidden></div>
-</div>
+<div id="de" class="de"></div>
 </aside>
 
 <section class="ex">
 <h2>Non hai una foto? Esplora i colori</h2>
 <div class="tb">
-<div class="seg row" style="gap:6px"><button id="v2" class="on">Tinta × luce</button><button id="v1">Luce × croma</button></div>
+<div class="seg row" style="gap:6px"><button id="v2" class="on vb" title="Hue × Lightness" aria-label="Hue × Lightness"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><rect x="1" y="1" width="4" height="4" rx=".8" fill="#E8C547"/><rect x="6" y="1" width="4" height="4" rx=".8" fill="#8FDC9A"/><rect x="11" y="1" width="4" height="4" rx=".8" fill="#7CCFE8"/><rect x="1" y="6" width="4" height="4" rx=".8" fill="#C79A00"/><rect x="6" y="6" width="4" height="4" rx=".8" fill="#34A853"/><rect x="11" y="6" width="4" height="4" rx=".8" fill="#1E9AC7"/><rect x="1" y="11" width="4" height="4" rx=".8" fill="#7A5E00"/><rect x="6" y="11" width="4" height="4" rx=".8" fill="#1B7A33"/><rect x="11" y="11" width="4" height="4" rx=".8" fill="#14688A"/></svg><span>H × L</span></button><button id="v1" class="vb" title="Lightness × Chroma" aria-label="Lightness × Chroma"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><rect x="1" y="1" width="4" height="4" rx=".8" fill="#D2DDD0"/><rect x="6" y="1" width="4" height="4" rx=".8" fill="#B0E3A6"/><rect x="11" y="1" width="4" height="4" rx=".8" fill="#8FEC7C"/><rect x="1" y="6" width="4" height="4" rx=".8" fill="#8FA38B"/><rect x="6" y="6" width="4" height="4" rx=".8" fill="#5CB04B"/><rect x="11" y="6" width="4" height="4" rx=".8" fill="#2AB600"/><rect x="1" y="11" width="4" height="4" rx=".8" fill="#4B5A48"/><rect x="6" y="11" width="4" height="4" rx=".8" fill="#2D6A21"/><rect x="11" y="11" width="4" height="4" rx=".8" fill="#127300"/></svg><span>L × C</span></button></div>
 <div class="row" style="gap:6px"><span class="note" style="margin:0">Nomi:</span><span class="seg row" style="gap:6px"><button id="c1" class="on">CSS</button><button id="c2">XKCD</button></span><button id="ic" class="ib" aria-label="Che cosa sono CSS e XKCD" aria-expanded="false">i</button></div>
 </div>
 <div id="catInfo" class="note" hidden style="margin:0 0 10px"><div><b>CSS</b>: i 148 nomi ufficiali dei colori del web, ad esempio <i>darkseagreen</i> o <i>tomato</i>.</div><div><b>XKCD</b>: nomi più colloquiali, scelti da migliaia di persone in un sondaggio, ad esempio <i>sage</i> o <i>kelly green</i>. Per ora ci sono solo alcuni verdi.</div><div>Cambiano solo i nomi che leggi: i colori restano gli stessi.</div></div>
@@ -157,6 +182,7 @@ input[type=range]{width:100%}
 </section>
 </main>
 </div>
+<div id="mini" class="mini" hidden><div class="mi"><span id="mU" class="ms" style="display:none"></span><span id="mC" class="ms"></span><div class="mt"><b id="mHex" class="mono"></b><span id="mNm" class="n"></span></div></div></div>
 
 <script>
 var CSS_RAW="aliceblue:f0f8ff,antiquewhite:faebd7,aqua:00ffff,aquamarine:7fffd4,azure:f0ffff,beige:f5f5dc,bisque:ffe4c4,black:000000,blanchedalmond:ffebcd,blue:0000ff,blueviolet:8a2be2,brown:a52a2a,burlywood:deb887,cadetblue:5f9ea0,chartreuse:7fff00,chocolate:d2691e,coral:ff7f50,cornflowerblue:6495ed,cornsilk:fff8dc,crimson:dc143c,darkblue:00008b,darkcyan:008b8b,darkgoldenrod:b8860b,darkgray:a9a9a9,darkgreen:006400,darkkhaki:bdb76b,darkmagenta:8b008b,darkolivegreen:556b2f,darkorange:ff8c00,darkorchid:9932cc,darkred:8b0000,darksalmon:e9967a,darkseagreen:8fbc8f,darkslateblue:483d8b,darkslategray:2f4f4f,darkturquoise:00ced1,darkviolet:9400d3,deeppink:ff1493,deepskyblue:00bfff,dimgray:696969,dodgerblue:1e90ff,firebrick:b22222,floralwhite:fffaf0,forestgreen:228b22,fuchsia:ff00ff,gainsboro:dcdcdc,ghostwhite:f8f8ff,gold:ffd700,goldenrod:daa520,gray:808080,green:008000,greenyellow:adff2f,honeydew:f0fff0,hotpink:ff69b4,indianred:cd5c5c,indigo:4b0082,ivory:fffff0,khaki:f0e68c,lavender:e6e6fa,lavenderblush:fff0f5,lawngreen:7cfc00,lemonchiffon:fffacd,lightblue:add8e6,lightcoral:f08080,lightcyan:e0ffff,lightgoldenrodyellow:fafad2,lightgray:d3d3d3,lightgreen:90ee90,lightpink:ffb6c1,lightsalmon:ffa07a,lightseagreen:20b2aa,lightskyblue:87cefa,lightslategray:778899,lightsteelblue:b0c4de,lightyellow:ffffe0,lime:00ff00,limegreen:32cd32,linen:faf0e6,maroon:800000,mediumaquamarine:66cdaa,mediumblue:0000cd,mediumorchid:ba55d3,mediumpurple:9370db,mediumseagreen:3cb371,mediumslateblue:7b68ee,mediumspringgreen:00fa9a,mediumturquoise:48d1cc,mediumvioletred:c71585,midnightblue:191970,mintcream:f5fffa,mistyrose:ffe4e1,moccasin:ffe4b5,navajowhite:ffdead,navy:000080,oldlace:fdf5e6,olive:808000,olivedrab:6b8e23,orange:ffa500,orangered:ff4500,orchid:da70d6,palegoldenrod:eee8aa,palegreen:98fb98,paleturquoise:afeeee,palevioletred:db7093,papayawhip:ffefd5,peachpuff:ffdab9,peru:cd853f,pink:ffc0cb,plum:dda0dd,powderblue:b0e0e6,purple:800080,rebeccapurple:663399,red:ff0000,rosybrown:bc8f8f,royalblue:4169e1,saddlebrown:8b4513,salmon:fa8072,sandybrown:f4a460,seagreen:2e8b57,seashell:fff5ee,sienna:a0522d,silver:c0c0c0,skyblue:87ceeb,slateblue:6a5acd,slategray:708090,snow:fffafa,springgreen:00ff7f,steelblue:4682b4,tan:d2b48c,teal:008080,thistle:d8bfd8,tomato:ff6347,turquoise:40e0d0,violet:ee82ee,wheat:f5deb3,white:ffffff,whitesmoke:f5f5f5,yellow:ffff00,yellowgreen:9acd32";
@@ -177,14 +203,15 @@ function cmax(L,H){var lo=0,hi=0.4;for(var i=0;i<20;i++){var m=(lo+hi)/2;if(inG(
 function parse(raw){return raw.split(",").map(function(p){var i=p.lastIndexOf(":");var h=p.slice(i+1);return {n:p.slice(0,i),h:h,lab:hex2lab(h)};});}
 function dist(a,b){return Math.sqrt(Math.pow(a[0]-b[0],2)+Math.pow(a[1]-b[1],2)+Math.pow(a[2]-b[2],2))*100;}
 var CAT={css:parse(CSS_RAW),xk:parse(XK_RAW)};
-var FAM=[{id:"rosso",n:"Rosso",a:-15,b:45},{id:"arancio",n:"Arancio",a:35,b:95},{id:"giallo",n:"Giallo",a:85,b:125},{id:"verde",n:"Verde",a:105,b:175},{id:"ciano",n:"Ciano",a:165,b:215},{id:"blu",n:"Blu",a:205,b:275},{id:"viola",n:"Viola",a:265,b:325},{id:"magenta",n:"Magenta",a:315,b:360}];
+var FAM=[{id:"red",n:"Red",a:-15,b:45},{id:"orange",n:"Orange",a:35,b:95},{id:"yellow",n:"Yellow",a:85,b:125},{id:"green",n:"Green",a:105,b:175},{id:"cyan",n:"Cyan",a:165,b:215},{id:"blue",n:"Blue",a:205,b:275},{id:"purple",n:"Purple",a:265,b:325},{id:"magenta",n:"Magenta",a:315,b:360}];
+var OLDID={rosso:0,arancio:1,giallo:2,verde:3,ciano:4,blu:5,viola:6,magenta:7};
 function norm(h){return ((h%360)+360)%360;}
 function coord(i,h){var F=FAM[i],c=[h,h-360,h+360];for(var k=0;k<3;k++)if(c[k]>=F.a&&c[k]<=F.b)return c[k];return null;}
 function famsAt(h){var r=[];for(var i=0;i<FAM.length;i++)if(coord(i,h)!==null)r.push(i);return r;}
 function cd(x,y){return Math.abs(((x-y+540)%360+360)%360-180);}
 function clampTo(i,h){var c=coord(i,h);if(c!==null)return c;var F=FAM[i];return cd(h,F.a)<cd(h,F.b)?F.a:F.b;}
-function hueLabel(H){var fs=famsAt(H);if(fs.length<2)return FAM[fs.length?fs[0]:S.fam].n;var o=fs.filter(function(i){return i!==S.fam;});return FAM[S.fam].n+" · confine "+FAM[o.length?o[0]:fs[0]].n;}
-var S={T:false,axes:false,view:"hl",fam:3,H:142,cat:"css",user:null,sel:null,wb:[1,1,1],wbMode:false,pt:null,img:null,cells:[]};
+function hueLabel(H){var fs=famsAt(H);if(fs.length<2)return FAM[fs.length?fs[0]:S.fam].n;var o=fs.filter(function(i){return i!==S.fam;});return FAM[S.fam].n+" · near "+FAM[o.length?o[0]:fs[0]].n;}
+var S={wbSet:false,wbPt:null,raw:null,T:false,axes:false,view:"hl",fam:3,H:142,cat:"css",user:null,sel:null,wb:[1,1,1],wbMode:false,pt:null,img:null,cells:[]};
 function $(i){return document.getElementById(i);}
 function nameOf(lab){var best=null,bd=1e9;CAT[S.cat].forEach(function(c){var d=dist(c.lab,lab);if(d<bd){bd=d;best=c;}});return {n:best.n,d:bd,ok:bd<=2.5};}
 var LS=[0.92,0.84,0.76,0.68,0.60,0.52,0.44,0.36,0.28],FR=[0.4,0.6,0.8,1];
@@ -201,7 +228,7 @@ function renderHues(){
   box.appendChild(b);})(h);}
 }
 function lchOf(lab){var H=Math.atan2(lab[2],lab[1])*180/Math.PI;return [lab[0],Math.hypot(lab[1],lab[2]),norm(H)];}
-function updTitle(){$("sub").textContent=S.view==="lc"?"tinta "+Math.round(norm(S.H))+"°"+hueLabel(S.H).replace(FAM[S.fam].n,""):"";}
+function updTitle(){$("sub").textContent=S.view==="lc"?"Lightness × Chroma · hue "+Math.round(norm(S.H))+"°"+hueLabel(S.H).replace(FAM[S.fam].n,""):"Hue × Lightness";}
 function renderGrid(){
  var g=$("pg"),F=FAM[S.fam],T=!!S.T;g.innerHTML="";S.cells=[];
  var rows=[];for(var i=0;i<17;i++)rows.push(+(0.92-0.04*i).toFixed(2));
@@ -233,18 +260,23 @@ function markSel(){
 }
 function renderCmp(){
  var u=S.user,c=S.sel;
- if(u){$("uSw").className="sw";$("uSw").textContent="";$("uSw").style.background="#"+u.hex;$("uHex").textContent="#"+u.hex.toUpperCase();var nu=nameOf(u.lab);$("uNm").textContent=(nu.ok?"":"≈ ")+nu.n;}
- else{$("uSw").className="sw empty";$("uSw").style.background="";$("uSw").textContent="il tuo colore";$("uHex").textContent="—";$("uNm").textContent="";}
- if(c){$("cSw").className="sw";$("cSw").textContent="";$("cSw").style.background="#"+c.hex;$("cHex").textContent="#"+c.hex.toUpperCase();$("cNm").textContent=(c.nm.ok?"":"≈ ")+c.nm.n;}
- else{$("cSw").className="sw empty";$("cSw").style.background="";$("cSw").textContent="tessera scelta";$("cHex").textContent="—";$("cNm").textContent="";}
- var t="Sinistra: il tuo colore. Destra: la tessera scelta. ";
- if(c){var q=lchOf(c.lab);t="L "+q[0].toFixed(2)+" · C "+q[1].toFixed(3)+" · H "+Math.round(q[2])+"°";}
- if(u&&c){var d=dist(u.lab,c.lab);t+=" · ΔE "+d.toFixed(1)+(d<2?" · uguali":d<5?" · vicini":" · lontani");}
+ $("cmpg").className=u?"chips":"chips one";$("cellU").style.display=u?"":"none";
+ if(u){$("uSw").className="sq";$("uSw").style.background="#"+u.hex;$("uHex").textContent="#"+u.hex.toUpperCase();var nu=nameOf(u.lab);$("uNm").textContent=(nu.ok?"":"≈ ")+nu.n;}
+ if(c){$("cSw").className="sq";$("cSw").textContent="";$("cSw").style.background="#"+c.hex;$("cHex").textContent="#"+c.hex.toUpperCase();$("cNm").textContent=(c.nm.ok?"":"≈ ")+c.nm.n;}
+ else{$("cSw").className="sq empty";$("cSw").style.background="";$("cSw").textContent=u?"":"tocca una tessera";$("cHex").textContent="—";$("cNm").textContent="";}
+ var q=c?lchOf(c.lab):null;
+ $("spec").innerHTML=q?"<div><span>Lightness</span><b>"+q[0].toFixed(2)+"</b></div><div><span>Chroma</span><b>"+q[1].toFixed(3)+"</b></div><div><span>Hue</span><b>"+Math.round(q[2])+"°</b></div>":"";
+ var t="";if(u&&c){var d=dist(u.lab,c.lab);t="ΔE "+d.toFixed(1)+(d<2?" · uguali":d<5?" · vicini":" · lontani");}
  $("de").textContent=t;
+ $("mU").style.display=u?"":"none";if(u)$("mU").style.background="#"+u.hex;
+ if(c){$("mC").style.background="#"+c.hex;$("mHex").textContent="#"+c.hex.toUpperCase();$("mNm").textContent=(c.nm.ok?"":"≈ ")+c.nm.n;}
+ paintMini();
 }
+function paintMini(){$("mini").hidden=!(S.chipOut&&S.sel);}
+try{new IntersectionObserver(function(es){var e=es[0];S.chipOut=!e.isIntersecting&&e.boundingClientRect.bottom<0;paintMini();}).observe($("cmpg"));}catch(e){}
 function renderAll(){
  var F=FAM[S.fam];
- $("fam").textContent=F.n;document.title="Colori · "+F.n;
+ $("fam").textContent=F.n;document.title="Colors · "+F.n;
  var N=FAM.length;
  $("pv").textContent="← "+FAM[(S.fam+N-1)%N].n;
  $("nx").textContent=FAM[(S.fam+1)%N].n+" →";
@@ -264,22 +296,23 @@ function setUser(hex,fromPhoto){
  var msg="";
  if(C<0.02)msg="Colore quasi neutro (croma "+C.toFixed(3)+"): la tinta non è significativa.";
  else{var fs=famsAt(H);
-  if(fs.length){S.fam=fs.indexOf(S.fam)>=0?S.fam:fs[0];S.H=Math.round(coord(S.fam,H));S.sel=null;setHash();}
+  if(fs.length){S.fam=fs.indexOf(S.fam)>=0?S.fam:fs[0];S.H=Math.round(coord(S.fam,H));S.sel=null;S.view="lc";$("v1").className="on";$("v2").className="";setHash();}
   else msg="Tinta "+Math.round(H)+"°: fuori dalle famiglie definite (85°–275°).";}
- if(fromPhoto)$("photoNote").textContent=msg||"Tinta "+Math.round(H)+"°, luce "+lab[0].toFixed(2)+", croma "+C.toFixed(3)+".";
- else if(msg)$("photoNote").textContent=msg;
- else $("photoNote").textContent="";
+ if(fromPhoto)$("photoNote").textContent=(msg||"Tinta "+Math.round(H)+"°, luce "+lab[0].toFixed(2)+", croma "+C.toFixed(3)+".")+(S.wbSet?" Bianco corretto ✓.":"");
+ else $("photoNote").textContent=msg;
  renderAll();
 }
 $("H").addEventListener("input",function(){S.H=+this.value;renderAll();});
 $("c1").onclick=function(){S.cat="css";$("c1").className="on";$("c2").className="";renderAll();};
 $("c2").onclick=function(){S.cat="xk";$("c2").className="on";$("c1").className="";renderAll();};
 $("hx").addEventListener("input",function(){var v=this.value.trim().replace("#","");if(/^[0-9a-fA-F]{6}$/.test(v))setUser(v,false);});
+function setNote(t){$("photoNote").textContent=t;}
+function paintWb(){var b=$("bWb");b.className=S.wbMode?"on":"";b.textContent=S.wbMode?"Tocca il bianco…":(S.wbSet?"Bianco ✓":"Punto bianco");b.style.opacity=S.img?"":".5";}
 $("bPhoto").onclick=function(){$("f").click();};
 $("bWb").onclick=function(){
- if(!S.img){$("photoNote").textContent="Prima carica una foto.";return;}
- S.wbMode=!S.wbMode;$("bWb").style.borderColor=S.wbMode?"var(--fg)":"";
- $("photoNote").textContent=S.wbMode?"Tocca un punto bianco o grigio nella foto (un foglio, per esempio).":"";
+ if(!S.img){setNote("Prima carica una foto con il pulsante Foto.");return;}
+ S.wbMode=!S.wbMode;paintWb();
+ setNote(S.wbMode?"Tocca un punto bianco o grigio chiaro nella foto, per esempio un foglio.":"Tocca il colore da misurare.");
 };
 $("f").addEventListener("change",function(){
  var file=this.files&&this.files[0];if(!file)return;
@@ -287,15 +320,20 @@ $("f").addEventListener("change",function(){
  img.onload=function(){
   var cv=$("cv"),w=Math.min(img.naturalWidth,720),h=Math.round(img.naturalHeight*w/img.naturalWidth);
   cv.width=w;cv.height=h;cv.style.display="block";cv.getContext("2d").drawImage(img,0,0,w,h);
-  S.img=img;S.pt=null;S.wb=[1,1,1];S.wbMode=false;$("bWb").style.borderColor="";
-  $("photoNote").textContent="Tocca il punto da misurare. La fotocamera altera il colore: se puoi, inquadra anche un foglio bianco e usa Punto bianco.";
+  S.img=img;S.pt=null;S.wbPt=null;S.raw=null;S.wb=[1,1,1];S.wbMode=false;S.wbSet=false;paintWb();
+  setNote("Tocca il colore da misurare. Se la luce è colorata, prima premi Punto bianco e tocca un foglio bianco.");
   URL.revokeObjectURL(url);
  };
  img.src=url;this.value="";
 });
+function mark(ctx,x,y,sq){
+ ctx.lineWidth=3;ctx.strokeStyle="#ffffff";ctx.beginPath();if(sq)ctx.rect(x-12,y-12,24,24);else ctx.arc(x,y,14,0,7);ctx.stroke();
+ ctx.lineWidth=1.5;ctx.strokeStyle="#000000";ctx.beginPath();if(sq)ctx.rect(x-12,y-12,24,24);else ctx.arc(x,y,14,0,7);ctx.stroke();
+}
 function redraw(){
  var cv=$("cv"),ctx=cv.getContext("2d");ctx.drawImage(S.img,0,0,cv.width,cv.height);
- if(S.pt){ctx.lineWidth=3;ctx.strokeStyle="#ffffff";ctx.beginPath();ctx.arc(S.pt.x,S.pt.y,14,0,7);ctx.stroke();ctx.lineWidth=1.5;ctx.strokeStyle="#000000";ctx.beginPath();ctx.arc(S.pt.x,S.pt.y,14,0,7);ctx.stroke();}
+ if(S.wbPt)mark(ctx,S.wbPt.x,S.wbPt.y,true);
+ if(S.pt)mark(ctx,S.pt.x,S.pt.y,false);
 }
 function sample(x,y){
  var cv=$("cv"),ctx=cv.getContext("2d"),r=4;
@@ -305,24 +343,23 @@ function sample(x,y){
  for(var i=0;i<d.length;i+=4){s[0]+=lin(d[i]/255);s[1]+=lin(d[i+1]/255);s[2]+=lin(d[i+2]/255);}
  return [s[0]/n,s[1]/n,s[2]/n];
 }
+function measure(){setUser(toHex([S.raw[0]*S.wb[0],S.raw[1]*S.wb[1],S.raw[2]*S.wb[2]]),true);}
 $("cv").addEventListener("click",function(e){
  if(!S.img)return;
  var cv=$("cv"),rc=cv.getBoundingClientRect();
  var x=(e.clientX-rc.left)*cv.width/rc.width,y=(e.clientY-rc.top)*cv.height/rc.height;
- S.pt={x:x,y:y};redraw();
  var v=sample(x,y);
  if(S.wbMode){
-  var m=(v[0]+v[1]+v[2])/3;
-  if(v[0]<0.002||v[1]<0.002||v[2]<0.002){$("photoNote").textContent="Punto troppo scuro: scegli un'area bianca o grigio chiaro.";return;}
-  S.wb=[m/v[0],m/v[1],m/v[2]];S.wbMode=false;$("bWb").style.borderColor="";
-  $("photoNote").textContent="Bianco impostato. Ora tocca il colore da misurare.";
+  var m=Math.max(v[0],v[1],v[2]);
+  if(v[0]<0.002||v[1]<0.002||v[2]<0.002){setNote("Punto troppo scuro: scegli un'area bianca o grigio chiaro.");return;}
+  S.wb=[m/v[0],m/v[1],m/v[2]];S.wbMode=false;S.wbSet=true;S.wbPt={x:x,y:y};paintWb();redraw();
+  if(S.raw){measure();}else setNote("Bianco impostato ✓. Ora tocca il colore da misurare.");
   return;
  }
- var c=[v[0]*S.wb[0],v[1]*S.wb[1],v[2]*S.wb[2]];
- setUser(toHex(c),true);
+ S.pt={x:x,y:y};S.raw=v;redraw();measure();
 });
 function setHash(){try{location.hash=FAM[S.fam].id;}catch(e){}}
-function fromHash(){var id="";try{id=(location.hash||"").replace("#","");}catch(e){}for(var i=0;i<FAM.length;i++)if(FAM[i].id===id)return i;return -1;}
+function fromHash(){var id="";try{id=(location.hash||"").replace("#","");}catch(e){}for(var i=0;i<FAM.length;i++)if(FAM[i].id===id)return i;return OLDID.hasOwnProperty(id)?OLDID[id]:-1;}
 function goFam(i){S.fam=i;S.H=clampTo(i,S.H);S.sel=null;renderAll();}
 window.addEventListener("hashchange",function(){var i=fromHash();if(i>=0&&i!==S.fam)goFam(i);});
 $("pv").onclick=function(){goFam((S.fam+FAM.length-1)%FAM.length);setHash();};
@@ -335,14 +372,13 @@ try{var sv=localStorage.getItem("quarto-color-scheme");if(sv)document.documentEl
 $("th").onclick=function(){var d=!effDark();document.documentElement.setAttribute("data-theme",d?"dark":"light");try{localStorage.setItem("quarto-color-scheme",d?"alternate":"default");}catch(e){}paintTheme();};
 paintTheme();
 $("ic").onclick=function(){var d=$("catInfo");d.hidden=!d.hidden;this.classList.toggle("on",!d.hidden);this.setAttribute("aria-expanded",String(!d.hidden));};
-$("ib").onclick=function(){var d=$("de");d.hidden=!d.hidden;this.classList.toggle("on",!d.hidden);this.setAttribute("aria-expanded",String(!d.hidden));};
 $("ip").onclick=function(){var d=$("photoInfo");d.hidden=!d.hidden;this.classList.toggle("on",!d.hidden);this.classList.remove("dot");this.setAttribute("aria-expanded",String(!d.hidden));};
 $("ia").onclick=function(){S.axes=!S.axes;this.classList.toggle("on",S.axes);this.setAttribute("aria-pressed",String(S.axes));renderAll();};
-try{new MutationObserver(function(){if($("photoInfo").hidden&&$("photoNote").textContent)$("ip").classList.add("dot");}).observe($("photoNote"),{childList:true,characterData:true,subtree:true});}catch(e){}
 function setView(v){S.view=v;$("v1").className=v==="lc"?"on":"";$("v2").className=v==="hl"?"on":"";renderAll();}
 $("v1").onclick=function(){setView("lc");};
 $("v2").onclick=function(){setView("hl");};
 try{var mq=matchMedia("(min-width:900px)");S.T=mq.matches;var chg=function(e){S.T=e.matches;renderAll();};if(mq.addEventListener)mq.addEventListener("change",chg);else if(mq.addListener)mq.addListener(chg);}catch(e){}
+paintWb();
 renderAll();
 </script>
 </body>
