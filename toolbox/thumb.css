@@ -98,7 +98,7 @@ math-field::part(virtual-keyboard-toggle), math-field::part(menu-toggle) { displ
   flex: 1; min-height: 0; width: 100%; max-width: 440px; display: flex; flex-direction: column; gap: .6rem;
   padding: 0 .65rem calc(.6rem + env(safe-area-inset-bottom));
 }
-.screen { position: relative; }
+.screen { position: relative; min-height: 18.25rem; }   /* the display never gets squeezed below its content (entry + result + chips) */
 .sc-top { display: flex; gap: .4rem; align-items: center; flex-wrap: wrap; padding-bottom: .1rem; }
 .angle {
   display: inline-flex; min-height: 0; min-width: 0; padding: .15rem; gap: .1rem; flex: 0 0 auto;
@@ -111,7 +111,7 @@ math-field::part(virtual-keyboard-toggle), math-field::part(menu-toggle) { displ
 .entry { user-select: text; }
 
 .pad {
-  height: var(--padh); flex: 0 0 auto;
+  height: var(--padh); flex: 0 1 auto; min-height: 0;   /* the keypad gives way first when space is short (PWA: status bar + home indicator) */
   display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 1.3fr); grid-template-rows: repeat(6, minmax(0, 1fr)); gap: .4rem;
   -webkit-user-select: none; user-select: none; touch-action: manipulation;
 }
@@ -146,6 +146,7 @@ math-field::part(virtual-keyboard-toggle), math-field::part(menu-toggle) { displ
 @media (max-width: 699px) { .topbar .status { display: none; } .topbar { padding-bottom: .25rem; } }
 @media (max-height: 700px) {
   .thumb { --padh: min(54dvh, 520px); gap: .45rem; }
+  .screen { min-height: 14.5rem; }
   math-field { font-size: 2rem; min-height: 3.3rem; }
   .res-main { font-size: 2em; } .result { min-height: 3.6rem; padding-top: .3rem; }
   .formats { min-height: 0; padding-top: .3rem; } .chip { min-height: 1.9rem; padding: .15rem .65rem; font-size: .85rem; }
