@@ -270,8 +270,9 @@
 .cl-g i { border-radius: 3px; }
 .cl-sel { position: absolute; left: 0; top: 0; width: 1.45rem; height: 1.45rem; box-sizing: border-box; border: 2.5px solid var(--pv-fg);
   border-radius: 4px; box-shadow: 0 0 0 1.5px var(--pv-bg); transform: translate(var(--p), var(--p)); }
-.cl-hx { position: relative; width: 8.4rem; height: 1.45rem; font: 600 .92rem/1.45rem ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
-.cl-hx span { position: absolute; left: 0; right: 0; text-align: center; opacity: 0; }
+.cl-hx { position: relative; width: 14rem; max-width: 100%; height: 1.45rem; font: 600 .92rem/1.45rem ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+.cl-hx span { position: absolute; left: 0; right: 0; text-align: center; opacity: 0; white-space: nowrap; }
+.cl-hx small { margin-left: .5rem; font: 500 .74rem/1 system-ui, -apple-system, "Segoe UI", sans-serif; opacity: .7; }
 .cl-hx span::before { content: ""; display: inline-block; width: .8rem; height: .8rem; margin-right: .45rem; border-radius: 3px; background: var(--c); vertical-align: -.08rem; }
 .cl-hx .cl-a { opacity: 1; }
 @media (prefers-reduced-motion: no-preference) {
