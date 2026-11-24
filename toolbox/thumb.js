@@ -8,7 +8,9 @@ import { exitStructures, closeBracketIfAny, trigPower } from "./thumb-edit.js";
 MathfieldElement.fontsDirectory = "vendor/mathlive/fonts";
 MathfieldElement.soundsDirectory = null;
 
-const $ = (id) => document.getElementById(id);
+// If the browser still holds an older copy of the page, an element this script wants may be missing: a detached
+// stand-in keeps the rest of the script alive (a missing button must never break "?" and the keys).
+const $ = (id) => document.getElementById(id) || document.createElement("div");
 const store = {
   get(k, d) { try { return localStorage.getItem(k) || d; } catch (e) { return d; } },
   set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
@@ -268,9 +270,9 @@ const K = {
   sub: op("−", "Subtract", "-"),
   add: op("+", "Add", "+"),
   ac: { l: "AC", aria: "Clear all", kind: "ctl", act: "clear", alts: [        // hold: how to show the result
-    { l: "a<span class=\"slash\">/</span>b", aria: "Show the result as a fraction", act: "fmt", f: "exact" },
-    { l: "0.5", aria: "Show the result as a decimal", act: "fmt", f: "decimal" },
-    { l: "×10<sup>n</sup>", aria: "Show the result in standard form", act: "fmt", f: "sci" } ] },
+    { l: "/", aria: "Show the result as a fraction", act: "fmt", f: "exact" },
+    { l: "d", aria: "Show the result as a decimal", act: "fmt", f: "decimal" },
+    { l: "s", aria: "Show the result in standard form", act: "fmt", f: "sci" } ] },
   pi: { l: "π", aria: "Pi", kind: "fn", ins: "\\pi", alts: [{ l: "e", aria: "Euler's number e", ins: "\\exponentialE" }] },
   point: { l: ".", aria: "Decimal point", kind: "num", act: "point" },
   eq: { l: "=", aria: "Equals", kind: "eq", act: "equals", alts: [{ l: "Ans", aria: "Previous answer", ins: "\\mathrm{Ans}" }] },
@@ -304,6 +306,8 @@ function press(k) {
   if (k.act === "equals") return equals();
   if (k.act === "fmt") return setFormat(k.f);
   if (k.act === "clear") {
+    // AC AC: the first tap empties the line and the result; with nothing left to empty, it also wipes the list of past calculations
+    if (isEmpty() && !state.live && !state.committed) { state.history = []; state.ans = null; renderHistory(); }
     mf.setValue(""); state.live = null; state.committed = null; refresh();
     return;
   }
@@ -409,6 +413,10 @@ const STEPS = [
   { title: "Brackets", text: "",
     stage: () => `<div class="bx"><span class="bfrac"><span class="bn">1</span><span class="bd"><i class="bq">▢</i><i class="b1">(</i><i class="b2">2</i><i class="b3">+</i><i class="b4">3</i><i class="b5">)</i></span></span><i class="b6">+1</i></div>
       <div class="demo-key sm"><span>( )</span></div><div class="finger f-br"></div>` },
+  { title: "Result", text: "Hold AC to choose how the result looks:  /  fraction,  d  decimal,  s  standard form.",
+    stage: () => `<div class="demo-key"><span>AC</span></div>
+      <div class="dp dp2 dpl">/</div><div class="dp dp1 dpm">d</div><div class="dp dp2 dpr">s</div>
+      <div class="finger f-holdc"></div><div class="bubble b-hold">9/20 → 0.45</div>` },
   { title: "Your turn", text: "Hold the key, slide up-left to the inner ring, then pull further out for sin⁻¹. Release.",
     stage: () => `<button type="button" class="key fn mono demo-live" id="demoKey">sin</button><div class="bubble b-live" id="demoOut">&nbsp;</div>` },
 ];

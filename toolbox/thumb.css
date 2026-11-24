@@ -222,13 +222,17 @@ math-field::part(virtual-keyboard-toggle), math-field::part(menu-toggle) { displ
 @keyframes dp1 { 0%,22% { opacity: 0; transform: scale(.5); } 32% { opacity: 1; transform: scale(1); } 58% { background: var(--card); color: var(--fg); transform: scale(1); }
   66%,80% { opacity: 1; background: var(--primary); color: var(--primary-fg); transform: scale(1.2); } 88%,100% { opacity: 0; transform: scale(1.2); } }
 @keyframes dp2 { 0%,22% { opacity: 0; transform: scale(.5); } 32%,80% { opacity: 1; transform: scale(1); } 88%,100% { opacity: 0; } }
+.dpl { left: calc(50% - 79px); } .dpm { left: calc(50% - 23px); } .dpr { left: calc(50% + 33px); }
+.f-holdc { animation: f-holdc 4.2s ease-in-out infinite; }
+@keyframes f-holdc { 0%,6% { opacity: 0; transform: translateY(18px); } 14% { opacity: 1; transform: none; } 22% { transform: scale(.88); }
+  32%,50% { opacity: 1; transform: scale(.88); } 66%,78% { opacity: 1; transform: translate(0, -60px) scale(.95); } 90%,100% { opacity: 0; transform: translate(0, -60px); } }
 .f-hold { animation: f-hold 4.2s ease-in-out infinite; }
 @keyframes f-hold { 0%,6% { opacity: 0; transform: translateY(18px); } 14% { opacity: 1; transform: none; } 22% { transform: scale(.88); }
   32%,50% { opacity: 1; transform: scale(.88); } 66%,78% { opacity: 1; transform: translate(-52px, -60px) scale(.95); } 90%,100% { opacity: 0; transform: translate(-52px, -60px); } }
 .b-hold { animation: b-hold 4.2s ease-in-out infinite; }
 @keyframes b-hold { 0%,80% { opacity: 0; } 88%,97% { opacity: 1; } 100% { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) {
-  .f-tap, .b-tap, .f-hold, .b-hold, .dp1, .dp2 { animation: none; }
+  .f-tap, .b-tap, .f-hold, .f-holdc, .b-hold, .dp1, .dp2 { animation: none; }
   .b-tap, .b-hold { opacity: 1; } .dp { opacity: 1; } .dp1 { background: var(--primary); color: var(--primary-fg); }
 }
 
