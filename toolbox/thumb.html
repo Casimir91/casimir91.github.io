@@ -30,18 +30,18 @@
       <section class="screen" aria-label="Display">
         <div class="sc-top">
           <button type="button" class="angle" id="angleBtn"></button>
-          <button type="button" class="angle" id="handBtn"></button>
           <button type="button" class="angle q" id="tourBtn" aria-label="How it works" title="How it works">?</button>
           <button type="button" class="angle q" id="pwaBtn" hidden aria-label="Install as an app" title="Install as an app (works offline)">⤓</button>
-          <button type="button" class="angle ac" id="acBtn" aria-label="Clear all" title="Clear all">AC</button>
         </div>
         <ol class="history" id="history" aria-label="Previous calculations"></ol>
-        <div class="entry" id="entry"></div>
+        <div class="entry-row">
+          <div class="entry" id="entry"></div>
+          <button type="button" class="del-region" id="delBtn" aria-label="Delete" title="Delete (hold to keep deleting)">⌫</button>
+        </div>
         <div class="result" id="result" aria-live="polite">
           <div class="res-main" id="resMain"></div>
           <div class="res-note" id="resNote"></div>
         </div>
-        <div class="formats" id="formats" role="group" aria-label="Show the result as"></div>
       </section>
       <section class="pad" id="pad" aria-label="Keypad"></section>
     </main>

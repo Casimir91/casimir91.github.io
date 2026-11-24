@@ -67,10 +67,23 @@ function fitEntry(force) {
     const next = s >= baseSize - 0.3 ? "" : s.toFixed(2) + "px";
     if (mf.style.fontSize !== next) mf.style.fontSize = next;
   };
+  // height: what is left of the display once the top row and the result have their space
+  const screen = mf.closest(".screen"), scs = getComputedStyle(screen);
+  const above = screen.querySelector(".sc-top"), below = screen.querySelector(".result");
+  const room = screen.clientHeight - parseFloat(scs.paddingTop) - parseFloat(scs.paddingBottom)
+    - (above ? above.offsetHeight : 0) - (below ? below.offsetHeight : 0);
+  const pcs = mf.parentElement ? getComputedStyle(mf.parentElement) : null;
+  const extra = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom) + parseFloat(cs.borderBottomWidth || 0)
+    + (pcs ? parseFloat(pcs.paddingTop) + parseFloat(pcs.paddingBottom) : 0);
+  const availH = room - extra - 4;
   for (let i = 0; i < 3; i++) {
-    const w = root.getBoundingClientRect().width;
-    const natural = w * baseSize / size;                         // width at the full size (layout is linear in the font size)
-    const want = natural <= avail ? baseSize : Math.max(min, baseSize * avail / natural * 0.985);
+    const r = root.getBoundingClientRect();
+    const naturalW = r.width * baseSize / size;                  // size at the full font (layout is linear in the font size)
+    const naturalH = r.height * baseSize / size;
+    let want = baseSize;
+    if (naturalW > avail) want = Math.min(want, baseSize * avail / naturalW * 0.985);
+    if (availH > 20 && naturalH > availH) want = Math.min(want, baseSize * availH / naturalH * 0.985);
+    want = Math.max(min, want);
     if (Math.abs(want - size) < 0.4) break;
     setSize(want);
   }
@@ -86,6 +99,8 @@ function queueFit(force) {
 function watchFit() {
   if (mf.shadowRoot) new MutationObserver(() => queueFit()).observe(mf.shadowRoot, { childList: true, subtree: true, characterData: true });
   mf.addEventListener("input", () => queueFit(true));
+  const res = document.getElementById("result");
+  if (res) new MutationObserver(() => queueFit()).observe(res, { childList: true, subtree: true, characterData: true });
   addEventListener("resize", () => { baseSize = 0; queueFit(true); });
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { baseSize = 0; queueFit(); });
 }
@@ -119,24 +134,6 @@ function formLatex(d, f) {
   return { latex: d.sci.latex, approx: d.sci.approx };
 }
 
-function renderFormats(d) {
-  const box = $("formats");
-  box.textContent = "";
-  if (!d) return;
-  const shown = pickForm(d, true);
-  const options = ["exact", "decimal", "sci"];           // no "mixed": nobody uses it in Italy and it crowded the row
-  for (const f of options) {
-    const b = document.createElement("button");
-    b.type = "button"; b.className = "chip";
-    b.textContent = FORMAT_LABEL[f](d);
-    b.setAttribute("aria-pressed", String(f === shown));
-    if (f === "exact" && d.kind === "approx") { b.disabled = true; b.title = "This number is not a fraction"; b.textContent = "Fraction"; }
-    b.addEventListener("pointerdown", (e) => e.preventDefault());
-    b.addEventListener("click", () => { state.pick = { plain: d.plain, f }; refresh(); });
-    box.appendChild(b);
-  }
-}
-
 let lastShown = "";
 function refresh({ error = null, fresh = false } = {}) {
   const value = state.live || state.committed;
@@ -144,12 +141,10 @@ function refresh({ error = null, fresh = false } = {}) {
   note.className = "res-note";
   if (error) {
     main.textContent = ""; note.textContent = error; note.classList.add("err");
-    renderFormats(null);
     return;
   }
   if (!value) {
     main.textContent = ""; note.textContent = isEmpty() ? "Try ½ + ⅓ with the fraction key" : "";
-    renderFormats(null);
     lastShown = "";
     return;
   }
@@ -164,7 +159,6 @@ function refresh({ error = null, fresh = false } = {}) {
   lastShown = key;
   main.setAttribute("aria-label", d.plain);
   note.textContent = out.periodic ? "repeating decimal" : (f === "sci" ? "standard form" : "");
-  renderFormats(d);
 }
 
 /* ---------- live preview ---------- */
@@ -273,18 +267,21 @@ const K = {
   mul: op("×", "Multiply", "\\times "),
   sub: op("−", "Subtract", "-"),
   add: op("+", "Add", "+"),
-  del: { l: "⌫", aria: "Delete", kind: "ctl", cmd: "deleteBackward", alts: [{ l: "AC", aria: "Clear all", act: "clear" }] },
+  ac: { l: "AC", aria: "Clear all", kind: "ctl", act: "clear", alts: [        // hold: how to show the result
+    { l: "a<span class=\"slash\">/</span>b", aria: "Show the result as a fraction", act: "fmt", f: "exact" },
+    { l: "0.5", aria: "Show the result as a decimal", act: "fmt", f: "decimal" },
+    { l: "×10<sup>n</sup>", aria: "Show the result in standard form", act: "fmt", f: "sci" } ] },
   pi: { l: "π", aria: "Pi", kind: "fn", ins: "\\pi", alts: [{ l: "e", aria: "Euler's number e", ins: "\\exponentialE" }] },
   point: { l: ".", aria: "Decimal point", kind: "num", act: "point" },
   eq: { l: "=", aria: "Equals", kind: "eq", act: "equals", alts: [{ l: "Ans", aria: "Previous answer", ins: "\\mathrm{Ans}" }] },
 };
-const KEYS = [
-  K.paren, K.trig, K.sci, K.div,
-  K.frac, K.sq, K.root, K.mul,
-  num("7"), num("8"), num("9"), K.sub,
-  num("4"), num("5"), num("6"), K.add,
-  num("1"), num("2"), num("3"), K.del,
-  K.pi, num("0"), K.point, K.eq,
+const KEYS = [                       // = on top (the thumb of a right hand goes up to it), AC under it; ⌫ lives on the screen
+  K.paren, K.trig, K.sci, K.eq,
+  K.frac, K.sq, K.root, K.ac,
+  num("7"), num("8"), num("9"), K.div,
+  num("4"), num("5"), num("6"), K.mul,
+  num("1"), num("2"), num("3"), K.sub,
+  K.pi, num("0"), K.point, K.add,
 ];
 
 /* a short message above the keypad (only used for the iPhone install hint) */
@@ -296,8 +293,16 @@ function toast(text, ms = 6000) {
   toastTimer = setTimeout(() => { t.classList.remove("show"); t.hidden = true; }, ms);
 }
 
+function setFormat(f) {
+  const value = state.live || state.committed;
+  if (!value) return;
+  state.pick = { plain: describe(value, { dec: state.dec }).plain, f };
+  refresh();
+}
+
 function press(k) {
   if (k.act === "equals") return equals();
+  if (k.act === "fmt") return setFormat(k.f);
   if (k.act === "clear") {
     mf.setValue(""); state.live = null; state.committed = null; refresh();
     return;
@@ -341,23 +346,19 @@ for (const k of KEYS) {
   pad.appendChild(b);
 }
 
-/* ---------- hand: right | left (mirrors the keypad so the operators sit under the thumb) ---------- */
-const handBtn = $("handBtn");
-let hand = store.get("thumb-hand", "right") === "left" ? "left" : "right";
-function paintHand() {
-  pad.classList.toggle("lefty", hand === "left");
-  // left hand: the right-hand column (operators, delete, equals) moves to the left; digits keep their order
-  [...pad.children].forEach((el, i) => {
-    const row = Math.floor(i / 4), col = i % 4;
-    // left hand: the right-hand column moves to the left; in the top row only ( ) and ÷ swap, so the two big fans stay central
-    const c = hand !== "left" ? col : row === 0 ? [3, 1, 2, 0][col] : (col === 3 ? 0 : col + 1);
-    el.style.order = String(row * 4 + c);
-  });
-  handBtn.innerHTML = `<span class="${hand === "left" ? "on" : ""}">Left</span><span class="${hand === "left" ? "" : "on"}">Right</span>`;
-  handBtn.setAttribute("aria-label", `Keypad for the ${hand} hand. Tap to switch.`);
-}
-handBtn.addEventListener("click", () => { hand = hand === "left" ? "right" : "left"; store.set("thumb-hand", hand); paintHand(); });
-paintHand();
+/* ---------- delete: a region of the screen, hold to keep deleting ---------- */
+const delBtn = $("delBtn");
+let delWait = null, delRun = null;
+const delOnce = () => press({ cmd: "deleteBackward" });
+const delStop = () => { clearTimeout(delWait); clearInterval(delRun); delWait = delRun = null; };
+delBtn.addEventListener("pointerdown", (e) => {
+  e.preventDefault(); delStop(); delOnce(); tick(6);
+  delWait = setTimeout(() => { delRun = setInterval(delOnce, 70); }, 420);
+  try { delBtn.setPointerCapture(e.pointerId); } catch (err) {}
+});
+for (const t of ["pointerup", "pointercancel", "lostpointercapture"]) delBtn.addEventListener(t, delStop);
+addEventListener("blur", delStop);
+delBtn.addEventListener("click", (e) => { if (e.detail === 0) delOnce(); });   // keyboard
 
 /* ---------- angle unit pill (DEG | RAD) ---------- */
 const angleBtn = $("angleBtn");
@@ -439,9 +440,6 @@ function closeTour() { tour.hidden = true; store.set("thumb-tour", "1"); }
 $("tourNext").addEventListener("click", () => { if (step < STEPS.length - 1) { step++; paintTour(); } else closeTour(); });
 $("tourSkip").addEventListener("click", closeTour);
 $("tourBtn").addEventListener("click", openTour);
-const acBtn = $("acBtn");                                                  // AC always in sight
-acBtn.addEventListener("pointerdown", (e) => e.preventDefault());
-acBtn.addEventListener("click", () => { press({ act: "clear" }); if (!coarse) mf.focus({ preventScroll: true }); });
 tour.addEventListener("keydown", (e) => { if (e.key === "Escape") closeTour(); });
 if (store.get("thumb-tour", "") !== "1") setTimeout(openTour, 500);
 

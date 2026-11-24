@@ -99,9 +99,8 @@ math-field::part(virtual-keyboard-toggle), math-field::part(menu-toggle) { displ
   flex: 1; min-height: 0; width: 100%; max-width: 440px; display: flex; flex-direction: column; gap: .6rem;
   padding: 0 .65rem calc(.6rem + env(safe-area-inset-bottom));
 }
-.screen { position: relative; min-height: min-content; }   /* the display never gets squeezed below its content (entry + result + chips) */
-.screen > :not(.history) { flex: 0 0 auto; }
-.history { contain: size; }                                 /* the list of past calculations does not count when the display is sized */
+.screen { position: relative; }
+.sc-top, .result { flex: 0 0 auto; }
 .sc-top { display: flex; gap: .4rem; align-items: center; flex-wrap: wrap; padding-bottom: .1rem; }
 .angle {
   display: inline-flex; min-height: 0; min-width: 0; padding: .15rem; gap: .1rem; flex: 0 0 auto;
@@ -112,8 +111,18 @@ math-field::part(virtual-keyboard-toggle), math-field::part(menu-toggle) { displ
 .angle span.on { background: var(--primary); color: var(--primary-fg); }
 .angle.q { margin-left: auto; padding: .3rem .7rem; font-size: .85rem; font-weight: 600; color: var(--hero-fg); border-color: var(--hero-border); }
 .angle.q ~ .angle { margin-left: 0; }
-.angle.ac { padding: .4rem .9rem; font-size: .9rem; font-weight: 700; letter-spacing: .02em; background: var(--primary); color: var(--primary-fg); border-color: var(--primary); }
-.angle.ac:active { transform: scale(.96); }
+/* the entry line with its own delete "region" on the right, like the send button of a chat box */
+.entry-row { flex: 0 1 auto; min-height: 3.4rem; display: flex; gap: .5rem; align-items: stretch; }
+.entry-row .entry { flex: 1 1 auto; min-width: 0; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; }
+.entry-row .entry::-webkit-scrollbar { display: none; }
+.del-region {
+  flex: 0 0 3.4rem; min-width: 0; min-height: 0; margin-top: .35rem; padding: 0; border: 0; border-radius: .9rem;
+  background: var(--fn); color: var(--fn-fg); font-size: 1.4rem; line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+  -webkit-user-select: none; user-select: none; touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+  transition: transform .06s ease-out, background-color .15s;
+}
+.del-region:active { transform: scale(.96); background: color-mix(in srgb, var(--primary) 22%, var(--fn)); }
 .entry { user-select: text; }
 
 .pad {
@@ -153,7 +162,7 @@ math-field::part(virtual-keyboard-toggle), math-field::part(menu-toggle) { displ
 @media (max-width: 400px) {
   .sc-top { flex-wrap: nowrap; gap: .3rem; }
   .angle { font-size: .68rem; } .angle span { padding: .3rem .42rem; }
-  .angle.q { padding: .3rem .55rem; } .angle.ac { padding: .4rem .7rem; }
+  .angle.q { padding: .3rem .55rem; }
 }
 @media (max-width: 380px) { .chip { padding: .3rem .6rem; font-size: .85rem; } }
 @media (max-height: 700px) {
