@@ -18,15 +18,14 @@ const store = {
 
 /* ---------- state ---------- */
 const state = {
-  dec: store.get("calc-dec", "."),           // decimal separator shown in results
+  dec: ".",                                   // decimal separator shown in results (a comma only if ever needed again)
   pick: null,                                 // one-off form chosen with a chip: { plain, f } (valid for that result only)
   angle: store.get("calc-angle", "deg"),      // deg | rad (for sin, cos, tan and their inverses)
   ans: null,                                  // last committed value
   committed: null,                            // value currently shown after "="
   live: null,                                 // value of the expression being typed
-  history: [],                                // [{ latex, value }]
+  undo: [],                                   // what AC and = took off the line, newest last: the undo petal of AC brings it back
 };
-if (state.dec !== "," && state.dec !== ".") state.dec = ".";
 if (state.angle !== "rad") state.angle = "deg";
 
 /* ---------- math field ---------- */
@@ -178,29 +177,17 @@ function onInput() {
 }
 mf.addEventListener("input", onInput);
 
-/* ---------- history ---------- */
-function renderHistory() {
-  const ol = $("history");
-  ol.textContent = "";
-  for (const item of state.history.slice(-30)) {
-    const li = document.createElement("li");
-    const e = document.createElement("button");
-    e.type = "button"; e.className = "h-expr"; e.title = "Edit this calculation";
-    e.innerHTML = markup(item.latex);
-    e.addEventListener("click", () => { mf.setValue(item.latex); focusField(); onInput(); });
-    const r = document.createElement("button");
-    r.type = "button"; r.className = "h-res"; r.title = "Use this result";
-    const d = describe(item.value, { dec: state.dec });
-    const out = formLatex(d, pickForm(d));
-    r.innerHTML = "= " + (out.approx ? "≈&nbsp;" : "") + markup(out.latex);
-    r.addEventListener("click", () => {
-      mf.insert(d.exact && d.kind !== "approx" ? d.exact : d.decimal.latex.replace("{,}", "."), { focus: !coarse });
-      onInput();
-    });
-    li.append(e, r);
-    ol.appendChild(li);
-  }
-  ol.scrollTop = ol.scrollHeight;
+/* ---------- undo (hold AC) ---------- */
+function pushUndo(latex) {
+  if (!latex || !latex.trim() || state.undo[state.undo.length - 1] === latex) return;
+  state.undo.push(latex);
+  if (state.undo.length > 50) state.undo.shift();
+}
+function undo() {
+  const latex = state.undo.pop();
+  if (latex == null) { tick(4); return; }
+  state.committed = null; state.live = null;
+  mf.setValue(latex); focusField(); onInput();
 }
 
 /* ---------- equals ---------- */
@@ -209,12 +196,11 @@ function equals() {
   if (!latex.trim()) return;
   try {
     const value = evaluate(latex, { ans: state.ans, angle: state.angle });
-    state.history.push({ latex, value });
+    pushUndo(latex);
     state.ans = value;
     state.committed = value;
     state.live = null;
     mf.setValue("");
-    renderHistory();
     refresh({ fresh: true });
   } catch (e) {
     const msg = e instanceof CalcError ? e.message : "Check the expression";
@@ -269,13 +255,13 @@ const K = {
   mul: op("×", "Multiply", "\\times "),
   sub: op("−", "Subtract", "-"),
   add: op("+", "Add", "+"),
-  ac: { l: "AC", aria: "Clear all", kind: "ctl", act: "clear", alts: [        // hold: how to show the result
+  ac: { l: "AC", aria: "Clear all", kind: "ctl", act: "clear", alts: [{ l: "↶", aria: "Undo: bring back what was cleared", act: "undo" }] },
+  pi: { l: "π", aria: "Pi", kind: "fn", ins: "\\pi", alts: [{ l: "e", aria: "Euler's number e", ins: "\\exponentialE" }] },
+  point: { l: ".", aria: "Decimal point", kind: "num", act: "point" },
+  eq: { l: "=", aria: "Equals", kind: "eq", act: "equals", alts: [        // hold: how to show the result
     { l: "/", aria: "Show the result as a fraction", act: "fmt", f: "exact" },
     { l: "d", aria: "Show the result as a decimal", act: "fmt", f: "decimal" },
     { l: "s", aria: "Show the result in standard form", act: "fmt", f: "sci" } ] },
-  pi: { l: "π", aria: "Pi", kind: "fn", ins: "\\pi", alts: [{ l: "e", aria: "Euler's number e", ins: "\\exponentialE" }] },
-  point: { l: ".", aria: "Decimal point", kind: "num", act: "point" },
-  eq: { l: "=", aria: "Equals", kind: "eq", act: "equals", alts: [{ l: "Ans", aria: "Previous answer", ins: "\\mathrm{Ans}" }] },
 };
 const KEYS = [                       // = on top (the thumb of a right hand goes up to it), AC under it; ⌫ lives on the screen
   K.paren, K.trig, K.sci, K.eq,
@@ -305,9 +291,9 @@ function setFormat(f) {
 function press(k) {
   if (k.act === "equals") return equals();
   if (k.act === "fmt") return setFormat(k.f);
+  if (k.act === "undo") return undo();
   if (k.act === "clear") {
-    // AC AC: the first tap empties the line and the result; with nothing left to empty, it also wipes the list of past calculations
-    if (isEmpty() && !state.live && !state.committed) { state.history = []; state.ans = null; renderHistory(); }
+    pushUndo(mf.getValue("latex"));
     mf.setValue(""); state.live = null; state.committed = null; refresh();
     return;
   }
@@ -382,24 +368,9 @@ paintAngle();
 /* physical keyboard */
 mf.addEventListener("keydown", (e) => {
   if (e.key === "Enter") { e.preventDefault(); equals(); }
-  else if (e.key === "Escape") { mf.setValue(""); state.live = null; refresh(); }
+  else if (e.key === "Escape") { pushUndo(mf.getValue("latex")); mf.setValue(""); state.live = null; refresh(); }
 });
 mf.addEventListener("beforeinput", () => {});
-
-/* ---------- decimal separator toggle (next to the theme buttons) ---------- */
-const bar = $("themebar");
-const decBtn = document.createElement("button");
-decBtn.type = "button"; decBtn.className = "toggle tb-dec";
-decBtn.title = "Decimal separator in the results";
-const paintDec = () => { decBtn.textContent = state.dec === "," ? "1,5" : "1.5"; };
-decBtn.addEventListener("click", () => {
-  state.dec = state.dec === "." ? "," : ".";
-  store.set("calc-dec", state.dec); paintDec(); renderHistory(); refresh();
-});
-paintDec();
-bar.appendChild(decBtn);
-
-
 
 /* ---------- tour: tap / hold / brackets / your turn ---------- */
 const tour = $("tour"), stage = $("tourStage");
@@ -413,10 +384,14 @@ const STEPS = [
   { title: "Brackets", text: "",
     stage: () => `<div class="bx"><span class="bfrac"><span class="bn">1</span><span class="bd"><i class="bq">▢</i><i class="b1">(</i><i class="b2">2</i><i class="b3">+</i><i class="b4">3</i><i class="b5">)</i></span></span><i class="b6">+1</i></div>
       <div class="demo-key sm"><span>( )</span></div><div class="finger f-br"></div>` },
-  { title: "Result", text: "Hold AC to choose how the result looks:  /  fraction,  d  decimal,  s  standard form.",
-    stage: () => `<div class="demo-key"><span>AC</span></div>
+  { title: "Result", text: "Hold = to choose how the result looks:  /  fraction,  d  decimal,  s  standard form.",
+    stage: () => `<div class="demo-key"><span>=</span></div>
       <div class="dp dp2 dpl">/</div><div class="dp dp1 dpm">d</div><div class="dp dp2 dpr">s</div>
       <div class="finger f-holdc"></div><div class="bubble b-hold">9/20 → 0.45</div>` },
+  { title: "Undo", text: "Hold AC and slide to ↶: it brings back what you cleared or calculated.",
+    stage: () => `<div class="demo-key"><span>AC</span></div>
+      <div class="dp dp1 dpm">↶</div>
+      <div class="finger f-holdc"></div><div class="bubble b-hold">2+3</div>` },
   { title: "Your turn", text: "Hold the key, slide up-left to the inner ring, then pull further out for sin⁻¹. Release.",
     stage: () => `<button type="button" class="key fn mono demo-live" id="demoKey">sin</button><div class="bubble b-live" id="demoOut">&nbsp;</div>` },
 ];
