@@ -81,11 +81,12 @@ math-field::part(virtual-keyboard-toggle), math-field::part(menu-toggle) { displ
 .res-note.err { color: var(--danger); }
 .result.shake { animation: shake .35s ease-in-out; }
 
-.formats { display: flex; flex-wrap: wrap; gap: .4rem; justify-content: flex-end; padding-top: .5rem; min-height: 2.4rem; }
+.formats { display: flex; flex-wrap: nowrap; gap: .4rem; justify-content: flex-end; padding-top: .5rem; min-height: 2.4rem; }
 .chip {
   min-height: 2.25rem; min-width: 0; padding: .3rem .8rem; border-radius: 999px;
   font-size: .95rem; background: transparent; border: 1px solid var(--border); color: var(--fg);
 }
+.chip { flex: 0 1 auto; white-space: nowrap; }
 .chip[aria-pressed="true"] { background: var(--chip-on); color: var(--chip-on-fg); border-color: var(--chip-on); font-weight: 500; }
 .chip[disabled] { opacity: .35; cursor: not-allowed; }
 .chip sup { font-size: .7em; }
@@ -98,7 +99,9 @@ math-field::part(virtual-keyboard-toggle), math-field::part(menu-toggle) { displ
   flex: 1; min-height: 0; width: 100%; max-width: 440px; display: flex; flex-direction: column; gap: .6rem;
   padding: 0 .65rem calc(.6rem + env(safe-area-inset-bottom));
 }
-.screen { position: relative; min-height: 18.25rem; }   /* the display never gets squeezed below its content (entry + result + chips) */
+.screen { position: relative; min-height: min-content; }   /* the display never gets squeezed below its content (entry + result + chips) */
+.screen > :not(.history) { flex: 0 0 auto; }
+.history { contain: size; }                                 /* the list of past calculations does not count when the display is sized */
 .sc-top { display: flex; gap: .4rem; align-items: center; flex-wrap: wrap; padding-bottom: .1rem; }
 .angle {
   display: inline-flex; min-height: 0; min-width: 0; padding: .15rem; gap: .1rem; flex: 0 0 auto;
@@ -108,6 +111,9 @@ math-field::part(virtual-keyboard-toggle), math-field::part(menu-toggle) { displ
 .angle span { padding: .3rem .55rem; border-radius: 999px; color: var(--muted); letter-spacing: .03em; transition: background-color .15s, color .15s; }
 .angle span.on { background: var(--primary); color: var(--primary-fg); }
 .angle.q { margin-left: auto; padding: .3rem .7rem; font-size: .85rem; font-weight: 600; color: var(--hero-fg); border-color: var(--hero-border); }
+.angle.q ~ .angle { margin-left: 0; }
+.angle.ac { padding: .4rem .9rem; font-size: .9rem; font-weight: 700; letter-spacing: .02em; background: var(--primary); color: var(--primary-fg); border-color: var(--primary); }
+.angle.ac:active { transform: scale(.96); }
 .entry { user-select: text; }
 
 .pad {
@@ -144,9 +150,14 @@ math-field::part(virtual-keyboard-toggle), math-field::part(menu-toggle) { displ
 .tb-dec { min-height: 2.25rem; padding: .35rem .8rem; font-size: .9rem; }
 .desk-hint { display: none; }
 @media (max-width: 699px) { .topbar .status { display: none; } .topbar { padding-bottom: .25rem; } }
+@media (max-width: 400px) {
+  .sc-top { flex-wrap: nowrap; gap: .3rem; }
+  .angle { font-size: .68rem; } .angle span { padding: .3rem .42rem; }
+  .angle.q { padding: .3rem .55rem; } .angle.ac { padding: .4rem .7rem; }
+}
+@media (max-width: 380px) { .chip { padding: .3rem .6rem; font-size: .85rem; } }
 @media (max-height: 700px) {
   .thumb { --padh: min(54dvh, 520px); gap: .45rem; }
-  .screen { min-height: 14.5rem; }
   math-field { font-size: 2rem; min-height: 3.3rem; }
   .res-main { font-size: 2em; } .result { min-height: 3.6rem; padding-top: .3rem; }
   .formats { min-height: 0; padding-top: .3rem; } .chip { min-height: 1.9rem; padding: .15rem .65rem; font-size: .85rem; }

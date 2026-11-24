@@ -124,7 +124,7 @@ function renderFormats(d) {
   box.textContent = "";
   if (!d) return;
   const shown = pickForm(d, true);
-  const options = ["exact", ...(d.mixed ? ["mixed"] : []), "decimal", "sci"];
+  const options = ["exact", "decimal", "sci"];           // no "mixed": nobody uses it in Italy and it crowded the row
   for (const f of options) {
     const b = document.createElement("button");
     b.type = "button"; b.className = "chip";
@@ -439,6 +439,9 @@ function closeTour() { tour.hidden = true; store.set("thumb-tour", "1"); }
 $("tourNext").addEventListener("click", () => { if (step < STEPS.length - 1) { step++; paintTour(); } else closeTour(); });
 $("tourSkip").addEventListener("click", closeTour);
 $("tourBtn").addEventListener("click", openTour);
+const acBtn = $("acBtn");                                                  // AC always in sight
+acBtn.addEventListener("pointerdown", (e) => e.preventDefault());
+acBtn.addEventListener("click", () => { press({ act: "clear" }); if (!coarse) mf.focus({ preventScroll: true }); });
 tour.addEventListener("keydown", (e) => { if (e.key === "Escape") closeTour(); });
 if (store.get("thumb-tour", "") !== "1") setTimeout(openTour, 500);
 
