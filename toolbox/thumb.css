@@ -22,9 +22,9 @@
 
 /* ---------- screen ---------- */
 .screen {
-  flex: 1; min-height: 0; display: flex; flex-direction: column;
+  flex: 1; min-height: 0; display: flex; flex-direction: row; gap: .7rem;
   background: var(--card); border: 1px solid var(--card-border); border-radius: 1.25rem;
-  padding: .5rem 1rem .85rem; overflow: hidden;
+  padding: .6rem .6rem .6rem 1rem; overflow: hidden;
 }
 
 .history {
@@ -100,6 +100,7 @@ math-field::part(virtual-keyboard-toggle), math-field::part(menu-toggle) { displ
   padding: 0 .65rem calc(.6rem + env(safe-area-inset-bottom));
 }
 .screen { position: relative; }
+.sc-main { flex: 1 1 auto; min-width: 0; min-height: 0; display: flex; flex-direction: column; }
 .sc-top, .result { flex: 0 0 auto; }
 .sc-top { display: flex; gap: .4rem; align-items: center; flex-wrap: wrap; padding-bottom: .1rem; }
 .angle {
@@ -112,12 +113,12 @@ math-field::part(virtual-keyboard-toggle), math-field::part(menu-toggle) { displ
 .angle.q { margin-left: auto; padding: .3rem .7rem; font-size: .85rem; font-weight: 600; color: var(--hero-fg); border-color: var(--hero-border); }
 .angle.q ~ .angle { margin-left: 0; }
 /* the entry line with its own delete "region" on the right, like the send button of a chat box */
-.entry-row { flex: 0 1 auto; min-height: 3.4rem; display: flex; gap: .5rem; align-items: stretch; }
+.entry-row { flex: 0 1 auto; min-height: 3.4rem; margin-top: auto; display: flex; align-items: stretch; }   /* sits just above the result */
 .entry-row .entry { flex: 1 1 auto; min-width: 0; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; }
 .entry-row .entry::-webkit-scrollbar { display: none; }
 .del-region {
-  flex: 0 0 3.4rem; min-width: 0; min-height: 0; margin-top: .35rem; padding: 0; border: 0; border-radius: .9rem;
-  background: var(--fn); color: var(--fn-fg); font-size: 1.4rem; line-height: 1;
+  flex: 0 0 3.1rem; align-self: stretch; min-width: 0; min-height: 0; margin: 0; padding: 0; border: 0; border-radius: .9rem;
+  background: var(--fn); color: var(--fn-fg); font-size: 1.45rem; line-height: 1;       /* the whole height of the display: nothing can slip under it */
   display: flex; align-items: center; justify-content: center;
   -webkit-user-select: none; user-select: none; touch-action: manipulation; -webkit-tap-highlight-color: transparent;
   transition: transform .06s ease-out, background-color .15s;
@@ -156,7 +157,7 @@ math-field::part(virtual-keyboard-toggle), math-field::part(menu-toggle) { displ
 @keyframes shake { 0%,100% { transform: none; } 20% { transform: translateX(-6px); } 40% { transform: translateX(5px); } 60% { transform: translateX(-3px); } 80% { transform: translateX(2px); } }
 @media (prefers-reduced-motion: reduce) { .history li, .res-main.fresh, .result.shake { animation: none; } .key { transition: none; } }
 
-.tb-dec { min-height: 2.25rem; padding: .35rem .8rem; font-size: .9rem; }
+.tb-q { min-width: 2.25rem; min-height: 2.25rem; padding: .35rem .6rem; font-size: .95rem; font-weight: 600; color: var(--primary); border-color: var(--primary); }
 .desk-hint { display: none; }
 @media (max-width: 699px) { .topbar .status { display: none; } .topbar { padding-bottom: .25rem; } }
 @media (max-width: 400px) {

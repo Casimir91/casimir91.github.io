@@ -22,26 +22,28 @@
   <div class="topbar">
     <a href="index.html">← Toolbox</a>
     <span class="status">Thumb Calculator · hold, swipe, release</span>
-    <div class="themebar" id="themebar"></div>
+    <div class="themebar" id="themebar">
+      <button type="button" class="toggle tb-q" id="pwaBtn" hidden aria-label="Install as an app" title="Install as an app (works offline)">⤓</button>
+      <button type="button" class="toggle tb-q" id="tourBtn" aria-label="How it works" title="How it works">?</button>
+    </div>
   </div>
 
   <div class="stage">
     <main class="thumb" id="thumb">
       <section class="screen" aria-label="Display">
-        <div class="sc-top">
-          <button type="button" class="angle" id="angleBtn"></button>
-          <button type="button" class="angle q" id="tourBtn" aria-label="How it works" title="How it works">?</button>
-          <button type="button" class="angle q" id="pwaBtn" hidden aria-label="Install as an app" title="Install as an app (works offline)">⤓</button>
+        <div class="sc-main">
+          <div class="sc-top">
+            <button type="button" class="angle" id="angleBtn"></button>
+          </div>
+          <div class="entry-row">
+            <div class="entry" id="entry"></div>
+          </div>
+          <div class="result" id="result" aria-live="polite">
+            <div class="res-main" id="resMain"></div>
+            <div class="res-note" id="resNote"></div>
+          </div>
         </div>
-        <ol class="history" id="history" aria-label="Previous calculations"></ol>
-        <div class="entry-row">
-          <div class="entry" id="entry"></div>
-          <button type="button" class="del-region" id="delBtn" aria-label="Delete" title="Delete (hold to keep deleting)">⌫</button>
-        </div>
-        <div class="result" id="result" aria-live="polite">
-          <div class="res-main" id="resMain"></div>
-          <div class="res-note" id="resNote"></div>
-        </div>
+        <button type="button" class="del-region" id="delBtn" aria-label="Delete" title="Delete (hold to keep deleting)">⌫</button>
       </section>
       <section class="pad" id="pad" aria-label="Keypad"></section>
     </main>
