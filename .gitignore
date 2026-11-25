@@ -24,3 +24,6 @@ __pycache__/
 
 # Cartella di transito: file da cancellare a mano
 _to_delete/
+
+# Output grezzi di lavoro di Claude
+/Claude outputs/
