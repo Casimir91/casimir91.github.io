@@ -121,6 +121,16 @@ fetch('../mosaicus/app/version.json', { cache: 'no-cache' }).then((r) => r.json(
     </div>
   </a>
 
+  <a class="tb-card" href="arkana.html" target="_blank" rel="noopener">
+    <div class="tb-preview"><div class="ak-pv" aria-hidden="true"><span class="ak-c ak-1"><i class="ak-b"></i><i class="ak-f"></i></span><span class="ak-c ak-2"><i class="ak-b"></i><i class="ak-f"></i></span><span class="ak-c ak-3"><i class="ak-b"></i><i class="ak-f"></i></span></div></div>
+    <div class="tb-body">
+      <div class="tb-title">Arkana <span class="tb-sub">· associative cards</span></div>
+      <p>Associative and projective cards. Each image is an ambiguous stimulus: it has no fixed meaning, and whoever looks at it projects onto it what they know. The card is an open retrieval cue: it doesn't suggest the content, only a path to reach it.</p>
+      <div class="tb-meta">22 cards · single card · three cards · cross of five · study on your own · works on smartphone</div>
+      <div class="tb-open">Draw the cards →</div>
+    </div>
+  </a>
+
 </div>
 ```
 

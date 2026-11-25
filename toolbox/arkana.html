@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Arkana: 22 associative cards for building an argument. Draw one, three or five cards and let the images choose where you start and where you go.">
+<meta name="theme-color" content="#071d19">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 rx=%227%22 fill=%22%23071d19%22/%3E%3Cpath d=%22M8 27L19 11%22 stroke=%22%23d9b46a%22 stroke-width=%222.4%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M19 11C16.8 9.6 17 6.2 19.6 5.3C22.5 4.3 25.3 6.6 24.6 9.4C24 11.5 21.8 12.4 20.2 11.6%22 stroke=%22%23d9b46a%22 stroke-width=%222%22 fill=%22none%22 stroke-linecap=%22round%22/%3E%3Ccircle cx=%2221.2%22 cy=%228.4%22 r=%222%22 fill=%22%23d9b46a%22/%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ermesfrosi.it">
+<meta property="og:title" content="Arkana · associative cards">
+<meta property="og:description" content="22 associative cards for building an argument: draw, think for thirty seconds, speak.">
+<meta property="og:url" content="https://ermesfrosi.it/toolbox/arkana.html">
+<title>Arkana · associative cards</title>
+<script>(function(){var m="dark";try{m=localStorage.getItem("toolbox-mode")||"dark"}catch(e){}if(m!=="light"&&m!=="dark")m="dark";document.documentElement.setAttribute("data-mode",m)})();</script>
+<style>
+@font-face{font-family:"Roboto";font-style:normal;font-weight:400;font-display:swap;src:url("../fonts/roboto-latin-400-normal.woff2") format("woff2")}
+@font-face{font-family:"Roboto";font-style:normal;font-weight:500;font-display:swap;src:url("../fonts/roboto-latin-500-normal.woff2") format("woff2")}
+:root{--font:Roboto,system-ui,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;--frame:#f1e7d4}
+:root,:root[data-mode="light"]{--bg:#f3efe6;--fg:#4a5a4e;--mut:#7d8a7f;--line:#d3ccb8;--acc:#9a7432;--card:#e9e4d6;color-scheme:light}
+:root[data-mode="dark"]{--bg:#071d19;--fg:#ffffff;--mut:#b7c4c0;--line:rgba(255,255,255,.22);--acc:#d9b46a;--card:#071d19;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.6 var(--font)}
+.wrap{max-width:980px;margin:0 auto;padding:0 14px 48px}
+header{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:16px 0 4px}
+h1{display:flex;align-items:center;gap:12px;font:500 26px/1.2 var(--font);letter-spacing:.2em;text-transform:uppercase;margin:0;color:var(--acc)}
+h1 svg{width:34px;height:34px;color:var(--acc);flex:none}
+.lead{color:var(--mut);margin:0 0 14px;font-style:italic}
+button{font:inherit;color:inherit;background:transparent;border:.5px solid var(--line);border-radius:8px;padding:8px 14px;cursor:pointer}
+button:active{transform:scale(.98)}
+.tg{font-size:1.2rem;line-height:1;padding:.4rem .7rem;min-height:2.25rem}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;margin:6px 0 10px}
+.seg{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.seg button.on{border-color:var(--fg);font-weight:500}
+#draw{border-color:var(--acc);background:var(--acc);color:var(--bg);font-weight:500;padding:8px 22px}
+.think{height:18px;max-width:320px;margin:0 auto 12px;text-align:center;font-size:13px;color:var(--mut)}
+.think .tr{height:3px;border-radius:2px;background:var(--line);overflow:hidden;margin-top:3px}
+.think .tr i{display:block;height:100%;width:0;background:var(--acc)}
+.board{display:grid;gap:14px;justify-content:center;align-items:start;margin:0 auto 26px}
+.board.s1{grid-template-columns:min(300px,calc((100svh - 250px)*.6),78vw)}
+.board.s3{grid-template-columns:repeat(3,min(230px,calc((100svh - 260px)*.56),29vw))}
+.board.s5{grid-template-columns:repeat(3,min(170px,calc((100svh - 230px)*.19),29vw));grid-template-areas:". t ." "l c r" ". b ."}
+.slot{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0}
+.lab{font:italic 13px/1.3 var(--font);color:var(--mut);text-align:center;min-height:2.6em;display:flex;align-items:flex-end}
+.board.s1 .lab{font-size:15px}
+.board.s5 .lab{white-space:nowrap;min-height:1.4em}
+.cd{width:100%;aspect-ratio:200/318;perspective:900px}
+.cd .in{position:relative;width:100%;height:100%;transition:transform .7s cubic-bezier(.3,.7,.2,1);transform-style:preserve-3d}
+.cd.up .in{transform:rotateY(180deg)}
+.fc,.bk{position:absolute;inset:0;border-radius:10px;backface-visibility:hidden;-webkit-backface-visibility:hidden;box-shadow:0 6px 18px rgba(0,0,0,.28)}
+.fc{transform:rotateY(180deg);background:var(--frame);padding:4% 4% 0;display:flex;flex-direction:column}
+.fc svg{width:100%;display:block;border-radius:6px}
+.fc .no{flex:1;display:flex;align-items:center;justify-content:center;font:500 clamp(10px,1.4vw,14px)/1 var(--font);letter-spacing:.06em;color:#6b5a40}
+.bk{border:4px solid var(--frame);background:radial-gradient(circle at 50% 50%,#f3d48c 0 3px,transparent 4px),radial-gradient(circle at 50% 50%,transparent 0 16%,rgba(217,180,106,.9) 16% 17%,transparent 17% 26%,rgba(217,180,106,.5) 26% 27%,transparent 27% 37%,rgba(217,180,106,.28) 37% 38%,transparent 38%),repeating-conic-gradient(from 0deg at 50% 50%,rgba(217,180,106,.13) 0 5deg,transparent 5deg 15deg),linear-gradient(160deg,#30205f,#140f30)}
+.bk::after{content:"";position:absolute;inset:5px;border:1px solid rgba(217,180,106,.5);border-radius:5px}
+.guide{max-width:680px;margin:0 auto;border-top:.5px solid var(--line);padding-top:6px}
+.guide h2{font:500 18px/1.3 var(--font);color:var(--acc);margin:26px 0 8px}
+.guide p{margin:0 0 10px}
+.guide dl{margin:0 0 10px}.guide dt{font-weight:500;margin-top:10px}.guide dd{margin:2px 0 0 0;color:var(--fg)}
+.guide ol{padding-left:1.3em;margin:0 0 10px}
+.refs{font-size:13px;color:var(--mut)}.refs p{margin:0 0 8px;padding-left:1.4em;text-indent:-1.4em}.refs b{font-weight:500;color:var(--fg)}
+@media (min-width:900px){
+.wrap{max-width:1280px;padding:0 28px 48px}
+.main{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:44px;align-items:start}
+.play{position:sticky;top:12px}
+.guide{max-width:none;border-top:0;border-left:.5px solid var(--line);padding:0 0 0 36px}
+.guide h2:first-child{margin-top:8px}
+.board.s1{grid-template-columns:min(320px,calc((100svh - 230px)*.6))}
+.board.s3{grid-template-columns:repeat(3,min(210px,calc((100svh - 240px)*.56)))}
+.board.s5{grid-template-columns:repeat(3,min(170px,calc((100svh - 130px)*.2)));row-gap:8px}
+}
+@media (prefers-reduced-motion:reduce){.cd .in{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<h1><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M7 29L19.5 10.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M19.5 10.5C17 9 17.2 5.2 20 4.2C23.2 3 26.4 5.6 25.6 8.8C25 11.2 22.4 12.2 20.6 11.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/><circle cx="21.6" cy="7.6" r="2.1" fill="currentColor"/><path d="M27.5 13.5l.6 1.5 1.5.6-1.5.6-.6 1.5-.6-1.5-1.5-.6 1.5-.6zM12 4l.5 1.2 1.2.5-1.2.5L12 7.4l-.5-1.2-1.2-.5 1.2-.5z" fill="currentColor"/><path d="M9.5 25.5l3 2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Arkana</h1>
+<button id="th" class="tg" type="button" aria-label="Switch between light and dark mode" title="Switch light / dark">☾</button>
+</header>
+<p class="lead">Associative cards for building an argument.</p>
+
+<div class="main">
+<div class="play">
+<div class="bar">
+ <div class="seg" role="group" aria-label="Spread">
+  <button data-s="1" class="on">Single card</button>
+  <button data-s="3">Three cards</button>
+  <button data-s="5">Cross of five</button>
+ </div>
+ <button id="draw">Draw</button>
+</div>
+<div class="think" id="think" aria-live="polite"></div>
+<div class="board s1" id="board"></div>
+</div>
+
+<section class="guide">
+<h2>How to use it at home</h2>
+<ol>
+<li>Choose a topic.</li>
+<li>Draw the cards.</li>
+<li>Think for thirty seconds.</li>
+<li>Speak out loud and let yourself go.</li>
+</ol>
+<p>Arkana is meant to be used on your own: a help to build an argument, open your mind and unlock your reasoning.</p>
+
+<h2>Sources</h2>
+<div class="refs">
+<p><b>Retrieval cue.</b> Tulving, E., &amp; Thomson, D. M. (1973). Encoding specificity and retrieval processes in episodic memory. <i>Psychological Review</i>, 80(5), 352–373.</p>
+<p><b>Retrieval practice.</b> Roediger, H. L., &amp; Karpicke, J. D. (2006). Test-enhanced learning: Taking memory tests improves long-term retention. <i>Psychological Science</i>, 17(3), 249–255.</p>
+<p><b>Generation effect.</b> Slamecka, N. J., &amp; Graf, P. (1978). The generation effect: Delineation of a phenomenon. <i>Journal of Experimental Psychology: Human Learning and Memory</i>, 4(6), 592–604.</p>
+<p><b>Elaboration.</b> Craik, F. I. M., &amp; Lockhart, R. S. (1972). Levels of processing: A framework for memory research. <i>Journal of Verbal Learning and Verbal Behavior</i>, 11(6), 671–684.</p>
+<p><b>Self-explanation.</b> Chi, M. T. H., de Leeuw, N., Chiu, M.-H., &amp; LaVancher, C. (1994). Eliciting self-explanations improves understanding. <i>Cognitive Science</i>, 18(3), 439–477.</p>
+<p><b>Analogical reasoning.</b> Gentner, D. (1983). Structure-mapping: A theoretical framework for analogy. <i>Cognitive Science</i>, 7(2), 155–170.</p>
+<p><b>Analogies in science teaching.</b> Glynn, S. M. (1991). Explaining science concepts: A Teaching-With-Analogies model. In S. M. Glynn, R. H. Yeany &amp; B. K. Britton (Eds.), <i>The Psychology of Learning Science</i> (pp. 219–240). Hillsdale, NJ: Erlbaum.</p>
+<p><b>Dual coding.</b> Paivio, A. (1986). <i>Mental Representations: A Dual Coding Approach</i>. New York: Oxford University Press.</p>
+<p><b>Desirable difficulties.</b> Bjork, R. A. (1994). Memory and metamemory considerations in the training of human beings. In J. Metcalfe &amp; A. P. Shimamura (Eds.), <i>Metacognition: Knowing about Knowing</i> (pp. 185–205). Cambridge, MA: MIT Press.</p>
+</div>
+</section>
+</div>
+</div>
+
+<script>
+const f=n=>(+n).toFixed(1);
+function rng(seed){let s=(seed*9973+12345)>>>0;return()=>{s=(Math.imul(s,1664525)+1013904223)>>>0;return s/4294967296}}
+function stars(seed,n,x,y,w,h,col='#fff',maxr=.9){const r=rng(seed);let o='';for(let i=0;i<n;i++)o+=`<circle cx="${f(x+r()*w)}" cy="${f(y+r()*h)}" r="${(.25+r()*maxr).toFixed(2)}" fill="${col}" opacity="${(.25+r()*.75).toFixed(2)}"/>`;return o}
+function spark(x,y,s,col,op=1){return `<path d="M${f(x)} ${f(y-s)}Q${f(x)} ${f(y)} ${f(x+s)} ${f(y)}Q${f(x)} ${f(y)} ${f(x)} ${f(y+s)}Q${f(x)} ${f(y)} ${f(x-s)} ${f(y)}Q${f(x)} ${f(y)} ${f(x)} ${f(y-s)}Z" fill="${col}" opacity="${op}"/>`}
+function glow(id,sd){return `<filter id="${id}" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="${sd}" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>`}
+function blur(id,sd){return `<filter id="${id}" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="${sd}"/></filter>`}
+const stp=s=>s.map(([o,c,a])=>`<stop offset="${o}" stop-color="${c}"${a!=null?` stop-opacity="${a}"`:''}/>`).join('');
+function lg(id,s,x2=0,y2=1){return `<linearGradient id="${id}" x1="0" y1="0" x2="${x2}" y2="${y2}">${stp(s)}</linearGradient>`}
+function rg(id,s){return `<radialGradient id="${id}">${stp(s)}</radialGradient>`}
+function person(x,y,s,fill){return `<g transform="translate(${x} ${y}) scale(${s})" fill="${fill}"><circle cx="0" cy="-26" r="4"/><path d="M-3.5 -21.5Q0 -23 3.5 -21.5L6.5 -7H2.2V0H.6V-7H-.6V0H-2.2V-7H-6.5Z"/></g>`}
+function cloud(x,y,s,col,op=1){return `<g fill="${col}" opacity="${op}"><ellipse cx="${x}" cy="${y}" rx="${18*s}" ry="${7*s}"/><circle cx="${x-7*s}" cy="${y-4*s}" r="${7*s}"/><circle cx="${x+5*s}" cy="${y-6*s}" r="${9*s}"/><circle cx="${x+13*s}" cy="${y-2*s}" r="${5*s}"/></g>`}
+const bird=(x,y,s,c)=>`<path d="M${x} ${y}q${3*s} ${-3*s} ${6*s} 0q${3*s} ${-3*s} ${6*s} 0" fill="none" stroke="${c}" stroke-width="1" stroke-linecap="round"/>`;
+
+
+const ART=[
+/* 1 */
+p=>{const r=rng(4);let fp='';for(let i=0;i<9;i++){const t=i/8,x=58+(96-58)*t+(i%2?4:-4)*(1-t*.6),y=292-(292-212)*t,s=1-t*.6;fp+=`<ellipse cx="${f(x)}" cy="${f(y)}" rx="${f(2*s)}" ry="${f(3.2*s)}" fill="#8f5c31" opacity=".55"/>`}
+ return `<defs>${lg(p+'s',[[0,'#e7b277'],[.6,'#f6dcae'],[1,'#f8e6c3']])}${lg(p+'n',[[0,'#08092a'],[1,'#2b2a6a']])}${rg(p+'h',[[0,'#fff6dc',.9],[1,'#fff6dc',0]])}${glow(p+'g',1.4)}
+ <clipPath id="${p}o"><rect x="81" y="123" width="38" height="83"/></clipPath>
+ <mask id="${p}c"><rect width="200" height="300" fill="#fff"/><circle cx="111" cy="138" r="6" fill="#000"/></mask></defs>
+ <rect width="200" height="300" fill="url(#${p}s)"/>
+ <circle cx="48" cy="62" r="50" fill="url(#${p}h)"/><circle cx="48" cy="62" r="18" fill="#fff8e6" opacity=".9"/>
+ <path d="M0 175Q50 160 100 172T200 165V300H0Z" fill="#e5b880"/>
+ <path d="M0 205Q70 190 120 206T200 198V300H0Z" fill="#d49c5f"/>
+ <path d="M0 240Q60 222 110 236T200 230V300H0Z" fill="#c2834b"/>
+ <path d="M0 240Q60 222 110 236" stroke="#e8b47a" stroke-width="1.5" fill="none" opacity=".7"/>
+ <path d="M124 206L76 206L122 238L182 232Z" fill="#7a4a28" opacity=".35"/>
+ <rect x="76" y="118" width="48" height="88" fill="#4a2f22"/>
+ <g clip-path="url(#${p}o)"><rect x="81" y="123" width="38" height="83" fill="url(#${p}n)"/>${stars(41,45,81,123,38,83)}
+ <circle cx="106" cy="142" r="7" fill="#fff1c4" mask="url(#${p}c)" filter="url(#${p}g)"/>${spark(90,150,2.5,'#fff')}
+ <path d="M81 196Q100 190 119 196V206H81Z" fill="#14164a"/></g>
+ <path d="M81 123L64 129L64 212L81 206Z" fill="#7b4f34"/><path d="M78 133L68 137V172L78 169Z M78 176L68 179V204L78 201Z" fill="none" stroke="#5a3624" stroke-width="1"/>
+ <circle cx="68" cy="170" r="1.4" fill="#e3c27a"/>
+ <g filter="url(#${p}g)">${spark(100,214,2.2,'#fff4c8')}${spark(111,222,1.6,'#fff4c8',.8)}${spark(92,226,1.3,'#fff4c8',.7)}${spark(118,212,1,'#fff4c8',.8)}</g>
+ ${fp}`},
+/* 2 */
+p=>{const r=rng(301);const segs=[];let tips='';
+ function br(x,y,a,len,w,d){if(d===0||len<3)return;const x2=x+len*Math.sin(a),y2=y-len*Math.cos(a),cx=(x+x2)/2+(r()-.5)*len*.35,cy=(y+y2)/2+(r()-.5)*len*.2;
+  segs.push([`M${f(x)} ${f(y)}Q${f(cx)} ${f(cy)} ${f(x2)} ${f(y2)}`,w]);
+  if(d===1)tips+=`<circle cx="${f(x2)}" cy="${f(y2)}" r="${(.5+r()*.9).toFixed(2)}" fill="#fff0b8"/>`;
+  const n=(r()<.3&&d>5)?3:2;for(let i=0;i<n;i++){const da=(n===2?(i?1:-1):(i-1))*(.22+r()*.32);br(x2,y2,a+da+(r()-.5)*.2,len*(.68+r()*.12),w*.7,d-1)}}
+ br(100,306,0,64,6.5,9);
+ let contour='';for(let i=0;i<9;i++){const y=30+i*32;contour+=`<path d="M-5 ${y}Q50 ${y-14+i*2} 100 ${y+6}T205 ${y-4}" stroke="#6fa3a8" stroke-opacity=".12" stroke-width=".6" fill="none"/>`}
+ const wide=segs.map(([d,w])=>`<path d="${d}" stroke-width="${f(w*2.6)}"/>`).join(''),thin=segs.map(([d,w])=>`<path d="${d}" stroke-width="${(w*.75).toFixed(2)}"/>`).join('');
+ return `<defs>${lg(p+'s',[[0,'#05080f'],[.35,'#0c1519'],[1,'#1a2a2a']])}${lg(p+'fade',[[0,'#05080f',1],[.3,'#05080f',0]])}${blur(p+'b',2.5)}${glow(p+'g',1)}</defs>
+ <rect width="200" height="300" fill="url(#${p}s)"/>${contour}
+ <g stroke="#3fb8d8" stroke-opacity=".35" fill="none" stroke-linecap="round" filter="url(#${p}b)">${wide}</g>
+ <g stroke="#bff0ff" fill="none" stroke-linecap="round">${thin}</g>
+ <g filter="url(#${p}g)">${tips}</g>
+ <rect width="200" height="300" fill="url(#${p}fade)"/>${stars(302,40,0,0,200,70)}`},
+/* 3 */
+p=>`<defs>${lg(p+'s',[[0,'#17323b'],[1,'#27474e']])}${lg(p+'n',[[0,'#0b0f2c'],[1,'#26305e']])}${lg(p+'st',[[0,'#2e3656'],[1,'#617193']])}${lg(p+'sea',[[0,'#1f4466'],[1,'#071a2c']])}${glow(p+'g',1.5)}
+ <clipPath id="${p}w"><rect x="20" y="28" width="66" height="86"/></clipPath><clipPath id="${p}b"><circle cx="100" cy="172" r="48"/></clipPath>
+ <mask id="${p}c"><rect width="200" height="300" fill="#fff"/><circle cx="74" cy="44" r="8" fill="#000"/></mask></defs>
+ <rect width="200" height="300" fill="url(#${p}s)"/>${stars(6,40,0,0,200,220,'#d9b46a',.6)}
+ <g clip-path="url(#${p}w)"><rect x="20" y="28" width="66" height="86" fill="url(#${p}n)"/>${stars(61,30,20,28,66,86)}<circle cx="68" cy="48" r="9" fill="#fff2c8" mask="url(#${p}c)"/></g>
+ <rect x="20" y="28" width="66" height="86" fill="none" stroke="#e9dcc4" stroke-width="4"/><path d="M53 28V114M20 71H86" stroke="#e9dcc4" stroke-width="2.5"/>
+ <g transform="translate(116 84) rotate(-14)"><path d="M8 0L19 -7Q15 0 19 7Z" fill="#f6a65c"/><ellipse cx="0" cy="0" rx="10.5" ry="6.2" fill="#f0843a"/><path d="M-1 -5Q3 -11 7 -5Z" fill="#f6a65c"/><circle cx="-5.5" cy="-1.2" r="1.2" fill="#2a1a10"/></g>
+ <g fill="none" stroke="#fff" stroke-opacity=".6" stroke-width=".6"><circle cx="102" cy="76" r="1.6"/><circle cx="96" cy="68" r="2.2"/><circle cx="92" cy="58" r="1.3"/></g>
+ <rect x="0" y="222" width="200" height="9" fill="#d9c6a2"/><rect x="0" y="231" width="200" height="69" fill="#14262c"/>
+ <ellipse cx="100" cy="222" rx="34" ry="4" fill="#000" opacity=".35"/>
+ <g clip-path="url(#${p}b)"><rect x="40" y="120" width="120" height="110" fill="url(#${p}st)"/>
+  ${cloud(80,140,1,'#252b45',.8)}${cloud(118,134,.8,'#2a3050',.8)}
+  <g stroke="#cfd8f0" stroke-opacity=".25" stroke-width=".5">${Array.from({length:14},(_,i)=>`<path d="M${58+i*6} 142l-3 14"/>`).join('')}</g>
+  <path d="M130 147L52 160L52 176L130 152Z" fill="#ffe39a" opacity=".25"/>
+  <path d="M120 170L136 170L134 176L122 176Z" fill="#1a2030"/><rect x="125" y="150" width="6" height="20" fill="#f1ece2"/><rect x="125" y="158" width="6" height="3" fill="#b8434b"/><circle cx="128" cy="148" r="2.4" fill="#ffe39a" filter="url(#${p}g)"/>
+  <path d="M40 176Q50 168 60 176T80 174T100 177T120 173T140 176T162 174V230H40Z" fill="url(#${p}sea)"/>
+  <path d="M46 177Q55 171 63 177M86 176Q94 170 102 177M126 175Q134 169 142 176" stroke="#cfe4ff" stroke-opacity=".6" stroke-width=".8" fill="none"/>
+  <g transform="translate(78 172) rotate(-12)"><path d="M-7 0H7L4.5 4H-4.5Z" fill="#3b2a20"/><path d="M0 -1V-14L7 -2Z" fill="#f4ead6"/><path d="M-1 -1V-11L-6 -2Z" fill="#e2d6be"/></g></g>
+ <circle cx="100" cy="172" r="48" fill="#bfe3ff" opacity=".08"/>
+ <path d="M70 141A42 42 0 0 0 62 196" stroke="#fff" stroke-opacity=".45" stroke-width="3" fill="none" stroke-linecap="round"/>
+ <path d="M74 128A48 48 0 1 0 126 128" stroke="#dff2ff" stroke-opacity=".5" stroke-width="1" fill="none"/>
+ <ellipse cx="100" cy="128" rx="26" ry="4.5" fill="none" stroke="#e8f6ff" stroke-opacity=".7" stroke-width="1.4"/>`,
+/* 4 */
+p=>{let rings='';[[68,196,'#ffd9a0'],[132,196,'#bfe3ff']].forEach(([cx,cy,c])=>{for(let i=1;i<=18;i++){const R=i*8.5;rings+=`<ellipse cx="${cx}" cy="${cy}" rx="${f(R)}" ry="${f(R*.36)}" fill="none" stroke="${c}" stroke-width=".7" opacity="${(.8*(1-i/19)).toFixed(2)}"/>`}});
+ const lantern=(x,y,c,id)=>`<circle cx="${x}" cy="${y-3}" r="22" fill="url(#${p}${id})"/><path d="M${x} ${y+2}V${y+40}" stroke="${c}" stroke-opacity=".25" stroke-width="3" filter="url(#${p}b)"/><g filter="url(#${p}g)"><rect x="${x-3.5}" y="${y-9}" width="7" height="8" rx="2" fill="${c}"/><path d="M${x-4.5} ${y-9}H${x+4.5}M${x-4} ${y-1}H${x+4}" stroke="#2a2030" stroke-width=".8"/></g>`;
+ return `<defs>${lg(p+'s',[[0,'#0b0f2a'],[1,'#2a3566']])}${lg(p+'w',[[0,'#1a2550'],[1,'#060a1c']])}${rg(p+'h1',[[0,'#ffd9a0',.7],[1,'#ffd9a0',0]])}${rg(p+'h2',[[0,'#bfe3ff',.7],[1,'#bfe3ff',0]])}${glow(p+'g',1.6)}${blur(p+'b',2)}
+ <clipPath id="${p}c"><rect y="96" width="200" height="204"/></clipPath></defs>
+ <rect width="200" height="96" fill="url(#${p}s)"/>${stars(303,50,0,0,200,80)}
+ <path d="M0 96L0 84L30 72L52 82L80 66L108 80L140 70L170 82L200 76V96Z" fill="#141a38"/>
+ <rect y="96" width="200" height="204" fill="url(#${p}w)"/>
+ <g clip-path="url(#${p}c)">${rings}</g>
+ ${lantern(68,196,'#ffd9a0','h1')}${lantern(132,196,'#bfe3ff','h2')}`},
+/* 5 */
+p=>{let bars='';for(let x=60;x<=140;x+=10){if(x===130||x===140)bars+=`<path d="M${x} 222V194M${x} 146V100Q${x} 62 100 62"/>`;else bars+=`<path d="M${x} 222V100Q${x} 62 100 62"/>`}
+ let chain='';for(let y=2;y<56;y+=7)chain+=`<ellipse cx="100" cy="${y}" rx="${(y/7)%2<1?2:1}" ry="3.4"/>`;
+ const feather=(x,y,rot,s)=>`<g transform="translate(${x} ${y}) rotate(${rot}) scale(${s})"><path d="M0 -9Q5 -2 0 9Q-5 -2 0 -9Z" fill="#f1e2c8" opacity=".85"/><path d="M0 -9V11" stroke="#b79a72" stroke-width=".5"/></g>`;
+ return `<defs>${lg(p+'s',[[0,'#24102c'],[.6,'#561c3a'],[1,'#7b2e3c']])}${rg(p+'m',[[0,'#fffaea'],[.8,'#f3dfa6'],[1,'#e2c27a']])}${rg(p+'h',[[0,'#ffe6a8',.55],[1,'#ffe6a8',0]])}${glow(p+'g',3)}</defs>
+ <rect width="200" height="300" fill="url(#${p}s)"/>${stars(8,50,0,0,200,300,'#f3c9a8',.6)}
+ <g fill="none" stroke="#c9a15a" stroke-width="1">${chain}</g><circle cx="100" cy="58" r="4" fill="none" stroke="#d9b46a" stroke-width="1.6"/>
+ <circle cx="98" cy="164" r="70" fill="url(#${p}h)"/>
+ <circle cx="98" cy="164" r="28" fill="url(#${p}m)" filter="url(#${p}g)"/>
+ <g fill="#b89858" opacity=".22"><circle cx="88" cy="155" r="6"/><circle cx="108" cy="172" r="4"/><circle cx="96" cy="178" r="3"/><circle cx="110" cy="152" r="2.4"/></g>
+ <g fill="none" stroke="#d9b46a" stroke-width="1.6">${bars}<ellipse cx="100" cy="100" rx="40" ry="4"/><ellipse cx="100" cy="190" rx="40" ry="3" opacity=".7"/></g>
+ <path d="M130 194L152 186V140L130 146Z M141 190V143" fill="none" stroke="#d9b46a" stroke-width="1.6"/>
+ <rect x="56" y="219" width="88" height="8" rx="2" fill="#a37a3e"/>
+ <g transform="translate(150 139)" fill="#160816"><ellipse cx="0" cy="-6" rx="7.5" ry="5"/><circle cx="-6" cy="-11" r="3.8"/><path d="M-9.5 -11.5L-14 -10L-9.5 -9.5Z"/><path d="M6 -7L15 -11L13 -5Z"/><path d="M-1 -1V1M2 -1V1" stroke="#160816" stroke-width="1"/><circle cx="-7" cy="-12" r=".8" fill="#f3d48c"/></g>
+ ${feather(70,250,-30,1)}${feather(128,268,40,.85)}${feather(96,286,10,.7)}${feather(156,238,70,.6)}`},
+/* 6 */
+p=>{const r=rng(606);let leaves='',frost='',petals='',roots='',br='';
+ const E=[[70,150],[80,134],[92,126],[108,126],[120,134],[130,150],[62,166],[138,166]];
+ E.forEach(([x,y])=>{const cx=(100+x)/2+(x<100?4:-4),cy=(182+y)/2-10;br+=`<path d="M100 182Q${cx} ${cy} ${x} ${y}" stroke="#2a1d18" stroke-width="2.2" fill="none" stroke-linecap="round"/>`;
+  roots+=`<path d="M100 ${464-182}Q${cx} ${464-cy} ${x} ${464-y}" stroke="${x<100?'#e8c87a':'#9fd0ff'}" stroke-width="1" fill="none" opacity=".55"/>`;
+  if(x<100)for(let k=0;k<7;k++)leaves+=`<circle cx="${f(x+(r()-.5)*14)}" cy="${f(y+(r()-.5)*12)}" r="${(1.8+r()*2.2).toFixed(2)}" fill="${r()<.55?'#7fb86a':'#f2b3c6'}"/>`;
+  else frost+=`<path d="M${(100+x)/2} ${(182+y)/2-6}L${x} ${y-1.5}" stroke="#fff" stroke-width="1" opacity=".8"/>`;});
+ for(let i=0;i<9;i++)petals+=`<ellipse cx="${f(10+r()*80)}" cy="${f(70+r()*150)}" rx="1.5" ry=".8" fill="#f2b3c6" opacity=".8"/>`;
+ const pend=(rot,op)=>`<g transform="rotate(${rot} 100 50)" opacity="${op}"><path d="M100 50V92" stroke="#e8c87a" stroke-width=".7"/><path d="M100 90L105.5 99L100 110L94.5 99Z" fill="url(#${p}gd)" filter="url(#${p}g)"/></g>`;
+ return `<defs>${lg(p+'d',[[0,'#f2d79a'],[1,'#d99a62']])}${lg(p+'n',[[0,'#0b0a2a'],[1,'#2a2a6a']])}${lg(p+'gd',[[0,'#fff1c4'],[1,'#c9962e']])}${rg(p+'co',[[0,'#fff3c4',.9],[.4,'#f0c060',.5],[1,'#f0c060',0]])}${glow(p+'g',1.6)}
+ <clipPath id="${p}L"><rect width="100" height="300"/></clipPath><clipPath id="${p}R"><rect x="100" width="100" height="300"/></clipPath></defs>
+ <rect width="100" height="300" fill="url(#${p}d)"/><rect x="100" width="100" height="300" fill="url(#${p}n)"/>
+ <g clip-path="url(#${p}R)">${stars(607,60,100,0,100,300)}</g>${petals}
+ <circle cx="100" cy="232" r="74" fill="none" stroke="#e8c87a" stroke-width=".7" opacity=".6"/>
+ <g clip-path="url(#${p}L)"><circle cx="100" cy="232" r="74" fill="#fff3c4" opacity=".12"/></g><g clip-path="url(#${p}R)"><circle cx="100" cy="232" r="74" fill="#9fd0ff" opacity=".1"/></g>
+ <circle cx="100" cy="34" r="30" fill="url(#${p}co)"/><circle cx="100" cy="34" r="13" fill="#1a1430"/><circle cx="100" cy="34" r="13" fill="none" stroke="#fff3c4" stroke-width="1.2" filter="url(#${p}g)"/>
+ <path d="M73 98A55 55 0 0 0 127 98" stroke="#e8c87a" stroke-opacity=".5" stroke-width=".6" stroke-dasharray="2 3" fill="none"/>
+ ${pend(-28,.25)}${pend(28,.25)}
+ ${roots}
+ <path d="M96 232C98 212 97 196 99 182L101 182C103 196 102 212 104 232Z" fill="#2a1d18"/>
+ ${br}${frost}${leaves}
+ <path d="M0 232H200" stroke="#e8c87a" stroke-width=".8" opacity=".8"/>
+ ${pend(0,1)}`},
+/* 7 */
+p=>{const pts=[[50,140],[72,127],[96,121],[121,125],[147,134],[170,137],[112,150],[80,152],[60,150]];
+ const lines='M'+[0,1,2,3,4,5].map(i=>pts[i].join(' ')).join('L')+'M'+[1,8,7,6,3].map(i=>pts[i].join(' ')).join('L');
+ const r=rng(707);let lights='';for(let i=0;i<40;i++){const a=-1.25+r()*.9,R=262;lights+=`<circle cx="${f(100+R*Math.sin(a)*1)}" cy="${f(520-R*Math.cos(a))}" r=".6" fill="#ffd77a" opacity="${(.4+r()*.6).toFixed(2)}"/>`}
+ return `<defs>${lg(p+'s',[[0,'#05061a'],[.6,'#141a44'],[1,'#2a1f4a']])}${lg(p+'w',[[0,'#22366e'],[1,'#4a6aa8']])}${rg(p+'l',[[0,'#ffd57a',.8],[1,'#ffd57a',0]])}${glow(p+'g',1.5)}${blur(p+'b',10)}
+ <mask id="${p}m"><rect width="200" height="300" fill="#fff"/><circle cx="44" cy="44" r="10" fill="#000"/></mask></defs>
+ <rect width="200" height="300" fill="url(#${p}s)"/>
+ <ellipse cx="60" cy="90" rx="70" ry="30" fill="#7a3fa0" opacity=".28" filter="url(#${p}b)"/><ellipse cx="150" cy="190" rx="60" ry="26" fill="#2a8aa0" opacity=".22" filter="url(#${p}b)"/>
+ ${stars(708,140,0,0,200,300)}
+ <circle cx="38" cy="48" r="11" fill="#f3ecd8" mask="url(#${p}m)" filter="url(#${p}g)"/>
+ <circle cx="100" cy="520" r="262" fill="#0a1230"/><circle cx="100" cy="520" r="262" fill="none" stroke="#7fd0ff" stroke-width="2" opacity=".5" filter="url(#${p}g)"/>${lights}
+ <g fill="none" stroke="#e8c87a" stroke-width=".5" opacity=".45" stroke-dasharray="1.5 2.5"><ellipse cx="110" cy="140" rx="96" ry="24" transform="rotate(-8 110 140)"/><ellipse cx="110" cy="140" rx="80" ry="44" transform="rotate(14 110 140)"/></g>
+ <path d="M30 140C30 115 70 100 110 105C140 108 160 120 172 132C186 118 196 112 198 106C194 122 188 132 182 138C190 142 196 150 198 160C188 154 180 148 172 144C150 158 110 170 70 165C45 162 30 155 30 140Z" fill="url(#${p}w)" opacity=".95" stroke="#9fc8ff" stroke-opacity=".5" stroke-width=".8"/>
+ <path d="M82 162Q90 182 100 186Q98 172 96 163Z" fill="#2a4280"/>
+ <path d="${lines}" stroke="#e8c87a" stroke-width=".6" fill="none" opacity=".85"/>
+ <g filter="url(#${p}g)">${pts.map(([x,y],i)=>spark(x,y,i%3?1.6:2.4,'#fff3c4')).join('')}</g>
+ <path d="M193 155Q186 180 178 204" stroke="#e8c87a" stroke-width=".5" fill="none" opacity=".7"/>
+ <circle cx="178" cy="211" r="16" fill="url(#${p}l)"/><g filter="url(#${p}g)"><path d="M174 204L178 200L182 204Z" fill="#3a2a1e"/><rect x="173.5" y="204" width="9" height="12" rx="2" fill="#ffd37a"/></g>`},
+/* 8 */
+p=>{let fp='';for(let i=0;i<7;i++){const t=i/6,x=100+(i%2?3:-3)*(1-t*.5),y=292-(292-222)*t,s=1-t*.5;fp+=`<ellipse cx="${f(x)}" cy="${f(y)}" rx="${f(1.8*s)}" ry="${f(2.8*s)}" fill="#5a3f4a" opacity=".55"/>`}
+ return `<defs>${lg(p+'s',[[0,'#262a5a'],[.5,'#8a6a8e'],[1,'#e0ae8a']])}${lg(p+'f',[[0,'#4a3a5e'],[1,'#20182e']])}${rg(p+'h',[[0,'#fff2c8',.7],[1,'#fff2c8',0]])}${glow(p+'g',1.4)}${blur(p+'b',4)}
+ <mask id="${p}m"><rect width="200" height="300" fill="#fff"/><circle cx="174" cy="128" r="7" fill="#000"/></mask></defs>
+ <rect width="200" height="300" fill="url(#${p}s)"/>${stars(305,40,0,0,200,90)}
+ <circle cx="34" cy="140" r="30" fill="url(#${p}h)"/><path d="M20 140A14 14 0 0 1 48 140Z" fill="#ffe2a8"/>
+ <circle cx="170" cy="130" r="8" fill="#eef2ff" mask="url(#${p}m)"/>
+ <path d="M0 142Q50 132 100 140T200 136V300H0Z" fill="url(#${p}f)"/>
+ <ellipse cx="100" cy="150" rx="110" ry="8" fill="#fff" opacity=".18" filter="url(#${p}b)"/>
+ <path d="M84 300L96 222L36 142L40 142L104 222L116 300Z" fill="#e8d3b8" opacity=".85"/>
+ <path d="M98 222L162 140L166 140L104 222Z" fill="#e8d3b8" opacity=".85"/>
+ <circle cx="100" cy="222" r="10" fill="url(#${p}h)"/>
+ ${fp}
+ <g opacity=".8">${person(76,194,.85,'#1c1530')}</g><g opacity=".8">${person(125,194,.85,'#1c1530')}</g>
+ <g opacity=".35">${person(56,168,.55,'#1c1530')}${person(146,168,.55,'#1c1530')}</g>`},
+/* 9 */
+p=>{let floor='';const rows=7;for(let i=0;i<rows;i++){const y0=236+64*Math.pow(i/rows,1.4),y1=236+64*Math.pow((i+1)/rows,1.4),s0=.45+.55*(y0-236)/64,s1=.45+.55*(y1-236)/64;
+  for(let j=-7;j<7;j++){const w=16;floor+=`<path d="M${f(100+j*w*s0)} ${f(y0)}L${f(100+(j+1)*w*s0)} ${f(y0)}L${f(100+(j+1)*w*s1)} ${f(y1)}L${f(100+j*w*s1)} ${f(y1)}Z" fill="${(i+j)%2?'#e9dfc8':'#16101f'}"/>`}}
+ let field='';[10,20,32].forEach(h=>field+=`<path d="M47 60Q100 ${60-h*2} 153 60" stroke="#cfe6ff" stroke-width=".5" fill="none" opacity=".35"/>`);
+ return `<defs>${lg(p+'s',[[0,'#0b0a24'],[.6,'#2a1d4e'],[1,'#3d2a55']])}${lg(p+'v',[[0,'#b9a6e0',.35],[1,'#e8dcff',.15]],1,0)}${rg(p+'m',[[0,'#fff4d0',.8],[1,'#fff4d0',0]])}${glow(p+'g',1.8)}
+ <mask id="${p}c"><rect width="200" height="300" fill="#fff"/><circle cx="106" cy="146" r="13" fill="#000"/></mask></defs>
+ <rect width="200" height="300" fill="url(#${p}s)"/>${stars(909,80,0,0,200,230)}
+ <circle cx="100" cy="150" r="40" fill="url(#${p}m)"/><circle cx="100" cy="150" r="15" fill="#fff4d0" mask="url(#${p}c)"/>
+ <path d="M60 78Q80 74 100 78T140 78V232Q120 236 100 232T60 232Z" fill="url(#${p}v)"/>
+ <path d="M70 80V232M82 78V232M94 78V232M106 78V232M118 78V232M130 80V232" stroke="#fff" stroke-opacity=".12" stroke-width="1.5"/>
+ <path d="M30 236H170" stroke="#e8c87a" stroke-width=".6" opacity=".6"/>${floor}
+ <rect x="34" y="80" width="26" height="156" fill="#17111f"/><rect x="30" y="70" width="34" height="12" fill="#17111f"/><rect x="30" y="232" width="34" height="8" fill="#17111f"/>
+ <path d="M34 80V236M60 80V236" stroke="#e8c87a" stroke-width=".7" opacity=".7"/><circle cx="47" cy="62" r="8" fill="#17111f" stroke="#e8c87a" stroke-width=".8"/>
+ <path d="M50 150A7 7 0 1 1 50 162A5.5 5.5 0 1 0 50 150Z" fill="#e8c87a"/>
+ <rect x="140" y="80" width="26" height="156" fill="#efe6d2"/><rect x="136" y="70" width="34" height="12" fill="#efe6d2"/><rect x="136" y="232" width="34" height="8" fill="#efe6d2"/>
+ <path d="M140 80V236M166 80V236" stroke="#b08a3a" stroke-width=".7" opacity=".7"/><circle cx="153" cy="62" r="8" fill="#efe6d2" stroke="#b08a3a" stroke-width=".8"/>
+ <circle cx="153" cy="156" r="6" fill="none" stroke="#9a7432" stroke-width="1.2"/><circle cx="153" cy="156" r="1.4" fill="#9a7432"/>
+ ${field}
+ <path d="M55 60L68 54L76 63L88 52L98 61L110 50L120 60L132 51L145 60" stroke="#fff6d0" stroke-width="1.2" fill="none" stroke-linejoin="round" filter="url(#${p}g)"/>`},
+/* 10 */
+p=>{const hex=(cx,cy,R)=>[...Array(6)].map((_,k)=>{const a=Math.PI/6+k*Math.PI/3;return f(cx+R*Math.cos(a))+' '+f(cy+R*Math.sin(a))}).join('L');
+ return `<defs>${lg(p+'s',[[0,'#0a0d22'],[1,'#22142e']])}${lg(p+'c',[[0,'#eaf8ff'],[1,'#8fc8ee']],1,1)}${rg(p+'f',[[0,'#ffb35c',.75],[.5,'#ff7a2a',.2],[1,'#ff7a2a',0]])}${rg(p+'ch',[[0,'#bfe8ff',.6],[1,'#bfe8ff',0]])}${glow(p+'g',1.8)}${blur(p+'b',2)}</defs>
+ <rect width="200" height="300" fill="url(#${p}s)"/>${stars(1010,90,0,0,200,300)}
+ <path d="M100 58L150 146H50Z" fill="none" stroke="#9fd0ff" stroke-width=".7" opacity=".35" transform="rotate(180 100 102)"/>
+ <path d="M100 160L148 246H52Z" fill="none" stroke="#e8c87a" stroke-width=".7" opacity=".4"/>
+ <circle cx="100" cy="232" r="70" fill="url(#${p}f)"/><circle cx="100" cy="118" r="44" fill="url(#${p}ch)"/>
+ <ellipse cx="100" cy="72" rx="30" ry="6" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width=".8" filter="url(#${p}b)"/>
+ <path d="M78 228C64 200 92 190 76 160C68 140 82 120 72 96M122 228C136 200 108 190 124 160C132 140 118 120 128 96" stroke="#fff" stroke-opacity=".3" stroke-width="1.4" fill="none" filter="url(#${p}b)"/>
+ <path d="M${hex(100,118,24)}Z" fill="url(#${p}c)" opacity=".92" filter="url(#${p}g)"/>
+ <path d="M${hex(100,118,24)}Z M100 94V142M79.2 106L120.8 130M120.8 106L79.2 130" stroke="#fff" stroke-width=".6" fill="none" opacity=".7"/>
+ <path d="M${hex(100,118,12)}Z" fill="#fff" opacity=".35"/>
+ ${[[100,152,1],[98,168,.85],[101,184,.7]].map(([x,y,s])=>`<path d="M${x} ${f(y-4*s)}Q${f(x+3*s)} ${y} ${x} ${f(y+2.5*s)}Q${f(x-3*s)} ${y} ${x} ${f(y-4*s)}Z" fill="#bfe8ff"/>`).join('')}
+ <g filter="url(#${p}g)"><path d="M86 238Q82 222 92 206Q92 218 99 220Q98 200 106 190Q106 210 114 222Q116 232 110 238Z" fill="#ff8a3a"/><path d="M92 238Q91 226 98 218Q99 228 104 230Q105 222 108 218Q110 232 104 238Z" fill="#ffd27a"/></g>
+ <path d="M64 240H136L132 250H68Z" fill="#3a3040"/><rect x="72" y="250" width="56" height="34" fill="#2a2232"/><path d="M76 258H124M76 276H124" stroke="#e8c87a" stroke-width=".5" opacity=".5"/>
+ <path d="M96 262L100 268L104 262M96 272L100 266L104 272" stroke="#e8c87a" stroke-width=".7" fill="none" opacity=".7"/>`},
+/* 11 */
+p=>`<defs>${lg(p+'s',[[0,'#0d0b26'],[.6,'#251a4a'],[1,'#432c56']])}${lg(p+'py',[[0,'#2a1f42'],[1,'#120d22']],1,0)}${rg(p+'sun',[[0,'#ffd27a',.8],[1,'#ffd27a',0]])}${rg(p+'mn',[[0,'#cfe6ff',.7],[1,'#cfe6ff',0]])}${glow(p+'g',1.8)}
+ <mask id="${p}m"><rect width="200" height="300" fill="#fff"/><circle cx="163" cy="164" r="7" fill="#000"/></mask></defs>
+ <rect width="200" height="300" fill="url(#${p}s)"/>${stars(1111,110,0,0,200,300)}
+ <circle cx="100" cy="150" r="88" fill="none" stroke="#e8c87a" stroke-width=".5" opacity=".4"/><circle cx="100" cy="150" r="92" fill="none" stroke="#e8c87a" stroke-width=".3" opacity=".3" stroke-dasharray="1 3"/>
+ <path d="M28 300L100 196L172 300Z" fill="url(#${p}py)"/><path d="M28 300L100 196L172 300" stroke="#e8c87a" stroke-width=".7" fill="none" opacity=".7"/>
+ <path d="M100 196L100 300M64 248H136" stroke="#e8c87a" stroke-width=".4" opacity=".35"/>
+ <path d="M100 196V118" stroke="#e8c87a" stroke-width="1.2"/><circle cx="100" cy="116" r="3" fill="#e8c87a" filter="url(#${p}g)"/>
+ <g transform="rotate(-2.5 100 120)">
+  <path d="M34 120H166" stroke="#e8c87a" stroke-width="1.6"/><circle cx="34" cy="120" r="1.8" fill="#e8c87a"/><circle cx="166" cy="120" r="1.8" fill="#e8c87a"/>
+  <path d="M34 120L22 166M34 120L46 166M166 120L154 166M166 120L178 166" stroke="#e8c87a" stroke-width=".5"/></g>
+ <path d="M18 166Q34 178 50 166Z" fill="#e8c87a" opacity=".9" transform="translate(0 -2.5)"/><path d="M150 166Q166 178 182 166Z" fill="#e8c87a" opacity=".9" transform="translate(0 3)"/>
+ <circle cx="34" cy="152" r="20" fill="url(#${p}sun)"/><circle cx="34" cy="155" r="8" fill="#ffd77a" filter="url(#${p}g)"/>
+ <circle cx="166" cy="160" r="18" fill="url(#${p}mn)"/><circle cx="166" cy="161" r="7.5" fill="#e6f1ff" mask="url(#${p}m)" filter="url(#${p}g)"/>`,
+/* 12 */
+p=>{const C=[100,150],R=54,cols=['#ff9a6a','#ffd27a','#9fe0a0','#8fd0ff','#c8a0ff','#ff8fb8'];
+ const P=[...Array(6)].map((_,k)=>{const a=(-90+60*k)*Math.PI/180;return [C[0]+R*Math.cos(a),C[1]+R*Math.sin(a)]});
+ let bonds='',seed='',ticks='';
+ P.forEach(([x,y],k)=>{const [x2,y2]=P[(k+1)%6],dx=x2-x,dy=y2-y,L=Math.hypot(dx,dy),ux=dx/L,uy=dy/L,nx=-uy,ny=ux,s=9;
+  const line=o=>`<path d="M${f(x+ux*s+nx*o)} ${f(y+uy*s+ny*o)}L${f(x2-ux*s+nx*o)} ${f(y2-uy*s+ny*o)}" stroke="#e8c87a" stroke-width="1.1"/>`;
+  bonds+=k%2===0?line(2.2)+line(-2.2):line(0);
+  seed+=`<circle cx="${f((C[0]+x)/2)}" cy="${f((C[1]+y)/2)}" r="27" fill="none" stroke="#e8c87a" stroke-width=".5" opacity=".3"/>`});
+ for(let i=0;i<36;i++){const a=i*10*Math.PI/180,r1=i%3?80:76;ticks+=`<path d="M${f(C[0]+r1*Math.cos(a))} ${f(C[1]+r1*Math.sin(a))}L${f(C[0]+84*Math.cos(a))} ${f(C[1]+84*Math.sin(a))}" stroke="#e8c87a" stroke-width=".6" opacity=".6"/>`}
+ const orbs=P.map(([x,y],k)=>`<circle cx="${f(x)}" cy="${f(y)}" r="14" fill="${cols[k]}" opacity=".18"/><circle cx="${f(x)}" cy="${f(y)}" r="6.5" fill="${cols[k]}" filter="url(#${p}g)"/><circle cx="${f(x-2)}" cy="${f(y-2)}" r="2" fill="#fff" opacity=".7"/>`).join('');
+ return `<defs>${rg(p+'c',[[0,'#3a2050'],[1,'#0a0820']])}${rg(p+'l',[[0,'#ffb35c',.5],[1,'#ffb35c',0]])}${glow(p+'g',2)}</defs>
+ <rect width="200" height="300" fill="url(#${p}c)"/>${stars(1212,110,0,0,200,300)}
+ <circle cx="${C[0]}" cy="${C[1]}" r="90" fill="url(#${p}l)"/>
+ <circle cx="${C[0]}" cy="${C[1]}" r="84" fill="none" stroke="#e8c87a" stroke-width=".8" opacity=".7"/><circle cx="${C[0]}" cy="${C[1]}" r="76" fill="none" stroke="#e8c87a" stroke-width=".4" opacity=".5"/>
+ ${ticks}${seed}${bonds}${orbs}
+ <g filter="url(#${p}g)">${spark(C[0],C[1],9,'#fff1c4')}<circle cx="${C[0]}" cy="${C[1]}" r="3" fill="#fff"/></g>
+ ${spark(100,40,3,'#e8c87a',.8)}${spark(100,262,3,'#e8c87a',.8)}`},
+/* 13 */
+p=>{const r=rng(13);let grass='',seeds='';const LX=152,LY=158;
+ const blades=[];for(let i=0;i<170;i++){const y=184+Math.pow(r(),.8)*116,x=-5+r()*210;blades.push([x,y])}
+ blades.sort((a,b)=>a[1]-b[1]);
+ blades.forEach(([x,y])=>{const k=(y-180)/120,L=5+k*22,dx=LX-x,dy=LY-y,d=Math.hypot(dx,dy),ux=dx/d,uy=dy/d;
+  const tx=x+L*1.05*ux,ty=y-L*.35+L*.25*uy,cx=x,cy=y-L*.7;
+  const g=Math.round(70+60*(1-k)),col=`rgb(${Math.round(40+30*(1-k))},${g+30},${Math.round(60+20*(1-k))})`;
+  grass+=`<path d="M${f(x)} ${f(y)}Q${f(cx)} ${f(cy)} ${f(tx)} ${f(ty)}" stroke="${col}" stroke-width="${(.4+k*1.1).toFixed(2)}" fill="none" stroke-linecap="round"/>`;});
+ for(let i=0;i<8;i++){const x=20+r()*110,y=100+r()*80;seeds+=`<g transform="translate(${f(x)} ${f(y)}) rotate(${f(-20+r()*40)})"><circle r=".9" fill="#fff"/><path d="M0 0l-3 -1.5M0 0l-3 0M0 0l-3 1.5" stroke="#fff" stroke-width=".3" opacity=".8"/></g>`}
+ return `<defs>${lg(p+'s',[[0,'#0d1b33'],[.55,'#2c4a6b'],[.8,'#6f8fa3'],[1,'#a9bfb8']])}${lg(p+'gr',[[0,'#1e3326'],[1,'#0e1a14']])}${rg(p+'l',[[0,'#ffe39a',.9],[1,'#ffe39a',0]])}${glow(p+'g',1.5)}</defs>
+ <rect width="200" height="300" fill="url(#${p}s)"/>${stars(130,50,0,0,200,110)}
+ <path d="M${LX} ${LY}L0 120L0 140Z" fill="#ffe39a" opacity=".16"/><path d="M${LX} ${LY}L200 135L200 150Z" fill="#ffe39a" opacity=".12"/>
+ <path d="M0 180Q100 172 200 178V300H0Z" fill="url(#${p}gr)"/>
+ <rect x="149" y="150" width="6" height="28" fill="#eef0ea"/><rect x="149" y="160" width="6" height="3" fill="#b8434b"/><rect x="149" y="169" width="6" height="3" fill="#b8434b"/>
+ <path d="M148 150L152 145L156 150Z" fill="#3a2a2a"/><circle cx="152" cy="${LY}" r="22" fill="url(#${p}l)"/><circle cx="152" cy="152.5" r="2" fill="#fff4c8" filter="url(#${p}g)"/>
+ ${grass}${seeds}`},
+/* 14 */
+p=>{let rings='',refl='';for(let i=1;i<=13;i++){const R=i*11;rings+=`<circle cx="100" cy="112" r="${R}" fill="none" stroke="#e8c87a" stroke-width=".8" opacity="${(.85*(1-i/14)).toFixed(2)}"/>`;
+  if(i>5){refl+=`<circle cx="-24" cy="112" r="${R}" fill="none" stroke="#9fd0ff" stroke-width=".6" opacity="${(.5*(1-i/14)).toFixed(2)}"/><circle cx="224" cy="112" r="${R}" fill="none" stroke="#9fd0ff" stroke-width=".6" opacity="${(.5*(1-i/14)).toFixed(2)}"/>`}}
+ let chain='';for(let y=56;y<88;y+=6)chain+=`<ellipse cx="100" cy="${y}" rx="${(y/6)%2<1?1.6:.9}" ry="2.8" fill="none" stroke="#c9a15a" stroke-width=".8"/>`;
+ const inner='M38 0H162L156 60L170 112L154 170L166 226L150 300H50L60 200L48 150L38 110L46 60Z';
+ return `<defs>${lg(p+'s',[[0,'#120c2a'],[.6,'#3a2350'],[1,'#7a4a5a']])}${lg(p+'bl',[[0,'#f3d48c'],[.5,'#c9962e'],[1,'#7a5420']],1,0)}${lg(p+'rv',[[0,'#e8c87a',.6],[1,'#6a4a8a',.2]])}${glow(p+'g',1.5)}
+ <clipPath id="${p}in"><path d="${inner}"/></clipPath></defs>
+ <rect width="200" height="300" fill="url(#${p}s)"/>${stars(1414,70,30,0,140,200)}
+ <g clip-path="url(#${p}in)">${refl}${rings}<path d="M40 300Q100 280 160 300Z" fill="url(#${p}rv)"/></g>
+ <path d="M0 0H38L46 60L38 110L48 150L60 200L50 300H0Z" fill="#2a1428"/><path d="M200 0H162L156 60L170 112L154 170L166 226L150 300H200Z" fill="#2a1428"/>
+ <path d="M38 40Q100 10 162 40L162 52Q100 24 38 52Z" fill="#3a2034"/><path d="M38 40Q100 10 162 40" stroke="#e8c87a" stroke-width=".7" fill="none" opacity=".7"/>
+ ${chain}
+ <path d="M100 88C90 88 86 96 85 108C84 118 80 124 76 128H124C120 124 116 118 115 108C114 96 110 88 100 88Z" fill="url(#${p}bl)" filter="url(#${p}g)"/>
+ <path d="M76 128H124" stroke="#fff3c4" stroke-width="1"/><circle cx="100" cy="132" r="3" fill="#c9962e"/>
+ <path d="M90 104H110M88 114H112" stroke="#7a5420" stroke-width=".6" opacity=".7"/>
+ ${spark(20,30,2.2,'#fff3c4',.7)}${spark(180,250,2,'#fff3c4',.6)}`},
+/* 15 */
+p=>{let bands='';for(let y=128,i=0;y<270;y+=12,i++)bands+=`<rect x="30" y="${y}" width="140" height="12" fill="${i%2?'#f1e1c4':'#c84b5a'}"/>`;
+ const house=(x,y,s,c)=>`<g transform="translate(${x} ${y}) scale(${s})"><rect x="-4" y="-6" width="8" height="6" fill="#f3e2c7"/><path d="M-5 -5.5L0 -10L5 -5.5Z" fill="${c}"/><rect x="-1.5" y="-4" width="2" height="2" fill="#ffd36b"/></g>`;
+ return `<defs>${lg(p+'s',[[0,'#1a1036'],[1,'#3a2160']])}${lg(p+'sh',[[0,'#fff',.25],[.4,'#fff',0],[.7,'#000',.1],[1,'#000',.45]],1,0)}${rg(p+'fl',[[0,'#7a5aa8',.6],[1,'#7a5aa8',0]])}${glow(p+'g',1.2)}
+ <clipPath id="${p}c"><path d="M40 130Q45 200 100 268Q155 200 160 130Z"/></clipPath></defs>
+ <rect width="200" height="300" fill="url(#${p}s)"/>${stars(160,70,0,0,200,260)}
+ <ellipse cx="100" cy="272" rx="80" ry="12" fill="url(#${p}fl)"/>
+ <g fill="none" stroke="#fff" stroke-opacity=".28" stroke-width=".8"><path d="M28 160A74 18 0 0 0 172 160"/><path d="M38 200A64 14 0 0 0 162 200"/><path d="M52 236A50 10 0 0 0 148 236"/></g>
+ <g clip-path="url(#${p}c)">${bands}<rect x="30" y="120" width="140" height="160" fill="url(#${p}sh)"/></g>
+ <ellipse cx="100" cy="270" rx="8" ry="2" fill="#000" opacity=".4"/>
+ <ellipse cx="100" cy="130" rx="60" ry="14" fill="#d8c49a"/><ellipse cx="100" cy="128.5" rx="56" ry="12" fill="#5f8a4a"/>
+ ${house(84,130,1,'#b8434b')}${house(110,124,.9,'#3456a6')}${house(122,133,1,'#b8434b')}${house(98,137,.8,'#e0a040')}
+ <g transform="translate(70 128)"><rect x="-.7" y="-4" width="1.4" height="5" fill="#4a3226"/><circle cx="0" cy="-7" r="4" fill="#2f5a3a"/></g>
+ <g transform="translate(136 127)"><rect x="-.6" y="-3" width="1.2" height="4" fill="#4a3226"/><circle cx="0" cy="-5.5" r="3" fill="#2f5a3a"/></g>
+ <g filter="url(#${p}g)">${spark(60,100,2.4,'#fff',.8)}${spark(150,108,1.8,'#fff',.7)}</g>`},
+/* 16 */
+p=>{const C=[100,96];let rose='',deg='';
+ for(let k=0;k<8;k++){const a=k*Math.PI/4-Math.PI/2,L=k%2?34:62,w=k%2?5:8,b1=a-Math.PI/2,x=C[0]+L*Math.cos(a),y=C[1]+L*Math.sin(a),lx=C[0]+w*Math.cos(b1),ly=C[1]+w*Math.sin(b1),rx=C[0]-w*Math.cos(b1),ry=C[1]-w*Math.sin(b1);
+  rose+=`<path d="M${f(lx)} ${f(ly)}L${f(x)} ${f(y)}L${f(C[0])} ${f(C[1])}Z" fill="${k%2?'#cfc0e8':'#e8c87a'}"/><path d="M${f(rx)} ${f(ry)}L${f(x)} ${f(y)}L${f(C[0])} ${f(C[1])}Z" fill="${k%2?'#8a7ab0':'#a8802e'}"/>`}
+ for(let i=0;i<32;i++){const a=i*Math.PI/16;deg+=`<path d="M${f(C[0]+40*Math.cos(a))} ${f(C[1]+40*Math.sin(a))}L${f(C[0]+70*Math.cos(a))} ${f(C[1]+70*Math.sin(a))}" stroke="#e8c87a" stroke-width=".3" opacity=".35"/>`}
+ const r=rng(1616);let streams='',sea='';for(let i=0;i<6;i++){const y=150+r()*60;streams+=`<path d="M-10 ${f(y)}Q60 ${f(y-14)} 210 ${f(y-30)}" stroke="#e8c87a" stroke-opacity="${(.2+r()*.3).toFixed(2)}" stroke-width=".7" fill="none"/>`}
+ for(let i=0;i<50;i++){const x=r()*200,y=212+r()*88;sea+=`<path d="M${f(x)} ${f(y)}h${f(2+r()*6)}" stroke="#fff3c4" stroke-width=".6" opacity="${(.2+r()*.6).toFixed(2)}"/>`}
+ return `<defs>${lg(p+'s',[[0,'#070a22'],[.6,'#1a2350'],[1,'#26306a']])}${lg(p+'sea',[[0,'#141c46'],[1,'#05081a']])}${rg(p+'h',[[0,'#e8c87a',.35],[1,'#e8c87a',0]])}${glow(p+'g',1.6)}</defs>
+ <rect width="200" height="300" fill="url(#${p}s)"/>${stars(1617,100,0,0,200,210)}
+ <circle cx="${C[0]}" cy="${C[1]}" r="80" fill="url(#${p}h)"/>
+ <circle cx="${C[0]}" cy="${C[1]}" r="70" fill="none" stroke="#e8c87a" stroke-width=".7" opacity=".7"/><circle cx="${C[0]}" cy="${C[1]}" r="40" fill="none" stroke="#e8c87a" stroke-width=".5" opacity=".5"/>
+ ${deg}${rose}<circle cx="${C[0]}" cy="${C[1]}" r="3" fill="#fff3c4" filter="url(#${p}g)"/>
+ <rect y="212" width="200" height="88" fill="url(#${p}sea)"/>${sea}
+ <g opacity=".14" transform="translate(0 424) scale(1 -1)"><circle cx="${C[0]}" cy="${C[1]+0}" r="70" fill="none" stroke="#e8c87a" stroke-width="1"/>${rose}</g>
+ ${streams}
+ <g transform="rotate(10 100 228)"><path d="M78 228H124L118 236H84Z" fill="#1a1230"/><path d="M100 228V178" stroke="#e8c87a" stroke-width=".8"/>
+  <path d="M102 180A26 26 0 0 1 102 226A20 20 0 0 0 102 180Z" fill="#fff3c4" filter="url(#${p}g)"/></g>`},
+/* 17 */
+p=>`<defs>${lg(p+'d',[[0,'#7fb8e0'],[1,'#e8f0ea']])}${lg(p+'n',[[0,'#1a2348'],[1,'#05081a']])}${rg(p+'sun',[[0,'#fff7d0',.9],[1,'#fff7d0',0]])}${lg(p+'gd',[[0,'#f6dc96'],[1,'#a8802e']],1,0)}${rg(p+'gl',[[0,'#fff3c4',.9],[1,'#fff3c4',0]])}${glow(p+'g',1.6)}
+ <mask id="${p}m"><rect width="200" height="300" fill="#fff"/><circle cx="146" cy="245" r="10" fill="#000"/></mask></defs>
+ <rect width="200" height="150" fill="url(#${p}d)"/><rect y="150" width="200" height="150" fill="url(#${p}n)"/>${stars(1717,70,0,156,200,144)}
+ <circle cx="140" cy="50" r="30" fill="url(#${p}sun)"/><circle cx="140" cy="50" r="11" fill="#fffbe8"/>
+ ${cloud(56,40,1.1,'#fff',.85)}${cloud(176,92,.7,'#fff',.7)}
+ <circle cx="140" cy="250" r="11" fill="#eef2ff" mask="url(#${p}m)" filter="url(#${p}g)"/>
+ <path d="M0 138Q34 130 72 148L74 150H0Z" fill="#4f7a45"/><path d="M0 162Q34 170 72 152L74 150H0Z" fill="#0d1428"/>
+ <rect x="26.5" y="112" width="3" height="26" fill="#5a3d2e"/><circle cx="28" cy="104" r="14" fill="#3f6e3c"/><circle cx="20" cy="112" r="8" fill="#4a7d44"/><circle cx="36" cy="110" r="9" fill="#4a7d44"/>
+ <g stroke="#0a1022" stroke-width="1.4" fill="none" stroke-linecap="round"><path d="M28 162V194"/><path d="M28 178L18 194M28 184L40 198M28 192L22 206M28 192L34 210M18 194L12 200"/></g>
+ <g fill="none" stroke="#e8c87a" stroke-width=".7" opacity=".75"><circle cx="118" cy="128" r="34"/><circle cx="118" cy="172" r="34"/></g>
+ <path d="M0 150H200" stroke="#fff" stroke-opacity=".7" stroke-width=".6"/>
+ <circle cx="118" cy="150" r="30" fill="url(#${p}gl)"/>
+ <path d="M104 112Q104 128 118 132Q132 128 132 112Z" fill="url(#${p}gd)" filter="url(#${p}g)"/><ellipse cx="118" cy="112" rx="14" ry="2.6" fill="#fff3c4"/>
+ <path d="M117 132H119V144H117Z M110 146Q118 142 126 146V150H110Z" fill="url(#${p}gd)"/>
+ <g transform="translate(0 300) scale(1 -1)" opacity=".85"><path d="M104 112Q104 128 118 132Q132 128 132 112Z" fill="#cfe0ff" filter="url(#${p}g)"/><ellipse cx="118" cy="112" rx="14" ry="2.6" fill="#fff"/><path d="M117 132H119V144H117Z M110 146Q118 142 126 146V150H110Z" fill="#cfe0ff"/></g>
+ ${spark(118,150,4,'#fff',1)}`,
+/* 18 */
+p=>{const B=t=>{const a=[14,214],b=[70,188],c=[130,206],d=[192,182],m=1-t;return [m*m*m*a[0]+3*m*m*t*b[0]+3*m*t*t*c[0]+t*t*t*d[0],m*m*m*a[1]+3*m*m*t*b[1]+3*m*t*t*c[1]+t*t*t*d[1]]};
+ const N=6,pts=[...Array(N)].map((_,i)=>B(.05+i*.9/(N-1))),r=rng(1818);let stones='',arcs='',glows='';
+ const glyphs=['M-2 -4L2 -4L0 0Z M0 0V4','M-2 -3H2M0 -5V3M-2 3H2','M-2 -4A2.5 2.5 0 1 0 2 -4M0 -1V4','M0 -5L2 0L0 5L-2 0Z','M-2 -4V4M2 -4V4M-2 0H2','M-2 -4Q2 -2 -2 0Q2 2 -2 4','M0 -5V5M-2.5 -2L2.5 2'];
+ pts.forEach(([x,y],i)=>{const h=36+r()*10,lit=i<3;
+  stones+=`<path d="M${f(x-8)} ${f(y+2)}Q${f(x-9)} ${f(y-h*.7)} ${f(x)} ${f(y-h)}Q${f(x+9)} ${f(y-h*.7)} ${f(x+8)} ${f(y+2)}Z" fill="#0a0f1e"/><path d="${glyphs[i]}" transform="translate(${f(x)} ${f(y-h*.5)}) scale(1.5)" stroke="${lit?'#ffd57a':'#3a4466'}" stroke-width=".9" fill="none" ${lit?`filter="url(#${p}g)"`:''}/>`;
+  if(i<N-1&&i<3){const [x2,y2]=pts[i+1];let d=`M${f(x+3)} ${f(y-h*.9)}`;for(let k=1;k<6;k++){const t=k/6;d+=`L${f(x+3+(x2-3-x-3)*t)} ${f(y-h*.9+(y2-h*.9-y+h*.9)*t+(r()-.5)*7-Math.sin(Math.PI*t)*10)}`}d+=`L${f(x2-3)} ${f(y2-h*.9)}`;
+   arcs+=`<path d="${d}" stroke="#ffe9a8" stroke-width="1.1" fill="none" stroke-linejoin="round" filter="url(#${p}g)"/>`;glows+=`<circle cx="${f((x+x2)/2)}" cy="${f((y+y2)/2-h)}" r="${16-i*3}" fill="url(#${p}h)"/>`}});
+ return `<defs>${lg(p+'s',[[0,'#050818'],[.6,'#111a38'],[1,'#1e2a4a']])}${rg(p+'h',[[0,'#ffd57a',.55],[1,'#ffd57a',0]])}${glow(p+'g',1.4)}${blur(p+'b',8)}
+ <mask id="${p}m"><rect width="200" height="300" fill="#fff"/><circle cx="153" cy="47" r="11" fill="#000"/></mask></defs>
+ <rect width="200" height="300" fill="url(#${p}s)"/>${stars(1819,120,0,0,200,190)}
+ <path d="M-10 120Q60 70 120 100T210 70" stroke="#5fe0b0" stroke-width="22" fill="none" opacity=".16" filter="url(#${p}b)"/><path d="M-10 140Q70 100 130 120T210 96" stroke="#a07ae0" stroke-width="16" fill="none" opacity=".14" filter="url(#${p}b)"/>
+ <circle cx="146" cy="50" r="12" fill="#eef2ff" mask="url(#${p}m)"/>
+ <path d="M0 216L14 214C70 188 130 206 192 182L200 180V300H0Z" fill="#121a30"/>
+ <path d="M0 256Q80 234 140 248T200 240V300H0Z" fill="#0b1122"/>
+ ${glows}${stones}${arcs}`},
+/* 19 */
+p=>{let lines='';[-36,-24,-12,0,12,24,36].forEach(h=>{lines+=`<path d="M55 85C70 ${85-h*2} 130 ${85-h*2} 145 85" stroke="url(#${p}t)" stroke-width="${h===0?1:.7}" fill="none" opacity="${(1-Math.abs(h)/70).toFixed(2)}"/>`});
+ let warp='';for(let x=76;x<=124;x+=4)warp+=`<path d="M${x} 216V250" stroke="#ffe6b0" stroke-width=".5" opacity=".8"/>`;
+ let cloth='';for(let y=250,i=0;y<272;y+=3,i++)cloth+=`<rect x="74" y="${y}" width="52" height="3" fill="${['#e98a6a','#f3d27a','#8fc6e8','#b48ad8'][i%4]}" opacity=".85"/>`;
+ return `<defs>${lg(p+'s',[[0,'#140d2e'],[1,'#2d1b4e']])}<linearGradient id="${p}t" gradientUnits="userSpaceOnUse" x1="55" y1="0" x2="145" y2="0">${stp([[0,'#ffbf7a'],[1,'#9ad6ff']])}</linearGradient>${rg(p+'w',[[0,'#ffb870',.7],[1,'#ffb870',0]])}${rg(p+'c',[[0,'#8fd0ff',.7],[1,'#8fd0ff',0]])}${glow(p+'g',1.6)}</defs>
+ <rect width="200" height="300" fill="url(#${p}s)"/>${stars(190,70,0,0,200,300)}
+ <g filter="url(#${p}g)">${lines}</g>
+ <path d="M86 136Q84 180 82 216M100 141V216M114 136Q116 180 118 216" stroke="#ffe6b0" stroke-width=".5" opacity=".7"/>
+ <circle cx="55" cy="85" r="26" fill="url(#${p}w)"/><circle cx="145" cy="85" r="26" fill="url(#${p}c)"/>
+ <g filter="url(#${p}g)">${spark(55,85,7,'#ffd6a0')}${spark(145,85,7,'#d6f0ff')}</g>
+ <rect x="70" y="212" width="60" height="4" fill="#7a5a38"/><rect x="70" y="270" width="60" height="4" fill="#7a5a38"/><rect x="68" y="208" width="4" height="74" fill="#5e4226"/><rect x="128" y="208" width="4" height="74" fill="#5e4226"/>
+ ${warp}${cloth}
+ ${person(150,284,.9,'#0d0820')}<path d="M147.5 265L132 254" stroke="#0d0820" stroke-width="1.8" stroke-linecap="round"/>`},
+/* 20 */
+p=>{const pt=(u,v)=>{const rho=Math.hypot(u,v),w=1/(1+Math.pow(rho/.26,2));return [100+86*u*(1+.2*v),160+44*v+64*w]};
+ let grid='';const S=[];for(let i=-10;i<=10;i++)S.push(i/10);
+ S.forEach(v=>{grid+=`<path d="M${S.map(u=>pt(u,v).map(f).join(' ')).join('L')}" stroke="#8fb6ff" stroke-width=".55" fill="none" opacity="${(.25+.45*(v+1)/2).toFixed(2)}"/>`});
+ S.forEach(u=>{grid+=`<path d="M${S.map(v=>pt(u,v).map(f).join(' ')).join('L')}" stroke="#8fb6ff" stroke-width=".55" fill="none" opacity=".45"/>`});
+ const [fx,fy]=pt(-.72,.6),[mx,my]=pt(.5,-.25);let traj='';for(let k=0;k<=40;k++){const t=k/40,ang=-.45+t*3.4,rr=.56*(1-t*.75);const [x,y]=pt(rr*Math.cos(ang),rr*Math.sin(ang));traj+=(k?'L':'M')+f(x)+' '+f(y)}
+ const [cx,cy]=pt(0,0);
+ return `<defs>${lg(p+'s',[[0,'#07061a'],[1,'#1c1440']])}${rg(p+'b',[[0,'#fff6d6'],[.6,'#ffd27a'],[1,'#e39a4a']])}${rg(p+'h',[[0,'#ffd27a',.55],[1,'#ffd27a',0]])}${glow(p+'g',2.5)}</defs>
+ <rect width="200" height="300" fill="url(#${p}s)"/>${stars(313,110,0,0,200,300)}
+ ${grid}
+ <path d="${traj}" stroke="#fff" stroke-opacity=".5" stroke-width=".6" stroke-dasharray="1.5 2" fill="none"/>
+ <circle cx="${f(mx)}" cy="${f(my-2.2)}" r="2.2" fill="#cfe3ff"/>
+ <circle cx="${f(cx)}" cy="${f(cy-15)}" r="44" fill="url(#${p}h)"/>
+ <circle cx="${f(cx)}" cy="${f(cy-15)}" r="15" fill="url(#${p}b)" filter="url(#${p}g)"/>
+ ${person(f(fx),f(fy),.42,'#f3e3c0')}`},
+/* 21 */
+p=>{const flask=(x,y,s,full)=>`<g transform="translate(${x} ${y}) scale(${s})"><path d="M-2.5 -24V-14Q-9 -11 -9 -5A9 9 0 0 0 9 -5Q9 -11 2.5 -14V-24Z" fill="#cfe6ff" fill-opacity=".14" stroke="#cfe6ff" stroke-opacity=".6" stroke-width=".7"/><rect x="-3.5" y="-27" width="7" height="3" rx="1" fill="#8a6a44"/>${full?`<circle cx="0" cy="-6" r="9" fill="url(#${p}j)"/><path d="M1 -13L-2.5 -7L1 -6L-1.5 -1" stroke="#fff6b0" stroke-width="1.1" fill="none" filter="url(#${p}g)"/>`:''}</g>`;
+ let coil='';for(let y=232;y>130;y-=7)coil+=`<path d="M${f(96-.02*(232-y))} ${y}Q100 ${y-4} ${f(104+.02*(232-y))} ${y-3.5}" stroke="#d98a4a" stroke-width=".9" fill="none"/>`;
+ let ticks='';for(let i=0;i<24;i++){const a=i*Math.PI/12;ticks+=`<path d="M${f(100+44*Math.cos(a))} ${f(250+11*Math.sin(a))}L${f(100+48*Math.cos(a))} ${f(250+12*Math.sin(a))}" stroke="#e8c87a" stroke-width=".6" opacity=".7"/>`}
+ return `<defs>${lg(p+'s',[[0,'#0a0f22'],[.6,'#1c2646'],[1,'#2a3450']])}${rg(p+'j',[[0,'#fff3a0',.8],[1,'#fff3a0',0]])}${rg(p+'o',[[0,'#fff',.9],[.4,'#bfe8ff',.6],[1,'#bfe8ff',0]])}${lg(p+'t',[[0,'#3a3648'],[1,'#1a1826']],1,0)}${glow(p+'g',1.6)}</defs>
+ <rect width="200" height="300" fill="url(#${p}s)"/>${stars(2121,50,0,60,200,120)}
+ ${cloud(70,30,2.6,'#2a3352',1)}${cloud(140,24,2.4,'#323c5e',1)}${cloud(105,10,2,'#262e4a',1)}
+ <path d="M112 34L104 60L112 64L98 92L106 96L100 118" stroke="#fff6d0" stroke-width="2" fill="none" stroke-linejoin="round" filter="url(#${p}g)"/>
+ <path d="M60 40L66 62L60 66L68 84" stroke="#fff6d0" stroke-width=".8" fill="none" opacity=".6" filter="url(#${p}g)"/>
+ <path d="M0 250Q50 232 100 236T200 246V300H0Z" fill="#141a2a"/>
+ <ellipse cx="100" cy="250" rx="46" ry="11.5" fill="none" stroke="#e8c87a" stroke-width=".7" opacity=".7"/>${ticks}
+ <path d="M95 250L98.5 124H101.5L105 250Z" fill="url(#${p}t)"/>${coil}
+ <circle cx="100" cy="120" r="20" fill="url(#${p}o)"/><circle cx="100" cy="120" r="4.5" fill="#fff" filter="url(#${p}g)"/>
+ ${flask(64,262,1,true)}${flask(82,270,1.05,true)}${flask(118,270,1.05,true)}${flask(136,262,1,false)}${flask(150,252,.85,true)}${flask(50,252,.85,true)}`},
+/* 22 */
+p=>{const x1=80,x2=122,y=138,r1=38,r2=35,d=x2-x1,a=(d*d+r1*r1-r2*r2)/(2*d),h=Math.sqrt(r1*r1-a*a),px=x1+a;
+ const outline=`M${f(px)} ${f(y-h)}A${r1} ${r1} 0 1 0 ${f(px)} ${f(y+h)}A${r2} ${r2} 0 1 0 ${f(px)} ${f(y-h)}Z`;
+ const nuc=(x,yy,s)=>{const r=rng(s);let o='';for(let i=0;i<5;i++)o+=`<circle cx="${f(x+(r()-.5)*7)}" cy="${f(yy+(r()-.5)*7)}" r="${(1+r()*1.4).toFixed(2)}" fill="#ffe39a"/>`;return o};
+ const small=[[34,70,7],[168,212,5],[160,64,4],[44,206,3.5],[178,150,3]].map(([x,yy,rr])=>`<circle cx="${x}" cy="${yy}" r="${rr}" fill="url(#${p}f)" stroke="url(#${p}ir)" stroke-width=".7"/>`).join('');
+ return `<defs>${lg(p+'s',[[0,'#132a3a'],[.7,'#2c4d5e'],[1,'#3d6470']])}<linearGradient id="${p}ir" x1="0" y1="0" x2="1" y2="1">${stp([[0,'#ffb3d9'],[.35,'#b3f0ff'],[.65,'#fff3a8'],[1,'#c8b3ff']])}</linearGradient>
+ ${rg(p+'f',[[0,'#fff',.02],[.85,'#cfefff',.08],[1,'#fff',.22]])}${rg(p+'h',[[0,'#ffe39a',.6],[1,'#ffe39a',0]])}${glow(p+'g',1.4)}${blur(p+'b',3)}</defs>
+ <rect width="200" height="300" fill="url(#${p}s)"/>${stars(314,30,0,0,200,120,'#cfefff',.6)}
+ <path d="M0 236Q100 228 200 236V300H0Z" fill="#0d1e28"/>
+ <ellipse cx="100" cy="252" rx="54" ry="6" fill="#cfefff" opacity=".12" filter="url(#${p}b)"/>
+ <path d="${outline}" fill="url(#${p}f)"/>
+ <circle cx="${x1-6}" cy="${y}" r="20" fill="url(#${p}h)"/><circle cx="${x2+5}" cy="${y}" r="18" fill="url(#${p}h)"/>
+ <g filter="url(#${p}g)">${nuc(x1-6,y,41)}${nuc(x2+5,y,42)}</g>
+ <path d="M${f(px)} ${f(y-h)}Q${f(px+4)} ${y} ${f(px)} ${f(y+h)}" stroke="#fff" stroke-opacity=".3" stroke-width=".7" fill="none"/>
+ <path d="${outline}" fill="none" stroke="url(#${p}ir)" stroke-width="1.5"/>
+ <path d="M${x1-26} ${y-18}A30 30 0 0 1 ${x1-6} ${y-33}" stroke="#fff" stroke-opacity=".7" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+ <path d="M${x2+12} ${y-26}A26 26 0 0 1 ${x2+24} ${y-14}" stroke="#fff" stroke-opacity=".5" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+ ${small}`}
+];
+
+(function(){
+var SP={1:[["c","What does this card ask you to explain?"]],
+ 3:[["a","Where it comes from"],["b","How it behaves"],["d","Where it leads"]],
+ 5:[["t","What it becomes"],["l","What pulls"],["c","The heart"],["r","What resists"],["b","What stays hidden"]]};
+var board=document.getElementById("board"),think=document.getElementById("think"),cur=1,timer=null;
+function face(n){return '<svg viewBox="0 0 200 300" role="img" aria-label="Card '+(n+1)+'">'+ART[n]("k"+n+"-")+'</svg><div class="no">'+(n+1)+'</div>'}
+function layout(){
+ board.className="board s"+cur;stopThink();think.textContent="";
+ board.innerHTML=SP[cur].map(function(p){return '<div class="slot"'+(cur===5?' style="grid-area:'+p[0]+'"':'')+'><div class="lab">'+p[1]+'</div><div class="cd"><div class="in"><div class="bk"></div><div class="fc"></div></div></div></div>'}).join("");}
+function pick(k){var a=ART.map(function(_,i){return i});for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}return a.slice(0,k)}
+function stopThink(){if(timer){clearInterval(timer);timer=null}}
+function startThink(){stopThink();var t0=Date.now(),D=30000;think.innerHTML='Think for thirty seconds<div class="tr"><i></i></div>';var bar=think.querySelector("i");
+ timer=setInterval(function(){var p=Math.min(1,(Date.now()-t0)/D);bar.style.width=(p*100)+"%";if(p>=1){stopThink();think.textContent="Speak."}},200);}
+function draw(){
+ var cds=board.querySelectorAll(".cd"),ids=pick(cds.length),flip=0;
+ cds.forEach(function(c){if(c.classList.contains("up")){c.classList.remove("up");flip=1}});
+ setTimeout(function(){cds.forEach(function(c,i){c.querySelector(".fc").innerHTML=face(ids[i]);setTimeout(function(){c.classList.add("up")},120+i*260)});
+  startThink();},flip?450:0);}
+document.querySelectorAll(".seg button").forEach(function(b){b.onclick=function(){document.querySelectorAll(".seg button").forEach(function(x){x.classList.toggle("on",x===b)});cur=+b.dataset.s;layout()}});
+document.getElementById("draw").onclick=draw;
+var th=document.getElementById("th"),R=document.documentElement;
+function paint(){th.textContent=R.getAttribute("data-mode")==="dark"?"☾":"☀"}
+th.onclick=function(){var m=R.getAttribute("data-mode")==="dark"?"light":"dark";R.setAttribute("data-mode",m);try{localStorage.setItem("toolbox-mode",m)}catch(e){}paint()};paint();
+layout();
+})();
+</script>
+</body>
+</html>

@@ -288,3 +288,20 @@
 @keyframes cl-h1 { 0% { opacity: 1; } 33% { opacity: 0; } 100% { opacity: 0; } }
 @keyframes cl-h2 { 0% { opacity: 0; } 33% { opacity: 1; } 66% { opacity: 0; } 100% { opacity: 0; } }
 @keyframes cl-h3 { 0% { opacity: 0; } 66% { opacity: 1; } 100% { opacity: 1; } }
+
+/* Arkana: tre carte che si girano una alla volta (loop 9 s) */
+.ak-pv { display: flex; gap: .7rem; perspective: 600px; }
+.ak-c { position: relative; width: 3.7rem; height: 5.9rem; transform-style: preserve-3d; transform: rotateY(180deg); }
+.ak-c i { position: absolute; top: 0; left: 0; width: 100%; height: 100%; box-sizing: border-box; border-radius: 6px; backface-visibility: hidden; -webkit-backface-visibility: hidden; box-shadow: 0 3px 8px rgba(0,0,0,.25); }
+.ak-b { border: 3px solid #f1e7d4; background: radial-gradient(circle at 50% 50%, #f3d48c 0 2px, transparent 3px), radial-gradient(circle at 50% 50%, transparent 0 22%, rgba(217,180,106,.9) 22% 25%, transparent 25% 38%, rgba(217,180,106,.5) 38% 40%, transparent 40%), linear-gradient(160deg, #30205f, #140f30); }
+.ak-f { transform: rotateY(180deg); border: 3px solid #f1e7d4; border-bottom-width: 9px; }
+.ak-1 .ak-f { background: radial-gradient(circle at 35% 62%, #ffd9a0 0 2px, rgba(255,217,160,.35) 3px 7px, transparent 8px), radial-gradient(circle at 65% 62%, #bfe3ff 0 2px, rgba(191,227,255,.35) 3px 7px, transparent 8px), linear-gradient(#0b0f2a 0 32%, #1a2550 32%, #060a1c); }
+.ak-2 .ak-f { background: radial-gradient(circle at 50% 66%, #ffe6a8 0 5px, rgba(255,214,122,.35) 6px 13px, transparent 14px), repeating-linear-gradient(90deg, transparent 0 5px, rgba(143,182,255,.35) 5px 6px), linear-gradient(#07061a, #1c1440); }
+.ak-3 .ak-f { background: radial-gradient(circle at 50% 48%, #ffe39a 0 3px, rgba(255,138,58,.5) 4px 8px, transparent 18px), radial-gradient(circle at 50% 48%, transparent 0 13px, #2a1d18 13px 14.5px, transparent 15px), #1c3524; }
+@media (prefers-reduced-motion: no-preference) {
+  .ak-c { animation: ak-flip 9s cubic-bezier(.3,.7,.2,1) infinite; }
+  .ak-2 { animation-name: ak-flip2; } .ak-3 { animation-name: ak-flip3; }
+}
+@keyframes ak-flip  { 0%, 8% { transform: rotateY(0); } 15%, 85% { transform: rotateY(180deg); } 92%, 100% { transform: rotateY(0); } }
+@keyframes ak-flip2 { 0%, 18% { transform: rotateY(0); } 25%, 85% { transform: rotateY(180deg); } 92%, 100% { transform: rotateY(0); } }
+@keyframes ak-flip3 { 0%, 28% { transform: rotateY(0); } 35%, 85% { transform: rotateY(180deg); } 92%, 100% { transform: rotateY(0); } }
